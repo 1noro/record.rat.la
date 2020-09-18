@@ -33,7 +33,7 @@
         <header>
             <h1>record.rat.la</h1>
             <p>
-                <a href="index.php" title="Los últimos posts">reciente</a> / <a href="index.php?q=h" title="Todos los post ordenados por fecha">histórico</a> / <a href="#" title="¿Qué es esta página?">faq</a>
+                <a href="index.php" title="Los últimos posts">reciente</a> / <a href="index.php?q=h" title="Todos los post ordenados por fecha">histórico</a> / <a href="index.php?q=202009182328i-faq.html" title="¿Qué es esta página?">faq</a>
             </p>
         </header>
 
@@ -81,11 +81,15 @@
                     return $result;
                 }
 
+                function print_article($directory, $filename) {
+                    echo file_get_contents($directory . $filename);
+                    echo "<p style=\"text-align:right;\"><small>" . get_author_name($filename) . " - " . get_date($filename) . "</p></small>";
+                }
+
                 function print_reciente($directory, $filenames, $articles_to_show) {
                     $i = 1;
                     foreach($filenames as $filename) {
-                        echo file_get_contents($directory . $filename);
-                        echo "<p style=\"text-align:right;\"><small>" . get_author_name($filename) . " - " . get_date($filename) . "</p></small>";
+                        print_article($directory, $filename);
                         if ($i >= $articles_to_show) {break;}
                         echo "<hr>";
                         $i++;
@@ -96,7 +100,7 @@
                     echo "<h2>Histórico de posts</h2>";
                     echo "<ul>";
                     foreach($filenames as $filename) {
-                        echo "<li><a href='" . $directory . $filename . "'>" . get_date($filename) . " (" . get_author_name($filename) . ") " . get_title($directory . $filename) . "</a></li>";
+                        echo "<li><a href=\"index.php?q=" . $filename . "\">" . get_date($filename) . " (" . get_author_name($filename) . ") " . get_title($directory . $filename) . "</a></li>";
                     }
                     echo "</ul>";
                 }
@@ -105,6 +109,12 @@
                 if (isset($_GET["q"])) {
                     if ($_GET["q"] == "h") {
                         print_historico($directory, $filenames);
+                    } else {
+                        if (in_array($_GET["q"], $filenames)) {
+                            print_article($directory, $_GET["q"]);
+                        } else {
+                            print_article($directory, "202009182346i-404.html");
+                        }
                     }
                 } else {
                     print_reciente($directory, $filenames, $articles_to_show);
