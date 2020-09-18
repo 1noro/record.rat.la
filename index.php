@@ -39,7 +39,7 @@
 
         <div id="content">
             <?php
-                $articles_to_show = 2;
+                $articles_to_show = 3;
                 $directory = 'article/';
                 $authors = ["a" => "anon", "i" => "1noro"];
 
@@ -105,6 +105,7 @@
                     echo "</ul>";
                 }
 
+                // procesamos la variable GUET "q"
                 $filenames = get_filenames($directory);
                 if (isset($_GET["q"])) {
                     if ($_GET["q"] == "h") {
