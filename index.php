@@ -68,7 +68,11 @@
 
                 function get_author_name($filename) {
                     $authorid = substr($filename, 12, 1);
-                    $result = $GLOBALS["authors"][$authorid];
+                    if (array_key_exists($authorid, $GLOBALS["authors"])) {
+                        $result = $GLOBALS["authors"][$authorid];
+                    } else {
+                        $result = $GLOBALS["authors"]["a"];
+                    }
                     return $result;
                 }
 
