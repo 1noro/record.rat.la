@@ -33,14 +33,83 @@
         <header>
             <h1>record.rat.la</h1>
             <p>
-                <a href="#" title="Los últimos posts">reciente</a> / <a href="#" title="Todos los post ordenados por fecha">histórico</a> / <a href="#" title="¿Qué es esta página?">faq</a>
+                <a href="index.php" title="Los últimos posts">reciente</a> / <a href="index.php?q=h" title="Todos los post ordenados por fecha">histórico</a> / <a href="#" title="¿Qué es esta página?">faq</a>
             </p>
         </header>
 
         <div id="content">
-            <?php echo file_get_contents('article/202009181457-genesis.html'); ?>
-            <hr>
-            <?php echo file_get_contents('article/202009181510-descripcion.html'); ?>
+            <?php
+                $articles_to_show = 2;
+                $directory = 'article/';
+                $authors = ["a" => "anon", "i" => "1noro"];
+
+                function get_filenames($directory) {
+                    $files = array();
+                    $directory_obj = opendir($directory);
+                    while(false != ($filename = readdir($directory_obj))) {
+                        if(($filename != ".") and ($filename != "..")) {
+                            $filenames[] = $filename; // put in array.
+                        }
+                    }
+                    natsort($filenames); // ordenamos alfabeticamente
+                    $filenames = array_reverse($filenames); // le damos la vuelta a la ordenación anterior
+                    return $filenames;
+                }
+
+                function get_date($filename) {
+                    $year = substr($filename, 0, 4);
+                    $month = substr($filename, 4, 2);
+                    $day = substr($filename, 6, 2);
+                    $hour = substr($filename, 8, 2);
+                    $minute = substr($filename, 10, 2);
+                    $result = $year."/".$month."/".$day." ".$hour.":".$minute;
+                    return $result;
+                }
+
+                function get_author_name($filename) {
+                    $authorid = substr($filename, 12, 1);
+                    $result = $GLOBALS["authors"][$authorid];
+                    return $result;
+                }
+
+                function get_title($filepath) {
+                    $file_obj = fopen($filepath, "r");
+                    $result = fgets($file_obj);
+                    $result = str_replace("<h2>", "", $result);
+                    $result = str_replace("</h2>", "", $result);
+                    fclose($file_obj);
+                    return $result;
+                }
+
+                function print_reciente($directory, $filenames, $articles_to_show) {
+                    $i = 1;
+                    foreach($filenames as $filename) {
+                        echo file_get_contents($directory . $filename);
+                        echo "<p style=\"text-align:right;\"><small>" . get_author_name($filename) . " - " . get_date($filename) . "</p></small>";
+                        if ($i >= $articles_to_show) {break;}
+                        echo "<hr>";
+                        $i++;
+                    }
+                }
+
+                function print_historico($directory, $filenames) {
+                    echo "<h2>Histórico de posts</h2>";
+                    echo "<ul>";
+                    foreach($filenames as $filename) {
+                        echo "<li><a href='" . $directory . $filename . "'>" . get_date($filename) . " (" . get_author_name($filename) . ") " . get_title($directory . $filename) . "</a></li>";
+                    }
+                    echo "</ul>";
+                }
+
+                $filenames = get_filenames($directory);
+                if (isset($_GET["q"])) {
+                    if ($_GET["q"] == "h") {
+                        print_historico($directory, $filenames);
+                    }
+                } else {
+                    print_reciente($directory, $filenames, $articles_to_show);
+                }
+            ?>
         </div>
 
         <footer>
