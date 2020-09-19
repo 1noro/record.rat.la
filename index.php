@@ -46,7 +46,10 @@
             <?php
                 $articles_to_show = 3;
                 $directory = 'article/';
-                $authors = ["a" => "anon", "i" => "Inoro"];
+                $authors = [
+                    "a" => ["Anon", "202009180000i-404.html"],
+                    "i" => ["Inoro", "202009180002i-inoro.html"]
+                ];
 
                 function get_filenames($directory) {
                     $files = array();
@@ -71,7 +74,7 @@
                     return $result;
                 }
 
-                function get_author_name($filename) {
+                function get_author_data($filename) {
                     $authorid = substr($filename, 12, 1);
                     if (array_key_exists($authorid, $GLOBALS["authors"])) {
                         $result = $GLOBALS["authors"][$authorid];
@@ -92,7 +95,7 @@
 
                 function print_article($directory, $filename) {
                     echo file_get_contents($directory . $filename);
-                    echo "<p style=\"text-align:right;\"><small>" . get_author_name($filename) . " - " . get_date($filename) . " - <a href=\"index.php?q=" . $filename . "\">enlace</a></p></small>";
+                    echo "<p style=\"text-align:right;\"><small><a href=\"index.php?q=" . get_author_data($filename)[1] . "\">" . get_author_data($filename)[0] . "</a> - " . get_date($filename) . " - <a href=\"index.php?q=" . $filename . "\">enlace</a></p></small>";
                 }
 
                 function print_reciente($directory, $filenames, $articles_to_show) {
@@ -110,7 +113,7 @@
                     echo "<h2>Histórico de posts</h2>";
                     echo "<ul>";
                     foreach($filenames as $filename) {
-                        echo "<li><a href=\"index.php?q=" . $filename . "\">" . get_date($filename) . "</a> (" . get_author_name($filename) . ") " . get_title($directory . $filename) . "</li>";
+                        echo "<li><a href=\"index.php?q=" . $filename . "\">" . get_date($filename) . "</a> (" . get_author_data($filename)[0] . ") " . get_title($directory . $filename) . "</li>";
                     }
                     echo "</ul>";
                 }
@@ -139,8 +142,9 @@
                 <small><a href="https://github.com/1noro">github</a> / <a href="https://gitlab.com/1noro">gitlab</a> / <a href="https://twitter.com/0x12Faab7">twiter</a> / <a href="mailto:ppuubblliicc@protonmail.com">mail</a> (<a href="res/publickey.ppuubblliicc@protonmail.com.asc" title="¡Mándame un correo cifrado!">gpg</a>)<br></small>
             </p>
             <p>
-                <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Licencia de Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png"/></a><br>
-                <small>Creado por <a href="https://github.com/1noro/record.rat.la">Inoro</a> bajo la licencia <a href="LICENSE">GPLv3</a></small>
+                <small>Creado por <a href="https://github.com/1noro/record.rat.la">Inoro</a> bajo la licencia <a href="LICENSE" title="Todo el código que sustenta la web está bajo la licencia GPLv3.">GPLv3</a></small>
+                <br>
+                <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="Todo el contenido multimedia está bajo la licencia CC-BY-NC-SA."><img alt="Licencia de Creative Commons BY-NC-SA" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png"/></a>
             </p>
         </footer>
     </body>
