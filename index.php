@@ -1,3 +1,99 @@
+<?php
+    $articles_to_show = 3;
+    $directory = 'article/';
+    $authors = [
+        "a" => ["Anon", "202009180000i-404.html"],
+        "i" => ["Inoro", "202009180002i-inoro.html"]
+    ];
+    $color_id = 0;
+    $colors = [
+        [
+            "background" => "#EDD1B0", // Peach: #EDD1B0, Orange: #EDDD6E, Yellow: #F8FD89, 4chan: #FFFFEE
+            "text" => "#000000",
+            "link" => "auto",
+            "link_visited" => "auto",
+            "link_active" => "auto",
+            "code_background" => "#FFFFEE", // #dfdebe, #f8bba5
+            "code_text" => "inherit"
+        ],
+        [
+            "background" => "#000000",
+            "text" => "#FFFFFF",
+            "link" => "#ffff00",
+            "link_visited" => "#cccc00",
+            "link_active" => "#0000ff",
+            "code_background" => "#FFFFFF",
+            "code_text" => "#000000"
+        ]
+    ];
+
+    function get_filenames($directory) {
+        $files = array();
+        $directory_obj = opendir($directory);
+        while(false != ($filename = readdir($directory_obj))) {
+            if(($filename != ".") and ($filename != "..")) {
+                $filenames[] = $filename; // put in array.
+            }
+        }
+        natsort($filenames); // ordenamos alfabeticamente
+        $filenames = array_reverse($filenames); // le damos la vuelta a la ordenación anterior
+        return $filenames;
+    }
+
+    function get_date($filename) {
+        $year = substr($filename, 0, 4);
+        $month = substr($filename, 4, 2);
+        $day = substr($filename, 6, 2);
+        $hour = substr($filename, 8, 2);
+        $minute = substr($filename, 10, 2);
+        $result = $year."/".$month."/".$day." ".$hour.":".$minute;
+        return $result;
+    }
+
+    function get_author_data($filename) {
+        $authorid = substr($filename, 12, 1);
+        if (array_key_exists($authorid, $GLOBALS["authors"])) {
+            $result = $GLOBALS["authors"][$authorid];
+        } else {
+            $result = $GLOBALS["authors"]["a"];
+        }
+        return $result;
+    }
+
+    function get_title($filepath) {
+        $file_obj = fopen($filepath, "r");
+        $result = fgets($file_obj);
+        $result = str_replace("<h2>", "", $result);
+        $result = str_replace("</h2>", "", $result);
+        fclose($file_obj);
+        return $result;
+    }
+
+    function print_article($directory, $filename) {
+        echo file_get_contents($directory . $filename);
+        echo "<p style=\"text-align:right;\"><small><a href=\"index.php?q=" . get_author_data($filename)[1] . "\">" . get_author_data($filename)[0] . "</a> - " . get_date($filename) . " - <a href=\"index.php?q=" . $filename . "\">enlace</a></p></small>";
+    }
+
+    function print_reciente($directory, $filenames, $articles_to_show) {
+        $i = 1;
+        foreach($filenames as $filename) {
+            print_article($directory, $filename);
+            if ($i >= $articles_to_show) {break;}
+            echo "<hr>";
+            $i++;
+        }
+        echo "<br><p class=\"center\"><a href=\"index.php?q=h\">Más artículos</a></p>";
+    }
+
+    function print_historico($directory, $filenames) {
+        echo "<h2>Histórico de posts</h2>";
+        echo "<ul>";
+        foreach($filenames as $filename) {
+            echo "<li><a href=\"index.php?q=" . $filename . "\">" . get_date($filename) . "</a> (" . get_author_data($filename)[0] . ") " . get_title($directory . $filename) . "</li>";
+        }
+        echo "</ul>";
+    }
+ ?>
 <!DOCTYPE html>
 <html lang="es">
     <head>
@@ -11,8 +107,8 @@
 
         <style>
             body {
-                background-color: #EDD1B0; /*Peach: #EDD1B0*/ /*Orange: #EDDD6E*/ /*Yellow: #F8FD89*/ /*4chan: #FFFFEE*/
-                color: #000000;
+                background-color: <?php echo $colors[$color_id]["background"]; ?>;
+                color: <?php echo $colors[$color_id]["text"]; ?>;
                 font-size: 1.35em; /*revisar*/
                 font-family: Times, Serif; /*Considerar obviar la letra Times y poner todo Serif*/
             }
@@ -32,8 +128,13 @@
                 overflow: auto;
             }
 
+            a:link {color: <?php echo $colors[$color_id]["link"]; ?>;}
+            a:visited {color: <?php echo $colors[$color_id]["link_visited"]; ?>;}
+            a:active {color: <?php echo $colors[$color_id]["link_active"]; ?>;}
+
             pre, code {
-                background-color: #ffffee; /*#dfdebe*/ /*#f8bba5*/
+                background-color: <?php echo $colors[$color_id]["code_background"]; ?>;
+                color: <?php echo $colors[$color_id]["code_text"]; ?>;
             }
         </style>
     </head>
@@ -48,80 +149,6 @@
 
         <div id="content">
             <?php
-                $articles_to_show = 3;
-                $directory = 'article/';
-                $authors = [
-                    "a" => ["Anon", "202009180000i-404.html"],
-                    "i" => ["Inoro", "202009180002i-inoro.html"]
-                ];
-
-                function get_filenames($directory) {
-                    $files = array();
-                    $directory_obj = opendir($directory);
-                    while(false != ($filename = readdir($directory_obj))) {
-                        if(($filename != ".") and ($filename != "..")) {
-                            $filenames[] = $filename; // put in array.
-                        }
-                    }
-                    natsort($filenames); // ordenamos alfabeticamente
-                    $filenames = array_reverse($filenames); // le damos la vuelta a la ordenación anterior
-                    return $filenames;
-                }
-
-                function get_date($filename) {
-                    $year = substr($filename, 0, 4);
-                    $month = substr($filename, 4, 2);
-                    $day = substr($filename, 6, 2);
-                    $hour = substr($filename, 8, 2);
-                    $minute = substr($filename, 10, 2);
-                    $result = $year."/".$month."/".$day." ".$hour.":".$minute;
-                    return $result;
-                }
-
-                function get_author_data($filename) {
-                    $authorid = substr($filename, 12, 1);
-                    if (array_key_exists($authorid, $GLOBALS["authors"])) {
-                        $result = $GLOBALS["authors"][$authorid];
-                    } else {
-                        $result = $GLOBALS["authors"]["a"];
-                    }
-                    return $result;
-                }
-
-                function get_title($filepath) {
-                    $file_obj = fopen($filepath, "r");
-                    $result = fgets($file_obj);
-                    $result = str_replace("<h2>", "", $result);
-                    $result = str_replace("</h2>", "", $result);
-                    fclose($file_obj);
-                    return $result;
-                }
-
-                function print_article($directory, $filename) {
-                    echo file_get_contents($directory . $filename);
-                    echo "<p style=\"text-align:right;\"><small><a href=\"index.php?q=" . get_author_data($filename)[1] . "\">" . get_author_data($filename)[0] . "</a> - " . get_date($filename) . " - <a href=\"index.php?q=" . $filename . "\">enlace</a></p></small>";
-                }
-
-                function print_reciente($directory, $filenames, $articles_to_show) {
-                    $i = 1;
-                    foreach($filenames as $filename) {
-                        print_article($directory, $filename);
-                        if ($i >= $articles_to_show) {break;}
-                        echo "<hr>";
-                        $i++;
-                    }
-                    echo "<br><p class=\"center\"><a href=\"index.php?q=h\">Más artículos</a></p>";
-                }
-
-                function print_historico($directory, $filenames) {
-                    echo "<h2>Histórico de posts</h2>";
-                    echo "<ul>";
-                    foreach($filenames as $filename) {
-                        echo "<li><a href=\"index.php?q=" . $filename . "\">" . get_date($filename) . "</a> (" . get_author_data($filename)[0] . ") " . get_title($directory . $filename) . "</li>";
-                    }
-                    echo "</ul>";
-                }
-
                 // procesamos la variable GUET "q"
                 $filenames = get_filenames($directory);
                 if (isset($_GET["q"])) {
