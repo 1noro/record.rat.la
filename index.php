@@ -30,6 +30,7 @@
             pre {
                 background-color: #dfdebe; /*#f8bba5*/
                 padding: 10px;
+                overflow: auto;
             }
         </style>
     </head>
