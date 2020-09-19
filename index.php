@@ -33,7 +33,7 @@
             }
 
             pre, code, samp {
-                background-color: #dfdebe; /*#f8bba5*/
+                background-color: #ffffee; /*#dfdebe*/ /*#f8bba5*/
             }
         </style>
     </head>
