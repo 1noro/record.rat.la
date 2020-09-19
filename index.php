@@ -6,18 +6,18 @@
         <meta name="author" content="Inoro"> <!-- This site was made by https://github.com/1noro -->
         <meta name="description" content="Blog/Web personal donde iré registrando mis proyectos y mis fumadas mentales.">
 
-        <title>Record</title>
+        <title>record.rat.la</title>
         <link rel="icon" href="favicon.png" type="image/png" sizes="16x16">
 
         <style>
             body {
                 background-color: #EDD1B0; /*Peach: #EDD1B0*/ /*Orange: #EDDD6E*/ /*Yellow: #F8FD89*/ /*4chan: #FFFFEE*/
                 color: #000000;
-                font-size: 1.2em;
-                font-family: Sans-serif;
+                font-size: 1.35em; /*revisar*/
+                font-family: Times, Serif; /*Considerar obviar la letra Times y poner todo Serif*/
             }
 
-            header, footer {
+            header, footer, p.center {
                 text-align: center;
             }
 
@@ -26,15 +26,19 @@
                 max-width: 750px;
                 margin: 0px auto;
             }
+
+            pre {
+                background-color: #dfdebe; /*#f8bba5*/
+                padding: 10px;
+            }
         </style>
     </head>
 
     <body>
         <header>
-            <!-- <h1>Record</h1> -->
             <h1>record.rat.la</h1>
             <p>
-                <a href="index.php" title="Los últimos posts">reciente</a> / <a href="index.php?q=h" title="Todos los post ordenados por fecha">histórico</a> / <a href="index.php?q=202009182328i-faq.html" title="¿Qué es esta página?">faq</a>
+                <a href="index.php" title="Los últimos posts">reciente</a> / <a href="index.php?q=h" title="Todos los post ordenados por fecha">histórico</a> / <a href="index.php?q=202009180001i-faq.html" title="¿Qué es esta página?">faq</a>
             </p>
         </header>
 
@@ -99,13 +103,14 @@
                         echo "<hr>";
                         $i++;
                     }
+                    echo "<br><p class=\"center\"><a href=\"index.php?q=h\">Más artículos</a></p>";
                 }
 
                 function print_historico($directory, $filenames) {
                     echo "<h2>Histórico de posts</h2>";
                     echo "<ul>";
                     foreach($filenames as $filename) {
-                        echo "<li><a href=\"index.php?q=" . $filename . "\">" . get_date($filename) . " (" . get_author_name($filename) . ") " . get_title($directory . $filename) . "</a></li>";
+                        echo "<li><a href=\"index.php?q=" . $filename . "\">" . get_date($filename) . "</a> (" . get_author_name($filename) . ") " . get_title($directory . $filename) . "</li>";
                     }
                     echo "</ul>";
                 }
@@ -119,7 +124,7 @@
                         if (in_array($_GET["q"], $filenames)) {
                             print_article($directory, $_GET["q"]);
                         } else {
-                            print_article($directory, "202009182346i-404.html");
+                            print_article($directory, "202009180000i-404.html");
                         }
                     }
                 } else {
