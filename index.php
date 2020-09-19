@@ -28,9 +28,12 @@
             }
 
             pre {
-                background-color: #dfdebe; /*#f8bba5*/
                 padding: 10px;
                 overflow: auto;
+            }
+
+            pre, code, samp {
+                background-color: #dfdebe; /*#f8bba5*/
             }
         </style>
     </head>
