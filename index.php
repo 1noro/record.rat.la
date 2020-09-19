@@ -93,7 +93,28 @@
         }
         echo "</ul>";
     }
- ?>
+
+    // procesamos la variable GET "q"
+    $action = 0;
+    $filenames = get_filenames($directory);
+    if (isset($_GET["q"])) {
+        if ($_GET["q"] == "h") {
+            // print_historico($directory, $filenames);
+            $action = 1;
+        } elseif ($_GET["q"] == "c" and isset($_GET["c"])) {
+            echo "HOLA: " . $_GET["c"] . "<br>";
+            $action = 2;
+        } else {
+            if (in_array($_GET["q"], $filenames)) {
+                // print_article($directory, $_GET["q"]);
+                $action = 3;
+            } else {
+                // print_article($directory, "202009180000i-404.html");
+                $action = 404;
+            }
+        }
+    }
+?>
 <!DOCTYPE html>
 <html lang="es">
     <head>
@@ -113,9 +134,7 @@
                 font-family: Times, Serif; /*Considerar obviar la letra Times y poner todo Serif*/
             }
 
-            header, footer, p.center {
-                text-align: center;
-            }
+            header, footer, p.center {text-align: center;}
 
             div#content {
                 width: 100%;
@@ -128,6 +147,7 @@
                 overflow: auto;
             }
 
+            /* Es importante mantener el orden: link - visited - hover - active */
             a:link {color: <?php echo $colors[$color_id]["link"]; ?>;}
             a:visited {color: <?php echo $colors[$color_id]["link_visited"]; ?>;}
             a:active {color: <?php echo $colors[$color_id]["link_active"]; ?>;}
@@ -143,26 +163,29 @@
         <header>
             <h1>record.rat.la</h1>
             <p>
-                <a href="index.php" title="Los últimos posts">reciente</a> / <a href="index.php?q=h" title="Todos los post ordenados por fecha">histórico</a> / <a href="index.php?q=202009180001i-faq.html" title="¿Qué es esta página?">faq</a>
+                <a href="index.php" title="Los últimos posts">reciente</a> / <a href="index.php?q=h" title="Todos los post ordenados por fecha">histórico</a> / <a href="index.php?q=202009180001i-faq.html" title="¿Qué es esta página?">faq</a> / <a href="index.php?q=202009180003i-color.html">color</a>
             </p>
         </header>
 
         <div id="content">
             <?php
-                // procesamos la variable GUET "q"
                 $filenames = get_filenames($directory);
-                if (isset($_GET["q"])) {
-                    if ($_GET["q"] == "h") {
+                switch ($action) {
+                    case 0:
+                        print_reciente($directory, $filenames, $articles_to_show);
+                        break;
+                    case 1:
                         print_historico($directory, $filenames);
-                    } else {
-                        if (in_array($_GET["q"], $filenames)) {
-                            print_article($directory, $_GET["q"]);
-                        } else {
-                            print_article($directory, "202009180000i-404.html");
-                        }
-                    }
-                } else {
-                    print_reciente($directory, $filenames, $articles_to_show);
+                        break;
+                    case 2:
+                        print_article($directory, "202009180003i-color.html");
+                        break;
+                    case 3:
+                        print_article($directory, $_GET["q"]);
+                        break;
+                    case 404:
+                        print_article($directory, "202009180000i-404.html");
+                        break;
                 }
             ?>
         </div>
