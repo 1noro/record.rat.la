@@ -32,7 +32,7 @@
                 overflow: auto;
             }
 
-            pre, code, samp {
+            pre, code {
                 background-color: #ffffee; /*#dfdebe*/ /*#f8bba5*/
             }
         </style>
