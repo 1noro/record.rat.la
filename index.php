@@ -88,7 +88,7 @@
 
                 function print_article($directory, $filename) {
                     echo file_get_contents($directory . $filename);
-                    echo "<p style=\"text-align:right;\"><small>" . get_author_name($filename) . " - " . get_date($filename) . "</p></small>";
+                    echo "<p style=\"text-align:right;\"><small>" . get_author_name($filename) . " - " . get_date($filename) . " - <a href=\"index.php?q=" . $filename . "\">enlace</a></p></small>";
                 }
 
                 function print_reciente($directory, $filenames, $articles_to_show) {
