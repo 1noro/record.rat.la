@@ -9,8 +9,29 @@
 </p>
 
 <h3>Configurando Nginx</h3>
-...
+
+<pre>
+apt install git nginx php-fpm
+</pre>
+
+<p>
+    En el archivo <samp>/etc/php/7.3/fpm/php.ini</samp> cambiamos <code>;cgi.fix_pathinfo=1</code> por <code>cgi.fix_pathinfo=0</code>.
+</p>
+
+<pre>
+systemctl restart php7.3-fpm.service
+</pre>
+
+<p>
+    Hacemos una copia de seguridad del archivo <samp>/etc/nginx/sites-available/default</samp> antes de modificarlo, por seguridad.
+</p>
 
 <h3>SSL con Lets Encrypt y Nginx</h3>
 
 ...
+
+<h3>Bibliografía</h3>
+
+<ul>
+    <li><a href="https://www.digitalocean.com/community/tutorials/como-instalar-linux-nginx-mysql-php-lemp-stack-in-ubuntu-16-04-es">¿Cómo Instalar Linux, Nginx, MySQL, PHP (LEMP stack) in Ubuntu 16.04?</a></li>
+</ul>
