@@ -1,11 +1,15 @@
 <?php
+    session_start();
+    if (!isset($_SESSION["color_id"])) {
+        $_SESSION["color_id"] = 0;
+    }
+
     $articles_to_show = 3;
     $directory = 'article/';
     $authors = [
         "a" => ["Anon", "202009180000i-404.html"],
         "i" => ["Inoro", "202009180002i-inoro.html"]
     ];
-    $color_id = 0;
     $colors = [
         [
             "background" => "#EDD1B0", // Peach: #EDD1B0, Orange: #EDDD6E, Yellow: #F8FD89, 4chan: #FFFFEE
@@ -24,6 +28,15 @@
             "link_active" => "#0000ff",
             "code_background" => "#FFFFFF",
             "code_text" => "#000000"
+        ],
+        [
+            "background" => "auto",
+            "text" => "auto",
+            "link" => "auto",
+            "link_visited" => "auto",
+            "link_active" => "auto",
+            "code_background" => "auto",
+            "code_text" => "auto"
         ]
     ];
 
@@ -102,7 +115,9 @@
             // print_historico($directory, $filenames);
             $action = 1;
         } elseif ($_GET["q"] == "c" and isset($_GET["c"])) {
-            echo "HOLA: " . $_GET["c"] . "<br>";
+            if ($_GET["c"] >= 0 and $_GET["c"] < count($colors)) {
+                $_SESSION["color_id"] = $_GET["c"];
+            }
             $action = 2;
         } else {
             if (in_array($_GET["q"], $filenames)) {
@@ -114,6 +129,8 @@
             }
         }
     }
+
+    $color_id = $_SESSION["color_id"];
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -163,7 +180,8 @@
         <header>
             <h1>record.rat.la</h1>
             <p>
-                <a href="index.php" title="Los últimos posts">reciente</a> / <a href="index.php?q=h" title="Todos los post ordenados por fecha">histórico</a> / <a href="index.php?q=202009180001i-faq.html" title="¿Qué es esta página?">faq</a> / <a href="index.php?q=202009180003i-color.html">color</a>
+                <a href="index.php" title="Los últimos posts">reciente</a> / <a href="index.php?q=h" title="Todos los post ordenados por fecha">histórico</a> / <a href="index.php?q=202009180001i-faq.html" title="¿Qué es esta página?">faq</a> / <a href="index.php?q=202009180003i-color.html">color</a><br>
+                <small>Esta página guarda una <a href="index.php?q=202009192256i-cookie.html" title="¡Infórmate!">cookie</a> funcional</small>
             </p>
         </header>
 
