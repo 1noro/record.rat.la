@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="author" content="1noro"> <!-- This site was made by https://github.com/1noro -->
+        <meta name="author" content="Inoro"> <!-- This site was made by https://github.com/1noro -->
         <meta name="description" content="Blog/Web personal donde iré registrando mis proyectos y mis fumadas mentales.">
 
         <title>Record</title>
@@ -31,8 +31,8 @@
 
     <body>
         <header>
-            <h1>Record</h1>
-            <!-- <h1>record.rat.la</h1> -->
+            <!-- <h1>Record</h1> -->
+            <h1>record.rat.la</h1>
             <p>
                 <a href="index.php" title="Los últimos posts">reciente</a> / <a href="index.php?q=h" title="Todos los post ordenados por fecha">histórico</a> / <a href="index.php?q=202009182328i-faq.html" title="¿Qué es esta página?">faq</a>
             </p>
@@ -42,7 +42,7 @@
             <?php
                 $articles_to_show = 3;
                 $directory = 'article/';
-                $authors = ["a" => "anon", "i" => "1noro"];
+                $authors = ["a" => "anon", "i" => "Inoro"];
 
                 function get_filenames($directory) {
                     $files = array();
@@ -135,7 +135,7 @@
             </p>
             <p>
                 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Licencia de Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png"/></a><br>
-                <small>Creado por <a href="https://github.com/1noro/record.rat.la">1noro</a> bajo la licencia <a href="LICENSE">GPLv3</a></small>
+                <small>Creado por <a href="https://github.com/1noro/record.rat.la">Inoro</a> bajo la licencia <a href="LICENSE">GPLv3</a></small>
             </p>
         </footer>
     </body>
