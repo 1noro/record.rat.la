@@ -31,7 +31,8 @@
 
     <body>
         <header>
-            <h1>record.rat.la</h1>
+            <h1>Record</h1>
+            <!-- <h1>record.rat.la</h1> -->
             <p>
                 <a href="index.php" title="Los últimos posts">reciente</a> / <a href="index.php?q=h" title="Todos los post ordenados por fecha">histórico</a> / <a href="index.php?q=202009182328i-faq.html" title="¿Qué es esta página?">faq</a>
             </p>
