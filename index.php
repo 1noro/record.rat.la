@@ -159,20 +159,25 @@
                 margin: 0px auto;
             }
 
-            pre {
-                padding: 10px;
-                overflow: auto;
-            }
-
             /* Es importante mantener el orden: link - visited - hover - active */
             a:link {color: <?php echo $colors[$color_id]["link"]; ?>;}
             a:visited {color: <?php echo $colors[$color_id]["link_visited"]; ?>;}
             a:active {color: <?php echo $colors[$color_id]["link_active"]; ?>;}
 
+            pre {
+                padding: 10px;
+                overflow: auto;
+            }
+
+            code {padding: 1px;}
+
             pre, code {
                 background-color: <?php echo $colors[$color_id]["code_background"]; ?>;
                 color: <?php echo $colors[$color_id]["code_text"]; ?>;
             }
+
+            img {width: 100%;}
+            img.half {width: 50%;}
         </style>
     </head>
 
@@ -216,7 +221,7 @@
             <p>
                 <small>Creado por <a href="https://github.com/1noro/record.rat.la">Inoro</a> bajo la licencia <a href="LICENSE" title="Todo el código que sustenta la web está bajo la licencia GPLv3.">GPLv3</a></small>
                 <br>
-                <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="Todo el contenido multimedia está bajo la licencia CC-BY-NC-SA."><img alt="Licencia de Creative Commons BY-NC-SA" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png"/></a>
+                <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="Todo el contenido multimedia está bajo la licencia CC-BY-NC-SA."><img alt="Licencia de Creative Commons BY-NC-SA" style="border-width: 0; width: auto;" src="https://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png"/></a>
             </p>
         </footer>
     </body>

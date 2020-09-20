@@ -1,0 +1,119 @@
+<h2>Configurar Ubiquiti EdgeRouter para Movistar TV</h2>
+
+<p>Vamos a suponer que la LAN del HGU es la <strong>192.168.1.0/24</strong> y que la del ER es <strong>192.168.10.0/24</strong>. Esta configuración debería servir para cualquier router EdgeMAX, concretamente este ejemplo se basa en un <strong>ER-X</strong> con la WAN en <strong>eth0</strong> y el resto de puertos configurados como un switch en <strong>switch0</strong>, como se hace en la configuración básica del Wizard.</p>
+
+<blockquote>
+    <p>HGU = Router de Movistar, ER = EdgeRouter.</p>
+</blockquote>
+
+<h3>Si pruebas esta configuración y tienes fallos, coméntalos como issues de este repositorio</h3>
+
+<h4>Escenario</h4>
+
+<p><img src="img/202009200144/mapa.png" alt="escenario"></p>
+
+<h4>1 - Asignar a la interfaz WAN física del ER una IP fija o por DHCP dentro de la red del HGU</h4>
+
+<p><img src="img/202009200144/1-1.png" alt="imagen 1-1" class="half"></p>
+
+<h4>2 - Enmascarar todo el tráfico hacia la red del HGU con dicha interfaz</h4>
+
+<p><img src="img/202009200144/2-1.png" alt="imagen 2-1"></p>
+
+<h4>3 - Añadir un par de rutas al ER para las peticiones IGMP/Multicast</h4>
+
+<p>Rutas estáticas de <strong>tipo Gateway</strong>.</p>
+
+<p><img src="img/202009200144/3-1.png" alt="imagen 3-1"></p>
+
+<p>No estoy seguro de que sean necesarias todas, pero son las que había en la tabla del router HGU, como se puede ver a continuación:</p>
+
+<p><img src="img/202009200144/3-2.png" alt="imagen 3-2"></p>
+
+<h4>4 - Configurar el Firewall del ER</h4>
+
+<p>Me baso en las dos Rulesets definidas por la configuración básica del ER a través del Wizard, WAN_IN y WAN_LOCAL.</p>
+
+<p><img src="img/202009200144/4-1.png" alt="imagen 4-1"></p>
+
+<h4>Reglas de WAN_IN:</h4>
+
+<p>Es importante que se <strong>mantengan en el orden</strong> definido.</p>
+
+<p><img src="img/202009200144/4-2.png" alt="imagen 4-2"></p>
+
+<p><img src="img/202009200144/4-3.png" alt="imagen 4-3" class="half"></p>
+
+<p><img src="img/202009200144/4-4.png" alt="imagen 4-4" class="half"></p>
+
+<h4>Reglas de WAN_LOCAL:</h4>
+
+<p><strong>Las mismas</strong> que las de WAN_IN, pero sospecho que no deberían de hacer falta.</p>
+
+<blockquote>
+    <p>Necesita mas pruebas.</p>
+</blockquote>
+
+<h4>5 - <a href="https://help.ui.com/hc/en-us/articles/204961854-EdgeRouter-IGMP-Proxy">Habilitar IGMP Proxy en el ER</a></h4>
+
+<p>Nos conectamos a la <strong>terminal</strong> del ER (por la CLI Web o por SSH).</p>
+
+<pre>
+configure
+</pre>
+
+<pre>
+set protocols igmp-proxy interface eth0 role upstream
+set protocols igmp-proxy interface switch0 role downstream
+</pre>
+
+<pre>
+set protocols igmp-proxy interface eth0 threshold 1
+set protocols igmp-proxy interface eth0 alt-subnet 0.0.0.0/0
+
+set protocols igmp-proxy interface switch0 threshold 1
+set protocols igmp-proxy interface switch0 alt-subnet 0.0.0.0/0
+</pre>
+
+<pre>
+commit ; save
+exit
+</pre>
+
+<h4>Comandos para verificar que el tráfico multicast está fluyendo:</h4>
+
+<pre>
+show ip multicast mfc
+show ip multicast interfaces
+</pre>
+
+<h4>6 - Configuración estática de red en el aparato de Movistar TV</h4>
+
+<ul>
+    <li>Pulsamos el botón superior con forma de persona en el mando de la TV de Movistar repetidas veces durante el arranque, hasta entrar en el <strong>menú de configuración de red</strong>.</li>
+</ul>
+
+<p><img src="img/202009200144/6-1.png" alt="imagen 6-1" class="half"></p>
+
+<ul>
+    <li>Editamos la configuración en modo estático:
+        <ul>
+            <li>Modo de red: <strong>estático</strong></li>
+            <li>Dirección IP: <strong>192.168.10.40</strong></li>
+            <li>Máscara de Subred: <strong>255.255.255.0</strong></li>
+            <li>Pasarela (Gateway): <strong>192.168.10.1</strong></li>
+            <li>Dirección IP del OPCH: <strong>239.0.2.29:22222</strong></li>
+            <li>DNS Primario: <strong>172.26.23.3</strong></li>
+        </ul>
+    </li>
+</ul>
+
+<h4>Enlaces en los que me he basado</h4>
+
+<ul>
+    <li><a href="https://help.ui.com/hc/en-us/articles/204961854-EdgeRouter-IGMP-Proxy">https://help.ui.com/hc/en-us/articles/204961854-EdgeRouter-IGMP-Proxy</a></li>
+    <li><a href="https://comunidad.movistar.es/t5/Soporte-Fibra-y-ADSL/Routers-ubiquiti-con-HGU-mitrastar/m-p/3441509#M313299">https://comunidad.movistar.es/t5/Soporte-Fibra-y-ADSL/Routers-ubiquiti-con-HGU-mitrastar/m-p/3441509#M313299</a></li>
+    <li><a href="https://comunidad.movistar.es/t5/Soporte-Fibra-y-ADSL/configuracion-del-router-ax-11000-asus-por-conexion-pppoe-ONT/m-p/4217145#M427122">https://comunidad.movistar.es/t5/Soporte-Fibra-y-ADSL/configuracion-del-router-ax-11000-asus-por-conexion-pppoe-ONT/m-p/4217145#M427122</a></li>
+</ul>
+
+<h3>Si pruebas esta configuración y tienes fallos, coméntalos como issues de este repositorio</h3>
