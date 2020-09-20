@@ -99,12 +99,13 @@
     }
 
     function print_historico($directory, $filenames) {
-        echo "<h2>Histórico de posts</h2>";
+        echo "<h2>Histórico de artículos</h2>";
         echo "<ul>";
         foreach($filenames as $filename) {
             echo "<li><a href=\"index.php?q=" . $filename . "\">" . get_date($filename) . "</a> (" . get_author_data($filename)[0] . ") " . get_title($directory . $filename) . "</li>";
         }
         echo "</ul>";
+        echo "<p>Hay un total de " . count($filenames) . " artículos en la web.</p>";
     }
 
     // procesamos la variable GET "q"
@@ -185,8 +186,8 @@
         <header>
             <h1>record.rat.la</h1>
             <p>
-                <a href="index.php" title="Los últimos posts">reciente</a> / <a href="index.php?q=h" title="Todos los post ordenados por fecha">histórico</a> / <a href="index.php?q=202009180001i-faq.html" title="¿Qué es esta página?">faq</a> / <a href="index.php?q=202009180003i-color.html">color</a><br>
-                <small>Esta página guarda una <a href="index.php?q=202009192256i-cookie.html" title="¡Infórmate!">cookie</a> funcional</small>
+                <a href="index.php" title="Los últimos artículos.">reciente</a> / <a href="index.php?q=h" title="Todos los artículos ordenados por fecha.">histórico</a> / <a href="index.php?q=202009180001i-faq.html" title="¿Qué es esta página?">faq</a> / <a href="index.php?q=202009180003i-color.html" title="Cambia la paleta de colores para leer mejor.">color</a><br>
+                <small>Esta página guarda una <a href="index.php?q=202009192256i-cookie.html" title="¡Infórmate!">cookie</a> para funcionar con normalidad</small><!-- ¿Debería acortar el mensaje? -->
             </p>
         </header>
 
