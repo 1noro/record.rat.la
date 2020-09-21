@@ -1,0 +1,2 @@
+(preferido) 1,91:1 - desde 600x315 a 1200x630
+(alternativo) 1,33:1 - 1024x768
