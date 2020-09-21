@@ -202,8 +202,8 @@
         <!-- <meta property="article:modified_time" content="2020-09-21T07:23:04+00:00" /> -->
         <meta property="og:image" content="<?php echo get_url(false) . "/" . $article_img; ?>" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:creator" content="@https://twitter.com/0x12Faab7" />
-        <meta name="twitter:site" content="@0x12Faab7" />
+        <!-- <meta name="twitter:creator" content="@https://twitter.com/0x12Faab7" />
+        <meta name="twitter:site" content="@0x12Faab7" /> -->
 
         <style>
             body {
