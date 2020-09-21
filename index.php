@@ -103,13 +103,19 @@
         $start = strpos($html, '<p>');
         $end = strpos($html, '</p>', $start);
         $paragraph = strip_tags(substr($html, $start, $end - $start + 4));
+        $paragraph = str_replace("\n", "", $paragraph);
         return $paragraph;
     }
 
     function get_article_img($filepath) {
         $html = file_get_contents($filepath);
         preg_match('/<img.+src=[\'"](?P<src>.+?)[\'"].*>/i', $html, $image);
-        return $image['src'];
+        if (isset($image['src'])) {
+            $src = $image['src'];
+        } else {
+            $src = $GLOBALS["article_img"];
+        }
+        return $src;
     }
 
     function print_article($directory, $filename) {
