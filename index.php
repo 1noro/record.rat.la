@@ -7,6 +7,7 @@
     $articles_to_show = 3;
     $directory = 'article/';
     $title = "record.rat.la";
+    $description = "Blog/Web personal donde iré registrando mis proyectos y mis fumadas mentales.";
     $authors = [
         "a" => ["Anon", "202009180000i-404.html"],
         "i" => ["Inoro", "202009180002i-inoro.html"]
@@ -81,7 +82,7 @@
         $result = str_replace("</h2>", "", $result);
         $result = str_replace("\n", "", $result);
         fclose($file_obj);
-        return $result;
+        return strip_tags($result); // quitamos las tags HTML
     }
 
     function get_url() {
@@ -94,6 +95,14 @@
         $link .= $_SERVER['HTTP_HOST'];
         $link .= $_SERVER['REQUEST_URI'];
         return $link;
+    }
+
+    function get_description($filepath) {
+        $html = file_get_contents($filepath);
+        $start = strpos($html, '<p>');
+        $end = strpos($html, '</p>', $start);
+        $paragraph = strip_tags(substr($html, $start, $end - $start + 4));
+        return $paragraph;
     }
 
     function print_article($directory, $filename) {
@@ -141,6 +150,7 @@
                 // print_article($directory, $_GET["q"]);
                 $action = 3;
                 $title = get_title($directory . $_GET["q"]) . " - record.rat.la";
+                $description = get_description($directory . $_GET["q"]);
             } else {
                 // print_article($directory, "202009180000i-404.html");
                 $action = 404;
@@ -161,7 +171,7 @@
         <link rel="icon" href="favicon.png" type="image/png" sizes="50x50">
 
         <meta name="author" content="Inoro"> <!-- This site was made by https://github.com/1noro -->
-        <meta name="description" content="Blog/Web personal donde iré registrando mis proyectos y mis fumadas mentales.">
+        <meta name="description" content="<?php echo $description; ?>">
         <meta name="robots" content="index, follow" />
     	<!-- <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
     	<meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" /> -->
@@ -169,7 +179,7 @@
     	<meta property="og:locale" content="es_ES" />
     	<meta property="og:type" content="article" />
     	<meta property="og:title" content="<?php echo $title; ?>" />
-    	<meta property="og:description" content="Blog/Web personal donde iré registrando mis proyectos y mis fumadas mentales." />
+    	<meta property="og:description" content="<?php echo $description; ?>" />
     	<meta property="og:url" content="<?php echo get_url(); ?>" />
     	<meta property="og:site_name" content="record.rat.la" />
     	<!-- <meta property="article:author" content="idex.php?q=202009180002i-inoro.html" /> -->
