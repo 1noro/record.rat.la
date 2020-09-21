@@ -86,7 +86,7 @@
         return strip_tags($result); // quitamos las tags HTML
     }
 
-    function get_url() {
+    function get_url($full) {
         if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
             $link = "https";
         } else {
@@ -94,7 +94,7 @@
         }
         $link .= "://";
         $link .= $_SERVER['HTTP_HOST'];
-        $link .= $_SERVER['REQUEST_URI'];
+        if ($full) {$link .= $_SERVER['REQUEST_URI'];}
         return $link;
     }
 
@@ -184,17 +184,17 @@
         <meta name="robots" content="index, follow" />
         <!-- <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
         <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" /> -->
-        <link rel="canonical" href="<?php echo get_url(); ?>" />
+        <link rel="canonical" href="<?php echo get_url(true); ?>" />
         <meta property="og:locale" content="es_ES" />
         <meta property="og:type" content="article" />
         <meta property="og:title" content="<?php echo $title; ?>" />
         <meta property="og:description" content="<?php echo $description; ?>" />
-        <meta property="og:url" content="<?php echo get_url(); ?>" />
+        <meta property="og:url" content="<?php echo get_url(true); ?>" />
         <meta property="og:site_name" content="record.rat.la" />
         <!-- <meta property="article:author" content="idex.php?q=202009180002i-inoro.html" /> -->
         <!-- <meta property="article:published_time" content="2020-09-21T00:04:15+00:00" /> -->
         <!-- <meta property="article:modified_time" content="2020-09-21T07:23:04+00:00" /> -->
-        <meta property="og:image" content="<?php echo $article_img; ?>" />
+        <meta property="og:image" content="<?php echo get_url(false) . "/" . $article_img; ?>" />
         <meta name="twitter:card" content="summary_large_image" />
         <!-- <meta name="twitter:creator" content="https://twitter.com/0x12Faab7" /> -->
         <!-- <meta name="twitter:site" content="@0x12Faab7" /> -->
