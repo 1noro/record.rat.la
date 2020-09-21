@@ -8,6 +8,7 @@
     $directory = 'article/';
     $title = "record.rat.la";
     $description = "Blog/Web personal donde iré registrando mis proyectos y mis fumadas mentales.";
+    $article_img = "img/article_def_imgP.jpg";
     $authors = [
         "a" => ["Anon", "202009180000i-404.html"],
         "i" => ["Inoro", "202009180002i-inoro.html"]
@@ -105,6 +106,12 @@
         return $paragraph;
     }
 
+    function get_article_img($filepath) {
+        $html = file_get_contents($filepath);
+        preg_match('/<img.+src=[\'"](?P<src>.+?)[\'"].*>/i', $html, $image);
+        return $image['src'];
+    }
+
     function print_article($directory, $filename) {
         echo file_get_contents($directory . $filename);
         echo "<p style=\"text-align:right;\"><small><a href=\"index.php?q=" . get_author_data($filename)[1] . "\">" . get_author_data($filename)[0] . "</a> - " . get_date($filename) . " - <a href=\"index.php?q=" . $filename . "\">enlace</a></p></small>";
@@ -151,6 +158,7 @@
                 $action = 3;
                 $title = get_title($directory . $_GET["q"]) . " - record.rat.la";
                 $description = get_description($directory . $_GET["q"]);
+                $article_img = get_article_img($directory . $_GET["q"]);
             } else {
                 // print_article($directory, "202009180000i-404.html");
                 $action = 404;
@@ -170,6 +178,7 @@
         <title><?php echo $title; ?></title>
         <link rel="icon" href="favicon.png" type="image/png" sizes="50x50">
 
+        <!-- Revisar: https://css-tricks.com/essential-meta-tags-social-media/ -->
         <meta name="author" content="Inoro"> <!-- This site was made by https://github.com/1noro -->
         <meta name="description" content="<?php echo $description; ?>">
         <meta name="robots" content="index, follow" />
@@ -185,9 +194,7 @@
         <!-- <meta property="article:author" content="idex.php?q=202009180002i-inoro.html" /> -->
         <!-- <meta property="article:published_time" content="2020-09-21T00:04:15+00:00" /> -->
         <!-- <meta property="article:modified_time" content="2020-09-21T07:23:04+00:00" /> -->
-        <meta property="og:image" content="https://record.rat.la/img/article_def_imgP.jpg" />
-        <!-- <meta property="og:image:width" content="1024" />
-        <meta property="og:image:height" content="768" /> -->
+        <meta property="og:image" content="<?php echo $article_img; ?>" />
         <meta name="twitter:card" content="summary_large_image" />
         <!-- <meta name="twitter:creator" content="https://twitter.com/0x12Faab7" /> -->
         <!-- <meta name="twitter:site" content="@0x12Faab7" /> -->
