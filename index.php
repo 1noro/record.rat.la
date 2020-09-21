@@ -6,6 +6,7 @@
 
     $articles_to_show = 3;
     $directory = 'article/';
+    $title = "record.rat.la";
     $authors = [
         "a" => ["Anon", "202009180000i-404.html"],
         "i" => ["Inoro", "202009180002i-inoro.html"]
@@ -82,6 +83,18 @@
         return $result;
     }
 
+    function get_url() {
+        if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
+            $link = "https";
+        } else {
+            $link = "http";
+        }
+        $link .= "://";
+        $link .= $_SERVER['HTTP_HOST'];
+        $link .= $_SERVER['REQUEST_URI'];
+        return $link;
+    }
+
     function print_article($directory, $filename) {
         echo file_get_contents($directory . $filename);
         echo "<p style=\"text-align:right;\"><small><a href=\"index.php?q=" . get_author_data($filename)[1] . "\">" . get_author_data($filename)[0] . "</a> - " . get_date($filename) . " - <a href=\"index.php?q=" . $filename . "\">enlace</a></p></small>";
@@ -115,18 +128,22 @@
         if ($_GET["q"] == "h") {
             // print_historico($directory, $filenames);
             $action = 1;
+            $title = "Histórico - record.rat.la";
         } elseif ($_GET["q"] == "c" and isset($_GET["c"])) {
             if ($_GET["c"] >= 0 and $_GET["c"] < count($colors)) {
                 $_SESSION["color_id"] = $_GET["c"];
             }
             $action = 2;
+            $title = get_title($directory . "202009180003i-color.html") . " - record.rat.la";
         } else {
             if (in_array($_GET["q"], $filenames)) {
                 // print_article($directory, $_GET["q"]);
                 $action = 3;
+                $title = get_title($directory . $_GET["q"]) . " - record.rat.la";
             } else {
                 // print_article($directory, "202009180000i-404.html");
                 $action = 404;
+                $title = get_title($directory . "202009180000i-404.html") . " - record.rat.la";
             }
         }
     }
@@ -138,11 +155,31 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title><?php echo $title; ?></title>
+        <link rel="icon" href="favicon.png" type="image/png" sizes="50x50">
+
         <meta name="author" content="Inoro"> <!-- This site was made by https://github.com/1noro -->
         <meta name="description" content="Blog/Web personal donde iré registrando mis proyectos y mis fumadas mentales.">
-
-        <title>record.rat.la</title>
-        <link rel="icon" href="favicon.png" type="image/png" sizes="16x16">
+        <meta name="robots" content="index, follow" />
+    	<!-- <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    	<meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" /> -->
+    	<link rel="canonical" href="<?php echo get_url(); ?>" />
+    	<meta property="og:locale" content="es_ES" />
+    	<meta property="og:type" content="article" />
+    	<meta property="og:title" content="<?php echo $title; ?>" />
+    	<meta property="og:description" content="Blog/Web personal donde iré registrando mis proyectos y mis fumadas mentales." />
+    	<meta property="og:url" content="<?php echo get_url(); ?>" />
+    	<meta property="og:site_name" content="record.rat.la" />
+    	<!-- <meta property="article:author" content="idex.php?q=202009180002i-inoro.html" /> -->
+    	<!-- <meta property="article:published_time" content="2020-09-21T00:04:15+00:00" /> -->
+    	<!-- <meta property="article:modified_time" content="2020-09-21T07:23:04+00:00" /> -->
+    	<meta property="og:image" content="http://localhost/record.rat.la/img/article_def_imgP.jpg" />
+    	<meta property="og:image:width" content="1024" />
+    	<meta property="og:image:height" content="768" />
+    	<meta name="twitter:card" content="summary_large_image" />
+    	<!-- <meta name="twitter:creator" content="https://twitter.com/0x12Faab7" /> -->
+    	<!-- <meta name="twitter:site" content="@0x12Faab7" /> -->
 
         <style>
             body {
