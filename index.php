@@ -174,7 +174,7 @@
     	<!-- <meta property="article:author" content="idex.php?q=202009180002i-inoro.html" /> -->
     	<!-- <meta property="article:published_time" content="2020-09-21T00:04:15+00:00" /> -->
     	<!-- <meta property="article:modified_time" content="2020-09-21T07:23:04+00:00" /> -->
-    	<meta property="og:image" content="http://localhost/record.rat.la/img/article_def_imgP.jpg" />
+    	<meta property="og:image" content="https://record.rat.la/img/article_def_imgP.jpg" />
     	<meta property="og:image:width" content="1024" />
     	<meta property="og:image:height" content="768" />
     	<meta name="twitter:card" content="summary_large_image" />
