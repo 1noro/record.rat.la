@@ -17,6 +17,7 @@
         [
             "background" => "#EDD1B0", // Peach: #EDD1B0, Orange: #EDDD6E, Yellow: #F8FD89, 4chan: #FFFFEE
             "text" => "#000000",
+            "title" => "#000000",
             "link" => "auto",
             "link_visited" => "auto",
             "link_active" => "auto",
@@ -26,6 +27,7 @@
         [
             "background" => "#000000",
             "text" => "#FFFFFF",
+            "title" => "#FFFFFF",
             "link" => "#ffff00",
             "link_visited" => "#cccc00",
             "link_active" => "#0000ff",
@@ -35,11 +37,22 @@
         [
             "background" => "auto",
             "text" => "auto",
+            "title" => "auto",
             "link" => "auto",
             "link_visited" => "auto",
             "link_active" => "auto",
             "code_background" => "auto",
             "code_text" => "auto"
+        ],
+        [
+            "background" => "#222222",
+            "text" => "#c8c8c8",
+            "title" => "#ffffff",
+            "link" => "#ffffff",
+            "link_visited" => "#ffffff",
+            "link_active" => "#ffffff",
+            "code_background" => "#1f1f1f",
+            "code_text" => "#c8c8c8"
         ]
     ];
 
@@ -220,6 +233,8 @@
                 max-width: 750px;
                 margin: 0px auto;
             }
+
+            h1, h2, h3, h4, h5, h6 {color: <?php echo $colors[$color_id]["title"]; ?>;}
 
             /* Es importante mantener el orden: link - visited - hover - active */
             a:link {color: <?php echo $colors[$color_id]["link"]; ?>;}
