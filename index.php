@@ -79,6 +79,7 @@
         $result = fgets($file_obj);
         $result = str_replace("<h2>", "", $result);
         $result = str_replace("</h2>", "", $result);
+        $result = str_replace("\n", "", $result);
         fclose($file_obj);
         return $result;
     }
