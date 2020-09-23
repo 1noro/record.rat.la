@@ -46,7 +46,7 @@
         ],
         [
             "background" => "#222222",
-            "text" => "#c8c8c8",
+            "text" => "#C8C8C8",
             "title" => "#ffffff",
             "link" => "#ffffff",
             "link_visited" => "#ffffff",
@@ -262,7 +262,7 @@
     <body>
         <header>
             <h1>record.rat.la</h1>
-            <p><img src="img/rat3_300.png" alt="rat.la" width=""></p>
+            <p><img src="img/rat3_300_<?php echo strtoupper(str_replace("#", "", $colors[$color_id]["text"])); ?>.png" alt="rat.la" width=""></p>
             <p>
                 <a href="index.php" title="Los últimos artículos.">reciente</a> / <a href="index.php?q=h" title="Todos los artículos ordenados por fecha.">histórico</a> / <a href="index.php?q=202009180001i-faq.html" title="¿Qué es esta página?">faq</a> / <a href="index.php?q=202009180003i-color.html" title="Cambia la paleta de colores para leer mejor.">color</a><br>
                 <small>Esta página guarda una <a href="index.php?q=202009192256i-cookie.html" title="¡Infórmate!">cookie</a> para funcionar con normalidad</small><!-- ¿Debería acortar el mensaje? -->
