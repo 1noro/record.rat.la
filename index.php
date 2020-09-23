@@ -227,10 +227,11 @@
             }
 
             header, footer, p.center {text-align: center;}
+            div#content {max-width: 750px;}
+            header img {max-width: 300px;}
 
-            div#content {
+            div#content, header img {
                 width: 100%;
-                max-width: 750px;
                 margin: 0px auto;
             }
 
@@ -261,6 +262,7 @@
     <body>
         <header>
             <h1>record.rat.la</h1>
+            <p><img src="img/rat3_300.png" alt="rat.la" width=""></p>
             <p>
                 <a href="index.php" title="Los últimos artículos.">reciente</a> / <a href="index.php?q=h" title="Todos los artículos ordenados por fecha.">histórico</a> / <a href="index.php?q=202009180001i-faq.html" title="¿Qué es esta página?">faq</a> / <a href="index.php?q=202009180003i-color.html" title="Cambia la paleta de colores para leer mejor.">color</a><br>
                 <small>Esta página guarda una <a href="index.php?q=202009192256i-cookie.html" title="¡Infórmate!">cookie</a> para funcionar con normalidad</small><!-- ¿Debería acortar el mensaje? -->
