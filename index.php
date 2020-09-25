@@ -22,7 +22,8 @@
             "link_visited" => "auto",
             "link_active" => "auto",
             "code_background" => "#FFFFEE", // #dfdebe, #f8bba5
-            "code_text" => "inherit"
+            "code_text" => "inherit",
+            "hedaer_img_color" => "B"
         ],
         [
             "background" => "#000000",
@@ -32,7 +33,8 @@
             "link_visited" => "#cccc00",
             "link_active" => "#0000ff",
             "code_background" => "#FFFFFF",
-            "code_text" => "#000000"
+            "code_text" => "#000000",
+            "hedaer_img_color" => "W"
         ],
         [
             "background" => "auto",
@@ -42,7 +44,8 @@
             "link_visited" => "auto",
             "link_active" => "auto",
             "code_background" => "auto",
-            "code_text" => "auto"
+            "code_text" => "auto",
+            "hedaer_img_color" => "B"
         ],
         [
             "background" => "#222222",
@@ -52,7 +55,8 @@
             "link_visited" => "#ffffff",
             "link_active" => "#ffffff",
             "code_background" => "#1f1f1f",
-            "code_text" => "#c8c8c8"
+            "code_text" => "#c8c8c8",
+            "hedaer_img_color" => "W"
         ]
     ];
 
@@ -228,7 +232,7 @@
 
             header, footer, p.center {text-align: center;}
             div#content {max-width: 750px;}
-            header img {max-width: 300px;}
+            header img {max-width: 400px;}
 
             div#content, header img {
                 width: 100%;
@@ -262,7 +266,8 @@
     <body>
         <header>
             <h1>record.rat.la</h1>
-            <p> <a href="https://www.instagram.com/pepunto.reik" title="Artista: @pepunto.reik"><img src="img/rat3_300_<?php echo strtoupper(str_replace("#", "", $colors[$color_id]["text"])); ?>.png" alt="rat.la" width=""></a></p>
+            <p><a href="https://www.instagram.com/pepunto.reik" title="Artista: @pepunto.reik"><img src="img/rat_ajuste2_400<?php echo $colors[$color_id]["hedaer_img_color"]; ?>.gif" alt="rat.la" width=""></a></p>
+            <!-- <p><a href="https://www.instagram.com/pepunto.reik" title="Artista: @pepunto.reik"><img src="img/rat3_300_<?php echo strtoupper(str_replace("#", "", $colors[$color_id]["text"])); ?>.png" alt="rat.la" width=""></a></p> -->
             <p>
                 <a href="index.php" title="Los últimos artículos.">reciente</a> / <a href="index.php?q=h" title="Todos los artículos ordenados por fecha.">histórico</a> / <a href="index.php?q=202009180001i-faq.html" title="¿Qué es esta página?">faq</a> / <a href="index.php?q=202009180003i-color.html" title="Cambia la paleta de colores para leer mejor.">color</a><br>
                 <small>Esta página guarda una <a href="index.php?q=202009192256i-cookie.html" title="¡Infórmate!">cookie</a> para funcionar con normalidad</small><!-- ¿Debería acortar el mensaje? -->
