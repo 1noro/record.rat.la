@@ -5,7 +5,7 @@
     }
 
     $articles_to_show = 3;
-    $directory = 'article/';
+    $directory = 'articles/';
     $title = "record.rat.la";
     $description = "Blog/Web personal donde iré registrando mis proyectos y mis fumadas mentales.";
     $article_img = "img/article_def_imgP.jpg";
