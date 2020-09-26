@@ -137,7 +137,7 @@
 
     function print_article($directory, $filename) {
         echo file_get_contents($directory . $filename);
-        echo "<p style=\"text-align:right;\"><small><a href=\"index.php?q=" . get_author_data($filename)[1] . "\">" . get_author_data($filename)[0] . "</a> - " . get_date($filename) . " - <a href=\"index.php?q=" . $filename . "\">enlace</a></p></small>";
+        echo "<p style=\"text-align:right;\"><small><a href=\"index.php?q=" . get_author_data($filename)[1] . "\">" . get_author_data($filename)[0] . "</a> - " . get_date($filename) . " - <a href=\"index.php?q=" . $filename . "\">enlace</a></small></p>";
     }
 
     function print_reciente($directory, $filenames, $articles_to_show) {
@@ -266,7 +266,7 @@
     <body>
         <header>
             <h1>record.rat.la</h1>
-            <p><a href="https://www.instagram.com/pepunto.reik" title="Artista: @pepunto.reik"><img src="img/rat_ajuste2_400<?php echo $colors[$color_id]["hedaer_img_color"]; ?>.gif" alt="rat.la" width=""></a></p>
+            <p><a href="https://www.instagram.com/pepunto.reik" title="Artista: @pepunto.reik"><img src="img/rat_ajuste2_400<?php echo $colors[$color_id]["hedaer_img_color"]; ?>.gif" alt="Imagen del header, rata cantando: lalala."></a></p>
             <!-- Licencia de la imagen -->
             <script type="application/ld+json">
                 {
