@@ -18,9 +18,9 @@
             "background" => "#EDD1B0", // Peach: #EDD1B0, Orange: #EDDD6E, Yellow: #F8FD89, 4chan: #FFFFEE
             "text" => "#000000",
             "title" => "#000000",
-            "link" => "auto",
-            "link_visited" => "auto",
-            "link_active" => "auto",
+            "link" => "#0000EE",
+            "link_visited" => "#551A8B",
+            "link_active" => "#EE0000",
             "code_background" => "#FFFFEE", // #dfdebe, #f8bba5
             "code_text" => "inherit",
             "hedaer_img_color" => "B"
