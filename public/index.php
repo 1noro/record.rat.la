@@ -267,7 +267,16 @@
         <header>
             <h1>record.rat.la</h1>
             <p><a href="https://www.instagram.com/pepunto.reik" title="Artista: @pepunto.reik"><img src="img/rat_ajuste2_400<?php echo $colors[$color_id]["hedaer_img_color"]; ?>.gif" alt="rat.la" width=""></a></p>
-            <!-- <p><a href="https://www.instagram.com/pepunto.reik" title="Artista: @pepunto.reik"><img src="img/rat3_300_<?php echo strtoupper(str_replace("#", "", $colors[$color_id]["text"])); ?>.png" alt="rat.la" width=""></a></p> -->
+            <!-- Licencia de la imagen -->
+            <script type="application/ld+json">
+                {
+                  "@context": "https://record.rat.la/",
+                  "@type": "ImageObject",
+                  "contentUrl": "https://record.rat.la/img/rat_ajuste2_400<?php echo $colors[$color_id]["hedaer_img_color"]; ?>.gif",
+                  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+                  "acquireLicensePage": "https://record.rat.la/index.php?q=202009180001i-faq.html"
+                }
+            </script>
             <p>
                 <a href="index.php" title="Los últimos artículos.">reciente</a> / <a href="index.php?q=h" title="Todos los artículos ordenados por fecha.">histórico</a> / <a href="index.php?q=202009180001i-faq.html" title="¿Qué es esta página?">faq</a> / <a href="index.php?q=202009180003i-color.html" title="Cambia la paleta de colores para leer mejor.">color</a><br>
                 <small>Esta página guarda una <a href="index.php?q=202009192256i-cookie.html" title="¡Infórmate!">cookie</a> para funcionar con normalidad</small><!-- ¿Debería acortar el mensaje? -->
@@ -305,7 +314,7 @@
             <p>
                 <small>Creado por <a href="https://github.com/1noro/record.rat.la">Inoro</a> bajo la licencia <a href="LICENSE" title="Todo el código que sustenta la web está bajo la licencia GPLv3.">GPLv3</a></small>
                 <br>
-                <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="Todo el contenido multimedia está bajo la licencia CC-BY-NC-SA."><img alt="Licencia de Creative Commons BY-NC-SA" style="border-width: 0; width: auto;" src="img/cc.png"/></a>
+                <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" title="Todo el contenido multimedia está bajo la licencia CC-BY-NC-SA."><img alt="Licencia de Creative Commons BY-NC-SA" style="border-width: 0; width: auto;" src="img/cc.png"/></a>
             </p>
         </footer>
     </body>
