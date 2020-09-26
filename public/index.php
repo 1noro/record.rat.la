@@ -270,11 +270,11 @@
             <!-- Licencia de la imagen -->
             <script type="application/ld+json">
                 {
-                  "@context": "https://schema.org/",
-                  "@type": "ImageObject",
-                  "contentUrl": "https://record.rat.la/img/rat_ajuste2_400<?php echo $colors[$color_id]["hedaer_img_color"]; ?>.gif",
-                  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
-                  "acquireLicensePage": "https://record.rat.la/index.php?q=202009180001i-faq.html"
+                    "@context": "https://schema.org/",
+                    "@type": "ImageObject",
+                    "contentUrl": "https://record.rat.la/img/rat_ajuste2_400<?php echo $colors[$color_id]["hedaer_img_color"]; ?>.gif",
+                    "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+                    "acquireLicensePage": "https://record.rat.la/index.php?q=202009180001i-faq.html"
                 }
             </script>
             <p>
