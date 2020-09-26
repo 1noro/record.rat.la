@@ -121,7 +121,7 @@
         $end = strpos($html, '</p>', $start);
         $paragraph = strip_tags(substr($html, $start, $end - $start + 4));
         $paragraph = str_replace("\n", "", $paragraph);
-        return $paragraph;
+        return trim($paragraph);
     }
 
     function get_article_img($filepath) {
