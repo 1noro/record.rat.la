@@ -1,6 +1,6 @@
 # record.rat.la
 
-Blog/Web personal auto-gestionado donde iré registrando mis proyectos y mis fumadas mentales.
+Blog/Web personal auto-gestionado donde iré registrando mis proyectos y mis líos mentales.
 
 Debido a que siempre estoy iniciando y abandonando nuevos proyectos, y que cada dos por tres no paro de saltar entre centrarme en la programación, centrarme en las redes y centrarme en las configuraciones de GNU/Linux, entre otras muchas cosas. He decidido llevar un registro mas o menos diario, o por lo menos ir actualizando regularmente lo que voy haciendo y dejar por escrito de lo que voy haciendo. Porque actualmente tengo tantos frentes abiertos que ya no se ni que estaba haciendo antes del verano ni que voy a hacer ahora.
 

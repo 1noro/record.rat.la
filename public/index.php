@@ -6,8 +6,8 @@
 
     $articles_to_show = 3;
     $directory = 'articles/';
-    $title = "record.rat.la";
-    $description = "Blog/Web personal donde iré registrando mis proyectos y mis fumadas mentales.";
+    $title = "Reciente - record.rat.la";
+    $description = "Blog/web personal donde iré registrando mis proyectos y mis líos mentales.";
     $article_img = "img/article_def_imgP.webp";
     $authors = [
         "a" => ["Anon", "202009180000i-404.html"],
@@ -135,11 +135,6 @@
         return $src;
     }
 
-    function print_article($directory, $filename) {
-        echo file_get_contents($directory . $filename);
-        echo "<p style=\"text-align:right;\"><small><a href=\"index.php?q=" . get_author_data($filename)[1] . "\">" . get_author_data($filename)[0] . "</a> - " . get_date($filename) . " - <a href=\"index.php?q=" . $filename . "\">enlace</a></small></p>";
-    }
-
     function print_reciente($directory, $filenames, $articles_to_show) {
         $i = 1;
         foreach($filenames as $filename) {
@@ -159,6 +154,11 @@
         }
         echo "</ul>";
         echo "<p>Hay un total de " . count($filenames) . " artículos en la web.</p>";
+    }
+
+    function print_article($directory, $filename) {
+        echo file_get_contents($directory . $filename);
+        echo "<p style=\"text-align:right;\"><small><a href=\"index.php?q=" . get_author_data($filename)[1] . "\">" . get_author_data($filename)[0] . "</a> - " . get_date($filename) . " - <a href=\"index.php?q=" . $filename . "\">enlace</a></small></p>";
     }
 
     // procesamos la variable GET "q"
