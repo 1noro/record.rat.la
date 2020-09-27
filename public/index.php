@@ -243,7 +243,6 @@
 
             header, footer, p.center {text-align: center;}
             div#content {max-width: 750px;}
-            header img {max-width: 400px;}
 
             div#content, header img {
                 width: 100%;
@@ -271,14 +270,18 @@
 
             img {width: 100%;}
             img.half {width: 50%;}
+            header img {
+                display: block;
+                max-width: 344px;
+            }
         </style>
     </head>
 
     <body>
         <header>
             <h1>record.rat.la</h1>
-            <!-- Para evitar que el contenido se mueva al cargar la imagen puse "height: 209px;" al <p>. -->
-            <p style="height: 209px;"><a href="https://www.instagram.com/pepunto.reik" title="Artista: @pepunto.reik"><img src="img/rat_ajuste2_400<?php echo $colors[$color_id]["hedaer_img_color"]; ?>.webp" alt="Imagen del header, rata cantando: lalala."></a></p>
+            <!-- Para evitar que el contenido se mueva al cargar la imagen puse "height: 180px;" al <p>. -->
+            <p style="height: 180px;"><a href="https://www.instagram.com/pepunto.reik" title="Artista: @pepunto.reik"><img src="img/rat_ajuste2_344<?php echo $colors[$color_id]["hedaer_img_color"]; ?>.webp" alt="Imagen del header, rata cantando: lalala."></a></p>
             <!-- Licencia de la imagen -->
             <script type="application/ld+json">
                 {
