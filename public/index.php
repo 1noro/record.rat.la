@@ -222,6 +222,16 @@
         <!-- <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" /> -->
         <!-- <link rel="canonical" href="<?php echo get_url(true); ?>" /> -->
 
+        <!-- Cosas de la NSA (en modo prueba) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-179041248-1"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'UA-179041248-1');
+        </script>
+
         <style>
             body {
                 background-color: <?php echo $colors[$color_id]["background"]; ?>;
