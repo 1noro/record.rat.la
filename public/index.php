@@ -8,7 +8,7 @@
     $directory = 'articles/';
     $title = "record.rat.la";
     $description = "Blog/Web personal donde iré registrando mis proyectos y mis fumadas mentales.";
-    $article_img = "img/article_def_imgP.jpg";
+    $article_img = "img/article_def_imgP.webp";
     $authors = [
         "a" => ["Anon", "202009180000i-404.html"],
         "i" => ["Inoro", "202009180002i-inoro.html"]
@@ -199,7 +199,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <title><?php echo $title; ?></title>
-        <link rel="icon" href="favicon.png" type="image/png" sizes="50x50">
+        <!-- <link rel="icon" href="favicon.png" type="image/png" sizes="50x50"> -->
+        <link rel="icon" href="favicon.webp" type="image/webp" sizes="50x50">
 
         <!-- Revisar: https://css-tricks.com/essential-meta-tags-social-media/ -->
         <meta name="author" content="Inoro"> <!-- This site was made by https://github.com/1noro -->
