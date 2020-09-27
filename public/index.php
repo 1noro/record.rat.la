@@ -157,7 +157,7 @@
 
     function print_article($directory, $filename) {
         echo file_get_contents($directory . $filename);
-        echo "<p style=\"text-align:right;\"><small><a href=\"index.php?q=" . get_author_data($filename)[1] . "\" title=\"Página del autor.\">" . get_author_data($filename)[0] . "</a> - " . get_date($filename) . " - <a href=\"index.php?q=" . $filename . "\" title=\"Ver este artículo individualmente.\">enlace</a></small></p>";
+        echo "<p style=\"text-align:right;\"><small><a href=\"index.php?q=" . get_author_data($filename)[1] . "\" title=\"Página del autor.\">" . get_author_data($filename)[0] . "</a> - " . get_date($filename) . " - <a href=\"index.php?q=" . $filename . "\" title=\"Ver este artículo individualmente.\">enlace al artículo</a></small></p>";
     }
 
     // procesamos la variable GET "q"
