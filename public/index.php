@@ -4,7 +4,7 @@
         $_SESSION["color_id"] = 0;
     }
 
-    $articles_to_show = 3;
+    $articles_to_show = 2;
     $directory = 'articles/';
     $title = "Reciente - record.rat.la";
     $description = "Blog/web personal donde iré registrando mis proyectos y mis líos mentales.";
