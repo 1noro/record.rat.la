@@ -143,7 +143,6 @@
             echo "<hr>";
             $i++;
         }
-        echo "<br><p class=\"center\"><a href=\"index.php?q=h\">Más artículos</a></p>";
     }
 
     function print_historico($directory, $filenames) {
@@ -301,6 +300,7 @@
                 switch ($action) {
                     case 0:
                         print_reciente($directory, $filenames, $articles_to_show);
+                        echo "<br><p class=\"center\"><a href=\"index.php?q=h\">Más artículos</a></p>";
                         break;
                     case 1:
                         print_historico($directory, $filenames);
@@ -310,6 +310,7 @@
                         break;
                     case 3:
                         print_article($directory, $_GET["q"]);
+                        echo "<br><p class=\"center\"><a href=\"index.php?q=h\">Más artículos</a></p>";
                         break;
                     case 404:
                         print_article($directory, "202009180000i-404.html");
