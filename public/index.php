@@ -271,7 +271,7 @@
             img {width: 100%;}
             img.half {width: 50%;}
             header img {
-                display: block;
+                /*display: block;*/
                 max-width: 344px;
             }
         </style>
