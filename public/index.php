@@ -237,7 +237,7 @@
             body {
                 background-color: <?php echo $colors[$color_id]["background"]; ?>;
                 color: <?php echo $colors[$color_id]["text"]; ?>;
-                font-size: 1.35em; /*revisar*/
+                font-size: 1.35em; /*1.35em, 14pt*/
                 font-family: Times, Serif; /*Considerar obviar la letra Times y poner todo Serif*/
             }
 
@@ -284,7 +284,7 @@
                 {
                     "@context": "https://schema.org/",
                     "@type": "ImageObject",
-                    "contentUrl": "https://record.rat.la/img/rat_ajuste2_400<?php echo $colors[$color_id]["hedaer_img_color"]; ?>.gif",
+                    "contentUrl": "https://record.rat.la/img/rat<?php echo $colors[$color_id]["hedaer_img_color"]; ?>.svg",
                     "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
                     "acquireLicensePage": "https://record.rat.la/index.php?q=202009180001i-faq.html"
                 }
