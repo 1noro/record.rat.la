@@ -157,7 +157,7 @@
 
     function print_article($directory, $filename) {
         echo file_get_contents($directory . $filename);
-        echo "<p style=\"text-align:right;\"><small><a href=\"index.php?q=" . get_author_data($filename)[1] . "\" title=\"Página del autor.\">" . get_author_data($filename)[0] . "</a> - " . get_date($filename) . " - <a href=\"index.php?q=" . $filename . "\" title=\"Ver este artículo individualmente.\">enlace al artículo</a></small></p>";
+        echo "<p style=\"text-align:right;\"><small><a href=\"index.php?q=" . $filename . "\" title=\"Ver este artículo individualmente.\">Enlace al artículo</a><br><a href=\"index.php?q=" . get_author_data($filename)[1] . "\" title=\"Página del autor.\">" . get_author_data($filename)[0] . "</a> - " . get_date($filename) . "</small></p>";
     }
 
     // procesamos la variable GET "q"
@@ -165,10 +165,12 @@
     $filenames = get_filenames($directory);
     if (isset($_GET["q"])) {
         if ($_GET["q"] == "h") {
-            // print_historico($directory, $filenames);
+            // Histórico
             $action = 1;
             $title = "Histórico - record.rat.la";
+            $description = "Listado de todos los artículos publicados en record.rat.la.";
         } elseif ($_GET["q"] == "c" and isset($_GET["c"])) {
+            // Cambio de paleta de colores
             if ($_GET["c"] >= 0 and $_GET["c"] < count($colors)) {
                 $_SESSION["color_id"] = $_GET["c"];
             }
@@ -176,13 +178,13 @@
             $title = get_title($directory . "202009180003i-color.html") . " - record.rat.la";
         } else {
             if (in_array($_GET["q"], $filenames)) {
-                // print_article($directory, $_GET["q"]);
+                // Artículo
                 $action = 3;
                 $title = get_title($directory . $_GET["q"]) . " - record.rat.la";
                 $description = get_description($directory . $_GET["q"]);
                 $article_img = get_article_img($directory . $_GET["q"]);
             } else {
-                // print_article($directory, "202009180000i-404.html");
+                // 404
                 $action = 404;
                 $title = get_title($directory . "202009180000i-404.html") . " - record.rat.la";
             }
