@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://recod.rat.la/sitemap.xml
+Sitemap: https://recod.rat.la/image-sitemap.xml
