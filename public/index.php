@@ -217,8 +217,8 @@
         <!-- <meta property="article:author" content="idex.php?q=202009180002i-inoro.html" /> -->
         <!-- <meta property="article:published_time" content="2020-09-21T00:04:15+00:00" /> -->
         <!-- <meta property="article:modified_time" content="2020-09-21T07:23:04+00:00" /> -->
-        <!-- <meta name="twitter:creator" content="@https://twitter.com/0x12Faab7" /> -->
-        <!-- <meta name="twitter:site" content="@0x12Faab7" /> -->
+        <meta name="twitter:creator" content="@0x12Faab7" />
+        <!-- <meta name="twitter:site" content="cuenta_del_sitio" /> -->
         <meta name="robots" content="index, follow" />
         <!-- <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" /> -->
         <!-- <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" /> -->
