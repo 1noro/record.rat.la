@@ -1,5 +1,6 @@
 User-agent: *
 Allow: /
+# Disallow: /tmp/
 
 Sitemap: https://recod.rat.la/sitemap.xml
 Sitemap: https://recod.rat.la/image-sitemap.xml
