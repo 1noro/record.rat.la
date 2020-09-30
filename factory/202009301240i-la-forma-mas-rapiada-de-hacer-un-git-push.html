@@ -1,11 +1,28 @@
 <h2>La forma más rápida de hacer <samp>git push</samp></h2>
 
 <p>
-
+    Estos tres comandos, que se deben copiar y pegar en bloque, son la forma mas sencilla para subir tus cambios de un repositorio a la nube.
 </p>
+
+<h4>Requisitos previos a la ejecución</h4>
+
+<ul>
+    <li>Haber configurado el usuario y el correo electrónico con los comandos: </li>
+    <ul>
+        <li><code>git config --global user.name "nombre"</code></li>
+        <li><code>git config --global user.email "email@example.com"</code></li>
+    </ul>
+    <li>Situar la terminal en la carpeta raíz del repositorio (la primera).</li>
+</ul>
+
+<p>Una vez se hayan cumplido los requisitos previos, solo hay que copiar <b>todos</b> los comandos que vienen a continuación y los pegamos en la terminal.</p>
 
 <pre>
 git add . \
 git commit -m "repositorio actualizado" \
 git push
 </pre>
+
+<blockquote>
+    Si tenemos configurado el GIT por <i>SSH</i> no hace falta que pongáis la contraseña, pero si lo tenéis por <i>HTTPS</i>, os solicitará el nombre de usuario y la contraseña de <i>GitHub</i>, <i>GitLab</i>, etc.
+</blockquote>
