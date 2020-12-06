@@ -1,21 +1,23 @@
 <?php
     session_start();
+    // Si se entra por primera vez a la web se guarada un cookie de sesión con la preferencia de color por defecto (0).
     if (!isset($_SESSION["color_id"])) {
         $_SESSION["color_id"] = 0;
     }
 
-    $articles_to_show = 2;
-    $directory = 'articles/';
-    $title = "Reciente - record.rat.la";
-    $description = "Blog/web personal donde iré registrando mis proyectos y mis líos mentales.";
-    $article_img = "img/article_def_imgP.webp";
+    $articles_to_show = 2; // número de artículos a mostrar en la página principal
+    $directory = 'articles/'; // carpeta donde se guardan los artículos
+    $title = "Reciente - record.rat.la"; // título de la página por defecto
+    $description = "Blog/web personal donde iré registrando mis proyectos y mis líos mentales."; // Descripción de la página por defecto.
+    $article_img = "img/article_def_imgP.webp"; // Imagen del artículo por defecto.
 
     $authors = [
-        "a" => ["Anon", "202009180000i-404.html"],
+        "a" => ["Anon", "202009180000i-404.html"], // Autor por defecto de los artículos anónimos
         "i" => ["Inoro", "202009180002i-inoro.html"]
     ];
 
     $colors = [
+        // Paleta de colores por defecto 0 (B&W)
         [
             "background" => "#FFFFFF",
             "text" => "#222324",
@@ -73,12 +75,13 @@
         ]
     ];
 
+    // get_filenames, obtiene los nombres de los artículos en la carpeta articles
     function get_filenames($directory) {
         $files = array();
         $directory_obj = opendir($directory);
         while(false != ($filename = readdir($directory_obj))) {
             if(($filename != ".") and ($filename != "..")) {
-                $filenames[] = $filename; // put in array.
+                $filenames[] = $filename; // put in array
             }
         }
         natsort($filenames); // ordenamos alfabeticamente
@@ -86,6 +89,7 @@
         return $filenames;
     }
 
+    // get_date, obtiene la fecha de un articulo en función de su nombre
     function get_date($filename) {
         $year = substr($filename, 0, 4);
         $month = substr($filename, 4, 2);
@@ -96,6 +100,7 @@
         return $result;
     }
 
+    // get_author_data, obtiene los datos del autor en base a su
     function get_author_data($filename) {
         $authorid = substr($filename, 12, 1);
         if (array_key_exists($authorid, $GLOBALS["authors"])) {
@@ -197,7 +202,7 @@
                 $description = get_description($directory . $_GET["q"]);
                 $article_img = get_article_img($directory . $_GET["q"]);
             } else {
-                // 404
+                // Error 404
                 $action = 404;
                 $title = get_title($directory . "202009180000i-404.html") . " - record.rat.la";
             }
