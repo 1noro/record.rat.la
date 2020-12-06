@@ -300,9 +300,9 @@
         <header>
             <h1>record.rat.la</h1>
             <!-- Para evitar que el contenido se mueva al cargar la imagen puse "height: 209px;" al <p>. -->
-            <p style="height: 209px;">
+            <p style="height: 210px;">
                 <a href="https://www.instagram.com/pepunto.reik" title="Artista: @pepunto.reik">
-                    <img src="img/rat<?php echo $colors[$color_id]["hedaer_img_color"]; ?>.svg" alt="Imagen del header, rata cantando: lalala.">
+                    <img src="img/rat<?php echo $colors[$color_id]["hedaer_img_color"]; ?>.svg" alt="Imagen del header, rata cantando: lalala." width="400" height="210">
                 </a>
             </p>
             <!-- Licencia de la imagen -->
@@ -356,7 +356,7 @@
                 <small>Creado por <a href="https://github.com/1noro/record.rat.la">Inoro</a> bajo la licencia <a href="LICENSE" title="Todo el código que sustenta la web está bajo la licencia GPLv3.">GPLv3</a></small>
                 <br>
                 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" title="Todo el contenido multimedia está bajo la licencia CC-BY-NC-SA.">
-                    <img alt="Licencia de Creative Commons BY-NC-SA" style="border-width: 0; width: auto;" src="img/cc.png" width="80px" height="15px"/>
+                    <img alt="Licencia de Creative Commons BY-NC-SA" style="border-width: 0; width: auto;" src="img/cc.png" width="80" height="15"/>
                 </a>
             </p>
         </footer>
