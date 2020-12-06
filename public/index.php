@@ -9,11 +9,24 @@
     $title = "Reciente - record.rat.la";
     $description = "Blog/web personal donde iré registrando mis proyectos y mis líos mentales.";
     $article_img = "img/article_def_imgP.webp";
+
     $authors = [
         "a" => ["Anon", "202009180000i-404.html"],
         "i" => ["Inoro", "202009180002i-inoro.html"]
     ];
+
     $colors = [
+        [
+            "background" => "#FFFFFF",
+            "text" => "#222324",
+            "title" => "#222324",
+            "link" => "#0000EE",
+            "link_visited" => "#551A8B",
+            "link_active" => "#EE0000",
+            "code_background" => "#222324",
+            "code_text" => "#FFFFFF",
+            "hedaer_img_color" => "B"
+        ],
         [
             "background" => "#EDD1B0", // Peach: #EDD1B0, Orange: #EDDD6E, Yellow: #F8FD89, 4chan: #FFFFEE
             "text" => "#000000",
@@ -240,11 +253,16 @@
                 background-color: <?php echo $colors[$color_id]["background"]; ?>;
                 color: <?php echo $colors[$color_id]["text"]; ?>;
                 font-size: 1.35em; /*1.35em, 14pt*/
-                font-family: Times, Serif; /*Considerar obviar la letra Times y poner todo Serif*/
+                font-family: Helvetica, Times, Serif; /*Considerar obviar la letra Times y poner todo Serif*/
             }
 
             header, footer, p.center {text-align: center;}
-            div#content {max-width: 750px;}
+            
+            div#content {
+                max-width: 750px;
+                text-align: justify;
+                text-justify: inter-word;
+            }
 
             div#content, header img {
                 width: 100%;
@@ -253,6 +271,7 @@
 
             h1, h2, h3, h4, h5, h6 {color: <?php echo $colors[$color_id]["title"]; ?>;}
 
+            /* a {text-decoration: none;} */
             /* Es importante mantener el orden: link - visited - hover - active */
             a:link {color: <?php echo $colors[$color_id]["link"]; ?>;}
             a:visited {color: <?php echo $colors[$color_id]["link_visited"]; ?>;}
