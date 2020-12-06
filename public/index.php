@@ -252,12 +252,13 @@
             body {
                 background-color: <?php echo $colors[$color_id]["background"]; ?>;
                 color: <?php echo $colors[$color_id]["text"]; ?>;
-                font-size: 1.35em; /*1.35em, 14pt*/
-                font-family: Helvetica, Times, Serif; /*Considerar obviar la letra Times y poner todo Serif*/
+                font-size: 12pt; /*1.35em, 14pt*/
+                font-family: Helvetica, sans-serif;
+                /*font-family: Times, Serif;*/ /*Considerar obviar la letra Times y poner todo Serif*/
             }
 
             header, footer, p.center {text-align: center;}
-            
+
             div#content {
                 max-width: 750px;
                 text-align: justify;
