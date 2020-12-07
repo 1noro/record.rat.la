@@ -371,12 +371,14 @@
                     }
                 </script>
             </p>
-            <h2>
-                <a href="index.php" title="Los últimos artículos.">reciente</a> / 
-                <a href="index.php?q=h" title="Todos los artículos ordenados por fecha.">histórico</a> / 
-                <a href="index.php?q=202009180001i-faq.html" title="¿Qué es esta página?">faq</a> / 
-                <a href="index.php?q=202009180003i-color.html" title="Cambia la paleta de colores para leer mejor.">color</a>
-            </h2>
+            <nav aria-labelledby="primary-navigation">
+                <h2>
+                    <a href="index.php" title="Los últimos artículos.">reciente</a> / 
+                    <a href="index.php?q=h" title="Todos los artículos ordenados por fecha.">histórico</a> / 
+                    <a href="index.php?q=202009180001i-faq.html" title="¿Qué es esta página?">faq</a> / 
+                    <a href="index.php?q=202009180003i-color.html" title="Cambia la paleta de colores para leer mejor.">color</a>
+                </h2>
+            </nav>
             <p>
                 <span style="font-size: 1.05em;"><a href="index.php?size=0<?php echo add_q_if_exists(); ?>" title="Cambiar texto la tamaño por defecto.">Txt</a></span> / 
                 <span style="font-size: 1.20em;"><a href="index.php?size=1<?php echo add_q_if_exists(); ?>" title="Cambiar texto a tamaño grande.">Txt</a></span> / 
