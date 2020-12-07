@@ -47,9 +47,9 @@
             "background" => "#000000",
             "text" => "#FFFFFF",
             "title" => "#FFFFFF",
-            "link" => "#ffff00",
-            "link_visited" => "#cccc00",
-            "link_active" => "#0000ff",
+            "link" => "#FFFF00",
+            "link_visited" => "#CCCC00",
+            "link_active" => "#0000FF",
             "code_background" => "#FFFFFF",
             "code_text" => "#000000",
             "hedaer_img_color" => "W"
@@ -68,12 +68,12 @@
         [
             "background" => "#222222",
             "text" => "#C8C8C8",
-            "title" => "#ffffff",
-            "link" => "#ffffff",
-            "link_visited" => "#ffffff",
-            "link_active" => "#ffffff",
-            "code_background" => "#1f1f1f",
-            "code_text" => "#c8c8c8",
+            "title" => "#FFFFFF",
+            "link" => "#FFFFFF",
+            "link_visited" => "#FFFFFF",
+            "link_active" => "#FFFFFF",
+            "code_background" => "#1F1F1F",
+            "code_text" => "#C8C8C8",
             "hedaer_img_color" => "W"
         ]
     ];
@@ -269,9 +269,9 @@
             body {
                 background-color: <?php echo $colors[$color_id]["background"]; ?>;
                 color: <?php echo $colors[$color_id]["text"]; ?>;
-                font-size: 12pt; /*1.35em, 14pt*/
+                font-size: 1.05em; /* 1.35em, 14pt */
                 font-family: Helvetica, sans-serif;
-                /*font-family: Times, Serif;*/ /*Considerar obviar la letra Times y poner todo Serif*/
+                /* font-family: Times, Serif; */ /* Considerar obviar la letra Times y poner todo Serif */
             }
 
             header, footer, p.center {text-align: center;}
@@ -300,6 +300,8 @@
                 background-color: <?php echo $colors[$color_id]["code_background"]; ?>;
                 color: <?php echo $colors[$color_id]["code_text"]; ?>;
             }
+
+            pre, code, samp {font-size: 1.1em;}
 
             img {width: 100%;}
             img.half {width: 50%;}
