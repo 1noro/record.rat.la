@@ -3,9 +3,12 @@
 
     // Creamos u obtenemos la cookie funcional que guarda las preferencais del usuario (la paleta de colores)
     session_start();
-    // Si se entra por primera vez a la web se guarada un cookie de sesión con la preferencia de color por defecto (0).
+    // Si se entra por primera vez a la web se guarada un cookie de sesión con las preferencias por defecto
     if (!isset($_SESSION["color_id"])) {
         $_SESSION["color_id"] = 0;
+    }
+    if (!isset($_SESSION["text_size_id"])) {
+        $_SESSION["text_size_id"] = 0;
     }
 
     $articles_to_show = 2; // número de artículos a mostrar en la página principal
@@ -17,6 +20,21 @@
     $authors = [
         "a" => ["Anon", "202009180000i-404.html"], // Autor por defecto de los artículos anónimos
         "i" => ["Inoro", "202009180002i-inoro.html"]
+    ];
+
+    $text_sizes = [
+        [
+            "text" => "1.05em",
+            "code" => "1.1em"
+        ],
+        [
+            "text" => "1.2em",
+            "code" => "1.25em"
+        ],
+        [
+            "text" => "1.35em",
+            "code" => "1.4em"
+        ]
     ];
 
     $colors = [
@@ -77,6 +95,29 @@
             "hedaer_img_color" => "W"
         ]
     ];
+
+    // --- Utilidades genéricas ---
+    // get_url, monta la URL de la página para imprimirla en los headers HTML  en base a la URL dada por el usuario
+    function get_url($full) {
+        if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
+            $link = "https";
+        } else {
+            $link = "http";
+        }
+        $link .= "://";
+        $link .= $_SERVER['HTTP_HOST'];
+        if ($full) {$link .= $_SERVER['REQUEST_URI'];}
+        return $link;
+    }
+
+    // add_q_if_exists, devuelve el parametro de query "q" para concatenar a un enlace, si este está definido
+    function add_q_if_exists() {
+        if (isset($_GET["q"])) {
+            return "&q=" . $_GET["q"];
+        } else {
+            return "";
+        }
+    }
 
     // --- Obtención de datos de los artículos ---
     // get_filenames, obtiene los nombres de los artículos en la carpeta articles
@@ -177,19 +218,6 @@
         echo "<p style=\"text-align:right;\"><small><a href=\"index.php?q=" . $filename . "\" title=\"Ver este artículo individualmente.\">Enlace al artículo</a><br><a href=\"index.php?q=" . get_author_data($filename)[1] . "\" title=\"Página del autor.\">" . get_author_data($filename)[0] . "</a> - " . get_date($filename) . "</small></p>";
     }
 
-    // get_url, monta la URL de la página para imprimirla en los headers HTML  en base a la URL dada por el usuario
-    function get_url($full) {
-        if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
-            $link = "https";
-        } else {
-            $link = "http";
-        }
-        $link .= "://";
-        $link .= $_SERVER['HTTP_HOST'];
-        if ($full) {$link .= $_SERVER['REQUEST_URI'];}
-        return $link;
-    }
-
     // procesamos la variable GET "q" y obramos en consecuencia
     $action = 0;
     $filenames = get_filenames($directory);
@@ -221,7 +249,15 @@
         }
     }
 
+    if (isset($_GET["size"])) {
+        // Cambio de tamaño de texto
+        if ($_GET["size"] >= 0 && $_GET["size"] < count($text_sizes)) {
+            $_SESSION["text_size_id"] = $_GET["size"];
+        }
+    }
+
     $color_id = $_SESSION["color_id"];
+    $text_size_id = $_SESSION["text_size_id"];
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -269,7 +305,7 @@
             body {
                 background-color: <?php echo $colors[$color_id]["background"]; ?>;
                 color: <?php echo $colors[$color_id]["text"]; ?>;
-                font-size: 1.05em; /* 1.35em, 14pt */
+                font-size: <?php echo $text_sizes[$text_size_id]["text"]; ?>; /* 1.35em, 14pt */
                 font-family: Helvetica, sans-serif;
                 /* font-family: Times, Serif; */ /* Considerar obviar la letra Times y poner todo Serif */
             }
@@ -301,7 +337,7 @@
                 color: <?php echo $colors[$color_id]["code_text"]; ?>;
             }
 
-            pre, code, samp {font-size: 1.1em;}
+            pre, code, samp {font-size: <?php echo $text_sizes[$text_size_id]["code"]; ?>; /* 1.1em */}
 
             img {width: 100%;}
             img.half {width: 50%;}
@@ -324,23 +360,29 @@
                 <a href="https://www.instagram.com/pepunto.reik" title="Artista: @pepunto.reik">
                     <img src="img/rat<?php echo $colors[$color_id]["hedaer_img_color"]; ?>.svg" alt="Imagen del header, rata cantando: lalala." width="400" height="210">
                 </a>
+                <!-- Licencia de la imagen -->
+                <script type="application/ld+json">
+                    {
+                        "@context": "https://schema.org/",
+                        "@type": "ImageObject",
+                        "contentUrl": "https://record.rat.la/img/rat<?php echo $colors[$color_id]["hedaer_img_color"]; ?>.svg",
+                        "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+                        "acquireLicensePage": "https://record.rat.la/index.php?q=202009180001i-faq.html"
+                    }
+                </script>
             </p>
-            <!-- Licencia de la imagen -->
-            <script type="application/ld+json">
-                {
-                    "@context": "https://schema.org/",
-                    "@type": "ImageObject",
-                    "contentUrl": "https://record.rat.la/img/rat<?php echo $colors[$color_id]["hedaer_img_color"]; ?>.svg",
-                    "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
-                    "acquireLicensePage": "https://record.rat.la/index.php?q=202009180001i-faq.html"
-                }
-            </script>
-            <p>
+            <h2>
                 <a href="index.php" title="Los últimos artículos.">reciente</a> / 
                 <a href="index.php?q=h" title="Todos los artículos ordenados por fecha.">histórico</a> / 
                 <a href="index.php?q=202009180001i-faq.html" title="¿Qué es esta página?">faq</a> / 
                 <a href="index.php?q=202009180003i-color.html" title="Cambia la paleta de colores para leer mejor.">color</a>
-                <br>
+            </h2>
+            <p>
+                <span style="font-size: 1.05em;"><a href="index.php?size=0<?php echo add_q_if_exists(); ?>" title="Cambiar texto la tamaño por defecto.">Txt</a></span> / 
+                <span style="font-size: 1.20em;"><a href="index.php?size=1<?php echo add_q_if_exists(); ?>" title="Cambiar texto a tamaño grande.">Txt</a></span> / 
+                <span style="font-size: 1.35em;"><a href="index.php?size=2<?php echo add_q_if_exists(); ?>" title="Cambiar texto a tamaño enorme.">Txt</a></span>
+            </p>
+            <p>
                 <small>
                     <!-- ¿Debería acortar el mensaje? -->
                     Esta página guarda una <a href="index.php?q=202009192256i-cookie.html" title="¡Infórmate!">cookie</a> para funcionar con normalidad
