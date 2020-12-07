@@ -1,4 +1,7 @@
 <?php
+    // record.rat.la by Inoro (https://github.com/1noro/record.rat.la)
+
+    // Creamos u obtenemos la cookie funcional que guarda las preferencais del usuario (la paleta de colores)
     session_start();
     // Si se entra por primera vez a la web se guarada un cookie de sesión con la preferencia de color por defecto (0).
     if (!isset($_SESSION["color_id"])) {
@@ -9,7 +12,7 @@
     $directory = 'articles/'; // carpeta donde se guardan los artículos
     $title = "Reciente - record.rat.la"; // título de la página por defecto
     $description = "Blog/web personal donde iré registrando mis proyectos y mis líos mentales."; // Descripción de la página por defecto.
-    $article_img = "img/article_def_imgP.webp"; // Imagen del artículo por defecto.
+    $article_img = "img/article_default_img_white.webp"; // Imagen del artículo por defecto.
 
     $authors = [
         "a" => ["Anon", "202009180000i-404.html"], // Autor por defecto de los artículos anónimos
@@ -75,12 +78,13 @@
         ]
     ];
 
+    // --- Obtención de datos de los artículos ---
     // get_filenames, obtiene los nombres de los artículos en la carpeta articles
     function get_filenames($directory) {
         $files = array();
         $directory_obj = opendir($directory);
         while(false != ($filename = readdir($directory_obj))) {
-            if(($filename != ".") and ($filename != "..")) {
+            if(($filename != ".") && ($filename != "..")) {
                 $filenames[] = $filename; // put in array
             }
         }
@@ -100,7 +104,7 @@
         return $result;
     }
 
-    // get_author_data, obtiene los datos del autor en base a su
+    // get_author_data, obtiene los datos del autor en base a su alias en el nombre del artículo
     function get_author_data($filename) {
         $authorid = substr($filename, 12, 1);
         if (array_key_exists($authorid, $GLOBALS["authors"])) {
@@ -111,6 +115,7 @@
         return $result;
     }
 
+    // get_title, obtiene el título del artículo en base al texto en el primer <h2></h2> encontrado
     function get_title($filepath) {
         $file_obj = fopen($filepath, "r");
         $result = fgets($file_obj);
@@ -121,6 +126,58 @@
         return strip_tags($result); // quitamos las tags HTML
     }
 
+    // get_description, obtiene el contenido del primer párrafo <p></p> del artículo y lo coloca como description del mismo
+    function get_description($filepath) {
+        $html = file_get_contents($filepath);
+        $start = strpos($html, '<p>');
+        $end = strpos($html, '</p>', $start);
+        $paragraph = strip_tags(substr($html, $start, $end - $start + 4));
+        $paragraph = str_replace("\n", "", $paragraph);
+        return trim($paragraph);
+    }
+
+    // get_article_img, obtiene la primera imagen mostrada en el artículo
+    function get_article_img($filepath) {
+        $html = file_get_contents($filepath);
+        preg_match('/<img.+src=[\'"](?P<src>.+?)[\'"].*>/i', $html, $image);
+        if (isset($image['src'])) {
+            $src = $image['src'];
+        } else {
+            $src = $GLOBALS["article_img"];
+        }
+        return $src;
+    }
+
+    // --- Impresión de contenidos ---
+    // print_reciente, imprime la página de artículos recientes
+    function print_reciente($directory, $filenames, $articles_to_show) {
+        $i = 1;
+        foreach($filenames as $filename) {
+            print_article($directory, $filename);
+            if ($i >= $articles_to_show) {break;}
+            echo "<hr>";
+            $i++;
+        }
+    }
+
+    // print_historico, imprime l apágina del histórico de artículos
+    function print_historico($directory, $filenames) {
+        echo "<h2>Histórico de artículos</h2>";
+        echo "<ul>";
+        foreach($filenames as $filename) {
+            echo "<li><a href=\"index.php?q=" . $filename . "\">" . get_date($filename) . "</a> (" . get_author_data($filename)[0] . ") " . get_title($directory . $filename) . "</li>";
+        }
+        echo "</ul>";
+        echo "<p>Hay un total de " . count($filenames) . " artículos en la web.</p>";
+    }
+
+    // print_article, imprime la tágina de un artículo pasado como parámetro
+    function print_article($directory, $filename) {
+        echo file_get_contents($directory . $filename);
+        echo "<p style=\"text-align:right;\"><small><a href=\"index.php?q=" . $filename . "\" title=\"Ver este artículo individualmente.\">Enlace al artículo</a><br><a href=\"index.php?q=" . get_author_data($filename)[1] . "\" title=\"Página del autor.\">" . get_author_data($filename)[0] . "</a> - " . get_date($filename) . "</small></p>";
+    }
+
+    // get_url, monta la URL de la página para imprimirla en los headers HTML  en base a la URL dada por el usuario
     function get_url($full) {
         if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
             $link = "https";
@@ -133,52 +190,7 @@
         return $link;
     }
 
-    function get_description($filepath) {
-        $html = file_get_contents($filepath);
-        $start = strpos($html, '<p>');
-        $end = strpos($html, '</p>', $start);
-        $paragraph = strip_tags(substr($html, $start, $end - $start + 4));
-        $paragraph = str_replace("\n", "", $paragraph);
-        return trim($paragraph);
-    }
-
-    function get_article_img($filepath) {
-        $html = file_get_contents($filepath);
-        preg_match('/<img.+src=[\'"](?P<src>.+?)[\'"].*>/i', $html, $image);
-        if (isset($image['src'])) {
-            $src = $image['src'];
-        } else {
-            $src = $GLOBALS["article_img"];
-        }
-        return $src;
-    }
-
-    function print_reciente($directory, $filenames, $articles_to_show) {
-        $i = 1;
-        foreach($filenames as $filename) {
-            print_article($directory, $filename);
-            if ($i >= $articles_to_show) {break;}
-            echo "<hr>";
-            $i++;
-        }
-    }
-
-    function print_historico($directory, $filenames) {
-        echo "<h2>Histórico de artículos</h2>";
-        echo "<ul>";
-        foreach($filenames as $filename) {
-            echo "<li><a href=\"index.php?q=" . $filename . "\">" . get_date($filename) . "</a> (" . get_author_data($filename)[0] . ") " . get_title($directory . $filename) . "</li>";
-        }
-        echo "</ul>";
-        echo "<p>Hay un total de " . count($filenames) . " artículos en la web.</p>";
-    }
-
-    function print_article($directory, $filename) {
-        echo file_get_contents($directory . $filename);
-        echo "<p style=\"text-align:right;\"><small><a href=\"index.php?q=" . $filename . "\" title=\"Ver este artículo individualmente.\">Enlace al artículo</a><br><a href=\"index.php?q=" . get_author_data($filename)[1] . "\" title=\"Página del autor.\">" . get_author_data($filename)[0] . "</a> - " . get_date($filename) . "</small></p>";
-    }
-
-    // procesamos la variable GET "q"
+    // procesamos la variable GET "q" y obramos en consecuencia
     $action = 0;
     $filenames = get_filenames($directory);
     if (isset($_GET["q"])) {
@@ -187,9 +199,9 @@
             $action = 1;
             $title = "Histórico - record.rat.la";
             $description = "Listado de todos los artículos publicados en record.rat.la.";
-        } elseif ($_GET["q"] == "c" and isset($_GET["c"])) {
+        } elseif ($_GET["q"] == "c" && isset($_GET["c"])) {
             // Cambio de paleta de colores
-            if ($_GET["c"] >= 0 and $_GET["c"] < count($colors)) {
+            if ($_GET["c"] >= 0 && $_GET["c"] < count($colors)) {
                 $_SESSION["color_id"] = $_GET["c"];
             }
             $action = 2;
@@ -264,6 +276,8 @@
 
             header, footer, p.center {text-align: center;}
 
+            h1, h2, h3, h4, h5, h6 {color: <?php echo $colors[$color_id]["title"]; ?>;}
+
             div#content {
                 max-width: 750px;
                 text-align: justify;
@@ -274,14 +288,6 @@
                 width: 100%;
                 margin: 0px auto;
             }
-
-            h1, h2, h3, h4, h5, h6 {color: <?php echo $colors[$color_id]["title"]; ?>;}
-
-            /* a {text-decoration: none;} */
-            /* Es importante mantener el orden: link - visited - hover - active */
-            a:link {color: <?php echo $colors[$color_id]["link"]; ?>;}
-            a:visited {color: <?php echo $colors[$color_id]["link_visited"]; ?>;}
-            a:active {color: <?php echo $colors[$color_id]["link_active"]; ?>;}
 
             pre {
                 padding: 10px;
@@ -298,11 +304,18 @@
             img {width: 100%;}
             img.half {width: 50%;}
             header img {max-width: 400px;}
+
+            /* a {text-decoration: none;} */
+            /* Es importante mantener el orden: link - visited - hover - active */
+            a:link {color: <?php echo $colors[$color_id]["link"]; ?>;}
+            a:visited {color: <?php echo $colors[$color_id]["link_visited"]; ?>;}
+            a:active {color: <?php echo $colors[$color_id]["link_active"]; ?>;}
         </style>
     </head>
 
     <body>
         <header>
+            <!-- Título H1 de la web -->
             <h1>record.rat.la</h1>
             <!-- Para evitar que el contenido se mueva al cargar la imagen puse "height: 209px;" al <p>. -->
             <p style="height: 210px;">
@@ -321,8 +334,15 @@
                 }
             </script>
             <p>
-                <a href="index.php" title="Los últimos artículos.">reciente</a> / <a href="index.php?q=h" title="Todos los artículos ordenados por fecha.">histórico</a> / <a href="index.php?q=202009180001i-faq.html" title="¿Qué es esta página?">faq</a> / <a href="index.php?q=202009180003i-color.html" title="Cambia la paleta de colores para leer mejor.">color</a><br>
-                <small>Esta página guarda una <a href="index.php?q=202009192256i-cookie.html" title="¡Infórmate!">cookie</a> para funcionar con normalidad</small><!-- ¿Debería acortar el mensaje? -->
+                <a href="index.php" title="Los últimos artículos.">reciente</a> / 
+                <a href="index.php?q=h" title="Todos los artículos ordenados por fecha.">histórico</a> / 
+                <a href="index.php?q=202009180001i-faq.html" title="¿Qué es esta página?">faq</a> / 
+                <a href="index.php?q=202009180003i-color.html" title="Cambia la paleta de colores para leer mejor.">color</a>
+                <br>
+                <small>
+                    <!-- ¿Debería acortar el mensaje? -->
+                    Esta página guarda una <a href="index.php?q=202009192256i-cookie.html" title="¡Infórmate!">cookie</a> para funcionar con normalidad
+                </small>
             </p>
         </header>
 
@@ -346,19 +366,27 @@
                         break;
                     case 404:
                         print_article($directory, "202009180000i-404.html");
+                        echo "<br><p class=\"center\"><a href=\"index.php?q=h\">Más artículos</a></p>";
                         break;
                 }
             ?>
-
         </div>
 
         <footer>
             <br>
             <p>
-                <small><a href="https://github.com/1noro">github</a> / <a href="https://gitlab.com/1noro">gitlab</a> / <a href="https://twitter.com/0x12Faab7">twiter</a> / <a href="mailto:ppuubblliicc@protonmail.com">mail</a> (<a href="res/publickey.ppuubblliicc@protonmail.com.asc" title="¡Mándame un correo cifrado!">gpg</a>)<br></small>
+                <small><a href="https://github.com/1noro">github</a> / 
+                    <a href="https://gitlab.com/1noro">gitlab</a> / 
+                    <a href="https://twitter.com/0x12Faab7">twiter</a> / 
+                    <a href="mailto:ppuubblliicc@protonmail.com">mail</a> (<a href="res/publickey.ppuubblliicc@protonmail.com.asc" title="¡Mándame un correo cifrado!">gpg</a>)
+                    <br>
+                </small>
             </p>
             <p>
-                <small>Creado por <a href="https://github.com/1noro/record.rat.la">Inoro</a> bajo la licencia <a href="LICENSE" title="Todo el código que sustenta la web está bajo la licencia GPLv3.">GPLv3</a></small>
+                <small>
+                    Creado por <a href="https://github.com/1noro/record.rat.la">Inoro</a> bajo la licencia <a href="LICENSE" title="Todo el código que sustenta la web está bajo la licencia GPLv3.">GPLv3</a>
+                </small>
+                <br>
                 <br>
                 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" title="Todo el contenido multimedia está bajo la licencia CC-BY-NC-SA.">
                     <img alt="Licencia de Creative Commons BY-NC-SA" style="border-width: 0; width: auto;" src="img/cc.png" width="80" height="15"/>
