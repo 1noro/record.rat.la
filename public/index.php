@@ -268,8 +268,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <title><?php echo $title; ?></title>
-        <!-- <link rel="icon" href="favicon.png" type="image/png" sizes="50x50"> -->
         <link rel="icon" href="favicon.webp" type="image/webp" sizes="50x50">
+
+        <!-- Avisamos al navegador de que se prepare para hacer una petición a este dominio -->
+        <link rel="preconnect dns-prefetch" href="https://www.googletagmanager.com">
 
         <!-- Revisar: https://css-tricks.com/essential-meta-tags-social-media/ -->
         <meta name="author" content="Inoro"> <!-- This site was made by https://github.com/1noro -->
@@ -294,7 +296,7 @@
 
         <!-- Cosas de la NSA (en modo prueba) -->
         <!-- Google Analytics -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-179041248-1"></script>
+        <!-- La carga del Scrit interno se hace después de los estilos para mejorar la performance -->
         <script>
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
@@ -365,6 +367,11 @@
                 margin: 0 auto;
             }
         </style>
+
+        <!-- Cosas de la NSA (en modo prueba) -->
+        <!-- Google Analytics -->
+        <!-- La situo aquí para mejorar la carga de la web -->
+        <script defer src="https://www.googletagmanager.com/gtag/js?id=UA-179041248-1"></script>
     </head>
 
     <body>
