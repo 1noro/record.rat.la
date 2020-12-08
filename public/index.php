@@ -371,7 +371,7 @@
                     }
                 </script>
             </p>
-            <nav aria-labelledby="primary-navigation">
+            <nav>
                 <h2>
                     <a href="index.php" title="Los últimos artículos.">reciente</a> / 
                     <a href="index.php?q=h" title="Todos los artículos ordenados por fecha.">histórico</a> / 
