@@ -270,8 +270,9 @@
         <title><?php echo $title; ?></title>
         <link rel="icon" href="favicon.webp" type="image/webp" sizes="50x50">
 
-        <!-- Avisamos al navegador de que se prepare para hacer una petición a este dominio -->
+        <!-- Avisamos al navegador de que se prepare para hacer una petición a estes dominios -->
         <link rel="preconnect dns-prefetch" href="https://www.googletagmanager.com">
+        <link rel="preconnect dns-prefetch" href="https://www.google-analytics.com">
 
         <!-- Revisar: https://css-tricks.com/essential-meta-tags-social-media/ -->
         <meta name="author" content="Inoro"> <!-- This site was made by https://github.com/1noro -->
