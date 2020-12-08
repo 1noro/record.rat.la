@@ -393,7 +393,7 @@
                     <img src="img/rat<?php echo $colors[$color_id]["hedaer_img_color"]; ?>.webp" alt="Logotipo de la web, una rata cantando: la la la." width="400" height="180.47">
                 </a>
                 <!-- Licencia de la imagen -->
-                <script type="application/ld+json">
+                <!-- <script type="application/ld+json">
                     {
                         "@context": "https://schema.org/",
                         "@type": "ImageObject",
@@ -401,7 +401,7 @@
                         "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
                         "acquireLicensePage": "https://record.rat.la/index.php?q=202009180001i-faq.html"
                     }
-                </script>
+                </script> -->
             </p>
             <nav role="navigation" aria-label="Enlaces a las secciones de la página">
                 <p id="web_nav">
