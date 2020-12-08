@@ -1,4 +1,4 @@
-<h2>Solución a algunas series numéricas en Java y Python</h2>
+<h1>Solución a algunas series numéricas en Java y Python</h1>
 
 <p>
     Lista del código que calcula las diferentes series numéricas propuestas en el Ejercicio evaluable 1 de la asignatura <a href="index.php?q=202009301238i-programacion-multimedia-y-dispositivos-moviles.html">Programación Multimedia y Dispositivos Móviles</a>.
@@ -8,11 +8,11 @@
     <i>Voy a tomar como regla que todas las listas serán de 100 elementos como máximo.</i>
 </blockquote>
 
-<h3>1. La serie de Fibonacci</h3>
+<h2>1. La serie de Fibonacci</h2>
 
-<p>Mi explicación:<br>Empezando con <samp>[0, 1]</samp>, el siguiente se calcula con la suma de los dos anteriores.</p>
+<p>Mi explicación: Empezando con <samp>[0, 1]</samp>, el siguiente se calcula con la suma de los dos anteriores.</p>
 
-<h4>En Java</h4>
+<h3>Fibonacci en Java</h3>
 
 <pre>
 package ej1pmydm;
@@ -34,7 +34,7 @@ public class Ej1pmydm {
 }
 </pre>
 
-<h4>En Python</h4>
+<h3>Fibonacci en Python</h3>
 
 <pre>
 lista = [0, 1]
@@ -43,11 +43,11 @@ while len(lista) < 100:
 print(lista)
 </pre>
 
-<h3>2. La serie de Tribonacci</h3>
+<h2>2. La serie de Tribonacci</h2>
 
-<p>Mi explicación:<br>Empezando con <samp>[1, 1, 2]</samp>, el siguiente se calcula con la suma de los tres anteriores.</p>
+<p>Mi explicación: Empezando con <samp>[1, 1, 2]</samp>, el siguiente se calcula con la suma de los tres anteriores.</p>
 
-<h4>En Java</h4>
+<h3>Tribonacci en Java</h3>
 
 <pre>
 package ej2pmydm;
@@ -70,7 +70,7 @@ public class Ej2pmydm {
 }
 </pre>
 
-<h4>En Python</h4>
+<h3>Tribonacci en Python</h3>
 
 <pre>
 lista = [1, 1, 2]
@@ -79,18 +79,17 @@ while len(lista) < 100:
 print(lista)
 </pre>
 
-<h3>3. La serie en la cual si el anterior es par se suman los tres anteriores y, si es impar, solo los dos anteriores</h3>
+<h2>3. La serie en la cual si el anterior es par se suman los tres anteriores y, si es impar, solo los dos anteriores</h2>
 
 <p>
-    Mi explicación:<br>
-    Empezamos con la lista <samp>[1, 1]</samp>.
+    Mi explicación: Empezamos con la lista <samp>[1, 1]</samp>.
     <ul>
         <li>Si el último es impar, se suman los 2 últimos para calcular el siguiente.</li>
         <li>Si el último es par, se suman los 3 últimos para calcular el siguiente.</li>
     </ul>
 </p>
 
-<h4>En Java</h4>
+<h3>La serie anterior en Java</h3>
 
 <pre>
 package ej3pmydm;
@@ -116,7 +115,7 @@ public class Ej3pmydm {
 }
 </pre>
 
-<h4>En Python</h4>
+<h3>La serie anterior en Python</h3>
 
 <pre>
 lista = [1, 1]
@@ -128,11 +127,11 @@ while len(lista) < 100:
 print(lista)
 </pre>
 
-<h3>4. La serie de los cuadrados perfectos escritos al revés</h3>
+<h2>4. La serie de los cuadrados perfectos escritos al revés</h2>
 
 <p>Tengo dudas, no se si se refiere a esto:</p>
 
-<h4>En Java</h4>
+<h3>Los cuadrados perfectos al revés en Java</h3>
 
 <pre>
 package ej4pmydm;
@@ -154,7 +153,7 @@ public class Ej4pmydm {
 }
 </pre>
 
-<h4>En Python</h4>
+<h3>Los cuadrados perfectos al revés en Python</h3>
 
 <pre>
 lista = []
@@ -165,11 +164,11 @@ while numero > 0:
 print(lista)
 </pre>
 
-<h3>5. La serie que suma las cifras de los anteriores</h3>
+<h2>5. La serie que suma las cifras de los anteriores</h2>
 
 <p>Ojo, se refiere a el <b>número de cifras</b>, no a la suma del os valores anteriores.</p>
 
-<h4>En Java</h4>
+<h3>La suma las cifras de los anteriores en Java</h3>
 
 <pre>
 package ej5pmydm;
@@ -190,7 +189,7 @@ public class Ej5pmydm {
 }
 </pre>
 
-<h4>En Python</h4>
+<h3>La suma las cifras de los anteriores en Python</h3>
 
 <pre>
 lista = [1]

@@ -1,4 +1,4 @@
-<h2>Configurar Ubiquiti EdgeRouter para Movistar TV</h2>
+<h1>Configurar Ubiquiti EdgeRouter para Movistar TV</h1>
 
 <p>
     Voy a explicar como conseguí, finalmente, hacer que la televisión de Movistar Plus se vea a través de un EdgeRouter de Ubiquiti, ajustando el escenario de ejemplo a mis necesidades en casa.
@@ -10,21 +10,21 @@
     <p>HGU = Router de Movistar, ER = EdgeRouter.</p>
 </blockquote>
 
-<h3>Si pruebas esta configuración y tienes fallos, coméntalos como issues de <a href="https://github.com/1noro/ubiquiti-er-movistartv">este  repositorio</a>, o <a href="mailto:ppuubblliicc@protonmail.com">contáctame</a>.</h3>
+<h2>Si pruebas esta configuración y tienes fallos, coméntalos como issues de <a href="https://github.com/1noro/ubiquiti-er-movistartv">este  repositorio</a>, o <a href="mailto:ppuubblliicc@protonmail.com">contáctame</a>.</h2>
 
-<h3>Escenario</h3>
+<h2>Escenario</h2>
 
 <p><img src="img/202009200144/mapa.webp" alt="Diagrama del escenario"></p>
 
-<h3>1 - Asignar a la interfaz WAN física del ER una IP fija o por DHCP dentro de la red del HGU</h3>
+<h2>1 - Asignar a la interfaz WAN física del ER una IP fija o por DHCP dentro de la red del HGU</h2>
 
 <p><img src="img/202009200144/1-1.webp" alt="imagen 1-1" class="half"></p>
 
-<h3>2 - Enmascarar todo el tráfico hacia la red del HGU con dicha interfaz</h3>
+<h2>2 - Enmascarar todo el tráfico hacia la red del HGU con dicha interfaz</h2>
 
 <p><img src="img/202009200144/2-1.webp" alt="imagen 2-1"></p>
 
-<h3>3 - Añadir un par de rutas al ER para las peticiones IGMP/Multicast</h3>
+<h2>3 - Añadir un par de rutas al ER para las peticiones IGMP/Multicast</h2>
 
 <p>Rutas estáticas de <strong>tipo Gateway</strong>.</p>
 
@@ -34,13 +34,13 @@
 
 <p><img src="img/202009200144/3-2.webp" alt="imagen 3-2"></p>
 
-<h3>4 - Configurar el Firewall del ER</h3>
+<h2>4 - Configurar el Firewall del ER</h2>
 
 <p>Me baso en las dos Rulesets definidas por la configuración básica del ER a través del Wizard, WAN_IN y WAN_LOCAL.</p>
 
 <p><img src="img/202009200144/4-1.webp" alt="imagen 4-1"></p>
 
-<h3>Reglas de WAN_IN:</h3>
+<h2>Reglas de WAN_IN:</h2>
 
 <p>Es importante que se <strong>mantengan en el orden</strong> definido.</p>
 
@@ -50,7 +50,7 @@
 
 <p><img src="img/202009200144/4-4.webp" alt="imagen 4-4" class="half"></p>
 
-<h3>Reglas de WAN_LOCAL:</h3>
+<h2>Reglas de WAN_LOCAL:</h2>
 
 <p><strong>Las mismas</strong> que las de WAN_IN, pero sospecho que no deberían de hacer falta.</p>
 
@@ -58,7 +58,7 @@
     <p>Necesita mas pruebas.</p>
 </blockquote>
 
-<h3>5 - <a href="https://help.ui.com/hc/en-us/articles/204961854-EdgeRouter-IGMP-Proxy">Habilitar IGMP Proxy en el ER</a></h3>
+<h2>5 - <a href="https://help.ui.com/hc/en-us/articles/204961854-EdgeRouter-IGMP-Proxy">Habilitar IGMP Proxy en el ER</a></h2>
 
 <p>Nos conectamos a la <strong>terminal</strong> del ER (por la CLI Web o por SSH).</p>
 
@@ -84,14 +84,14 @@ commit ; save
 exit
 </pre>
 
-<h3>Comandos para verificar que el tráfico multicast está fluyendo:</h3>
+<h2>Comandos para verificar que el tráfico multicast está fluyendo:</h2>
 
 <pre>
 show ip multicast mfc
 show ip multicast interfaces
 </pre>
 
-<h3>6 - Configuración estática de red en el aparato de Movistar TV</h3>
+<h2>6 - Configuración estática de red en el aparato de Movistar TV</h2>
 
 <ul>
     <li>Pulsamos el botón superior con forma de persona en el mando de la TV de Movistar repetidas veces durante el arranque, hasta entrar en el <strong>menú de configuración de red</strong>.</li>
@@ -112,7 +112,7 @@ show ip multicast interfaces
     </li>
 </ul>
 
-<h3>Enlaces en los que me he basado</h3>
+<h2>Enlaces en los que me he basado</h2>
 
 <ul>
     <li><a href="https://help.ui.com/hc/en-us/articles/204961854-EdgeRouter-IGMP-Proxy">https://help.ui.com/hc/en-us/articles/204961854-EdgeRouter-IGMP-Proxy</a></li>
@@ -120,4 +120,4 @@ show ip multicast interfaces
     <li><a href="https://comunidad.movistar.es/t5/Soporte-Fibra-y-ADSL/configuracion-del-router-ax-11000-asus-por-conexion-pppoe-ONT/m-p/4217145#M427122">https://comunidad.movistar.es/t5/Soporte-Fibra-y-ADSL/configuracion-del-router-ax-11000-asus-por-conexion-pppoe-ONT/m-p/4217145#M427122</a></li>
 </ul>
 
-<h3>Si pruebas esta configuración y tienes fallos, coméntalos como issues de <a href="https://github.com/1noro/ubiquiti-er-movistartv">este  repositorio</a>, o <a href="mailto:ppuubblliicc@protonmail.com">contáctame</a>.</h3>
+<h2>Si pruebas esta configuración y tienes fallos, coméntalos como issues de <a href="https://github.com/1noro/ubiquiti-er-movistartv">este  repositorio</a>, o <a href="mailto:ppuubblliicc@protonmail.com">contáctame</a>.</h2>

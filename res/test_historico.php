@@ -5,8 +5,8 @@
     function get_title($filepath) {
         $file_obj = fopen($filepath, "r");
         $result = fgets($file_obj);
-        $result = str_replace("<h2>", "", $result);
-        $result = str_replace("</h2>", "", $result);
+        $result = str_replace("<h1>", "", $result);
+        $result = str_replace("</h1>", "", $result);
         fclose($file_obj);
         return $result;
     }

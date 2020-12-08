@@ -156,12 +156,12 @@
         return $result;
     }
 
-    // get_title, obtiene el título del artículo en base al texto en el primer <h2></h2> encontrado
+    // get_title, obtiene el título del artículo en base al texto en el primer <h1></h1> encontrado
     function get_title($filepath) {
         $file_obj = fopen($filepath, "r");
         $result = fgets($file_obj);
-        $result = str_replace("<h2>", "", $result);
-        $result = str_replace("</h2>", "", $result);
+        $result = str_replace("<h1>", "", $result);
+        $result = str_replace("</h1>", "", $result);
         $result = str_replace("\n", "", $result);
         fclose($file_obj);
         return strip_tags($result); // quitamos las tags HTML
@@ -203,7 +203,7 @@
 
     // print_historico, imprime l apágina del histórico de artículos
     function print_historico($directory, $filenames) {
-        echo "<h2>Histórico de artículos</h2>";
+        echo "<h1>Histórico de artículos</h1>";
         echo "<ul>";
         foreach($filenames as $filename) {
             echo "<li><a href=\"index.php?q=" . $filename . "\">" . get_date($filename) . "</a> (" . get_author_data($filename)[0] . ") " . get_title($directory . $filename) . "</li>";
@@ -225,7 +225,7 @@
         if ($_GET["q"] == "h") {
             // Histórico
             $action = 1;
-            $title = "Histórico - record.rat.la";
+            $title = "Histórico de artículos - record.rat.la";
             $description = "Listado de todos los artículos publicados en record.rat.la.";
         } elseif ($_GET["q"] == "c" && isset($_GET["c"])) {
             // Cambio de paleta de colores
@@ -310,9 +310,21 @@
                 /* font-family: Times, Serif; */ /* Considerar obviar la letra Times y poner todo Serif */
             }
 
+            /* a {text-decoration: none;} */
+            /* Es importante mantener el orden: link - visited - hover - active */
+            a:link {color: <?php echo $colors[$color_id]["link"]; ?>;}
+            a:visited {color: <?php echo $colors[$color_id]["link_visited"]; ?>;}
+            a:active {color: <?php echo $colors[$color_id]["link_active"]; ?>;}
+
             header, footer, p.center {text-align: center;}
 
-            h1, h2, h3, h4, h5, h6 {color: <?php echo $colors[$color_id]["title"]; ?>;}
+            header p#web_title {
+                font-size: xx-large;
+                font-weight: bold;
+            }
+
+            header img {max-width: 400px;}
+            header p#web_nav {font-size: x-large;}
 
             main {
                 max-width: 750px;
@@ -323,6 +335,11 @@
             main, header img {
                 width: 100%;
                 margin: 0px auto;
+            }
+
+            h1, h2, h3, h4, h5, h6 {
+                color: <?php echo $colors[$color_id]["title"]; ?>;
+                text-align: left;
             }
 
             pre {
@@ -340,25 +357,22 @@
             pre, code, samp {font-size: <?php echo $text_sizes[$text_size_id]["code"]; ?>; /* 1.1em */}
 
             img {width: 100%;}
-            img.half {width: 50%;}
-            header img {max-width: 400px;}
-
-            /* a {text-decoration: none;} */
-            /* Es importante mantener el orden: link - visited - hover - active */
-            a:link {color: <?php echo $colors[$color_id]["link"]; ?>;}
-            a:visited {color: <?php echo $colors[$color_id]["link_visited"]; ?>;}
-            a:active {color: <?php echo $colors[$color_id]["link_active"]; ?>;}
+            img.half {
+                width: 50%;
+                display: block;
+                margin: 0 auto;
+            }
         </style>
     </head>
 
     <body>
         <header role="banner">
             <!-- Título H1 de la web -->
-            <h1>record.rat.la</h1>
+            <p id="web_title">record.rat.la</p>
             <!-- Para evitar que el contenido se mueva al cargar la imagen puse "height: 209px;" al <p>. -->
             <p style="height: 210px;">
                 <a href="https://www.instagram.com/pepunto.reik" title="Artista: @pepunto.reik">
-                    <img src="img/rat<?php echo $colors[$color_id]["hedaer_img_color"]; ?>.svg" alt="Imagen del header, rata cantando: lalala." width="400" height="210">
+                    <img src="img/rat<?php echo $colors[$color_id]["hedaer_img_color"]; ?>.svg" alt="Logotipo de la web, una rata cantando: la la la." width="400" height="210">
                 </a>
                 <!-- Licencia de la imagen -->
                 <script type="application/ld+json">
@@ -372,12 +386,12 @@
                 </script>
             </p>
             <nav role="navigation">
-                <h2>
+                <p id="web_nav">
                     <a href="index.php" title="Los últimos artículos.">reciente</a> / 
                     <a href="index.php?q=h" title="Todos los artículos ordenados por fecha.">histórico</a> / 
                     <a href="index.php?q=202009180001i-faq.html" title="¿Qué es esta página?">faq</a> / 
                     <a href="index.php?q=202009180003i-color.html" title="Cambia la paleta de colores para leer mejor.">color</a>
-                </h2>
+                </p>
             </nav>
             <p>
                 <span style="font-size: 1.05em;"><a href="index.php?size=0<?php echo add_q_if_exists(); ?>" title="Texto a tamaño por defecto." aria-label="Texto a tamaño por defecto.">Txt</a></span> / 

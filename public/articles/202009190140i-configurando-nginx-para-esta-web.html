@@ -1,4 +1,4 @@
-<h2>Un servidor para record.rat.la</h2>
+<h1>Un servidor para record.rat.la</h1>
 
 <p>
     Como por el momento esta web será para uso personal, y no tendrá una enorme carga de trabajo, voy a optar por instalarla en una máquina virtual <a href="https://www.debian.org/index.es.html">Debian</a> 10 en mi servidor <a href="https://www.proxmox.com/en/">Proxmox</a>.
@@ -18,7 +18,7 @@ git clone https://github.com/1noro/record.rat.la.git
 chmod 777 -R record.rat.la.git
 </pre>
 
-<h3>Configurando Nginx en Debian 10</h3>
+<h2>Configurando Nginx en Debian 10</h2>
 
 <pre>
 apt install git nginx php-fpm
@@ -52,7 +52,7 @@ cp /etc/nginx/sites-available/default /etc/nginx/conf.d/record.rat.la.conf
     Ahora editamos <samp>/etc/nginx/conf.d/record.rat.la.conf</samp>.
 </p>
 
-<h4><samp>record.rat.la.conf</samp> original</h4>
+<h3><samp>record.rat.la.conf</samp> original</h3>
 
 <pre>
 server {
@@ -128,7 +128,7 @@ server {
 #}
 </pre>
 
-<h4>Modificaciones</h4>
+<h3>Modificaciones</h3>
 
 <ul>
     <li>En primer lugar, necesitamos agregar <samp>index.php</samp> como el primer valor de nuestra directiva de índice para que los archivos denominados <samp>index.php</samp> se sirvan, si están disponibles, cuando se solicita un directorio.</li>
@@ -137,7 +137,7 @@ server {
     <li>También hay que remover los comentarios del bloque de ubicación que trata con archivos <samp>.htaccess</samp>. Nginx no procesa estos archivos. Si alguno de estos archivos encuentra la forma de llegar a un documento root, no deben ser servidos a los visitantes.</li>
 </ul>
 
-<h4><samp>record.rat.la.conf</samp> modificado</h4>
+<h3><samp>record.rat.la.conf</samp> modificado</h3>
 
 <pre>
 server {
@@ -221,7 +221,7 @@ nginx -t
 systemctl reload nginx
 </pre>
 
-<h3>SSL con Lets Encrypt y Nginx en Debian 10</h3>
+<h2>SSL con Lets Encrypt y Nginx en Debian 10</h2>
 
 <p>Instalaciones iniciales:</p>
 
@@ -270,7 +270,7 @@ include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
 ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
 </pre>
 
-<h4>SSL Certbot Auto-Renewal</h4>
+<h3>SSL Certbot Auto-Renewal</h3>
 
 <p>Nos aseguramos de que cron se está ejecutando.</p>
 
@@ -285,7 +285,7 @@ systemctl start cron
 certbot renew --dry-run
 </pre>
 
-<h3>Script para actualizar la web desde mi PC personal</h3>
+<h2>Script para actualizar la web desde mi PC personal</h2>
 
 <p>Para facilitar la actualización de la web, este script puede ser muy útil.</p>
 
@@ -293,7 +293,7 @@ certbot renew --dry-run
 ssh user@server_ip_or_domain 'git -C /var/www/record.rat.la pull'
 </pre>
 
-<h3>Bibliografía</h3>
+<h2>Bibliografía</h2>
 
 <ul>
     <li><a href="https://www.digitalocean.com/community/tutorials/como-instalar-linux-nginx-mysql-php-lemp-stack-in-ubuntu-16-04-es">¿Cómo Instalar Linux, Nginx, MySQL, PHP (LEMP stack) in Ubuntu 16.04?</a></li>
