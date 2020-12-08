@@ -294,14 +294,14 @@
 
         <!-- Cosas de la NSA (en modo prueba) -->
         <!-- Google Analytics -->
-        <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-179041248-1"></script>
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-179041248-1"></script>
         <script>
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
 
             gtag('config', 'UA-179041248-1');
-        </script> -->
+        </script>
 
         <style>
             body {
@@ -312,13 +312,14 @@
                 /* font-family: Times, Serif; */ /* Considerar obviar la letra Times y poner todo Serif */
             }
 
-            /* a {text-decoration: none;} */
+            /* --- Enlaces --- */
             a.text_size_link {text-decoration: none;}
             /* Es importante mantener el orden: link - visited - hover - active */
             a:link {color: <?php echo $colors[$color_id]["link"]; ?>;}
             a:visited {color: <?php echo $colors[$color_id]["link_visited"]; ?>;}
             a:active {color: <?php echo $colors[$color_id]["link_active"]; ?>;}
 
+            /* --- Contenedores HEADER y FOOTER --- */
             header, footer, p.center {text-align: center;}
 
             header p#web_title {
@@ -329,15 +330,12 @@
             header img {max-width: 400px;}
             header p#web_nav {font-size: 1.4em;} /* este valor multiplica al valor definido en el body */
 
+            /* --- contenedor MAIN --- */
             main {
                 max-width: 750px;
                 text-align: justify;
                 text-justify: inter-word;
-            }
-
-            main, header img {
-                width: 100%;
-                margin: 0px auto;
+                margin: 0 auto;
             }
 
             h1, h2, h3, h4, h5, h6 {
@@ -359,7 +357,8 @@
 
             pre, code, samp {font-size: <?php echo $text_sizes[$text_size_id]["code"]; ?>; /* 1.1em */}
 
-            img {width: 100%;}
+            img :not(header img) {width: 100%;} /* todas las imágenes menos la del header */
+
             img.half {
                 width: 50%;
                 display: block;
@@ -380,10 +379,10 @@
             </nav>
             <!-- Título H1 de la web -->
             <p id="web_title">record.rat.la</p>
-            <!-- Para evitar que el contenido se mueva al cargar la imagen puse "height: 209px;" al <p>. -->
-            <p style="height: 210px;">
+            <!-- Para evitar que el contenido se mueva al cargar la imagen puse "height: 180.47px;" al <p>. -->
+            <p><!-- style="height: 180.47px;" -->
                 <a href="https://www.instagram.com/pepunto.reik" aria-label="Artista: @pepunto.reik">
-                    <img src="img/rat<?php echo $colors[$color_id]["hedaer_img_color"]; ?>.svg" alt="Logotipo de la web, una rata cantando: la la la." width="400" height="210">
+                    <img src="img/rat<?php echo $colors[$color_id]["hedaer_img_color"]; ?>.png" alt="Logotipo de la web, una rata cantando: la la la." width="400" height="180.47">
                 </a>
                 <!-- Licencia de la imagen -->
                 <script type="application/ld+json">
