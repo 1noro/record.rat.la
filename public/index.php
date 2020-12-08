@@ -215,7 +215,7 @@
     // print_article, imprime la tágina de un artículo pasado como parámetro
     function print_article($directory, $filename) {
         echo file_get_contents($directory . $filename);
-        echo "<p style=\"text-align:right;\"><small><a href=\"index.php?q=" . $filename . "\" title=\"Ver este artículo individualmente.\">Enlace al artículo</a><br><a href=\"index.php?q=" . get_author_data($filename)[1] . "\" title=\"Página del autor.\">" . get_author_data($filename)[0] . "</a> - " . get_date($filename) . "</small></p>";
+        echo "<p style=\"text-align:right;\"><small><a href=\"index.php?q=" . $filename . "\" title=\"Ver '" . get_title($directory . $filename) . "' individualmente.\" aria-label=\"Ver '" . get_title($directory . $filename) . "' individualmente.\">Enlace al artículo</a><br><a href=\"index.php?q=" . get_author_data($filename)[1] . "\" title=\"Página del autor.\" aria-label=\"Página del autor.\">" . get_author_data($filename)[0] . "</a> - " . get_date($filename) . "</small></p>";
     }
 
     // procesamos la variable GET "q" y obramos en consecuencia
@@ -314,13 +314,13 @@
 
             h1, h2, h3, h4, h5, h6 {color: <?php echo $colors[$color_id]["title"]; ?>;}
 
-            div#content {
+            main {
                 max-width: 750px;
                 text-align: justify;
                 text-justify: inter-word;
             }
 
-            div#content, header img {
+            main, header img {
                 width: 100%;
                 margin: 0px auto;
             }
@@ -352,7 +352,7 @@
     </head>
 
     <body>
-        <header>
+        <header role="banner">
             <!-- Título H1 de la web -->
             <h1>record.rat.la</h1>
             <!-- Para evitar que el contenido se mueva al cargar la imagen puse "height: 209px;" al <p>. -->
@@ -371,7 +371,7 @@
                     }
                 </script>
             </p>
-            <nav>
+            <nav role="navigation">
                 <h2>
                     <a href="index.php" title="Los últimos artículos.">reciente</a> / 
                     <a href="index.php?q=h" title="Todos los artículos ordenados por fecha.">histórico</a> / 
@@ -380,9 +380,9 @@
                 </h2>
             </nav>
             <p>
-                <span style="font-size: 1.05em;"><a href="index.php?size=0<?php echo add_q_if_exists(); ?>" title="Cambiar texto la tamaño por defecto.">Txt</a></span> / 
-                <span style="font-size: 1.20em;"><a href="index.php?size=1<?php echo add_q_if_exists(); ?>" title="Cambiar texto a tamaño grande.">Txt</a></span> / 
-                <span style="font-size: 1.35em;"><a href="index.php?size=2<?php echo add_q_if_exists(); ?>" title="Cambiar texto a tamaño enorme.">Txt</a></span>
+                <span style="font-size: 1.05em;"><a href="index.php?size=0<?php echo add_q_if_exists(); ?>" title="Texto a tamaño por defecto." aria-label="Texto a tamaño por defecto.">Txt</a></span> / 
+                <span style="font-size: 1.20em;"><a href="index.php?size=1<?php echo add_q_if_exists(); ?>" title="Texto a tamaño grande." aria-label="Texto a tamaño grande.">Txt</a></span> / 
+                <span style="font-size: 1.35em;"><a href="index.php?size=2<?php echo add_q_if_exists(); ?>" title="Texto a tamaño enorme." aria-label="Texto a tamaño enorme.">Txt</a></span>
             </p>
             <p>
                 <small>
@@ -392,13 +392,13 @@
             </p>
         </header>
 
-        <div id="content">
+        <main role="main">
             <?php
                 $filenames = get_filenames($directory);
                 switch ($action) {
                     case 0:
                         print_reciente($directory, $filenames, $articles_to_show);
-                        echo "<br><p class=\"center\"><a href=\"index.php?q=h\">Más artículos</a></p>";
+                        echo "<br><p class=\"center\"><a href=\"index.php?q=h\">[Más artículos]</a></p>";
                         break;
                     case 1:
                         print_historico($directory, $filenames);
@@ -408,17 +408,17 @@
                         break;
                     case 3:
                         print_article($directory, $_GET["q"]);
-                        echo "<br><p class=\"center\"><a href=\"index.php?q=h\">Más artículos</a></p>";
+                        echo "<br><p class=\"center\"><a href=\"index.php?q=h\">[Más artículos]</a></p>";
                         break;
                     case 404:
                         print_article($directory, "202009180000i-404.html");
-                        echo "<br><p class=\"center\"><a href=\"index.php?q=h\">Más artículos</a></p>";
+                        echo "<br><p class=\"center\"><a href=\"index.php?q=h\">[Más artículos]</a></p>";
                         break;
                 }
             ?>
-        </div>
+        </main>
 
-        <footer>
+        <footer role="contentinfo">
             <br>
             <p>
                 <small><a href="https://github.com/1noro">github</a> / 
