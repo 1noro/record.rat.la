@@ -372,7 +372,8 @@
         <!-- Cosas de la NSA (en modo prueba) -->
         <!-- Google Analytics -->
         <!-- La situo aquí para mejorar la carga de la web -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-179041248-1"></script>
+        <script defer src="https://www.googletagmanager.com/gtag/js?id=UA-179041248-1"></script>
+        <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-179041248-1"></script> -->
     </head>
 
     <body>
