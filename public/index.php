@@ -164,7 +164,8 @@
         $result = str_replace("</h1>", "", $result);
         $result = str_replace("\n", "", $result);
         fclose($file_obj);
-        return strip_tags($result); // quitamos las tags HTML
+        // quitamos las tags HTML y luego cambiamos los caracteres especiales por sus códigos HTML (incluidas las " y ')
+        return htmlentities(strip_tags($result), ENT_QUOTES); 
     }
 
     // get_description, obtiene el contenido del primer párrafo <p></p> del artículo y lo coloca como description del mismo
@@ -215,7 +216,8 @@
     // print_article, imprime la tágina de un artículo pasado como parámetro
     function print_article($directory, $filename) {
         echo file_get_contents($directory . $filename);
-        echo "<p style=\"text-align:right;\"><small><a href=\"index.php?q=" . $filename . "\" title=\"Ver '" . get_title($directory . $filename) . "' individualmente.\" aria-label=\"Ver '" . get_title($directory . $filename) . "' individualmente.\">Enlace al artículo</a><br><a href=\"index.php?q=" . get_author_data($filename)[1] . "\" title=\"Página del autor.\" aria-label=\"Página del autor.\">" . get_author_data($filename)[0] . "</a> - " . get_date($filename) . "</small></p>";
+        echo "<p style=\"text-align:right;\"><a href=\"index.php?q=" . get_author_data($filename)[1] . "\" aria-label=\"Página del autor " . get_author_data($filename)[0] . ".\" aria-label=\"Página del autor.\">" . get_author_data($filename)[0] . "</a> - " . get_date($filename) . "</small></p>";
+        echo "<p style=\"text-align:right;\"><small><a href=\"index.php?q=" . $filename . "\" aria-label=\"Enlace al artículo '" . get_title($directory . $filename) . "' para verlo individualmente.\">Enlace al artículo</a></p>";
     }
 
     // procesamos la variable GET "q" y obramos en consecuencia
@@ -319,12 +321,12 @@
             header, footer, p.center {text-align: center;}
 
             header p#web_title {
-                font-size: xx-large;
+                font-size: 1.9em; /* este valor multiplica al valor definido en el body */
                 font-weight: bold;
             }
 
             header img {max-width: 400px;}
-            header p#web_nav {font-size: x-large;}
+            header p#web_nav {font-size: 1.4em;} /* este valor multiplica al valor definido en el body */
 
             main {
                 max-width: 750px;
@@ -366,13 +368,17 @@
     </head>
 
     <body>
-        <header role="banner">
+        <nav role="navigation" aria-label="Skip Links">
+            <small><a href="#main">Ir al artículo</a> / <a href="#footer">Ir abajo</a></small>
+        </nav>
+        <header role="banner" aria-label="Cabecera">
+            <a href="" name="header" tabindex="-1"></a>
             <!-- Título H1 de la web -->
             <p id="web_title">record.rat.la</p>
             <!-- Para evitar que el contenido se mueva al cargar la imagen puse "height: 209px;" al <p>. -->
             <p style="height: 210px;">
-                <a href="https://www.instagram.com/pepunto.reik" title="Artista: @pepunto.reik">
-                    <img src="img/rat<?php echo $colors[$color_id]["hedaer_img_color"]; ?>.svg" alt="Logotipo de la web, una rata cantando: la la la." width="400" height="210">
+                <a href="https://www.instagram.com/pepunto.reik" aria-label="Artista: @pepunto.reik">
+                    <img role="logo" src="img/rat<?php echo $colors[$color_id]["hedaer_img_color"]; ?>.svg" alt="Logotipo de la web, una rata cantando: la la la." width="400" height="210">
                 </a>
                 <!-- Licencia de la imagen -->
                 <script type="application/ld+json">
@@ -385,34 +391,35 @@
                     }
                 </script>
             </p>
-            <nav role="navigation">
+            <nav role="navigation" aria-label="Enlaces a las secciones de la página">
                 <p id="web_nav">
-                    <a href="index.php" title="Los últimos artículos.">reciente</a> / 
-                    <a href="index.php?q=h" title="Todos los artículos ordenados por fecha.">histórico</a> / 
-                    <a href="index.php?q=202009180001i-faq.html" title="¿Qué es esta página?">faq</a> / 
-                    <a href="index.php?q=202009180003i-color.html" title="Cambia la paleta de colores para leer mejor.">color</a>
+                    <a href="index.php" aria-label="Artículos recientes.">reciente</a> / 
+                    <a href="index.php?q=h" aria-label="Ver el histórico de artículos ordenados por fecha.">histórico</a> / 
+                    <a href="index.php?q=202009180001i-faq.html" aria-label="faq, preguntas frecuentes sobre esta página.">faq</a> / 
+                    <a href="index.php?q=202009180003i-color.html" aria-label="Cambia la paleta de colores para leer mejor o para molar más.">color</a>
                 </p>
             </nav>
             <p>
-                <span style="font-size: 1.05em;"><a href="index.php?size=0<?php echo add_q_if_exists(); ?>" title="Texto a tamaño por defecto." aria-label="Texto a tamaño por defecto.">Txt</a></span> / 
-                <span style="font-size: 1.20em;"><a href="index.php?size=1<?php echo add_q_if_exists(); ?>" title="Texto a tamaño grande." aria-label="Texto a tamaño grande.">Txt</a></span> / 
-                <span style="font-size: 1.35em;"><a href="index.php?size=2<?php echo add_q_if_exists(); ?>" title="Texto a tamaño enorme." aria-label="Texto a tamaño enorme.">Txt</a></span>
+                <span style="font-size: 1.05em;"><a href="index.php?size=0<?php echo add_q_if_exists(); ?>" aria-label="Texto a tamaño por defecto.">tamaño</a></span> / 
+                <span style="font-size: 1.20em;"><a href="index.php?size=1<?php echo add_q_if_exists(); ?>" aria-label="Texto a tamaño grande.">tamaño</a></span> / 
+                <span style="font-size: 1.35em;"><a href="index.php?size=2<?php echo add_q_if_exists(); ?>" aria-label="Texto a tamaño enorme.">tamaño</a></span>
             </p>
             <p>
                 <small>
                     <!-- ¿Debería acortar el mensaje? -->
-                    Esta página guarda una <a href="index.php?q=202009192256i-cookie.html" title="¡Infórmate!">cookie</a> para funcionar con normalidad
+                    Esta página guarda una <a href="index.php?q=202009192256i-cookie.html" aria-label="¡Infórmate sobre las cookies!">cookie</a> para funcionar con normalidad
                 </small>
             </p>
         </header>
 
-        <main role="main">
+        <main role="main" aria-label="Contenido principal">
+            <a href="" name="main" tabindex="-1"></a>
             <?php
                 $filenames = get_filenames($directory);
                 switch ($action) {
                     case 0:
                         print_reciente($directory, $filenames, $articles_to_show);
-                        echo "<br><p class=\"center\"><a href=\"index.php?q=h\">[Más artículos]</a></p>";
+                        // echo "<p class=\"center\"><a href=\"index.php?q=h\">[Más artículos]</a></p>";
                         break;
                     case 1:
                         print_historico($directory, $filenames);
@@ -422,33 +429,44 @@
                         break;
                     case 3:
                         print_article($directory, $_GET["q"]);
-                        echo "<br><p class=\"center\"><a href=\"index.php?q=h\">[Más artículos]</a></p>";
+                        // echo "<p class=\"center\"><a href=\"index.php?q=h\">[Más artículos]</a></p>";
                         break;
                     case 404:
                         print_article($directory, "202009180000i-404.html");
-                        echo "<br><p class=\"center\"><a href=\"index.php?q=h\">[Más artículos]</a></p>";
+                        // echo "<p class=\"center\"><a href=\"index.php?q=h\">[Más artículos]</a></p>";
                         break;
                 }
             ?>
+            
         </main>
 
-        <footer role="contentinfo">
-            <br>
+        <footer role="contentinfo" aria-label="Licencias y contactos">
+            <a href="" name="footer" tabindex="-1"></a>
+            <nav role="navigation" aria-label="Enlace al histórico de artículos.">
+                <p class="center">
+                    <a href="index.php?q=h">[Más artículos]</a>
+                </p>
+            </nav>
+            <nav role="navigation" aria-label="Skip Links">
+                <p>
+                    <a href="#header">Volver arriba</a> / <a href="#main">Ir al artículo</a>
+                </p>
+            </nav>
             <p>
-                <small><a href="https://github.com/1noro">github</a> / 
+                <small>
+                    <a href="https://github.com/1noro">github</a> / 
                     <a href="https://gitlab.com/1noro">gitlab</a> / 
                     <a href="https://twitter.com/0x12Faab7">twiter</a> / 
-                    <a href="mailto:ppuubblliicc@protonmail.com">mail</a> (<a href="res/publickey.ppuubblliicc@protonmail.com.asc" title="¡Mándame un correo cifrado!">gpg</a>)
-                    <br>
+                    <a href="mailto:ppuubblliicc@protonmail.com">mail</a> (<a href="res/publickey.ppuubblliicc@protonmail.com.asc" aria-label="¡Mándame un correo cifrado con gpg!">gpg</a>)
                 </small>
             </p>
             <p>
                 <small>
-                    Creado por <a href="https://github.com/1noro/record.rat.la">Inoro</a> bajo la licencia <a href="LICENSE" title="Todo el código que sustenta la web está bajo la licencia GPLv3.">GPLv3</a>
+                    Creado por <a href="https://github.com/1noro/record.rat.la">Inoro</a> bajo la licencia <a href="LICENSE" aria-label="Todo el código que sustenta la web está bajo la licencia GPLv3.">GPLv3</a>
                 </small>
-                <br>
-                <br>
-                <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" title="Todo el contenido multimedia está bajo la licencia CC-BY-NC-SA.">
+            </p>
+            <p>
+                <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" aria-label="Todo el contenido multimedia está bajo la licencia CC-BY-NC-SA.">
                     <img alt="Licencia de Creative Commons BY-NC-SA" style="border-width: 0; width: auto;" src="img/cc.png" width="80" height="15"/>
                 </a>
             </p>
