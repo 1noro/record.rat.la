@@ -382,7 +382,7 @@
             <!-- Para evitar que el contenido se mueva al cargar la imagen puse "height: 180.47px;" al <p>. -->
             <p><!-- style="height: 180.47px;" -->
                 <a href="https://www.instagram.com/pepunto.reik" aria-label="Artista: @pepunto.reik">
-                    <img src="img/rat<?php echo $colors[$color_id]["hedaer_img_color"]; ?>.png" alt="Logotipo de la web, una rata cantando: la la la." width="400" height="180.47">
+                    <img src="img/rat<?php echo $colors[$color_id]["hedaer_img_color"]; ?>.webp" alt="Logotipo de la web, una rata cantando: la la la." width="400" height="180.47">
                 </a>
                 <!-- Licencia de la imagen -->
                 <script type="application/ld+json">
