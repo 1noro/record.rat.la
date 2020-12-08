@@ -313,6 +313,7 @@
             }
 
             /* a {text-decoration: none;} */
+            a.text_size_link {text-decoration: none;}
             /* Es importante mantener el orden: link - visited - hover - active */
             a:link {color: <?php echo $colors[$color_id]["link"]; ?>;}
             a:visited {color: <?php echo $colors[$color_id]["link_visited"]; ?>;}
@@ -368,17 +369,21 @@
     </head>
 
     <body>
-        <nav role="navigation" aria-label="Skip Links">
-            <small><a href="#main">Ir al artículo</a> / <a href="#footer">Ir abajo</a></small>
-        </nav>
-        <header role="banner" aria-label="Cabecera">
-            <a href="" name="header" tabindex="-1"></a>
+        
+        <header id="header" role="banner" aria-label="Cabecera" >
+            <nav role="navigation" aria-label="Enlaces de control de la web" style="text-align: left;">
+                <a class="text_size_link" style="font-size: 1.05em;" href="index.php?size=0<?php echo add_q_if_exists(); ?>" aria-label="a, texto a tamaño por defecto.">a</a> 
+                <a class="text_size_link" style="font-size: 1.20em;" href="index.php?size=1<?php echo add_q_if_exists(); ?>" aria-label="a, texto a tamaño grande.">a</a> 
+                <a class="text_size_link" style="font-size: 1.35em;" href="index.php?size=2<?php echo add_q_if_exists(); ?>" aria-label="a, texto a tamaño enorme.">a</a> / 
+                <a href="#main">ir al artículo</a> / 
+                <a href="#footer">ir al pié</a>
+            </nav>
             <!-- Título H1 de la web -->
             <p id="web_title">record.rat.la</p>
             <!-- Para evitar que el contenido se mueva al cargar la imagen puse "height: 209px;" al <p>. -->
             <p style="height: 210px;">
                 <a href="https://www.instagram.com/pepunto.reik" aria-label="Artista: @pepunto.reik">
-                    <img role="logo" src="img/rat<?php echo $colors[$color_id]["hedaer_img_color"]; ?>.svg" alt="Logotipo de la web, una rata cantando: la la la." width="400" height="210">
+                    <img src="img/rat<?php echo $colors[$color_id]["hedaer_img_color"]; ?>.svg" alt="Logotipo de la web, una rata cantando: la la la." width="400" height="210">
                 </a>
                 <!-- Licencia de la imagen -->
                 <script type="application/ld+json">
@@ -400,11 +405,6 @@
                 </p>
             </nav>
             <p>
-                <span style="font-size: 1.05em;"><a href="index.php?size=0<?php echo add_q_if_exists(); ?>" aria-label="Texto a tamaño por defecto.">tamaño</a></span> / 
-                <span style="font-size: 1.20em;"><a href="index.php?size=1<?php echo add_q_if_exists(); ?>" aria-label="Texto a tamaño grande.">tamaño</a></span> / 
-                <span style="font-size: 1.35em;"><a href="index.php?size=2<?php echo add_q_if_exists(); ?>" aria-label="Texto a tamaño enorme.">tamaño</a></span>
-            </p>
-            <p>
                 <small>
                     <!-- ¿Debería acortar el mensaje? -->
                     Esta página guarda una <a href="index.php?q=202009192256i-cookie.html" aria-label="¡Infórmate sobre las cookies!">cookie</a> para funcionar con normalidad
@@ -412,8 +412,7 @@
             </p>
         </header>
 
-        <main role="main" aria-label="Contenido principal">
-            <a href="" name="main" tabindex="-1"></a>
+        <main id="main" role="main" aria-label="Contenido principal">
             <?php
                 $filenames = get_filenames($directory);
                 switch ($action) {
@@ -440,8 +439,7 @@
             
         </main>
 
-        <footer role="contentinfo" aria-label="Licencias y contactos">
-            <a href="" name="footer" tabindex="-1"></a>
+        <footer id="footer" role="contentinfo" aria-label="Licencias y contactos">
             <nav role="navigation" aria-label="Enlace al histórico de artículos.">
                 <p class="center">
                     <a href="index.php?q=h">[Más artículos]</a>
@@ -449,7 +447,7 @@
             </nav>
             <nav role="navigation" aria-label="Skip Links">
                 <p>
-                    <a href="#header">Volver arriba</a> / <a href="#main">Ir al artículo</a>
+                    <a href="#header">ir arriba</a> / <a href="#main">ir al artículo</a>
                 </p>
             </nav>
             <p>
