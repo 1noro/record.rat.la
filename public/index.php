@@ -377,7 +377,7 @@
 
     <body>
         
-        <header id="header" role="banner" aria-label="Cabecera" >
+        <header id="header" role="banner" aria-label="Cabecera" tabindex="-1">
             <nav role="navigation" aria-label="Enlaces de control de la web" style="text-align: left;">
                 <a class="text_size_link" style="font-size: 1.05em;" href="index.php?size=0<?php echo add_q_if_exists(); ?>" aria-label="a, texto a tamaño por defecto.">a</a> 
                 <a class="text_size_link" style="font-size: 1.20em;" href="index.php?size=1<?php echo add_q_if_exists(); ?>" aria-label="a, texto a tamaño grande.">a</a> 
@@ -393,7 +393,7 @@
                     <img src="img/rat<?php echo $colors[$color_id]["hedaer_img_color"]; ?>.webp" alt="Logotipo de la web, una rata cantando: la la la." width="400" height="180.47">
                 </a>
                 <!-- Licencia de la imagen -->
-                <!-- <script type="application/ld+json">
+                <script type="application/ld+json">
                     {
                         "@context": "https://schema.org/",
                         "@type": "ImageObject",
@@ -401,7 +401,7 @@
                         "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
                         "acquireLicensePage": "https://record.rat.la/index.php?q=202009180001i-faq.html"
                     }
-                </script> -->
+                </script>
             </p>
             <nav role="navigation" aria-label="Enlaces a las secciones de la página">
                 <p id="web_nav">
@@ -419,7 +419,7 @@
             </p>
         </header>
 
-        <main id="main" role="main" aria-label="Contenido principal">
+        <main id="main" role="main" aria-label="Contenido principal" tabindex="-1">
             <?php
                 $filenames = get_filenames($directory);
                 switch ($action) {
@@ -446,7 +446,7 @@
             
         </main>
 
-        <footer id="footer" role="contentinfo" aria-label="Licencias y contactos">
+        <footer id="footer" role="contentinfo" aria-label="Licencias y contactos" tabindex="-1">
             <nav role="navigation" aria-label="Enlace al histórico de artículos.">
                 <p class="center">
                     <a href="index.php?q=h">[Más artículos]</a>

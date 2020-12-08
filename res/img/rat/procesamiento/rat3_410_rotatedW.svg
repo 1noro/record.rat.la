@@ -13,7 +13,10 @@
    height="184.9274"
    viewBox="0 0 410.00006 184.9274"
    sodipodi:docname="rat3_410_rotatedW.svg"
-   inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)">
+   inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)"
+   inkscape:export-filename="/home/cosmo/Work/github/record.rat.la/res/img/rat/procesamiento/rat3_410_rotatedW.png"
+   inkscape:export-xdpi="280.97556"
+   inkscape:export-ydpi="280.97556">
   <metadata
      id="metadata8">
     <rdf:RDF>
@@ -22,7 +25,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
