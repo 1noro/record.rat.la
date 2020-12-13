@@ -325,9 +325,10 @@
             /* --- Contenedores HEADER y FOOTER --- */
             header, footer, p.center {text-align: center;}
 
-            header p#web_title {
+            header div#web_title {
                 font-size: 1.9em; /* este valor multiplica al valor definido en el body */
                 font-weight: bold;
+                margin: 16px 0px; /* porque es un <div> y no un <p> */
             }
 
             header img {
@@ -340,8 +341,8 @@
             /* --- contenedor MAIN --- */
             main {
                 max-width: 750px;
-                text-align: justify;
-                text-justify: inter-word;
+                /* text-align: justify;
+                text-justify: inter-word; */
                 margin: 0 auto;
             }
 
@@ -390,7 +391,7 @@
                 <a href="#footer">ir al pié</a>
             </nav>
             <!-- Título H1 de la web -->
-            <p id="web_title">record.rat.la</p>
+            <div id="web_title">record.rat.la</div>
             <!-- Para evitar que el contenido se mueva al cargar la imagen puse "height: 180.47px;" al <p>. -->
             <p><!-- style="height: 180.47px;" -->
                 <a href="https://www.instagram.com/pepunto.reik" aria-label="Artista: @pepunto.reik">
