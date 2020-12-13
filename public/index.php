@@ -452,21 +452,23 @@
         </main>
 
         <footer id="footer" role="contentinfo" aria-label="Licencias y contactos" tabindex="-1">
-            <nav role="navigation" aria-label="Enlace al histórico de artículos.">
+            <nav role="navigation" aria-label="Enlace al histórico de artículos">
                 <p class="center">
                     <a href="index.php?q=h">[Más artículos]</a>
                 </p>
             </nav>
-            <nav role="navigation" aria-label="Skip Links">
+            <nav role="navigation" aria-label="Moverse por esta página">
                 <p>
                     <a href="#header">ir arriba</a> / <a href="#main">ir al artículo</a>
                 </p>
             </nav>
             <p>
-                <a href="https://github.com/1noro">github</a> / 
-                <a href="https://gitlab.com/1noro">gitlab</a> / 
-                <a href="https://twitter.com/0x12Faab7">twiter</a> / 
-                <a href="mailto:ppuubblliicc@protonmail.com">mail</a> (<a href="res/publickey.ppuubblliicc@protonmail.com.asc" aria-label="¡Mándame un correo cifrado con gpg!">gpg</a>)
+                <nav role="navigation" aria-label="Enlaces de contacto">
+                    <a href="https://github.com/1noro">github</a> / 
+                    <a href="https://gitlab.com/1noro">gitlab</a> / 
+                    <a href="https://twitter.com/0x12Faab7">twiter</a> / 
+                    <a href="mailto:ppuubblliicc@protonmail.com">mail</a> (<a href="res/publickey.ppuubblliicc@protonmail.com.asc" aria-label="¡Mándame un correo cifrado con gpg!">gpg</a>)
+                </nav>
             </p>
             <p>
                 <small>
