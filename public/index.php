@@ -311,8 +311,8 @@
                 background-color: <?php echo $colors[$color_id]["background"]; ?>;
                 color: <?php echo $colors[$color_id]["text"]; ?>;
                 font-size: <?php echo $text_sizes[$text_size_id]["text"]; ?>; /* 1.35em, 14pt */
+                /* font-family: Times, Serif; */
                 font-family: Helvetica, sans-serif;
-                /* font-family: Times, Serif; */ /* Considerar obviar la letra Times y poner todo Serif */
             }
 
             /* --- Enlaces --- */
@@ -330,7 +330,11 @@
                 font-weight: bold;
             }
 
-            header img {max-width: 400px;}
+            header img {
+                width: auto;
+                max-width: 400px;
+            }
+
             header p#web_nav {font-size: 1.4em;} /* este valor multiplica al valor definido en el body */
 
             /* --- contenedor MAIN --- */
@@ -360,7 +364,7 @@
 
             pre, code, samp {font-size: <?php echo $text_sizes[$text_size_id]["code"]; ?>; /* 1.1em */}
 
-            img :not(header img) {width: 100%;} /* todas las imágenes menos la del header */
+            img {width: 100%;} /* todas las imágenes menos la del header */
 
             img.half {
                 width: 50%;
