@@ -32,8 +32,9 @@
 </p>
 
 <ul>
-    <li>El puerto 80 del router apuntará al puerto 80 de la máquina de NGINX (192.168.1.105).</li>
-    <li>El puerto 443 del router apuntará al puerto 443 de la máquina de NGINX (192.168.1.105).</li>
+    <li>El puerto 80 del router apuntará al puerto 80 de la máquina de NGINX (192.168.1.105), para las conexiones HTTP.</li>
+    <li>El puerto 443 del router apuntará al puerto 443 de la máquina de NGINX (192.168.1.105), para las conexiones HTTPs.</li>
+    <li>El puerto 22 del router apuntará al puerto 22 de la máquina de Gitlab (192.168.1.108), para las conexiones SSH.</li>
 </ul>
 
 <h2>Configuración de NGINX</h2>
@@ -135,8 +136,128 @@ server {
 
 <h2>Configuración SSH</h2>
 
-<p>...</p>
+<p><a href="https://docs.github.com/es/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent">Generamos en nuestro equipo una clave SSH.</a></p>
+
+<p>Copiamos la clave a la máquina del Gitlab (192.168.1.108).</p>
+
+<pre>
+ssh-copy-id -i ~/.ssh/id_rsa.pub user@192.168.1.108
+</pre>
+
+<p>Nos situamos en la máquina que va a ejecutar Gitlab (192.168.1.108).</p>
+
+<p>
+    Editamos el archivo <samp>/etc/ssh/sshd_config</samp> y nos aseguramos de 
+    que las siguientes lineas tengan los valores mostrados.
+</p>
+
+<pre>
+UsePAM yes
+PasswordAuthentication no
+</pre>
+
+<p>Y agregamos la siguiente linea al final.</p>
+
+<pre>
+PermitRootLogin no
+</pre>
+
+<p>Guardamos y reiniciamos el servicio.</p>
+
+<pre>
+sudo systemctl restart sshd
+</pre>
+
+<h3>Fail2ban</h3>
+
+<p>Instalamos el programa.</p>
+
+<pre>
+sudo apt update
+sudo apt install fail2ban
+</pre>
+
+<p>Creamos el archivo <samp>/etc/fail2ban/jail.local</samp> y agregamos las siguientes lineas.</p>
+
+<pre>
+[DEFAULT]
+ignoreip = 127.0.0.1/8 192.168.1.0/24
+bantime = 10m
+maxretry = 5
+findtime = 1d
+
+[sshd]
+enabled = true
+</pre>
+
+<p>Guardamos y reiniciamos el servicio.</p>
+
+<pre>
+sudo systemctl restart fail2ban
+</pre>
 
 <h2>Instalación y configuración de Gitlab</h2>
 
-<p>...</p>
+<p>Nos situamos en la máquina que va a ejecutar Gitlab (192.168.1.108).</p>
+
+<p>Instalamos los paquetes necesarios y agregamos el repositorio de Gitlab.</p>
+
+<pre>
+sudo apt update
+sudo apt install curl openssh-server ca-certificates tzdata perl postfix
+</pre>
+
+<pre>
+curl https://packages.gitlab.com/install/repositories/gitlab/gitlab-ee/script.deb.sh | sudo bash
+</pre>
+
+<pre>
+sudo EXTERNAL_URL="http://git.example.com" apt-get install gitlab-ee
+</pre>
+
+<blockquote>
+    Nótese que el parámetro <samp>EXTERNAL_URL</samp> se define con <samp>http</samp> y no con <samp>https</samp>.
+</blockquote>
+
+<p>
+    Editamos el archivo <samp>/etc/gitlab/gitlab.rb</samp> y agregamos las siguientes lineas al final.
+</p>
+
+<pre>
+nginx['listen_port'] = 80
+nginx['listen_https'] = false
+
+nginx['proxy_set_headers'] = {
+    "X-Forwarded-Proto" => "http"
+}
+
+nginx['real_ip_trusted_addresses'] = [ '192.168.1.0/24' ]
+nginx['real_ip_header'] = 'X-Forwarded-For'
+nginx['real_ip_recursive'] = 'on'
+</pre>
+
+<p>
+    Reconfiguramos Gitlab.
+</p>
+
+<pre>
+sudo gitlab-ctl reconfigure
+</pre>
+
+<blockquote>
+    Hay que espera un rato a que se reconfigure, incluso después de que el 
+    comando haya finalizado.
+</blockquote>
+
+<p>
+    Una vez acabado este proceso ya podremos acceder a nuestro Gitlab a través 
+    de HTTPs para definir la contraseña del usuario <samp>root</samp>.
+</p>
+
+<h2>Bibliografía</h2>
+
+<ul>
+    <li><a href="https://linuxize.com/post/install-configure-fail2ban-on-ubuntu-20-04/">How to Install and Configure Fail2ban on Ubuntu 20.04</a></li>
+    <li><a href="https://about.gitlab.com/install/#ubuntu">Gitlab Official Linux package (recommended installation)</a></li>
+    <li><a href="https://docs.gitlab.com/omnibus/settings/nginx.html">Gitlab NGINX settings</a></li>
+</ul>
