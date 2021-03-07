@@ -1,0 +1,142 @@
+<h1>Gitlab con NGINX reverse proxy</h1>
+
+<p>
+    Voy a documentar el proceso de instalación de Gitlab en una máquina virtual 
+    detrás de un NGINX reverse proxy.
+</p>
+
+<h2>Escenario</h2>
+
+<p>
+    <img src="img/202103071107/gitlab-nginx.webp" alt="Diagrama.">
+</p>
+
+<h3>Características</h3>
+
+<ul>
+    <li>Certificado SSL con Let's Encrypt y certbot.</li>
+    <li>
+        Escuchar en los puertos 80 (HTTP) y 443 (HTTPs) con una redirección 
+        automática desde el 80 al 443.
+    </li>
+    <li>
+        Acceso mediante SSH con clave publica y protegido co fail2ban.
+    </li>
+</ul>
+
+<h2>Configuración del router</h2>
+
+<p>
+    En la sección de redirección de puertos (port forwarding) de nuestro router 
+    creamos dos registros nuevos sobre el protocolo TCP.
+</p>
+
+<ul>
+    <li>El puerto 80 del router apuntará al puerto 80 de la máquina de NGINX (192.168.1.105).</li>
+    <li>El puerto 443 del router apuntará al puerto 443 de la máquina de NGINX (192.168.1.105).</li>
+</ul>
+
+<h2>Configuración de NGINX</h2>
+
+<p>Nos situamos en la máquina que va a ejercer de reverse proxy con NGINX.</p>
+
+<p>
+    Creamos el archivo <samp>/etc/nginx/sites-available/git.example.com.conf</samp>
+</p>
+
+<pre>
+server {
+    listen 80;
+    listen [::]:80;
+    server_name git.example.com;
+
+    location / {
+        proxy_pass "http://192.168.1.108/";
+        proxy_redirect off;
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Protocol $scheme;
+        proxy_set_header X-Url-Scheme $scheme;
+    }
+}
+</pre>
+
+<p>Habilitamos el sitio.</p>
+
+<pre>
+ln -s /etc/nginx/sites-available/git.example.com.conf /etc/nginx/sites-enabled/
+</pre>
+
+<p>
+    Testeamos la sintaxis de la configuración de NGINX, y si todo va bien, 
+    recargamos la configuración.
+</p>
+
+<pre>
+nginx -t
+systemctl reload nginx
+</pre>
+
+<p>
+    Con el Virtual Host correctamente configurado en NGINX, ejecutamos el certbot.
+</p>
+
+<pre>
+certbot --nginx -d git.example.com
+</pre>
+
+<blockquote>
+    Durante el proceso de creación del certificado indicamos que queremos 
+    redireccionar el tráfico HTTP al HTTPs.
+</blockquote>
+
+<p>
+    Archivo <samp>/etc/nginx/sites-available/git.example.com.conf</samp> 
+    después de ejecutar el certbot.
+</p>
+
+<pre>
+server {
+    server_name git.example.com;
+
+    location / {
+        proxy_pass "http://192.168.1.108/";
+        proxy_redirect off;
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Protocol $scheme;
+        proxy_set_header X-Url-Scheme $scheme;
+    }
+
+    listen [::]:443 ssl; # managed by Certbot
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/git.example.com/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/git.example.com/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+}
+
+server {
+    if ($host = git.example.com) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+    listen 80;
+    listen [::]:80;
+
+    server_name git.example.com;
+    return 404; # managed by Certbot
+}
+</pre>
+
+<h2>Configuración SSH</h2>
+
+<p>...</p>
+
+<h2>Instalación y configuración de Gitlab</h2>
+
+<p>...</p>
