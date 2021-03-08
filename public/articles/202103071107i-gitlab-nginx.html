@@ -208,11 +208,11 @@ sudo apt install curl openssh-server ca-certificates tzdata perl postfix
 </pre>
 
 <pre>
-curl https://packages.gitlab.com/install/repositories/gitlab/gitlab-ee/script.deb.sh | sudo bash
+curl -sS https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh | sudo bash
 </pre>
 
 <pre>
-sudo EXTERNAL_URL="http://git.example.com" apt-get install gitlab-ee
+sudo EXTERNAL_URL="http://git.example.com" apt-get install gitlab-ce
 </pre>
 
 <blockquote>
