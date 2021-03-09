@@ -122,7 +122,7 @@
     // --- Obtención de datos de los artículos ---
     // get_filenames, obtiene los nombres de los artículos en la carpeta articles
     function get_filenames($directory) {
-        $files = array();
+        $filenames = array();
         $directory_obj = opendir($directory);
         while(false != ($filename = readdir($directory_obj))) {
             if(($filename != ".") && ($filename != "..")) {
