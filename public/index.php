@@ -253,7 +253,7 @@
         foreach($file_info_arr as $file_info) {
             print_article($file_info["filename"]);
             if ($i >= $ARTICLES_TO_SHOW) {break;}
-            echo "<hr>";
+            echo "<hr>\n";
             $i++;
         }
     }
@@ -264,19 +264,19 @@
 
         $file_info_arr = get_sorted_file_info();
 
-        echo "<h1>Histórico de artículos</h1>";
-        echo "<ul>";
+        echo "<h1>Histórico de artículos</h1>\n";
+        echo "<ul>\n";
         foreach($file_info_arr as $file_info) {
             printf(
-                '<li><a href="index.php?page=%s">%s</a> (%s) %s</li>',
+                '<li><a href="index.php?page=%s">%s</a> (%s) %s</li>' . "\n",
                 $file_info["filename"],
                 $file_info["datetime"],
                 $file_info["author_data"][0],
                 $file_info["title"]
             );
         }
-        echo "</ul>";
-        printf("<p>Hay un total de %d artículos en la web.</p>", count($FILENAMES));
+        echo "</ul>\n";
+        printf("<p>Hay un total de %d artículos en la web.</p>\n", count($FILENAMES));
     }
 
     // print_article, imprime la página de un artículo cuyo nombre de archivo se pasa como parámetro
@@ -284,16 +284,16 @@
         global $DIRECTORY;
         $filepath = $DIRECTORY . $filename;
         $file_info = get_file_info($filename);
-        echo file_get_contents($filepath);
+        echo file_get_contents($filepath) . "\n";
         printf(
-            '<p style="text-align:right;"><small><a href="index.php?page=%s" aria-label="Página del autor %s.">%s</a> - %s</small></p>',
+            '<p style="text-align:right;"><small><a href="index.php?page=%s" aria-label="Página del autor %s.">%s</a> - %s</small></p>' . "\n",
             $file_info["author_data"][1],
             $file_info["author_data"][0],
             $file_info["author_data"][0],
             $file_info["datetime"]
         );
         printf(
-            '<p style="text-align:right;"><small><a href="index.php?page=%s" aria-label="Enlace al artículo, %s, para verlo individualmente.">Enlace al artículo</a></small></p>',
+            '<p style="text-align:right;"><small><a href="index.php?page=%s" aria-label="Enlace al artículo, %s, para verlo individualmente.">Enlace al artículo</a></small></p>' . "\n",
             $filename,
             strtolower($file_info["title"])
         );
@@ -508,25 +508,25 @@
         </header>
 
         <main id="main" role="main" aria-label="Contenido principal" tabindex="-1">
-            <?php
-                switch ($ACTION) {
-                    case 0:
-                        print_reciente();
-                        break;
-                    case 1:
-                        print_historico();
-                        break;
-                    case 2:
-                        print_article("color.html");
-                        break;
-                    case 3:
-                        print_article($_GET["page"]);
-                        break;
-                    case 404:
-                        print_article("404.html");
-                        break;
-                }
-            ?>
+<?php
+    switch ($ACTION) {
+        case 0:
+            print_reciente();
+            break;
+        case 1:
+            print_historico();
+            break;
+        case 2:
+            print_article("color.html");
+            break;
+        case 3:
+            print_article($_GET["page"]);
+            break;
+        case 404:
+            print_article("404.html");
+            break;
+    }
+?>
         </main>
 
         <footer id="footer" role="contentinfo" aria-label="Licencias y contactos" tabindex="-1">
