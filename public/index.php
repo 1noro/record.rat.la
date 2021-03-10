@@ -129,8 +129,11 @@
                 $FILENAMES[] = $filename; // put in array
             }
         }
-        natsort($FILENAMES); // ordenamos alfabéticamente
-        $FILENAMES = array_reverse($FILENAMES); // le damos la vuelta a la ordenación anterior
+
+        // ESTAS DOS COSAS YA NO HACEN FALTA PORQUE NO SE ORDENAN POR EL NOMBRE
+        //natsort($FILENAMES); // ordenamos alfabéticamente
+        //$FILENAMES = array_reverse($FILENAMES); // le damos la vuelta a la ordenación anterior
+
         return $FILENAMES;
     }
 
@@ -139,17 +142,7 @@
         return trim(str_replace("\n", "", $line));
     }
 
-    // get_date, obtiene la fecha de un articulo en función de su nombre
-    /*function get_date($filename) {
-        $year = substr($filename, 0, 4);
-        $month = substr($filename, 4, 2);
-        $day = substr($filename, 6, 2);
-        $hour = substr($filename, 8, 2);
-        $minute = substr($filename, 10, 2);
-
-        return $year."/".$month."/".$day." ".$hour.":".$minute;
-    }*/
-
+    // get_date_by_line, obtiene la fecha de un articulo en base al comentario de la primera línea del artículo
     function get_date_by_line($line) {
         $line = normalize_line($line);
         $line = str_replace("<!-- ", "", $line);
@@ -164,17 +157,7 @@
         return $year."/".$month."/".$day." ".$hour.":".$minute;
     }
 
-    // get_author_data, obtiene los datos del autor en base a su alias en el nombre del artículo
-    /*function get_author_data($filename) {
-        $authorid = substr($filename, 12, 1);
-        if (array_key_exists($authorid, $GLOBALS["authors"])) {
-            $result = $GLOBALS["authors"][$authorid];
-        } else {
-            $result = $GLOBALS["authors"]["a"];
-        }
-        return $result;
-    }*/
-
+    // get_author_data_by_line, obtiene los datos del autor en base a su alias en el comentario de la primera línea del artículo
     function get_author_data_by_line($line) {
         $line = normalize_line($line);
         $line = str_replace("<!-- ", "", $line);
@@ -191,20 +174,7 @@
         return $result;
     }
 
-    // get_title, obtiene el título del artículo en base al texto en el primer <h1></h1> encontrado
-    /*function get_title($filepath) {
-        $file_obj = fopen($filepath, "r");
-        $line = fgets($file_obj); // leemos la primera linea
-        fclose($file_obj);
-
-        $line = str_replace("<h1>", "", $line);
-        $line = str_replace("</h1>", "", $line);
-        $line = str_replace("\n", "", $line);
-        
-        // quitamos las tags HTML y luego cambiamos los caracteres especiales por sus códigos HTML (incluidas las " y ')
-        return htmlentities(strip_tags($line), ENT_QUOTES); 
-    }*/
-
+    // get_title_by_line, obtiene el título del artículo en base a la segunda línea de una artículo
     function get_title_by_line($line) {
         $line = normalize_line($line);
         $line = str_replace("<h1>", "", $line);
@@ -264,27 +234,51 @@
         }
     }
 
-    // print_historico, imprime l apágina del histórico de artículos
+    // print_historico, imprime la página del histórico de artículos
     function print_historico() {
         global $DIRECTORY, $FILENAMES;
-        echo "<h1>Histórico de artículos</h1>";
-        echo "<ul>";
+
+        $file_info_arr = array();
+        $datetime_arr = array();
         foreach($FILENAMES as $filename) {
             $filepath = $DIRECTORY . $filename;
             $file_info = get_file_info($filepath);
-            echo "<li><a href=\"index.php?q=" . $filename . "\">" . $file_info["datetime"] . "</a> (" . $file_info["author_data"][0] . ") " . $file_info["title"] . "</li>";
+            $file_info["filename"] = $filename;
+            array_push($file_info_arr, $file_info);
+            array_push($datetime_arr, $file_info["datetime"]);
+        }
+
+        array_multisort($datetime_arr, SORT_DESC, $file_info_arr);
+
+        echo "<h1>Histórico de artículos</h1>";
+        echo "<ul>";
+        /*foreach($FILENAMES as $filename) {
+            $filepath = $DIRECTORY . $filename;
+            $file_info = get_file_info($filepath);
+            // echo "<li><a href=\"index.php?q=" . $filename . "\">" . $file_info["datetime"] . "</a> (" . $file_info["author_data"][0] . ") " . $file_info["title"] . "</li>";
+            printf(
+                '<li><a href="index.php?q=%s">%s</a> (%s) %s</li>',
+                $filename,
+                $file_info["datetime"],
+                $file_info["author_data"][0],
+                $file_info["title"]
+            );
+        }*/
+        foreach($file_info_arr as $file_info) {
+            // echo "<li><a href=\"index.php?q=" . $filename . "\">" . $file_info["datetime"] . "</a> (" . $file_info["author_data"][0] . ") " . $file_info["title"] . "</li>";
+            printf(
+                '<li><a href="index.php?q=%s">%s</a> (%s) %s</li>',
+                $file_info["filename"],
+                $file_info["datetime"],
+                $file_info["author_data"][0],
+                $file_info["title"]
+            );
         }
         echo "</ul>";
         echo "<p>Hay un total de " . count($FILENAMES) . " artículos en la web.</p>";
     }
 
-    // print_article, imprime la página de un artículo pasado como parámetro
-    /*function print_article($DIRECTORY, $filename) {
-        echo file_get_contents($DIRECTORY . $filename);
-        echo "<p style=\"text-align:right;\"><a href=\"index.php?q=" . get_author_data($filename)[1] . "\" aria-label=\"Página del autor " . get_author_data($filename)[0] . ".\" aria-label=\"Página del autor.\">" . get_author_data($filename)[0] . "</a> - " . get_date($filename) . "</small></p>";
-        echo "<p style=\"text-align:right;\"><small><a href=\"index.php?q=" . $filename . "\" aria-label=\"Enlace al artículo '" . get_title($DIRECTORY . $filename) . "' para verlo individualmente.\">Enlace al artículo</a></p>";
-    }*/
-
+    // print_article, imprime la página de un artículo cuyo nombre de archivo se pasa como parámetro
     function print_article($filename) {
         global $DIRECTORY;
         $filepath = $DIRECTORY . $filename;
