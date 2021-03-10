@@ -12,7 +12,7 @@
     }
 
     $ARTICLES_TO_SHOW = 2; // número de artículos a mostrar en la página principal
-    $DIRECTORY = 'articles/'; // carpeta donde se guardan los artículos
+    $DIRECTORY = 'pages/'; // carpeta donde se guardan los artículos
     $TITLE = "Reciente - record.rat.la"; // título de la página por defecto
     $DESCRIPTION = "Blog/web personal donde iré registrando mis proyectos y mis líos mentales."; // Descripción de la página por defecto.
     $ARTICLE_IMG = "img/article_default_img_white.webp"; // Imagen del artículo por defecto.
@@ -299,7 +299,7 @@
         );
     }
 
-    // procesamos la variable GET "q" y obramos en consecuencia
+    // procesamos la variable GET "page" y obramos en consecuencia
     $ACTION = 0;
     $FILENAMES = get_filenames($DIRECTORY);
     if (isset($_GET["page"])) {
@@ -308,10 +308,10 @@
             $ACTION = 1;
             $TITLE = "Histórico de artículos - record.rat.la";
             $DESCRIPTION = "Listado de todos los artículos publicados en record.rat.la.";
-        } elseif ($_GET["page"] == "c" && isset($_GET["c"])) {
+        } elseif ($_GET["page"] == "color" && isset($_GET["id"])) {
             // Cambio de paleta de colores
-            if ($_GET["c"] >= 0 && $_GET["c"] < count($COLORS)) {
-                $_SESSION["COLOR_ID"] = $_GET["c"];
+            if ($_GET["id"] >= 0 && $_GET["id"] < count($COLORS)) {
+                $_SESSION["COLOR_ID"] = $_GET["id"];
             }
             $ACTION = 2;
             $file_info = get_file_info("color.html");
