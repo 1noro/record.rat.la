@@ -155,11 +155,11 @@
         $line = str_replace("<!-- ", "", $line);
         $line = str_replace(" -->", "", $line);
 
-        $year = substr($filename, 0, 4);
-        $month = substr($filename, 4, 2);
-        $day = substr($filename, 6, 2);
-        $hour = substr($filename, 8, 2);
-        $minute = substr($filename, 10, 2);
+        $year = substr($line, 0, 4);
+        $month = substr($line, 4, 2);
+        $day = substr($line, 6, 2);
+        $hour = substr($line, 8, 2);
+        $minute = substr($line, 10, 2);
 
         return $year."/".$month."/".$day." ".$hour.":".$minute;
     }
@@ -180,7 +180,7 @@
         $line = str_replace("<!-- ", "", $line);
         $line = str_replace(" -->", "", $line);
 
-        $authorid = substr($filename, 12, 1);
+        $authorid = substr($line, 12, 1);
 
         if (array_key_exists($authorid, $GLOBALS["AUTHORS"])) {
             $result = $GLOBALS["AUTHORS"][$authorid];
@@ -223,7 +223,7 @@
 
         return [
             "datetime" => get_date_by_line($line1),
-            "author" => get_author_data_by_line($line1),
+            "author_data" => get_author_data_by_line($line1),
             "title" => get_title_by_line($line2)
         ];
     }
@@ -257,7 +257,7 @@
     function print_reciente($DIRECTORY, $FILENAMES, $ARTICLES_TO_SHOW) {
         $i = 1;
         foreach($FILENAMES as $filename) {
-            print_article($DIRECTORY, $filename);
+            print_article($filename);
             if ($i >= $ARTICLES_TO_SHOW) {break;}
             echo "<hr>";
             $i++;
@@ -276,10 +276,29 @@
     }
 
     // print_article, imprime la página de un artículo pasado como parámetro
-    function print_article($DIRECTORY, $filename) {
+    /*function print_article($DIRECTORY, $filename) {
         echo file_get_contents($DIRECTORY . $filename);
         echo "<p style=\"text-align:right;\"><a href=\"index.php?q=" . get_author_data($filename)[1] . "\" aria-label=\"Página del autor " . get_author_data($filename)[0] . ".\" aria-label=\"Página del autor.\">" . get_author_data($filename)[0] . "</a> - " . get_date($filename) . "</small></p>";
         echo "<p style=\"text-align:right;\"><small><a href=\"index.php?q=" . $filename . "\" aria-label=\"Enlace al artículo '" . get_title($DIRECTORY . $filename) . "' para verlo individualmente.\">Enlace al artículo</a></p>";
+    }*/
+
+    function print_article($filename) {
+        global $DIRECTORY;
+        $filepath = $DIRECTORY . $filename;
+        $file_info = get_file_info($filepath);
+        echo file_get_contents($filepath);
+        printf(
+            '<p style="text-align:right;"><small><a href="index.php?q=%s" aria-label="Página del autor %s.">%s</a> - %s</small></p>',
+            $file_info["author_data"][1],
+            $file_info["author_data"][0],
+            $file_info["author_data"][0],
+            $file_info["datetime"]
+        );
+        printf(
+            '<p style="text-align:right;"><small><a href="index.php?q=%s" aria-label="Enlace al artículo, %s, para verlo individualmente.">Enlace al artículo</a></small></p>',
+            $filename,
+            strtolower($file_info["title"])
+        );
     }
 
     // procesamos la variable GET "q" y obramos en consecuencia
@@ -491,21 +510,18 @@
                 switch ($ACTION) {
                     case 0:
                         print_reciente($DIRECTORY, $FILENAMES, $ARTICLES_TO_SHOW);
-                        // echo "<p class=\"center\"><a href=\"index.php?q=h\">[Más artículos]</a></p>";
                         break;
                     case 1:
                         print_historico($DIRECTORY, $FILENAMES);
                         break;
                     case 2:
-                        print_article($DIRECTORY, "202009180003i-color.html");
+                        print_article("202009180003i-color.html");
                         break;
                     case 3:
-                        print_article($DIRECTORY, $_GET["q"]);
-                        // echo "<p class=\"center\"><a href=\"index.php?q=h\">[Más artículos]</a></p>";
+                        print_article($_GET["q"]);
                         break;
                     case 404:
-                        print_article($DIRECTORY, "202009180000i-404.html");
-                        // echo "<p class=\"center\"><a href=\"index.php?q=h\">[Más artículos]</a></p>";
+                        print_article("202009180000i-404.html");
                         break;
                 }
             ?>
@@ -522,14 +538,14 @@
                     <a href="#header">ir arriba</a> / <a href="#main">ir al artículo</a>
                 </p>
             </nav>
-            <p>
-                <nav role="navigation" aria-label="Enlaces de contacto">
+            <nav role="navigation" aria-label="Enlaces de contacto">
+                <p>
                     <a href="https://github.com/1noro">github</a> / 
                     <a href="https://gitlab.com/1noro">gitlab</a> / 
                     <a href="https://twitter.com/0x12Faab7">twiter</a> / 
                     <a href="mailto:ppuubblliicc@protonmail.com">mail</a> (<a href="res/publickey.ppuubblliicc@protonmail.com.asc" aria-label="¡Mándame un correo cifrado con gpg!">gpg</a>)
-                </nav>
-            </p>
+                </p>
+            </nav>
             <p>
                 <small>
                     Creado por <a href="https://github.com/1noro/record.rat.la">Inoro</a> bajo la licencia <a href="LICENSE" aria-label="Todo el código que sustenta la web está bajo la licencia GPLv3.">GPLv3</a>
