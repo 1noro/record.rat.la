@@ -1,6 +1,13 @@
-<?php
-    // record.rat.la by Inoro (https://github.com/1noro/record.rat.la)
+<!-- 
+               _     _
+     _ __ __ _| |_  | | __ _
+    | '__/ _` | __| | |/ _` |
+    | | | (_| | |_ _| | (_| |
+    |_|  \__,_|\__(_)_|\__,_|
 
+    record.rat.la by Inoro (github.com/1noro)
+ -->
+<?php
     // Creamos u obtenemos la cookie funcional que guarda las preferencias del usuario (la paleta de colores)
     session_start();
     // Si se entra por primera vez a la web se guarda un cookie de sesión con las preferencias por defecto
