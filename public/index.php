@@ -13,16 +13,16 @@
 
     $ARTICLES_TO_SHOW = 2; // número de artículos a mostrar en la página principal
     $DIRECTORY = 'articles2/'; // carpeta donde se guardan los artículos
-    $title = "Reciente - record.rat.la"; // título de la página por defecto
-    $description = "Blog/web personal donde iré registrando mis proyectos y mis líos mentales."; // Descripción de la página por defecto.
-    $article_img = "img/article_default_img_white.webp"; // Imagen del artículo por defecto.
+    $TITLE = "Reciente - record.rat.la"; // título de la página por defecto
+    $DESCRIPTION = "Blog/web personal donde iré registrando mis proyectos y mis líos mentales."; // Descripción de la página por defecto.
+    $ARTICLE_IMG = "img/article_default_img_white.webp"; // Imagen del artículo por defecto.
 
-    $authors = [
+    $AUTHORS = [
         "a" => ["Anon", "202009180000i-404.html"], // Autor por defecto de los artículos anónimos
         "i" => ["Inoro", "202009180002i-inoro.html"]
     ];
 
-    $text_sizes = [
+    $TEXT_SIZES = [
         [
             "text" => "1.05em",
             "code" => "1.1em"
@@ -37,7 +37,7 @@
         ]
     ];
 
-    $colors = [
+    $COLORS = [
         // Paleta de colores por defecto 0 (B&W)
         [
             "background" => "#FFFFFF",
@@ -48,7 +48,7 @@
             "link_active" => "#EE0000",
             "code_background" => "#222324",
             "code_text" => "#FFFFFF",
-            "hedaer_img_color" => "B"
+            "header_img_color" => "B"
         ],
         [
             "background" => "#EDD1B0", // Peach: #EDD1B0, Orange: #EDDD6E, Yellow: #F8FD89, 4chan: #FFFFEE
@@ -59,7 +59,7 @@
             "link_active" => "#EE0000",
             "code_background" => "#FFFFEE", // #dfdebe, #f8bba5
             "code_text" => "inherit",
-            "hedaer_img_color" => "B"
+            "header_img_color" => "B"
         ],
         [
             "background" => "#000000",
@@ -70,7 +70,7 @@
             "link_active" => "#0000FF",
             "code_background" => "#FFFFFF",
             "code_text" => "#000000",
-            "hedaer_img_color" => "W"
+            "header_img_color" => "W"
         ],
         [
             "background" => "auto",
@@ -81,7 +81,7 @@
             "link_active" => "auto",
             "code_background" => "auto",
             "code_text" => "auto",
-            "hedaer_img_color" => "B"
+            "header_img_color" => "B"
         ],
         [
             "background" => "#222222",
@@ -92,7 +92,7 @@
             "link_active" => "#FFFFFF",
             "code_background" => "#1F1F1F",
             "code_text" => "#C8C8C8",
-            "hedaer_img_color" => "W"
+            "header_img_color" => "W"
         ]
     ];
 
@@ -110,7 +110,7 @@
         return $link;
     }
 
-    // add_q_if_exists, devuelve el parametro de query "q" para concatenar a un enlace, si este está definido
+    // add_q_if_exists, devuelve el parámetro de query "q" para concatenar a un enlace, si este está definido
     function add_q_if_exists() {
         if (isset($_GET["q"])) {
             return "&q=" . $_GET["q"];
@@ -120,7 +120,7 @@
     }
 
     // --- Obtención de datos de los artículos ---
-    // get_filenames, obtiene los nombres de los artículos en la carpeta articles
+    // get_filenames, obtiene los nombres de los artículos en la carpeta de los artículos
     function get_filenames($DIRECTORY) {
         $filenames = array();
         $directory_obj = opendir($DIRECTORY);
@@ -129,7 +129,7 @@
                 $filenames[] = $filename; // put in array
             }
         }
-        natsort($filenames); // ordenamos alfabeticamente
+        natsort($filenames); // ordenamos alfabéticamente
         $filenames = array_reverse($filenames); // le damos la vuelta a la ordenación anterior
         return $filenames;
     }
@@ -182,10 +182,10 @@
 
         $authorid = substr($filename, 12, 1);
 
-        if (array_key_exists($authorid, $GLOBALS["authors"])) {
-            $result = $GLOBALS["authors"][$authorid];
+        if (array_key_exists($authorid, $GLOBALS["AUTHORS"])) {
+            $result = $GLOBALS["AUTHORS"][$authorid];
         } else {
-            $result = $GLOBALS["authors"]["a"];
+            $result = $GLOBALS["AUTHORS"]["a"];
         }
 
         return $result;
@@ -247,7 +247,7 @@
         if (isset($image['src'])) {
             $src = $image['src'];
         } else {
-            $src = $GLOBALS["article_img"];
+            $src = $GLOBALS["ARTICLE_IMG"];
         }
         return $src;
     }
@@ -289,33 +289,33 @@
         if ($_GET["q"] == "h") {
             // Histórico
             $action = 1;
-            $title = "Histórico de artículos - record.rat.la";
-            $description = "Listado de todos los artículos publicados en record.rat.la.";
+            $TITLE = "Histórico de artículos - record.rat.la";
+            $DESCRIPTION = "Listado de todos los artículos publicados en record.rat.la.";
         } elseif ($_GET["q"] == "c" && isset($_GET["c"])) {
             // Cambio de paleta de colores
-            if ($_GET["c"] >= 0 && $_GET["c"] < count($colors)) {
+            if ($_GET["c"] >= 0 && $_GET["c"] < count($COLORS)) {
                 $_SESSION["color_id"] = $_GET["c"];
             }
             $action = 2;
-            $title = get_title($DIRECTORY . "202009180003i-color.html") . " - record.rat.la";
+            $TITLE = get_title($DIRECTORY . "202009180003i-color.html") . " - record.rat.la";
         } else {
             if (in_array($_GET["q"], $filenames)) {
                 // Artículo
                 $action = 3;
-                $title = get_title($DIRECTORY . $_GET["q"]) . " - record.rat.la";
-                $description = get_description($DIRECTORY . $_GET["q"]);
-                $article_img = get_article_img($DIRECTORY . $_GET["q"]);
+                $TITLE = get_title($DIRECTORY . $_GET["q"]) . " - record.rat.la";
+                $DESCRIPTION = get_description($DIRECTORY . $_GET["q"]);
+                $ARTICLE_IMG = get_article_img($DIRECTORY . $_GET["q"]);
             } else {
                 // Error 404
                 $action = 404;
-                $title = get_title($DIRECTORY . "202009180000i-404.html") . " - record.rat.la";
+                $TITLE = get_title($DIRECTORY . "202009180000i-404.html") . " - record.rat.la";
             }
         }
     }
 
     if (isset($_GET["size"])) {
         // Cambio de tamaño de texto
-        if ($_GET["size"] >= 0 && $_GET["size"] < count($text_sizes)) {
+        if ($_GET["size"] >= 0 && $_GET["size"] < count($TEXT_SIZES)) {
             $_SESSION["text_size_id"] = $_GET["size"];
         }
     }
@@ -329,7 +329,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title><?php echo $title; ?></title>
+        <title><?php echo $TITLE; ?></title>
         <link rel="icon" href="favicon.webp" type="image/webp" sizes="50x50">
 
         <!-- Avisamos al navegador de que se prepare para hacer una petición a estes dominios -->
@@ -338,14 +338,14 @@
 
         <!-- Revisar: https://css-tricks.com/essential-meta-tags-social-media/ -->
         <meta name="author" content="Inoro"> <!-- This site was made by https://github.com/1noro -->
-        <meta name="description" content="<?php echo $description; ?>">
+        <meta name="description" content="<?php echo $DESCRIPTION; ?>">
         <meta property="og:locale" content="es_ES" />
         <meta property="og:type" content="article" />
-        <meta property="og:title" content="<?php echo $title; ?>" />
-        <meta property="og:description" content="<?php echo $description; ?>" />
+        <meta property="og:title" content="<?php echo $TITLE; ?>" />
+        <meta property="og:description" content="<?php echo $DESCRIPTION; ?>" />
         <meta property="og:url" content="<?php echo get_url(true); ?>" />
         <meta property="og:site_name" content="record.rat.la" />
-        <meta property="og:image" content="<?php echo get_url(false) . "/" . $article_img; ?>" />
+        <meta property="og:image" content="<?php echo get_url(false) . "/" . $ARTICLE_IMG; ?>" />
         <meta name="twitter:card" content="summary_large_image" />
         <!-- <meta property="article:author" content="idex.php?q=202009180002i-inoro.html" /> -->
         <!-- <meta property="article:published_time" content="2020-09-21T00:04:15+00:00" /> -->
@@ -370,9 +370,9 @@
 
         <style>
             body {
-                background-color: <?php echo $colors[$color_id]["background"]; ?>;
-                color: <?php echo $colors[$color_id]["text"]; ?>;
-                font-size: <?php echo $text_sizes[$text_size_id]["text"]; ?>; /* 1.35em, 14pt */
+                background-color: <?php echo $COLORS[$color_id]["background"]; ?>;
+                color: <?php echo $COLORS[$color_id]["text"]; ?>;
+                font-size: <?php echo $TEXT_SIZES[$text_size_id]["text"]; ?>; /* 1.35em, 14pt */
                 /* font-family: Times, Serif; */
                 font-family: Helvetica, sans-serif;
             }
@@ -380,9 +380,9 @@
             /* --- Enlaces --- */
             a.text_size_link {text-decoration: none;}
             /* Es importante mantener el orden: link - visited - hover - active */
-            a:link {color: <?php echo $colors[$color_id]["link"]; ?>;}
-            a:visited {color: <?php echo $colors[$color_id]["link_visited"]; ?>;}
-            a:active {color: <?php echo $colors[$color_id]["link_active"]; ?>;}
+            a:link {color: <?php echo $COLORS[$color_id]["link"]; ?>;}
+            a:visited {color: <?php echo $COLORS[$color_id]["link_visited"]; ?>;}
+            a:active {color: <?php echo $COLORS[$color_id]["link_active"]; ?>;}
 
             /* --- Contenedores HEADER y FOOTER --- */
             header, footer, p.center {text-align: center;}
@@ -409,7 +409,7 @@
             }
 
             h1, h2, h3, h4, h5, h6 {
-                color: <?php echo $colors[$color_id]["title"]; ?>;
+                color: <?php echo $COLORS[$color_id]["title"]; ?>;
                 text-align: left;
             }
 
@@ -421,11 +421,11 @@
             code {padding: 1px;}
 
             pre, code {
-                background-color: <?php echo $colors[$color_id]["code_background"]; ?>;
-                color: <?php echo $colors[$color_id]["code_text"]; ?>;
+                background-color: <?php echo $COLORS[$color_id]["code_background"]; ?>;
+                color: <?php echo $COLORS[$color_id]["code_text"]; ?>;
             }
 
-            pre, code, samp {font-size: <?php echo $text_sizes[$text_size_id]["code"]; ?>; /* 1.1em */}
+            pre, code, samp {font-size: <?php echo $TEXT_SIZES[$text_size_id]["code"]; ?>; /* 1.1em */}
 
             img {width: 100%;} /* todas las imágenes menos la del header */
 
@@ -457,14 +457,14 @@
             <!-- Para evitar que el contenido se mueva al cargar la imagen puse "height: 180.47px;" al <p>. -->
             <p><!-- style="height: 180.47px;" -->
                 <a href="https://www.instagram.com/pepunto.reik" aria-label="Artista: @pepunto.reik">
-                    <img src="img/rat<?php echo $colors[$color_id]["hedaer_img_color"]; ?>.webp" alt="Logotipo de la web, una rata cantando: la la la." width="400" height="180.47">
+                    <img src="img/rat<?php echo $COLORS[$color_id]["header_img_color"]; ?>.webp" alt="Logotipo de la web, una rata cantando: la la la." width="400" height="180.47">
                 </a>
                 <!-- Licencia de la imagen -->
                 <script type="application/ld+json">
                     {
                         "@context": "https://schema.org/",
                         "@type": "ImageObject",
-                        "contentUrl": "https://record.rat.la/img/rat<?php echo $colors[$color_id]["hedaer_img_color"]; ?>.svg",
+                        "contentUrl": "https://record.rat.la/img/rat<?php echo $COLORS[$color_id]["header_img_color"]; ?>.svg",
                         "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
                         "acquireLicensePage": "https://record.rat.la/index.php?q=202009180001i-faq.html"
                     }
