@@ -68,8 +68,8 @@
             "background" => "#000000",
             "text" => "#FFFFFF",
             "title" => "#FFFFFF",
-            "link" => "#FFFF00",
-            "link_visited" => "#CCCC00",
+            "link" => "#20B2AA", // #FFFF00
+            "link_visited" => "#7FB5B5", // #CCCC00
             "link_active" => "#0000FF",
             "code_background" => "#FFFFFF",
             "code_text" => "#000000",
@@ -258,8 +258,8 @@
         }
     }
 
-    // print_historico, imprime la página del histórico de artículos ordenados por fecha DESC
-    function print_historico() {
+    // print_history, imprime la página del histórico de artículos ordenados por fecha DESC
+    function print_history() {
         global $DIRECTORY, $FILENAMES;
 
         $file_info_arr = get_sorted_file_info();
@@ -354,7 +354,7 @@
         <title><?php echo $TITLE; ?></title>
         <link rel="icon" href="favicon.webp" type="image/webp" sizes="50x50">
 
-        <!-- Avisamos al navegador de que se prepare para hacer una petición a estes dominios -->
+        <!-- Avisamos al navegador de que se prepare para hacer una petición a los siguientes dominios -->
         <link rel="preconnect dns-prefetch" href="https://www.googletagmanager.com">
         <link rel="preconnect dns-prefetch" href="https://www.google-analytics.com">
 
@@ -381,7 +381,7 @@
 
         <!-- Cosas de la NSA (en modo prueba) -->
         <!-- Google Analytics -->
-        <!-- La carga del Scrit interno se hace después de los estilos para mejorar la performance -->
+        <!-- La carga del script interno se hace después de los estilos para mejorar la performance -->
         <script>
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
@@ -516,7 +516,7 @@
             print_reciente();
             break;
         case 1:
-            print_historico();
+            print_history();
             break;
         case 2:
             print_article("color.html");
