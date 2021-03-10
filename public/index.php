@@ -184,14 +184,18 @@
         return htmlentities(strip_tags($line), ENT_QUOTES); 
     }
 
-    // get_file_info, obtiene en formato diccionario la fecha, autor y título de un artículo
-    function get_file_info($filepath) {
+    // get_file_info, obtiene en formato diccionario el nombre del archivo, fecha, autor y título de un artículo
+    function get_file_info($filename) {
+        global $DIRECTORY;
+        $filepath = $DIRECTORY . $filename;
+
         $file_obj = fopen($filepath, "r");
         $line1 = fgets($file_obj); // leemos la primera linea
         $line2 = fgets($file_obj); // leemos la segunda linea
         fclose($file_obj);
 
         return [
+            "filename" => $filename,
             "datetime" => get_date_by_line($line1),
             "author_data" => get_author_data_by_line($line1),
             "title" => get_title_by_line($line2)
@@ -222,6 +226,24 @@
         return $src;
     }
 
+    function get_sorted_file_info() {
+        global $DIRECTORY, $FILENAMES;
+        // creamos $file_info_arr y $datetime_arr previamente para ordenar los archivos por fecha
+        $file_info_arr = array();
+        $datetime_arr = array();
+        foreach($FILENAMES as $filename) {
+            $filepath = $DIRECTORY . $filename;
+            $file_info = get_file_info($filename);
+            array_push($file_info_arr, $file_info);
+            array_push($datetime_arr, $file_info["datetime"]);
+        }
+
+        // en base a los dos arrays anteriores ordeno todo por fecha
+        array_multisort($datetime_arr, SORT_DESC, $file_info_arr);
+
+        return $file_info_arr;
+    }
+
     // --- Impresión de contenidos ---
     // print_reciente, imprime la página de artículos recientes
     function print_reciente($DIRECTORY, $FILENAMES, $ARTICLES_TO_SHOW) {
@@ -238,19 +260,7 @@
     function print_historico() {
         global $DIRECTORY, $FILENAMES;
 
-        // creamos $file_info_arr y $datetime_arr previamente para ordenar los archivos por fecha
-        $file_info_arr = array();
-        $datetime_arr = array();
-        foreach($FILENAMES as $filename) {
-            $filepath = $DIRECTORY . $filename;
-            $file_info = get_file_info($filepath);
-            $file_info["filename"] = $filename;
-            array_push($file_info_arr, $file_info);
-            array_push($datetime_arr, $file_info["datetime"]);
-        }
-
-        // en base a los dos arrays anteriores ordeno todo por fecha
-        array_multisort($datetime_arr, SORT_DESC, $file_info_arr);
+        $file_info_arr = get_sorted_file_info();
 
         echo "<h1>Histórico de artículos</h1>";
         echo "<ul>";
@@ -271,7 +281,7 @@
     function print_article($filename) {
         global $DIRECTORY;
         $filepath = $DIRECTORY . $filename;
-        $file_info = get_file_info($filepath);
+        $file_info = get_file_info($filename);
         echo file_get_contents($filepath);
         printf(
             '<p style="text-align:right;"><small><a href="index.php?q=%s" aria-label="Página del autor %s.">%s</a> - %s</small></p>',
