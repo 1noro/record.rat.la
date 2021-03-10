@@ -246,10 +246,13 @@
 
     // --- Impresión de contenidos ---
     // print_reciente, imprime la página de artículos recientes
-    function print_reciente($DIRECTORY, $FILENAMES, $ARTICLES_TO_SHOW) {
+    function print_reciente() {
+        global $ARTICLES_TO_SHOW;
+        $file_info_arr = get_sorted_file_info();
+
         $i = 1;
-        foreach($FILENAMES as $filename) {
-            print_article($filename);
+        foreach($file_info_arr as $file_info) {
+            print_article($file_info["filename"]);
             if ($i >= $ARTICLES_TO_SHOW) {break;}
             echo "<hr>";
             $i++;
@@ -505,7 +508,7 @@
             <?php
                 switch ($ACTION) {
                     case 0:
-                        print_reciente($DIRECTORY, $FILENAMES, $ARTICLES_TO_SHOW);
+                        print_reciente();
                         break;
                     case 1:
                         print_historico();
