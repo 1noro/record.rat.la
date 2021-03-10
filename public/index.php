@@ -4,11 +4,11 @@
     // Creamos u obtenemos la cookie funcional que guarda las preferencais del usuario (la paleta de colores)
     session_start();
     // Si se entra por primera vez a la web se guarada un cookie de sesión con las preferencias por defecto
-    if (!isset($_SESSION["color_id"])) {
-        $_SESSION["color_id"] = 0;
+    if (!isset($_SESSION["COLOR_ID"])) {
+        $_SESSION["COLOR_ID"] = 0;
     }
-    if (!isset($_SESSION["text_size_id"])) {
-        $_SESSION["text_size_id"] = 0;
+    if (!isset($_SESSION["TEXT_SIZE_ID"])) {
+        $_SESSION["TEXT_SIZE_ID"] = 0;
     }
 
     $ARTICLES_TO_SHOW = 2; // número de artículos a mostrar en la página principal
@@ -122,16 +122,16 @@
     // --- Obtención de datos de los artículos ---
     // get_filenames, obtiene los nombres de los artículos en la carpeta de los artículos
     function get_filenames($DIRECTORY) {
-        $filenames = array();
+        $FILENAMES = array();
         $directory_obj = opendir($DIRECTORY);
         while(false != ($filename = readdir($directory_obj))) {
             if(($filename != ".") && ($filename != "..")) {
-                $filenames[] = $filename; // put in array
+                $FILENAMES[] = $filename; // put in array
             }
         }
-        natsort($filenames); // ordenamos alfabéticamente
-        $filenames = array_reverse($filenames); // le damos la vuelta a la ordenación anterior
-        return $filenames;
+        natsort($FILENAMES); // ordenamos alfabéticamente
+        $FILENAMES = array_reverse($FILENAMES); // le damos la vuelta a la ordenación anterior
+        return $FILENAMES;
     }
 
     // normalize_line, devuelve el contenido de una linea sin espacios ni salto de linea
@@ -254,9 +254,9 @@
 
     // --- Impresión de contenidos ---
     // print_reciente, imprime la página de artículos recientes
-    function print_reciente($DIRECTORY, $filenames, $ARTICLES_TO_SHOW) {
+    function print_reciente($DIRECTORY, $FILENAMES, $ARTICLES_TO_SHOW) {
         $i = 1;
-        foreach($filenames as $filename) {
+        foreach($FILENAMES as $filename) {
             print_article($DIRECTORY, $filename);
             if ($i >= $ARTICLES_TO_SHOW) {break;}
             echo "<hr>";
@@ -265,14 +265,14 @@
     }
 
     // print_historico, imprime l apágina del histórico de artículos
-    function print_historico($DIRECTORY, $filenames) {
+    function print_historico($DIRECTORY, $FILENAMES) {
         echo "<h1>Histórico de artículos</h1>";
         echo "<ul>";
-        foreach($filenames as $filename) {
+        foreach($FILENAMES as $filename) {
             echo "<li><a href=\"index.php?q=" . $filename . "\">" . get_date($filename) . "</a> (" . get_author_data($filename)[0] . ") " . get_title($DIRECTORY . $filename) . "</li>";
         }
         echo "</ul>";
-        echo "<p>Hay un total de " . count($filenames) . " artículos en la web.</p>";
+        echo "<p>Hay un total de " . count($FILENAMES) . " artículos en la web.</p>";
     }
 
     // print_article, imprime la página de un artículo pasado como parámetro
@@ -283,31 +283,31 @@
     }
 
     // procesamos la variable GET "q" y obramos en consecuencia
-    $action = 0;
-    $filenames = get_filenames($DIRECTORY);
+    $ACTION = 0;
+    $FILENAMES = get_filenames($DIRECTORY);
     if (isset($_GET["q"])) {
         if ($_GET["q"] == "h") {
             // Histórico
-            $action = 1;
+            $ACTION = 1;
             $TITLE = "Histórico de artículos - record.rat.la";
             $DESCRIPTION = "Listado de todos los artículos publicados en record.rat.la.";
         } elseif ($_GET["q"] == "c" && isset($_GET["c"])) {
             // Cambio de paleta de colores
             if ($_GET["c"] >= 0 && $_GET["c"] < count($COLORS)) {
-                $_SESSION["color_id"] = $_GET["c"];
+                $_SESSION["COLOR_ID"] = $_GET["c"];
             }
-            $action = 2;
+            $ACTION = 2;
             $TITLE = get_title($DIRECTORY . "202009180003i-color.html") . " - record.rat.la";
         } else {
-            if (in_array($_GET["q"], $filenames)) {
+            if (in_array($_GET["q"], $FILENAMES)) {
                 // Artículo
-                $action = 3;
+                $ACTION = 3;
                 $TITLE = get_title($DIRECTORY . $_GET["q"]) . " - record.rat.la";
                 $DESCRIPTION = get_description($DIRECTORY . $_GET["q"]);
                 $ARTICLE_IMG = get_article_img($DIRECTORY . $_GET["q"]);
             } else {
                 // Error 404
-                $action = 404;
+                $ACTION = 404;
                 $TITLE = get_title($DIRECTORY . "202009180000i-404.html") . " - record.rat.la";
             }
         }
@@ -316,12 +316,12 @@
     if (isset($_GET["size"])) {
         // Cambio de tamaño de texto
         if ($_GET["size"] >= 0 && $_GET["size"] < count($TEXT_SIZES)) {
-            $_SESSION["text_size_id"] = $_GET["size"];
+            $_SESSION["TEXT_SIZE_ID"] = $_GET["size"];
         }
     }
 
-    $color_id = $_SESSION["color_id"];
-    $text_size_id = $_SESSION["text_size_id"];
+    $COLOR_ID = $_SESSION["COLOR_ID"];
+    $TEXT_SIZE_ID = $_SESSION["TEXT_SIZE_ID"];
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -370,9 +370,9 @@
 
         <style>
             body {
-                background-color: <?php echo $COLORS[$color_id]["background"]; ?>;
-                color: <?php echo $COLORS[$color_id]["text"]; ?>;
-                font-size: <?php echo $TEXT_SIZES[$text_size_id]["text"]; ?>; /* 1.35em, 14pt */
+                background-color: <?php echo $COLORS[$COLOR_ID]["background"]; ?>;
+                color: <?php echo $COLORS[$COLOR_ID]["text"]; ?>;
+                font-size: <?php echo $TEXT_SIZES[$TEXT_SIZE_ID]["text"]; ?>; /* 1.35em, 14pt */
                 /* font-family: Times, Serif; */
                 font-family: Helvetica, sans-serif;
             }
@@ -380,9 +380,9 @@
             /* --- Enlaces --- */
             a.text_size_link {text-decoration: none;}
             /* Es importante mantener el orden: link - visited - hover - active */
-            a:link {color: <?php echo $COLORS[$color_id]["link"]; ?>;}
-            a:visited {color: <?php echo $COLORS[$color_id]["link_visited"]; ?>;}
-            a:active {color: <?php echo $COLORS[$color_id]["link_active"]; ?>;}
+            a:link {color: <?php echo $COLORS[$COLOR_ID]["link"]; ?>;}
+            a:visited {color: <?php echo $COLORS[$COLOR_ID]["link_visited"]; ?>;}
+            a:active {color: <?php echo $COLORS[$COLOR_ID]["link_active"]; ?>;}
 
             /* --- Contenedores HEADER y FOOTER --- */
             header, footer, p.center {text-align: center;}
@@ -409,7 +409,7 @@
             }
 
             h1, h2, h3, h4, h5, h6 {
-                color: <?php echo $COLORS[$color_id]["title"]; ?>;
+                color: <?php echo $COLORS[$COLOR_ID]["title"]; ?>;
                 text-align: left;
             }
 
@@ -421,11 +421,11 @@
             code {padding: 1px;}
 
             pre, code {
-                background-color: <?php echo $COLORS[$color_id]["code_background"]; ?>;
-                color: <?php echo $COLORS[$color_id]["code_text"]; ?>;
+                background-color: <?php echo $COLORS[$COLOR_ID]["code_background"]; ?>;
+                color: <?php echo $COLORS[$COLOR_ID]["code_text"]; ?>;
             }
 
-            pre, code, samp {font-size: <?php echo $TEXT_SIZES[$text_size_id]["code"]; ?>; /* 1.1em */}
+            pre, code, samp {font-size: <?php echo $TEXT_SIZES[$TEXT_SIZE_ID]["code"]; ?>; /* 1.1em */}
 
             img {width: 100%;} /* todas las imágenes menos la del header */
 
@@ -457,14 +457,14 @@
             <!-- Para evitar que el contenido se mueva al cargar la imagen puse "height: 180.47px;" al <p>. -->
             <p><!-- style="height: 180.47px;" -->
                 <a href="https://www.instagram.com/pepunto.reik" aria-label="Artista: @pepunto.reik">
-                    <img src="img/rat<?php echo $COLORS[$color_id]["header_img_color"]; ?>.webp" alt="Logotipo de la web, una rata cantando: la la la." width="400" height="180.47">
+                    <img src="img/rat<?php echo $COLORS[$COLOR_ID]["header_img_color"]; ?>.webp" alt="Logotipo de la web, una rata cantando: la la la." width="400" height="180.47">
                 </a>
                 <!-- Licencia de la imagen -->
                 <script type="application/ld+json">
                     {
                         "@context": "https://schema.org/",
                         "@type": "ImageObject",
-                        "contentUrl": "https://record.rat.la/img/rat<?php echo $COLORS[$color_id]["header_img_color"]; ?>.svg",
+                        "contentUrl": "https://record.rat.la/img/rat<?php echo $COLORS[$COLOR_ID]["header_img_color"]; ?>.svg",
                         "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
                         "acquireLicensePage": "https://record.rat.la/index.php?q=202009180001i-faq.html"
                     }
@@ -488,13 +488,13 @@
 
         <main id="main" role="main" aria-label="Contenido principal" tabindex="-1">
             <?php
-                switch ($action) {
+                switch ($ACTION) {
                     case 0:
-                        print_reciente($DIRECTORY, $filenames, $ARTICLES_TO_SHOW);
+                        print_reciente($DIRECTORY, $FILENAMES, $ARTICLES_TO_SHOW);
                         // echo "<p class=\"center\"><a href=\"index.php?q=h\">[Más artículos]</a></p>";
                         break;
                     case 1:
-                        print_historico($DIRECTORY, $filenames);
+                        print_historico($DIRECTORY, $FILENAMES);
                         break;
                     case 2:
                         print_article($DIRECTORY, "202009180003i-color.html");
