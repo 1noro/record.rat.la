@@ -11,8 +11,8 @@
         $_SESSION["text_size_id"] = 0;
     }
 
-    $articles_to_show = 2; // número de artículos a mostrar en la página principal
-    $directory = 'articles/'; // carpeta donde se guardan los artículos
+    $ARTICLES_TO_SHOW = 2; // número de artículos a mostrar en la página principal
+    $DIRECTORY = 'articles2/'; // carpeta donde se guardan los artículos
     $title = "Reciente - record.rat.la"; // título de la página por defecto
     $description = "Blog/web personal donde iré registrando mis proyectos y mis líos mentales."; // Descripción de la página por defecto.
     $article_img = "img/article_default_img_white.webp"; // Imagen del artículo por defecto.
@@ -121,9 +121,9 @@
 
     // --- Obtención de datos de los artículos ---
     // get_filenames, obtiene los nombres de los artículos en la carpeta articles
-    function get_filenames($directory) {
+    function get_filenames($DIRECTORY) {
         $filenames = array();
-        $directory_obj = opendir($directory);
+        $directory_obj = opendir($DIRECTORY);
         while(false != ($filename = readdir($directory_obj))) {
             if(($filename != ".") && ($filename != "..")) {
                 $filenames[] = $filename; // put in array
@@ -134,19 +134,38 @@
         return $filenames;
     }
 
+    // normalize_line, devuelve el contenido de una linea sin espacios ni salto de linea
+    function normalize_line($line) {
+        return trim(str_replace("\n", "", $line));
+    }
+
     // get_date, obtiene la fecha de un articulo en función de su nombre
-    function get_date($filename) {
+    /*function get_date($filename) {
         $year = substr($filename, 0, 4);
         $month = substr($filename, 4, 2);
         $day = substr($filename, 6, 2);
         $hour = substr($filename, 8, 2);
         $minute = substr($filename, 10, 2);
-        $result = $year."/".$month."/".$day." ".$hour.":".$minute;
-        return $result;
+
+        return $year."/".$month."/".$day." ".$hour.":".$minute;
+    }*/
+
+    function get_date_by_line($line) {
+        $line = normalize_line($line);
+        $line = str_replace("<!-- ", "", $line);
+        $line = str_replace(" -->", "", $line);
+
+        $year = substr($filename, 0, 4);
+        $month = substr($filename, 4, 2);
+        $day = substr($filename, 6, 2);
+        $hour = substr($filename, 8, 2);
+        $minute = substr($filename, 10, 2);
+
+        return $year."/".$month."/".$day." ".$hour.":".$minute;
     }
 
     // get_author_data, obtiene los datos del autor en base a su alias en el nombre del artículo
-    function get_author_data($filename) {
+    /*function get_author_data($filename) {
         $authorid = substr($filename, 12, 1);
         if (array_key_exists($authorid, $GLOBALS["authors"])) {
             $result = $GLOBALS["authors"][$authorid];
@@ -154,21 +173,63 @@
             $result = $GLOBALS["authors"]["a"];
         }
         return $result;
+    }*/
+
+    function get_author_data_by_line($line) {
+        $line = normalize_line($line);
+        $line = str_replace("<!-- ", "", $line);
+        $line = str_replace(" -->", "", $line);
+
+        $authorid = substr($filename, 12, 1);
+
+        if (array_key_exists($authorid, $GLOBALS["authors"])) {
+            $result = $GLOBALS["authors"][$authorid];
+        } else {
+            $result = $GLOBALS["authors"]["a"];
+        }
+
+        return $result;
     }
 
     // get_title, obtiene el título del artículo en base al texto en el primer <h1></h1> encontrado
-    function get_title($filepath) {
+    /*function get_title($filepath) {
         $file_obj = fopen($filepath, "r");
-        $result = fgets($file_obj);
-        $result = str_replace("<h1>", "", $result);
-        $result = str_replace("</h1>", "", $result);
-        $result = str_replace("\n", "", $result);
+        $line = fgets($file_obj); // leemos la primera linea
         fclose($file_obj);
+
+        $line = str_replace("<h1>", "", $line);
+        $line = str_replace("</h1>", "", $line);
+        $line = str_replace("\n", "", $line);
+        
         // quitamos las tags HTML y luego cambiamos los caracteres especiales por sus códigos HTML (incluidas las " y ')
-        return htmlentities(strip_tags($result), ENT_QUOTES); 
+        return htmlentities(strip_tags($line), ENT_QUOTES); 
+    }*/
+
+    function get_title_by_line($line) {
+        $line = normalize_line($line);
+        $line = str_replace("<h1>", "", $line);
+        $line = str_replace("</h1>", "", $line);
+        
+        // quitamos las tags HTML y luego cambiamos los caracteres especiales por sus códigos HTML (incluidas las " y ')
+        return htmlentities(strip_tags($line), ENT_QUOTES); 
+    }
+
+    // get_file_info, obtiene en formato diccionario la fecha, autor y título de un artículo
+    function get_file_info($filepath) {
+        $file_obj = fopen($filepath, "r");
+        $line1 = fgets($file_obj); // leemos la primera linea
+        $line2 = fgets($file_obj); // leemos la segunda linea
+        fclose($file_obj);
+
+        return [
+            "datetime" => get_date_by_line($line1),
+            "author" => get_author_data_by_line($line1),
+            "title" => get_title_by_line($line2)
+        ];
     }
 
     // get_description, obtiene el contenido del primer párrafo <p></p> del artículo y lo coloca como description del mismo
+    // TODO: optimizar (sacar de lo que se carga en el main)
     function get_description($filepath) {
         $html = file_get_contents($filepath);
         $start = strpos($html, '<p>');
@@ -179,6 +240,7 @@
     }
 
     // get_article_img, obtiene la primera imagen mostrada en el artículo
+    // TODO: optimizar (sacar de lo que se carga en el main)
     function get_article_img($filepath) {
         $html = file_get_contents($filepath);
         preg_match('/<img.+src=[\'"](?P<src>.+?)[\'"].*>/i', $html, $image);
@@ -192,37 +254,37 @@
 
     // --- Impresión de contenidos ---
     // print_reciente, imprime la página de artículos recientes
-    function print_reciente($directory, $filenames, $articles_to_show) {
+    function print_reciente($DIRECTORY, $filenames, $ARTICLES_TO_SHOW) {
         $i = 1;
         foreach($filenames as $filename) {
-            print_article($directory, $filename);
-            if ($i >= $articles_to_show) {break;}
+            print_article($DIRECTORY, $filename);
+            if ($i >= $ARTICLES_TO_SHOW) {break;}
             echo "<hr>";
             $i++;
         }
     }
 
     // print_historico, imprime l apágina del histórico de artículos
-    function print_historico($directory, $filenames) {
+    function print_historico($DIRECTORY, $filenames) {
         echo "<h1>Histórico de artículos</h1>";
         echo "<ul>";
         foreach($filenames as $filename) {
-            echo "<li><a href=\"index.php?q=" . $filename . "\">" . get_date($filename) . "</a> (" . get_author_data($filename)[0] . ") " . get_title($directory . $filename) . "</li>";
+            echo "<li><a href=\"index.php?q=" . $filename . "\">" . get_date($filename) . "</a> (" . get_author_data($filename)[0] . ") " . get_title($DIRECTORY . $filename) . "</li>";
         }
         echo "</ul>";
         echo "<p>Hay un total de " . count($filenames) . " artículos en la web.</p>";
     }
 
-    // print_article, imprime la tágina de un artículo pasado como parámetro
-    function print_article($directory, $filename) {
-        echo file_get_contents($directory . $filename);
+    // print_article, imprime la página de un artículo pasado como parámetro
+    function print_article($DIRECTORY, $filename) {
+        echo file_get_contents($DIRECTORY . $filename);
         echo "<p style=\"text-align:right;\"><a href=\"index.php?q=" . get_author_data($filename)[1] . "\" aria-label=\"Página del autor " . get_author_data($filename)[0] . ".\" aria-label=\"Página del autor.\">" . get_author_data($filename)[0] . "</a> - " . get_date($filename) . "</small></p>";
-        echo "<p style=\"text-align:right;\"><small><a href=\"index.php?q=" . $filename . "\" aria-label=\"Enlace al artículo '" . get_title($directory . $filename) . "' para verlo individualmente.\">Enlace al artículo</a></p>";
+        echo "<p style=\"text-align:right;\"><small><a href=\"index.php?q=" . $filename . "\" aria-label=\"Enlace al artículo '" . get_title($DIRECTORY . $filename) . "' para verlo individualmente.\">Enlace al artículo</a></p>";
     }
 
     // procesamos la variable GET "q" y obramos en consecuencia
     $action = 0;
-    $filenames = get_filenames($directory);
+    $filenames = get_filenames($DIRECTORY);
     if (isset($_GET["q"])) {
         if ($_GET["q"] == "h") {
             // Histórico
@@ -235,18 +297,18 @@
                 $_SESSION["color_id"] = $_GET["c"];
             }
             $action = 2;
-            $title = get_title($directory . "202009180003i-color.html") . " - record.rat.la";
+            $title = get_title($DIRECTORY . "202009180003i-color.html") . " - record.rat.la";
         } else {
             if (in_array($_GET["q"], $filenames)) {
                 // Artículo
                 $action = 3;
-                $title = get_title($directory . $_GET["q"]) . " - record.rat.la";
-                $description = get_description($directory . $_GET["q"]);
-                $article_img = get_article_img($directory . $_GET["q"]);
+                $title = get_title($DIRECTORY . $_GET["q"]) . " - record.rat.la";
+                $description = get_description($DIRECTORY . $_GET["q"]);
+                $article_img = get_article_img($DIRECTORY . $_GET["q"]);
             } else {
                 // Error 404
                 $action = 404;
-                $title = get_title($directory . "202009180000i-404.html") . " - record.rat.la";
+                $title = get_title($DIRECTORY . "202009180000i-404.html") . " - record.rat.la";
             }
         }
     }
@@ -426,24 +488,23 @@
 
         <main id="main" role="main" aria-label="Contenido principal" tabindex="-1">
             <?php
-                $filenames = get_filenames($directory);
                 switch ($action) {
                     case 0:
-                        print_reciente($directory, $filenames, $articles_to_show);
+                        print_reciente($DIRECTORY, $filenames, $ARTICLES_TO_SHOW);
                         // echo "<p class=\"center\"><a href=\"index.php?q=h\">[Más artículos]</a></p>";
                         break;
                     case 1:
-                        print_historico($directory, $filenames);
+                        print_historico($DIRECTORY, $filenames);
                         break;
                     case 2:
-                        print_article($directory, "202009180003i-color.html");
+                        print_article($DIRECTORY, "202009180003i-color.html");
                         break;
                     case 3:
-                        print_article($directory, $_GET["q"]);
+                        print_article($DIRECTORY, $_GET["q"]);
                         // echo "<p class=\"center\"><a href=\"index.php?q=h\">[Más artículos]</a></p>";
                         break;
                     case 404:
-                        print_article($directory, "202009180000i-404.html");
+                        print_article($DIRECTORY, "202009180000i-404.html");
                         // echo "<p class=\"center\"><a href=\"index.php?q=h\">[Más artículos]</a></p>";
                         break;
                 }
