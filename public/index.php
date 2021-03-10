@@ -1,9 +1,9 @@
 <?php
     // record.rat.la by Inoro (https://github.com/1noro/record.rat.la)
 
-    // Creamos u obtenemos la cookie funcional que guarda las preferencais del usuario (la paleta de colores)
+    // Creamos u obtenemos la cookie funcional que guarda las preferencias del usuario (la paleta de colores)
     session_start();
-    // Si se entra por primera vez a la web se guarada un cookie de sesión con las preferencias por defecto
+    // Si se entra por primera vez a la web se guarda un cookie de sesión con las preferencias por defecto
     if (!isset($_SESSION["COLOR_ID"])) {
         $_SESSION["COLOR_ID"] = 0;
     }
@@ -11,6 +11,7 @@
         $_SESSION["TEXT_SIZE_ID"] = 0;
     }
 
+    // --- Viariables globales ---
     $ARTICLES_TO_SHOW = 2; // número de artículos a mostrar en la página principal
     $DIRECTORY = 'pages/'; // carpeta donde se guardan los artículos
     $TITLE = "Reciente - record.rat.la"; // título de la página por defecto
@@ -50,6 +51,7 @@
             "code_text" => "#FFFFFF",
             "header_img_color" => "B"
         ],
+        // Melocotón
         [
             "background" => "#EDD1B0", // Peach: #EDD1B0, Orange: #EDDD6E, Yellow: #F8FD89, 4chan: #FFFFEE
             "text" => "#000000",
@@ -61,6 +63,7 @@
             "code_text" => "inherit",
             "header_img_color" => "B"
         ],
+        // Modo oscuro
         [
             "background" => "#000000",
             "text" => "#FFFFFF",
@@ -72,6 +75,7 @@
             "code_text" => "#000000",
             "header_img_color" => "W"
         ],
+        // Auto
         [
             "background" => "auto",
             "text" => "auto",
@@ -83,6 +87,7 @@
             "code_text" => "auto",
             "header_img_color" => "B"
         ],
+        // N-O-D-E
         [
             "background" => "#222222",
             "text" => "#C8C8C8",
@@ -110,13 +115,18 @@
         return $link;
     }
 
-    // add_q_if_exists, devuelve el parámetro de query "q" para concatenar a un enlace, si este está definido
-    function add_q_if_exists() {
+    // add_page_if_exists, devuelve el parámetro de query "page" para concatenar a un enlace, si este está definido
+    function add_page_if_exists() {
         if (isset($_GET["page"])) {
             return "&page=" . $_GET["page"];
         } else {
             return "";
         }
+    }
+
+    // normalize_line, devuelve el contenido de una linea sin espacios ni salto de linea
+    function normalize_line($line) {
+        return trim(str_replace("\n", "", $line));
     }
 
     // --- Obtención de datos de los artículos ---
@@ -129,17 +139,7 @@
                 $FILENAMES[] = $filename; // put in array
             }
         }
-
-        // ESTAS DOS COSAS YA NO HACEN FALTA PORQUE NO SE ORDENAN POR EL NOMBRE
-        //natsort($FILENAMES); // ordenamos alfabéticamente
-        //$FILENAMES = array_reverse($FILENAMES); // le damos la vuelta a la ordenación anterior
-
         return $FILENAMES;
-    }
-
-    // normalize_line, devuelve el contenido de una linea sin espacios ni salto de linea
-    function normalize_line($line) {
-        return trim(str_replace("\n", "", $line));
     }
 
     // get_date_by_line, obtiene la fecha de un articulo en base al comentario de la primera línea del artículo
@@ -299,6 +299,7 @@
         );
     }
 
+    // --- Lógica de impresión ---
     // procesamos la variable GET "page" y obramos en consecuencia
     $ACTION = 0;
     $FILENAMES = get_filenames($DIRECTORY);
@@ -467,9 +468,9 @@
         
         <header id="header" role="banner" aria-label="Cabecera" tabindex="-1">
             <nav role="navigation" aria-label="Enlaces de control de la web" style="text-align: left;">
-                <a class="text_size_link" style="font-size: 1.05em;" href="index.php?size=0<?php echo add_q_if_exists(); ?>" aria-label="a, texto a tamaño por defecto.">a</a> 
-                <a class="text_size_link" style="font-size: 1.20em;" href="index.php?size=1<?php echo add_q_if_exists(); ?>" aria-label="a, texto a tamaño grande.">a</a> 
-                <a class="text_size_link" style="font-size: 1.35em;" href="index.php?size=2<?php echo add_q_if_exists(); ?>" aria-label="a, texto a tamaño enorme.">a</a> / 
+                <a class="text_size_link" style="font-size: 1.05em;" href="index.php?size=0<?php echo add_page_if_exists(); ?>" aria-label="a, texto a tamaño por defecto.">a</a> 
+                <a class="text_size_link" style="font-size: 1.20em;" href="index.php?size=1<?php echo add_page_if_exists(); ?>" aria-label="a, texto a tamaño grande.">a</a> 
+                <a class="text_size_link" style="font-size: 1.35em;" href="index.php?size=2<?php echo add_page_if_exists(); ?>" aria-label="a, texto a tamaño enorme.">a</a> / 
                 <a href="#main">ir al artículo</a> / 
                 <a href="#footer">ir al pié</a>
             </nav>
@@ -509,6 +510,7 @@
 
         <main id="main" role="main" aria-label="Contenido principal" tabindex="-1">
 <?php
+    // Imprimimos lo indicado por la variable $ACTION en el <main>
     switch ($ACTION) {
         case 0:
             print_reciente();
