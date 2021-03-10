@@ -265,11 +265,14 @@
     }
 
     // print_historico, imprime l apágina del histórico de artículos
-    function print_historico($DIRECTORY, $FILENAMES) {
+    function print_historico() {
+        global $DIRECTORY, $FILENAMES;
         echo "<h1>Histórico de artículos</h1>";
         echo "<ul>";
         foreach($FILENAMES as $filename) {
-            echo "<li><a href=\"index.php?q=" . $filename . "\">" . get_date($filename) . "</a> (" . get_author_data($filename)[0] . ") " . get_title($DIRECTORY . $filename) . "</li>";
+            $filepath = $DIRECTORY . $filename;
+            $file_info = get_file_info($filepath);
+            echo "<li><a href=\"index.php?q=" . $filename . "\">" . $file_info["datetime"] . "</a> (" . $file_info["author_data"][0] . ") " . $file_info["title"] . "</li>";
         }
         echo "</ul>";
         echo "<p>Hay un total de " . count($FILENAMES) . " artículos en la web.</p>";
@@ -512,7 +515,7 @@
                         print_reciente($DIRECTORY, $FILENAMES, $ARTICLES_TO_SHOW);
                         break;
                     case 1:
-                        print_historico($DIRECTORY, $FILENAMES);
+                        print_historico();
                         break;
                     case 2:
                         print_article("202009180003i-color.html");
