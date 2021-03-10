@@ -303,7 +303,7 @@
     $ACTION = 0;
     $FILENAMES = get_filenames($DIRECTORY);
     if (isset($_GET["page"])) {
-        if ($_GET["page"] == "h") {
+        if ($_GET["page"] == "history") {
             // Histórico
             $ACTION = 1;
             $TITLE = "Histórico de artículos - record.rat.la";
@@ -494,7 +494,7 @@
             <nav role="navigation" aria-label="Enlaces a las secciones de la página">
                 <p id="web_nav">
                     <a href="index.php" aria-label="Artículos recientes.">reciente</a> / 
-                    <a href="index.php?page=h" aria-label="Ver el histórico de artículos ordenados por fecha.">histórico</a> / 
+                    <a href="index.php?page=history" aria-label="Ver el histórico de artículos ordenados por fecha.">histórico</a> / 
                     <a href="index.php?page=faq.html" aria-label="faq, preguntas frecuentes sobre esta página.">faq</a> / 
                     <a href="index.php?page=color.html" aria-label="Cambia la paleta de colores para leer mejor o para molar más.">color</a>
                 </p>
@@ -532,7 +532,7 @@
         <footer id="footer" role="contentinfo" aria-label="Licencias y contactos" tabindex="-1">
             <nav role="navigation" aria-label="Enlace al histórico de artículos">
                 <p class="center">
-                    <a href="index.php?page=h">[Más artículos]</a>
+                    <a href="index.php?page=history">[Más artículos]</a>
                 </p>
             </nav>
             <nav role="navigation" aria-label="Moverse por esta página">
