@@ -12,7 +12,7 @@
     }
 
     $ARTICLES_TO_SHOW = 2; // número de artículos a mostrar en la página principal
-    $DIRECTORY = 'articles2/'; // carpeta donde se guardan los artículos
+    $DIRECTORY = 'articles/'; // carpeta donde se guardan los artículos
     $TITLE = "Reciente - record.rat.la"; // título de la página por defecto
     $DESCRIPTION = "Blog/web personal donde iré registrando mis proyectos y mis líos mentales."; // Descripción de la página por defecto.
     $ARTICLE_IMG = "img/article_default_img_white.webp"; // Imagen del artículo por defecto.
