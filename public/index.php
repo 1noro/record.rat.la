@@ -18,8 +18,8 @@
     $ARTICLE_IMG = "img/article_default_img_white.webp"; // Imagen del artículo por defecto.
 
     $AUTHORS = [
-        "a" => ["Anon", "202009180000i-404.html"], // Autor por defecto de los artículos anónimos
-        "i" => ["Inoro", "202009180002i-inoro.html"]
+        "a" => ["Anon", "404.html"], // Autor por defecto de los artículos anónimos
+        "i" => ["Inoro", "inoro.html"]
     ];
 
     $TEXT_SIZES = [
@@ -232,7 +232,6 @@
         $file_info_arr = array();
         $datetime_arr = array();
         foreach($FILENAMES as $filename) {
-            $filepath = $DIRECTORY . $filename;
             $file_info = get_file_info($filename);
             array_push($file_info_arr, $file_info);
             array_push($datetime_arr, $file_info["datetime"]);
@@ -315,18 +314,22 @@
                 $_SESSION["COLOR_ID"] = $_GET["c"];
             }
             $ACTION = 2;
-            $TITLE = get_title($DIRECTORY . "202009180003i-color.html") . " - record.rat.la";
+            $file_info = get_file_info("color.html");
+            $TITLE = $file_info["title"] . " - record.rat.la";
         } else {
             if (in_array($_GET["q"], $FILENAMES)) {
                 // Artículo
                 $ACTION = 3;
-                $TITLE = get_title($DIRECTORY . $_GET["q"]) . " - record.rat.la";
-                $DESCRIPTION = get_description($DIRECTORY . $_GET["q"]);
-                $ARTICLE_IMG = get_article_img($DIRECTORY . $_GET["q"]);
+                $filename = $_GET["q"];
+                $file_info = get_file_info($filename);
+                $TITLE = $file_info["title"] . " - record.rat.la";
+                $DESCRIPTION = get_description($DIRECTORY . $filename);
+                $ARTICLE_IMG = get_article_img($DIRECTORY . $filename);
             } else {
                 // Error 404
                 $ACTION = 404;
-                $TITLE = get_title($DIRECTORY . "202009180000i-404.html") . " - record.rat.la";
+                $file_info = get_file_info("404.html");
+                $TITLE = $file_info["title"] . " - record.rat.la";
             }
         }
     }
@@ -365,7 +368,7 @@
         <meta property="og:site_name" content="record.rat.la" />
         <meta property="og:image" content="<?php echo get_url(false) . "/" . $ARTICLE_IMG; ?>" />
         <meta name="twitter:card" content="summary_large_image" />
-        <!-- <meta property="article:author" content="idex.php?q=202009180002i-inoro.html" /> -->
+        <!-- <meta property="article:author" content="idex.php?q=inoro.html" /> -->
         <!-- <meta property="article:published_time" content="2020-09-21T00:04:15+00:00" /> -->
         <!-- <meta property="article:modified_time" content="2020-09-21T07:23:04+00:00" /> -->
         <meta name="twitter:creator" content="@0x12Faab7" />
@@ -484,7 +487,7 @@
                         "@type": "ImageObject",
                         "contentUrl": "https://record.rat.la/img/rat<?php echo $COLORS[$COLOR_ID]["header_img_color"]; ?>.svg",
                         "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
-                        "acquireLicensePage": "https://record.rat.la/index.php?q=202009180001i-faq.html"
+                        "acquireLicensePage": "https://record.rat.la/index.php?q=faq.html"
                     }
                 </script>
             </p>
@@ -492,14 +495,14 @@
                 <p id="web_nav">
                     <a href="index.php" aria-label="Artículos recientes.">reciente</a> / 
                     <a href="index.php?q=h" aria-label="Ver el histórico de artículos ordenados por fecha.">histórico</a> / 
-                    <a href="index.php?q=202009180001i-faq.html" aria-label="faq, preguntas frecuentes sobre esta página.">faq</a> / 
-                    <a href="index.php?q=202009180003i-color.html" aria-label="Cambia la paleta de colores para leer mejor o para molar más.">color</a>
+                    <a href="index.php?q=faq.html" aria-label="faq, preguntas frecuentes sobre esta página.">faq</a> / 
+                    <a href="index.php?q=color.html" aria-label="Cambia la paleta de colores para leer mejor o para molar más.">color</a>
                 </p>
             </nav>
             <p>
                 <small>
                     <!-- ¿Debería acortar el mensaje? -->
-                    Esta página guarda una <a href="index.php?q=202009192256i-cookie.html" aria-label="¡Infórmate sobre las cookies!">cookie</a> funcional para el estilo y cuatro analíticas para google
+                    Esta página guarda una <a href="index.php?q=cookie.html" aria-label="¡Infórmate sobre las cookies!">cookie</a> funcional para el estilo y cuatro analíticas para google
                 </small>
             </p>
         </header>
@@ -514,13 +517,13 @@
                         print_historico();
                         break;
                     case 2:
-                        print_article("202009180003i-color.html");
+                        print_article("color.html");
                         break;
                     case 3:
                         print_article($_GET["q"]);
                         break;
                     case 404:
-                        print_article("202009180000i-404.html");
+                        print_article("404.html");
                         break;
                 }
             ?>
