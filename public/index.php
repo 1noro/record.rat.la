@@ -234,10 +234,11 @@
         }
     }
 
-    // print_historico, imprime la página del histórico de artículos
+    // print_historico, imprime la página del histórico de artículos ordenados por fecha DESC
     function print_historico() {
         global $DIRECTORY, $FILENAMES;
 
+        // creamos $file_info_arr y $datetime_arr previamente para ordenar los archivos por fecha
         $file_info_arr = array();
         $datetime_arr = array();
         foreach($FILENAMES as $filename) {
@@ -248,24 +249,12 @@
             array_push($datetime_arr, $file_info["datetime"]);
         }
 
+        // en base a los dos arrays anteriores ordeno todo por fecha
         array_multisort($datetime_arr, SORT_DESC, $file_info_arr);
 
         echo "<h1>Histórico de artículos</h1>";
         echo "<ul>";
-        /*foreach($FILENAMES as $filename) {
-            $filepath = $DIRECTORY . $filename;
-            $file_info = get_file_info($filepath);
-            // echo "<li><a href=\"index.php?q=" . $filename . "\">" . $file_info["datetime"] . "</a> (" . $file_info["author_data"][0] . ") " . $file_info["title"] . "</li>";
-            printf(
-                '<li><a href="index.php?q=%s">%s</a> (%s) %s</li>',
-                $filename,
-                $file_info["datetime"],
-                $file_info["author_data"][0],
-                $file_info["title"]
-            );
-        }*/
         foreach($file_info_arr as $file_info) {
-            // echo "<li><a href=\"index.php?q=" . $filename . "\">" . $file_info["datetime"] . "</a> (" . $file_info["author_data"][0] . ") " . $file_info["title"] . "</li>";
             printf(
                 '<li><a href="index.php?q=%s">%s</a> (%s) %s</li>',
                 $file_info["filename"],
@@ -275,7 +264,7 @@
             );
         }
         echo "</ul>";
-        echo "<p>Hay un total de " . count($FILENAMES) . " artículos en la web.</p>";
+        printf("<p>Hay un total de %d artículos en la web.</p>", count($FILENAMES));
     }
 
     // print_article, imprime la página de un artículo cuyo nombre de archivo se pasa como parámetro
