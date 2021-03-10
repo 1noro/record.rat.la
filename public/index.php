@@ -112,8 +112,8 @@
 
     // add_q_if_exists, devuelve el parámetro de query "q" para concatenar a un enlace, si este está definido
     function add_q_if_exists() {
-        if (isset($_GET["q"])) {
-            return "&q=" . $_GET["q"];
+        if (isset($_GET["page"])) {
+            return "&page=" . $_GET["page"];
         } else {
             return "";
         }
@@ -268,7 +268,7 @@
         echo "<ul>";
         foreach($file_info_arr as $file_info) {
             printf(
-                '<li><a href="index.php?q=%s">%s</a> (%s) %s</li>',
+                '<li><a href="index.php?page=%s">%s</a> (%s) %s</li>',
                 $file_info["filename"],
                 $file_info["datetime"],
                 $file_info["author_data"][0],
@@ -286,14 +286,14 @@
         $file_info = get_file_info($filename);
         echo file_get_contents($filepath);
         printf(
-            '<p style="text-align:right;"><small><a href="index.php?q=%s" aria-label="Página del autor %s.">%s</a> - %s</small></p>',
+            '<p style="text-align:right;"><small><a href="index.php?page=%s" aria-label="Página del autor %s.">%s</a> - %s</small></p>',
             $file_info["author_data"][1],
             $file_info["author_data"][0],
             $file_info["author_data"][0],
             $file_info["datetime"]
         );
         printf(
-            '<p style="text-align:right;"><small><a href="index.php?q=%s" aria-label="Enlace al artículo, %s, para verlo individualmente.">Enlace al artículo</a></small></p>',
+            '<p style="text-align:right;"><small><a href="index.php?page=%s" aria-label="Enlace al artículo, %s, para verlo individualmente.">Enlace al artículo</a></small></p>',
             $filename,
             strtolower($file_info["title"])
         );
@@ -302,13 +302,13 @@
     // procesamos la variable GET "q" y obramos en consecuencia
     $ACTION = 0;
     $FILENAMES = get_filenames($DIRECTORY);
-    if (isset($_GET["q"])) {
-        if ($_GET["q"] == "h") {
+    if (isset($_GET["page"])) {
+        if ($_GET["page"] == "h") {
             // Histórico
             $ACTION = 1;
             $TITLE = "Histórico de artículos - record.rat.la";
             $DESCRIPTION = "Listado de todos los artículos publicados en record.rat.la.";
-        } elseif ($_GET["q"] == "c" && isset($_GET["c"])) {
+        } elseif ($_GET["page"] == "c" && isset($_GET["c"])) {
             // Cambio de paleta de colores
             if ($_GET["c"] >= 0 && $_GET["c"] < count($COLORS)) {
                 $_SESSION["COLOR_ID"] = $_GET["c"];
@@ -317,10 +317,10 @@
             $file_info = get_file_info("color.html");
             $TITLE = $file_info["title"] . " - record.rat.la";
         } else {
-            if (in_array($_GET["q"], $FILENAMES)) {
+            if (in_array($_GET["page"], $FILENAMES)) {
                 // Artículo
                 $ACTION = 3;
-                $filename = $_GET["q"];
+                $filename = $_GET["page"];
                 $file_info = get_file_info($filename);
                 $TITLE = $file_info["title"] . " - record.rat.la";
                 $DESCRIPTION = get_description($DIRECTORY . $filename);
@@ -368,7 +368,7 @@
         <meta property="og:site_name" content="record.rat.la" />
         <meta property="og:image" content="<?php echo get_url(false) . "/" . $ARTICLE_IMG; ?>" />
         <meta name="twitter:card" content="summary_large_image" />
-        <!-- <meta property="article:author" content="idex.php?q=inoro.html" /> -->
+        <!-- <meta property="article:author" content="idex.php?page=inoro.html" /> -->
         <!-- <meta property="article:published_time" content="2020-09-21T00:04:15+00:00" /> -->
         <!-- <meta property="article:modified_time" content="2020-09-21T07:23:04+00:00" /> -->
         <meta name="twitter:creator" content="@0x12Faab7" />
@@ -487,22 +487,22 @@
                         "@type": "ImageObject",
                         "contentUrl": "https://record.rat.la/img/rat<?php echo $COLORS[$COLOR_ID]["header_img_color"]; ?>.svg",
                         "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
-                        "acquireLicensePage": "https://record.rat.la/index.php?q=faq.html"
+                        "acquireLicensePage": "https://record.rat.la/index.php?page=faq.html"
                     }
                 </script>
             </p>
             <nav role="navigation" aria-label="Enlaces a las secciones de la página">
                 <p id="web_nav">
                     <a href="index.php" aria-label="Artículos recientes.">reciente</a> / 
-                    <a href="index.php?q=h" aria-label="Ver el histórico de artículos ordenados por fecha.">histórico</a> / 
-                    <a href="index.php?q=faq.html" aria-label="faq, preguntas frecuentes sobre esta página.">faq</a> / 
-                    <a href="index.php?q=color.html" aria-label="Cambia la paleta de colores para leer mejor o para molar más.">color</a>
+                    <a href="index.php?page=h" aria-label="Ver el histórico de artículos ordenados por fecha.">histórico</a> / 
+                    <a href="index.php?page=faq.html" aria-label="faq, preguntas frecuentes sobre esta página.">faq</a> / 
+                    <a href="index.php?page=color.html" aria-label="Cambia la paleta de colores para leer mejor o para molar más.">color</a>
                 </p>
             </nav>
             <p>
                 <small>
                     <!-- ¿Debería acortar el mensaje? -->
-                    Esta página guarda una <a href="index.php?q=cookie.html" aria-label="¡Infórmate sobre las cookies!">cookie</a> funcional para el estilo y cuatro analíticas para google
+                    Esta página guarda una <a href="index.php?page=cookie.html" aria-label="¡Infórmate sobre las cookies!">cookie</a> funcional para el estilo y cuatro analíticas para google
                 </small>
             </p>
         </header>
@@ -520,7 +520,7 @@
                         print_article("color.html");
                         break;
                     case 3:
-                        print_article($_GET["q"]);
+                        print_article($_GET["page"]);
                         break;
                     case 404:
                         print_article("404.html");
@@ -532,7 +532,7 @@
         <footer id="footer" role="contentinfo" aria-label="Licencias y contactos" tabindex="-1">
             <nav role="navigation" aria-label="Enlace al histórico de artículos">
                 <p class="center">
-                    <a href="index.php?q=h">[Más artículos]</a>
+                    <a href="index.php?page=h">[Más artículos]</a>
                 </p>
             </nav>
             <nav role="navigation" aria-label="Moverse por esta página">
