@@ -6,6 +6,7 @@
     |_|  \__,_|\__(_)_|\__,_|
 
     record.rat.la by Inoro (github.com/1noro)
+
  -->
 <?php
     // Creamos u obtenemos la cookie funcional que guarda las preferencias del usuario (la paleta de colores)
@@ -502,8 +503,8 @@
             <nav role="navigation" aria-label="Enlaces a las secciones de la página">
                 <p id="web_nav">
                     <a href="index.php" aria-label="Artículos recientes.">reciente</a> / 
-                    <a href="index.php?page=history" aria-label="Ver el histórico de artículos ordenados por fecha.">histórico</a> / 
-                    <a href="index.php?page=faq.html" aria-label="faq, preguntas frecuentes sobre esta página.">faq</a> / 
+                    <a href="index.php?page=history" aria-label="El histórico de artículos ordenados por fecha.">histórico</a> / 
+                    <a href="index.php?page=faq.html" aria-label="Preguntas frecuentes sobre esta página (faq).">faq</a> / 
                     <a href="index.php?page=color.html" aria-label="Cambia la paleta de colores para leer mejor o para molar más.">color</a>
                 </p>
             </nav>
