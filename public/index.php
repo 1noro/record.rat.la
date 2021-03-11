@@ -499,8 +499,8 @@
 
     <body>
         
-        <header id="header" role="banner" aria-label="Cabecera" tabindex="-1">
-            <nav role="navigation" aria-label="Enlaces de control de la web" style="text-align: left;">
+        <header id="header" aria-label="Cabecera" tabindex="-1">
+            <nav aria-label="Enlaces de control de la web" style="text-align: left;">
                 <a class="text_size_link" style="font-size: 1.05em;" href="index.php?size=0<?php echo add_page_if_exists(); ?>" aria-label="a, texto a tamaño por defecto.">a</a> 
                 <a class="text_size_link" style="font-size: 1.20em;" href="index.php?size=1<?php echo add_page_if_exists(); ?>" aria-label="a, texto a tamaño grande.">a</a> 
                 <a class="text_size_link" style="font-size: 1.35em;" href="index.php?size=2<?php echo add_page_if_exists(); ?>" aria-label="a, texto a tamaño enorme.">a</a> / 
@@ -525,7 +525,7 @@
                     }
                 </script>
             </p>
-            <nav role="navigation" aria-label="Enlaces a las secciones de la página">
+            <nav aria-label="Enlaces a las secciones de la página">
                 <p id="web_nav">
                     <a href="index.php" aria-label="Artículos recientes.">reciente</a> / 
                     <a href="index.php?page=history" aria-label="El histórico de artículos ordenados por fecha.">histórico</a> / 
@@ -541,7 +541,7 @@
             </p>
         </header>
 
-        <main id="main" role="main" aria-label="Contenido principal" tabindex="-1">
+        <main id="main" aria-label="Contenido principal" tabindex="-1">
 <?php
     // Imprimimos lo indicado por la variable $ACTION en el <main>
     switch ($ACTION) {
@@ -564,18 +564,18 @@
 ?>
         </main>
 
-        <footer id="footer" role="contentinfo" aria-label="Licencias y contactos" tabindex="-1">
-            <nav role="navigation" aria-label="Enlace al histórico de artículos">
+        <footer id="footer" aria-label="Licencias y contactos" tabindex="-1">
+            <nav aria-label="Enlace al histórico de artículos">
                 <p class="center">
                     <a href="index.php?page=history">[Más artículos]</a>
                 </p>
             </nav>
-            <nav role="navigation" aria-label="Moverse por esta página">
+            <nav aria-label="Moverse por esta página">
                 <p>
                     <a href="#header">ir arriba</a> / <a href="#main">ir al artículo</a>
                 </p>
             </nav>
-            <nav role="navigation" aria-label="Enlaces de contacto">
+            <nav aria-label="Enlaces de contacto">
                 <p>
                     <a href="https://github.com/1noro">github</a> / 
                     <a href="https://gitlab.com/1noro">gitlab</a> / 
