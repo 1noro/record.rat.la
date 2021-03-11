@@ -137,6 +137,18 @@
         return trim(str_replace("\n", "", $line));
     }
 
+    // reduce_h1, en base a un texto html dado reduce el valor de todos los tag <hN> en uno excepto el <h6>
+    // el inconveniente es que los <h5> y los <h6> quedarán al mismo nivel
+    function reduce_h1($html) {
+        $html = str_replace("h5", "h6", $html);
+        $html = str_replace("h4", "h5", $html);
+        $html = str_replace("h3", "h4", $html);
+        $html = str_replace("h2", "h3", $html);
+        $html = str_replace("h1", "h2", $html);
+
+        return $html;
+    }
+
     // --- Obtención de datos de los artículos ---
     // get_filenames, obtiene los nombres de los artículos en la carpeta de los artículos
     function get_filenames($DIRECTORY) {
@@ -257,9 +269,11 @@
         global $ARTICLES_TO_SHOW;
         $file_info_arr = get_sorted_file_info();
 
+        echo "<h1>Artículos recientes</h1>\n<hr>\n";
+
         $i = 1;
         foreach($file_info_arr as $file_info) {
-            print_article($file_info["filename"]);
+            print_article($file_info["filename"], true);
             if ($i >= $ARTICLES_TO_SHOW) {break;}
             echo "<hr>\n";
             $i++;
@@ -288,11 +302,15 @@
     }
 
     // print_article, imprime la página de un artículo cuyo nombre de archivo se pasa como parámetro
-    function print_article($filename) {
+    function print_article($filename, $reduce_h1 = false) {
         global $DIRECTORY;
         $filepath = $DIRECTORY . $filename;
         $file_info = get_file_info($filename);
-        echo file_get_contents($filepath) . "\n";
+        if ($reduce_h1) {
+            echo reduce_h1(file_get_contents($filepath)) . "\n";
+        } else {
+            echo file_get_contents($filepath) . "\n";
+        }
         printf(
             '<p style="text-align:right;"><small><a href="index.php?page=%s" aria-label="Página del autor %s.">%s</a> - %s</small></p>' . "\n",
             $file_info["author_data"][1],
@@ -527,13 +545,13 @@
             print_history();
             break;
         case 2:
-            print_article("color.html");
+            print_article("color.html", false);
             break;
         case 3:
-            print_article($_GET["page"]);
+            print_article($_GET["page"], false);
             break;
         case 404:
-            print_article("404.html");
+            print_article("404.html", false);
             break;
     }
 ?>
