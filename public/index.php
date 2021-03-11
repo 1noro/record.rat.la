@@ -20,11 +20,11 @@
     }
 
     // --- Viariables globales ---
-    $ARTICLES_TO_SHOW = 2; // número de páginas a mostrar en la página principal
+    $PAGES_TO_SHOW = 2; // número de páginas a mostrar en la página principal
     $DIRECTORY = 'pages/'; // carpeta donde se guardan las páginas
     $TITLE = "Reciente - record.rat.la"; // título de la página por defecto
     $DESCRIPTION = "Blog/web personal donde iré registrando mis proyectos y mis líos mentales."; // Descripción de la página por defecto.
-    $ARTICLE_IMG = "img/article_default_img_white.webp"; // Imagen del artículo por defecto.
+    $PAGE_IMG = "img/article_default_img_white.webp"; // Imagen del artículo por defecto.
 
     $AUTHORS = [
         "a" => ["Anon", "404.html"], // Autor por defecto de las páginas anónimas
@@ -239,15 +239,15 @@
         return trim($paragraph);
     }
 
-    // get_article_img, obtiene la primera imagen mostrada en el artículo
+    // get_page_img, obtiene la primera imagen mostrada en el artículo
     // TODO: optimizar (sacar de lo que se carga en el main)
-    function get_article_img($filepath) {
+    function get_page_img($filepath) {
         $html = file_get_contents($filepath);
         preg_match('/<img.+src=[\'"](?P<src>.+?)[\'"].*>/i', $html, $image);
         if (isset($image['src'])) {
             $src = $image['src'];
         } else {
-            $src = $GLOBALS["ARTICLE_IMG"];
+            $src = $GLOBALS["PAGE_IMG"];
         }
         return $src;
     }
@@ -273,15 +273,15 @@
     // --- Impresión de contenidos ---
     // print_reciente, imprime la portada (las N páginas más recientes)
     function print_reciente() {
-        global $ARTICLES_TO_SHOW;
+        global $PAGES_TO_SHOW;
         $file_info_arr = get_sorted_file_info();
 
         echo "<h1>Recientes</h1>\n<hr>\n";
 
         $i = 1;
         foreach($file_info_arr as $file_info) {
-            print_article($file_info["filename"], true);
-            if ($i >= $ARTICLES_TO_SHOW) {break;}
+            print_page($file_info["filename"], true);
+            if ($i >= $PAGES_TO_SHOW) {break;}
             echo "<hr>\n";
             $i++;
         }
@@ -308,8 +308,8 @@
         printf("<p>Hay un total de %d páginas en la web.</p>\n", count($FILENAMES));
     }
 
-    // print_article, imprime la página de un artículo cuyo nombre de archivo se pasa como parámetro
-    function print_article($filename, $reduce_h1 = false) {
+    // print_page, imprime la página de un artículo cuyo nombre de archivo se pasa como parámetro
+    function print_page($filename, $reduce_h1 = false) {
         global $DIRECTORY;
         $filepath = $DIRECTORY . $filename;
         $file_info = get_file_info($filename);
@@ -358,7 +358,7 @@
                 $file_info = get_file_info($filename);
                 $TITLE = $file_info["title"] . " - record.rat.la";
                 $DESCRIPTION = get_description($DIRECTORY . $filename);
-                $ARTICLE_IMG = get_article_img($DIRECTORY . $filename);
+                $PAGE_IMG = get_page_img($DIRECTORY . $filename);
             } else {
                 // Error 404
                 $ACTION = 404;
@@ -400,7 +400,7 @@
         <meta property="og:description" content="<?php echo $DESCRIPTION; ?>" />
         <meta property="og:url" content="<?php echo get_url(true); ?>" />
         <meta property="og:site_name" content="record.rat.la" />
-        <meta property="og:image" content="<?php echo get_url(false) . "/" . $ARTICLE_IMG; ?>" />
+        <meta property="og:image" content="<?php echo get_url(false) . "/" . $PAGE_IMG; ?>" />
         <meta name="twitter:card" content="summary_large_image" />
         <!-- <meta property="article:author" content="idex.php?page=inoro.html" /> -->
         <!-- <meta property="article:published_time" content="2020-09-21T00:04:15+00:00" /> -->
@@ -552,13 +552,13 @@
             print_archive();
             break;
         case 2:
-            print_article("color.html", false);
+            print_page("color.html", false);
             break;
         case 3:
-            print_article($_GET["page"], false);
+            print_page($_GET["page"], false);
             break;
         case 404:
-            print_article("404.html", false);
+            print_page("404.html", false);
             break;
     }
 ?>
