@@ -230,6 +230,12 @@
         $end = strpos($html, '</p>', $start);
         $paragraph = strip_tags(substr($html, $start, $end - $start + 4));
         $paragraph = str_replace("\n", "", $paragraph);
+        // quitamos el exceso de espacios en blanco delante, atrás y en el medio
+        $paragraph = preg_replace('/\s+/', ' ', trim($paragraph));
+        // si la descripción es mayor a 160 caracteres es malo para el SEO
+        if (strlen($paragraph) > 160) {
+            $paragraph = mb_substr($paragraph, 0, 160 - 3) . "...";
+        }
         return trim($paragraph);
     }
 
@@ -246,6 +252,7 @@
         return $src;
     }
 
+    // get_sorted_file_info, ...
     function get_sorted_file_info() {
         global $DIRECTORY, $FILENAMES;
         // creamos $file_info_arr y $datetime_arr previamente para ordenar los archivos por fecha
