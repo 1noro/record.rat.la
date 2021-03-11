@@ -20,14 +20,14 @@
     }
 
     // --- Viariables globales ---
-    $ARTICLES_TO_SHOW = 2; // número de artículos a mostrar en la página principal
-    $DIRECTORY = 'pages/'; // carpeta donde se guardan los artículos
+    $ARTICLES_TO_SHOW = 2; // número de páginas a mostrar en la página principal
+    $DIRECTORY = 'pages/'; // carpeta donde se guardan las páginas
     $TITLE = "Reciente - record.rat.la"; // título de la página por defecto
     $DESCRIPTION = "Blog/web personal donde iré registrando mis proyectos y mis líos mentales."; // Descripción de la página por defecto.
     $ARTICLE_IMG = "img/article_default_img_white.webp"; // Imagen del artículo por defecto.
 
     $AUTHORS = [
-        "a" => ["Anon", "404.html"], // Autor por defecto de los artículos anónimos
+        "a" => ["Anon", "404.html"], // Autor por defecto de las páginas anónimas
         "i" => ["Inoro", "inoro.html"]
     ];
 
@@ -149,8 +149,8 @@
         return $html;
     }
 
-    // --- Obtención de datos de los artículos ---
-    // get_filenames, obtiene los nombres de los artículos en la carpeta de los artículos
+    // --- Obtención de datos de las páginas ---
+    // get_filenames, obtiene los nombres de las páginas en la carpeta especificada
     function get_filenames($DIRECTORY) {
         $FILENAMES = array();
         $directory_obj = opendir($DIRECTORY);
@@ -271,12 +271,12 @@
     }
 
     // --- Impresión de contenidos ---
-    // print_reciente, imprime la página de artículos recientes
+    // print_reciente, imprime la portada (las N páginas más recientes)
     function print_reciente() {
         global $ARTICLES_TO_SHOW;
         $file_info_arr = get_sorted_file_info();
 
-        echo "<h1>Artículos recientes</h1>\n<hr>\n";
+        echo "<h1>Recientes</h1>\n<hr>\n";
 
         $i = 1;
         foreach($file_info_arr as $file_info) {
@@ -287,13 +287,13 @@
         }
     }
 
-    // print_history, imprime la página del histórico de artículos ordenados por fecha DESC
-    function print_history() {
+    // print_archive, imprime la página 'archivo', donde se listan las páginas ordenadas por fecha DESC
+    function print_archive() {
         global $DIRECTORY, $FILENAMES;
 
         $file_info_arr = get_sorted_file_info();
 
-        echo "<h1>Histórico de artículos</h1>\n";
+        echo "<h1>Archivo</h1>\n";
         echo "<ul>\n";
         foreach($file_info_arr as $file_info) {
             printf(
@@ -305,7 +305,7 @@
             );
         }
         echo "</ul>\n";
-        printf("<p>Hay un total de %d artículos en la web.</p>\n", count($FILENAMES));
+        printf("<p>Hay un total de %d páginas en la web.</p>\n", count($FILENAMES));
     }
 
     // print_article, imprime la página de un artículo cuyo nombre de archivo se pasa como parámetro
@@ -326,7 +326,7 @@
             $file_info["datetime"]
         );
         printf(
-            '<p style="text-align:right;"><small><a href="index.php?page=%s" aria-label="Enlace al artículo, %s, para verlo individualmente.">Enlace al artículo</a></small></p>' . "\n",
+            '<p style="text-align:right;"><small><a href="index.php?page=%s" aria-label="Enlace al contenido, %s, para verlo individualmente.">Enlace al contenido</a></small></p>' . "\n",
             $filename,
             strtolower($file_info["title"])
         );
@@ -337,11 +337,11 @@
     $ACTION = 0;
     $FILENAMES = get_filenames($DIRECTORY);
     if (isset($_GET["page"])) {
-        if ($_GET["page"] == "history") {
-            // Histórico
+        if ($_GET["page"] == "archive") {
+            // Archivo
             $ACTION = 1;
-            $TITLE = "Histórico de artículos - record.rat.la";
-            $DESCRIPTION = "Listado de todos los artículos publicados en record.rat.la.";
+            $TITLE = "Archivo - record.rat.la";
+            $DESCRIPTION = "Listado de todas las páginas publicadas en record.rat.la";
         } elseif ($_GET["page"] == "color" && isset($_GET["id"])) {
             // Cambio de paleta de colores
             if ($_GET["id"] >= 0 && $_GET["id"] < count($COLORS)) {
@@ -527,8 +527,8 @@
             </p>
             <nav aria-label="Enlaces a las secciones de la página">
                 <p id="web_nav">
-                    <a href="index.php" aria-label="Artículos recientes.">reciente</a> / 
-                    <a href="index.php?page=history" aria-label="El histórico de artículos ordenados por fecha.">histórico</a> / 
+                    <a href="index.php" aria-label="Páginas recientes.">reciente</a> / 
+                    <a href="index.php?page=archive" aria-label="El archivo de páginas ordenadas por fecha.">archivo</a> / 
                     <a href="index.php?page=faq.html" aria-label="Preguntas frecuentes sobre esta página (faq).">faq</a> / 
                     <a href="index.php?page=color.html" aria-label="Cambia la paleta de colores para leer mejor o para molar más.">color</a>
                 </p>
@@ -549,7 +549,7 @@
             print_reciente();
             break;
         case 1:
-            print_history();
+            print_archive();
             break;
         case 2:
             print_article("color.html", false);
@@ -565,9 +565,9 @@
         </main>
 
         <footer id="footer" aria-label="Licencias y contactos" tabindex="-1">
-            <nav aria-label="Enlace al histórico de artículos">
+            <nav aria-label="Enlace al archivo">
                 <p class="center">
-                    <a href="index.php?page=history">[Más artículos]</a>
+                    <a href="index.php?page=archive">[ver más]</a>
                 </p>
             </nav>
             <nav aria-label="Moverse por esta página">
