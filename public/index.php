@@ -583,6 +583,9 @@
                     <a href="mailto:ppuubblliicc@protonmail.com">mail</a> (<a href="res/publickey.ppuubblliicc@protonmail.com.asc" aria-label="¡Mándame un correo cifrado con gpg!">gpg</a>)
                 </p>
             </nav>
+            <nav aria-label="Donaciones">
+                <a href="index.php?page=donaciones.html">donaciones - págame un café</a>
+            </nav>
             <p>
                 <small>
                     Creado por <a href="https://github.com/1noro/record.rat.la">Inoro</a> bajo la licencia <a href="LICENSE" aria-label="Todo el código que sustenta la web está bajo la licencia GPLv3.">GPLv3</a>
