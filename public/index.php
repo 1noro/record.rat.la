@@ -342,7 +342,7 @@
             $ACTION = 1;
             $TITLE = "Archivo - record.rat.la";
             $DESCRIPTION = "Listado de todas las páginas publicadas en record.rat.la";
-        } elseif ($_GET["page"] == "color" && isset($_GET["id"])) {
+        } elseif ($_GET["page"] == "color.html" && isset($_GET["id"])) {
             // Cambio de paleta de colores
             if ($_GET["id"] >= 0 && $_GET["id"] < count($COLORS)) {
                 $_SESSION["COLOR_ID"] = $_GET["id"];
@@ -504,6 +504,7 @@
                 <a class="text_size_link" style="font-size: 1.05em;" href="index.php?size=0<?php echo add_page_if_exists(); ?>" aria-label="a, texto a tamaño por defecto.">a</a> 
                 <a class="text_size_link" style="font-size: 1.20em;" href="index.php?size=1<?php echo add_page_if_exists(); ?>" aria-label="a, texto a tamaño grande.">a</a> 
                 <a class="text_size_link" style="font-size: 1.35em;" href="index.php?size=2<?php echo add_page_if_exists(); ?>" aria-label="a, texto a tamaño enorme.">a</a> / 
+                <a href="index.php?page=color.html" aria-label="Cambia la paleta de colores para leer mejor o para molar más.">color</a> / 
                 <a href="#main">ir al artículo</a> / 
                 <a href="#footer">ir al pié</a>
             </nav>
@@ -529,8 +530,7 @@
                 <p id="web_nav">
                     <a href="index.php" aria-label="Páginas recientes.">reciente</a> / 
                     <a href="index.php?page=archive" aria-label="El archivo de páginas ordenadas por fecha.">archivo</a> / 
-                    <a href="index.php?page=faq.html" aria-label="Preguntas frecuentes sobre esta página (faq).">faq</a> / 
-                    <a href="index.php?page=color.html" aria-label="Cambia la paleta de colores para leer mejor o para molar más.">color</a>
+                    <a href="index.php?page=faq.html" aria-label="Preguntas frecuentes sobre esta página (faq).">faq</a>
                 </p>
             </nav>
             <p>
