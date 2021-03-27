@@ -20,6 +20,9 @@
     }
 
     // --- Viariables globales ---
+    $DOMAIN = "record.rat.la";
+    $METHOD = "https";
+    $URL = $METHOD . "://" . $DOMAIN . "/";
     $PAGES_TO_SHOW = 2; // número de páginas a mostrar en la página principal
     $DIRECTORY = 'pages/'; // carpeta donde se guardan las páginas
     $TITLE = "Reciente - record.rat.la"; // título de la página por defecto
@@ -311,10 +314,11 @@
     // print_page, imprime la página de un artículo cuyo nombre de archivo se pasa como parámetro
     function print_page($filename, $reduce_h1 = false) {
         global $DIRECTORY;
+        global $URL;
         $filepath = $DIRECTORY . $filename;
         $file_info = get_file_info($filename);
         $file_content = file_get_contents($filepath);
-        $file_content = str_replace("img/", "https://record.rat.la/img/", $file_content);
+        // $file_content = str_replace("img/", $URL . "img/", $file_content);
         if ($reduce_h1) $file_content = reduce_h1($file_content);
         echo $file_content . "\n";
         printf(
@@ -521,9 +525,9 @@
                     {
                         "@context": "https://schema.org/",
                         "@type": "ImageObject",
-                        "contentUrl": "https://record.rat.la/img/rat<?php echo $COLORS[$COLOR_ID]["header_img_color"]; ?>.svg",
+                        "contentUrl": "<?php echo $URL; ?>img/rat<?php echo $COLORS[$COLOR_ID]["header_img_color"]; ?>.svg",
                         "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
-                        "acquireLicensePage": "https://record.rat.la/index.php?page=faq.html"
+                        "acquireLicensePage": "<?php echo $URL; ?>index.php?page=faq.html"
                     }
                 </script>
             </p>
