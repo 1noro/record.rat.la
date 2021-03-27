@@ -313,11 +313,10 @@
         global $DIRECTORY;
         $filepath = $DIRECTORY . $filename;
         $file_info = get_file_info($filename);
-        if ($reduce_h1) {
-            echo reduce_h1(file_get_contents($filepath)) . "\n";
-        } else {
-            echo file_get_contents($filepath) . "\n";
-        }
+        $file_content = file_get_contents($filepath);
+        $file_content = str_replace("img/", "https://record.rat.la/img/", $file_content);
+        if ($reduce_h1) $file_content = reduce_h1($file_content);
+        echo $file_content . "\n";
         printf(
             '<p style="text-align:right;"><small><a href="index.php?page=%s" aria-label="Página del autor %s.">%s</a> - %s</small></p>' . "\n",
             $file_info["author_data"][1],
