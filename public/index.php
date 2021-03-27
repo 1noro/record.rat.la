@@ -379,6 +379,7 @@
                 $ACTION = 404;
                 $file_info = get_file_info("404.html");
                 $TITLE = $file_info["title"] . " - record.rat.la";
+                http_response_code(404);
             }
         }
     }
@@ -526,13 +527,12 @@
                 <a href="#footer">ir al pié</a>
             </nav>
             <!-- Título H1 de la web -->
-            <div id="web_title">record.rat.la</div>
+            <div id="web_title">record 🐭 la</div>
             <!-- Para evitar que el contenido se mueva al cargar la imagen puse "height: 180.47px;" al <p>. -->
-            <p><!-- style="height: 180.47px;" -->
+            <!-- <p>
                 <a href="https://www.instagram.com/pepunto.reik" aria-label="Artista: @pepunto.reik">
                     <img src="img/rat<?php echo $COLORS[$COLOR_ID]["header_img_color"]; ?>.webp" alt="Logotipo de la web, una rata cantando: la la la." width="400" height="180">
                 </a>
-                <!-- Licencia de la imagen -->
                 <script type="application/ld+json">
                     {
                         "@context": "https://schema.org/",
@@ -542,7 +542,7 @@
                         "acquireLicensePage": "<?php echo $URL; ?>index.php?page=faq.html"
                     }
                 </script>
-            </p>
+            </p> -->
             <nav aria-label="Enlaces a las secciones de la página">
                 <p id="web_nav">
                     <a href="index.php" aria-label="Páginas recientes.">reciente</a> / 
