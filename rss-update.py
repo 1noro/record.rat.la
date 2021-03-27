@@ -77,15 +77,16 @@ sorted_pages_list = sorted(pages_list, key=itemgetter('pubDate'), reverse=True)
 # escribimos el RSS.XML
 print("Generando rss.xml con las {} mas nuevas".format(PAGES_IN_FEED))
 with open(RSS_FILE_PATH, "w") as f:
-    f.write('''<?xml version="1.0" ?>
+    f.write('''<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
     <channel>
         <title>record.rat.la</title>
         <link>https://record.rat.la/</link>
         <description>Blog/web personal donde iré registrando mis proyectos y mis líos mentales.</description>
         <image>
-            <url>https://record.rat.la/favicon.webp</url>
-            <link>https://record.rat.la/index.php</link>
+            <title>record.rat.la favicon</title>
+            <url>https://record.rat.la/favicon.png</url>
+            <link>https://record.rat.la/</link>
         </image>\n''')
 
     # f.write('<item></item>')

@@ -1,12 +1,13 @@
-<?xml version="1.0" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
     <channel>
         <title>record.rat.la</title>
         <link>https://record.rat.la/</link>
         <description>Blog/web personal donde iré registrando mis proyectos y mis líos mentales.</description>
         <image>
-            <url>https://record.rat.la/favicon.webp</url>
-            <link>https://record.rat.la/index.php</link>
+            <title>record.rat.la favicon</title>
+            <url>https://record.rat.la/favicon.png</url>
+            <link>https://record.rat.la/</link>
         </image>
 
 <item>
