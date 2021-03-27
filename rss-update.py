@@ -102,7 +102,7 @@ with open(RSS_FILE_PATH, "w") as f:
     <!--<author>{}</author>-->
     <pubDate>{}</pubDate>
     <description>
-{}
+<![CDATA[{}]]>
     </description>
 </item>
 '''.format(page['title'], page['pagename'], page['author'], utils.format_datetime(page['pubDate']), page_content))

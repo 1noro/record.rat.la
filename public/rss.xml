@@ -15,7 +15,7 @@
     <!--<author>Inoro</author>-->
     <pubDate>Wed, 10 Mar 2021 13:32:00 +0100</pubDate>
     <description>
-<!-- 202103101332i -->
+<![CDATA[<!-- 202103101332i -->
 <h1>Software que utilizo habitualmente</h1>
 
 <p>
@@ -93,7 +93,7 @@
     <li>
         <b>geany</b> para editar texto plano sin necesidad de plugins. Aunque cada vez lo uso menos, y para una función tan simple como esta acabo usando <b>nano</b>.
     </li>
-</ul> -->
+</ul> -->]]>
     </description>
 </item>
 
@@ -103,7 +103,7 @@
     <!--<author>Inoro</author>-->
     <pubDate>Sun, 07 Mar 2021 11:07:00 +0100</pubDate>
     <description>
-<!-- 202103071107i -->
+<![CDATA[<!-- 202103071107i -->
 <h1>Gitlab con NGINX reverse proxy</h1>
 
 <p>
@@ -366,7 +366,7 @@ sudo gitlab-ctl reconfigure
     <li><a href="https://linuxize.com/post/install-configure-fail2ban-on-ubuntu-20-04/">How to Install and Configure Fail2ban on Ubuntu 20.04</a></li>
     <li><a href="https://about.gitlab.com/install/#ubuntu">Gitlab Official Linux package (recommended installation)</a></li>
     <li><a href="https://docs.gitlab.com/omnibus/settings/nginx.html">Gitlab NGINX settings</a></li>
-</ul>
+</ul>]]>
     </description>
 </item>
 
@@ -376,7 +376,7 @@ sudo gitlab-ctl reconfigure
     <!--<author>Inoro</author>-->
     <pubDate>Sun, 04 Oct 2020 11:36:00 +0200</pubDate>
     <description>
-<!-- 202010041136i -->
+<![CDATA[<!-- 202010041136i -->
 <h1>Solución a algunas series numéricas en Java y Python</h1>
 
 <p>
@@ -579,7 +579,7 @@ while len(lista) < 100:
     lista.append(nuevo)
 print(lista)
 </pre>
-
+]]>
     </description>
 </item>
 
@@ -589,7 +589,7 @@ print(lista)
     <!--<author>Inoro</author>-->
     <pubDate>Wed, 30 Sep 2020 12:40:00 +0200</pubDate>
     <description>
-<!-- 202009301240i -->
+<![CDATA[<!-- 202009301240i -->
 <h1>La forma más rápida de hacer <samp>git push</samp></h1>
 
 <p>
@@ -621,7 +621,7 @@ git push
 <blockquote>
     Si tenemos configurado el <i>GIT</i> por <i>SSH</i> no hace falta que pongáis la contraseña, pero si lo tenéis por <i>HTTPS</i>, os solicitará el nombre de usuario y la contraseña de <i>GitHub</i>, <i>GitLab</i>, etc.
 </blockquote>
-
+]]>
     </description>
 </item>
 
@@ -631,7 +631,7 @@ git push
     <!--<author>Inoro</author>-->
     <pubDate>Mon, 28 Sep 2020 18:10:00 +0200</pubDate>
     <description>
-<!-- 202009281810i -->
+<![CDATA[<!-- 202009281810i -->
 <h1>Cowboy Bebop – <i>The Real Folk Blues</i></h1>
 
 <blockquote>
@@ -690,7 +690,7 @@ git push
 <p>
     Publicado originalmente el 9 de Abril de 2016.
 </p>
-
+]]>
     </description>
 </item>
 
