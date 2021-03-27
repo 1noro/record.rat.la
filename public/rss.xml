@@ -119,7 +119,7 @@
 <h2>Escenario</h2>
 
 <p>
-    <img src="img/202103071107/gitlab-nginx.webp" alt="Diagrama.">
+    <img src="https://record.rat.la/img/202103071107/gitlab-nginx.webp" alt="Diagrama.">
 </p>
 
 <h3>Características</h3>
@@ -653,7 +653,7 @@ git push
 </p>
 
 <p>
-    <img src="img/202009281810/cover.webp" alt="Portada del artículo.">
+    <img src="https://record.rat.la/img/202009281810/cover.webp" alt="Portada del artículo.">
 </p>
 
 <p>
@@ -665,8 +665,8 @@ git push
 </p>
 
 <!-- <div class="img-2">
-    <a target="_blank" href="img/de_doc/cbEd.gif">
-        <img src="img/de_doc/cbEd.gif" alt="Edward balanceándose">
+    <a target="_blank" href="https://record.rat.la/img/de_doc/cbEd.gif">
+        <img src="https://record.rat.la/img/de_doc/cbEd.gif" alt="Edward balanceándose">
     </a>
     <div class="desc">
         Edward y su PC
@@ -865,41 +865,41 @@ pragma: no-cache
 
 <h2>Escenario</h2>
 
-<p><img src="img/202009200144/mapa.webp" alt="Diagrama del escenario"></p>
+<p><img src="https://record.rat.la/img/202009200144/mapa.webp" alt="Diagrama del escenario"></p>
 
 <h2>1 - Asignar a la interfaz WAN física del ER una IP fija o por DHCP dentro de la red del HGU</h2>
 
-<p><img src="img/202009200144/1-1.webp" alt="imagen 1-1" class="half"></p>
+<p><img src="https://record.rat.la/img/202009200144/1-1.webp" alt="imagen 1-1" class="half"></p>
 
 <h2>2 - Enmascarar todo el tráfico hacia la red del HGU con dicha interfaz</h2>
 
-<p><img src="img/202009200144/2-1.webp" alt="imagen 2-1"></p>
+<p><img src="https://record.rat.la/img/202009200144/2-1.webp" alt="imagen 2-1"></p>
 
 <h2>3 - Añadir un par de rutas al ER para las peticiones IGMP/Multicast</h2>
 
 <p>Rutas estáticas de <strong>tipo Gateway</strong>.</p>
 
-<p><img src="img/202009200144/3-1.webp" alt="imagen 3-1"></p>
+<p><img src="https://record.rat.la/img/202009200144/3-1.webp" alt="imagen 3-1"></p>
 
 <p>No estoy seguro de que sean necesarias todas, pero son las que había en la tabla del router HGU, como se puede ver a continuación:</p>
 
-<p><img src="img/202009200144/3-2.webp" alt="imagen 3-2"></p>
+<p><img src="https://record.rat.la/img/202009200144/3-2.webp" alt="imagen 3-2"></p>
 
 <h2>4 - Configurar el Firewall del ER</h2>
 
 <p>Me baso en las dos Rulesets definidas por la configuración básica del ER a través del Wizard, WAN_IN y WAN_LOCAL.</p>
 
-<p><img src="img/202009200144/4-1.webp" alt="imagen 4-1"></p>
+<p><img src="https://record.rat.la/img/202009200144/4-1.webp" alt="imagen 4-1"></p>
 
 <h2>Reglas de WAN_IN:</h2>
 
 <p>Es importante que se <strong>mantengan en el orden</strong> definido.</p>
 
-<p><img src="img/202009200144/4-2.webp" alt="imagen 4-2"></p>
+<p><img src="https://record.rat.la/img/202009200144/4-2.webp" alt="imagen 4-2"></p>
 
-<p><img src="img/202009200144/4-3.webp" alt="imagen 4-3" class="half"></p>
+<p><img src="https://record.rat.la/img/202009200144/4-3.webp" alt="imagen 4-3" class="half"></p>
 
-<p><img src="img/202009200144/4-4.webp" alt="imagen 4-4" class="half"></p>
+<p><img src="https://record.rat.la/img/202009200144/4-4.webp" alt="imagen 4-4" class="half"></p>
 
 <h2>Reglas de WAN_LOCAL:</h2>
 
@@ -948,7 +948,7 @@ show ip multicast interfaces
     <li>Pulsamos el botón superior con forma de persona en el mando de la TV de Movistar repetidas veces durante el arranque, hasta entrar en el <strong>menú de configuración de red</strong>.</li>
 </ul>
 
-<p><img src="img/202009200144/6-1.webp" alt="imagen 6-1" class="half"></p>
+<p><img src="https://record.rat.la/img/202009200144/6-1.webp" alt="imagen 6-1" class="half"></p>
 
 <ul>
     <li>Editamos la configuración en modo estático:
@@ -992,7 +992,7 @@ show ip multicast interfaces
 
 <p>
     <a title="Ir a la web de origen de la imagen." href="https://uxdesign.cc/did-you-know-that-the-free-cookie-clicker-can-explain-key-mechanics-for-freemium-services-bf5140a50c04">
-        <img src="img/cookie.webp" alt="Imagen de cabecera, abuela con una cookie.">
+        <img src="https://record.rat.la/img/cookie.webp" alt="Imagen de cabecera, abuela con una cookie.">
     </a>
 </p>
 
@@ -1349,7 +1349,7 @@ certbot renew --dry-run
 ssh user@server_ip_or_domain 'git -C /var/www/record.rat.la pull'
 </pre>
 
-<h2>Habilitar el header HTTP <em>charset</em> UTF-8</h2>
+<h2>Habilitar el header HTTP, <em>charset</em> UTF-8</h2>
 
 <p>
     Editamos el archivo <samp>/etc/nginx/nginx.conf</samp> y agregamos la siguiente línea a la configuración del bloque <samp>http</samp>.
