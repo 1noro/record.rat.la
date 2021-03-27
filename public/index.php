@@ -386,6 +386,8 @@
 
         <title><?php echo $TITLE; ?></title>
         <link rel="icon" href="favicon.webp" type="image/webp" sizes="50x50">
+        <!-- para decirle al navegador que tengo RSS -->
+        <link rel="alternate" type="application/rss+xml" href="rss.xml" title="RSS de record.rat.la">
 
         <!-- Avisamos al navegador de que se prepare para hacer una petición a los siguientes dominios -->
         <link rel="preconnect dns-prefetch" href="https://www.googletagmanager.com">
@@ -530,13 +532,14 @@
                 <p id="web_nav">
                     <a href="index.php" aria-label="Páginas recientes.">reciente</a> / 
                     <a href="index.php?page=archive" aria-label="El archivo de páginas ordenadas por fecha.">archivo</a> / 
-                    <a href="index.php?page=faq.html" aria-label="Preguntas frecuentes sobre esta página (faq).">faq</a>
+                    <a href="index.php?page=faq.html" aria-label="Preguntas frecuentes sobre esta página (faq).">faq</a> / 
+                    <a href="rss.xml" aria-label="Feed RSS para estar al tanto de las novedades de esta web.">rss</a>
                 </p>
             </nav>
             <p>
                 <small>
                     <!-- ¿Debería acortar el mensaje? -->
-                    Esta página guarda una <a href="index.php?page=cookie.html" aria-label="¡Infórmate sobre las cookies!">cookie</a> funcional para el estilo y cuatro analíticas para google
+                    Esta página guarda una <a href="index.php?page=cookie.html" aria-label="¡Infórmate sobre las cookies!">cookie</a> funcional para el estilo y ocho analíticas para google
                 </small>
             </p>
         </header>
