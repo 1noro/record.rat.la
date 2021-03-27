@@ -81,10 +81,12 @@ with open(RSS_FILE_PATH, "w") as f:
 <rss version="2.0">
     <channel>
         <title>record.rat.la</title>
-        <link>https://record.rat.la/</link>
         <description>Blog/web personal donde iré registrando mis proyectos y mis líos mentales.</description>
+        <language>es-es</language>
+        <link>https://record.rat.la/</link>
+        <atom:link href="https://record.rat.la/rss.xml" rel="self" type="application/rss+xml"/>
         <image>
-            <title>record.rat.la favicon</title>
+            <title>record.rat.la</title>
             <url>https://record.rat.la/favicon.png</url>
             <link>https://record.rat.la/</link>
         </image>\n''')
@@ -99,6 +101,7 @@ with open(RSS_FILE_PATH, "w") as f:
             f.write('''
 <item>
     <title>{}</title>
+    <guid>https://record.rat.la/index.php?page={}</guid>
     <link>https://record.rat.la/index.php?page={}</link>
     <!--<author>{}</author>-->
     <pubDate>{}</pubDate>
@@ -106,7 +109,7 @@ with open(RSS_FILE_PATH, "w") as f:
 <![CDATA[{}]]>
     </description>
 </item>
-'''.format(page['title'], page['pagename'], page['author'], utils.format_datetime(page['pubDate']), page_content))
+'''.format(page['title'], page['pagename'], page['pagename'], page['author'], utils.format_datetime(page['pubDate']), page_content))
 
     f.write('''
     </channel>

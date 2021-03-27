@@ -2,16 +2,19 @@
 <rss version="2.0">
     <channel>
         <title>record.rat.la</title>
-        <link>https://record.rat.la/</link>
         <description>Blog/web personal donde iré registrando mis proyectos y mis líos mentales.</description>
+        <language>es-es</language>
+        <link>https://record.rat.la/</link>
+        <atom:link href="https://record.rat.la/rss.xml" rel="self" type="application/rss+xml"/>
         <image>
-            <title>record.rat.la favicon</title>
+            <title>record.rat.la</title>
             <url>https://record.rat.la/favicon.png</url>
             <link>https://record.rat.la/</link>
         </image>
 
 <item>
     <title>Software que utilizo habitualmente</title>
+    <guid>https://record.rat.la/index.php?page=mi-software.html</guid>
     <link>https://record.rat.la/index.php?page=mi-software.html</link>
     <!--<author>Inoro</author>-->
     <pubDate>Wed, 10 Mar 2021 13:32:00 +0100</pubDate>
@@ -100,6 +103,7 @@
 
 <item>
     <title>Gitlab con NGINX reverse proxy</title>
+    <guid>https://record.rat.la/index.php?page=gitlab-nginx.html</guid>
     <link>https://record.rat.la/index.php?page=gitlab-nginx.html</link>
     <!--<author>Inoro</author>-->
     <pubDate>Sun, 07 Mar 2021 11:07:00 +0100</pubDate>
@@ -373,6 +377,7 @@ sudo gitlab-ctl reconfigure
 
 <item>
     <title>Solución a algunas series numéricas en Java y Python</title>
+    <guid>https://record.rat.la/index.php?page=solucion-series-numericas-java-python.html</guid>
     <link>https://record.rat.la/index.php?page=solucion-series-numericas-java-python.html</link>
     <!--<author>Inoro</author>-->
     <pubDate>Sun, 04 Oct 2020 11:36:00 +0200</pubDate>
@@ -586,6 +591,7 @@ print(lista)
 
 <item>
     <title>La forma más rápida de hacer git push</title>
+    <guid>https://record.rat.la/index.php?page=la-forma-mas-rapida-de-hacer-un-git-push.html</guid>
     <link>https://record.rat.la/index.php?page=la-forma-mas-rapida-de-hacer-un-git-push.html</link>
     <!--<author>Inoro</author>-->
     <pubDate>Wed, 30 Sep 2020 12:40:00 +0200</pubDate>
@@ -628,6 +634,7 @@ git push
 
 <item>
     <title>Cowboy Bebop – The Real Folk Blues</title>
+    <guid>https://record.rat.la/index.php?page=cowboy-bebop.html</guid>
     <link>https://record.rat.la/index.php?page=cowboy-bebop.html</link>
     <!--<author>Inoro</author>-->
     <pubDate>Mon, 28 Sep 2020 18:10:00 +0200</pubDate>
