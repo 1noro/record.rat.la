@@ -15,7 +15,7 @@ from operator import itemgetter
 # --- Global
 PAGES_FOLDER = "public/pages/"
 RSS_FILE_PATH = "public/rss.xml"
-PAGES_IN_FEED = 5
+PAGES_IN_FEED = 10
 
 AUTHORS = {
     "a": ["Anon", "404.html"], 
