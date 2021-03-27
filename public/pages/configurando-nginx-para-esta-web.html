@@ -298,6 +298,25 @@ certbot renew --dry-run
 ssh user@server_ip_or_domain 'git -C /var/www/record.rat.la pull'
 </pre>
 
+<h2>Habilitar el header HTTP <em>charset</em> UTF-8</h2>
+
+<p>
+    Editamos el archivo <samp>/etc/nginx/nginx.conf</samp> y agregamos la siguiente línea a la configuración del bloque <samp>http</samp>.
+</p>
+
+<pre>
+charset UTF-8;
+</pre>
+
+<p>
+    Guarda el archivo y recarga/reinicia el servicio.
+</p>
+
+<pre>
+nginx -t
+systemctl reload nginx
+</pre>
+
 <h2>Bibliografía</h2>
 
 <ul>
@@ -307,4 +326,5 @@ ssh user@server_ip_or_domain 'git -C /var/www/record.rat.la pull'
     <li><a href="https://stackoverflow.com/questions/7622616/executing-a-git-pull-from-a-different-directory">Executing a git pull from a different directory</a></li>
     <li><a href="https://malcontentcomics.com/systemsboy/2006/07/send-remote-commands-via-ssh.html">Send Remote Commands Via SSH</a></li>
     <li><a href="https://www.howtoforge.com/make-browsers-cache-static-files-on-nginx">Make Browsers Cache Static Files On nginx</a></li>
+    <li><a href="https://www.cyberciti.biz/faq/nginx-set-http-content-type-response-header-to-charset-utf8/">How do I enable charset HTTP-header in Nginx?</a></li>
 </ul>
