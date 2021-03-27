@@ -84,7 +84,7 @@ with open(RSS_FILE_PATH, "w") as f:
         <description>Blog/web personal donde iré registrando mis proyectos y mis líos mentales.</description>
         <language>es-es</language>
         <link>https://record.rat.la/</link>
-        <atom:link href="https://record.rat.la/rss.xml" rel="self" type="application/rss+xml"/>
+        <!--<atom:link href="https://record.rat.la/rss.xml" rel="self" type="application/rss+xml"/>-->
         <image>
             <title>record.rat.la</title>
             <url>https://record.rat.la/favicon.png</url>
