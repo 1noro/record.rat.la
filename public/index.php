@@ -109,6 +109,18 @@
             "code_background" => "#1F1F1F",
             "code_text" => "#C8C8C8",
             "header_img_color" => "W"
+        ],
+        // GitHub Dark dimmed
+        [
+            "background" => "#22272E",
+            "text" => "#ADBAC7",
+            "title" => "#ADBAC7",
+            "link" => "#539BF5",
+            "link_visited" => "#539BF5",
+            "link_active" => "#539BF5",
+            "code_background" => "#2b3139", // 25% mas claro que #22272E
+            "code_text" => "#e4e9ed", // 25% mas claro que #ADBAC7
+            "header_img_color" => "W"
         ]
     ];
 
