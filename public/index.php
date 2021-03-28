@@ -204,7 +204,15 @@
         $hour = substr($line, 8, 2);
         $minute = substr($line, 10, 2);
 
-        return $year."/".$month."/".$day." ".$hour.":".$minute;
+        // return $year."/".$month."/".$day." ".$hour.":".$minute;
+        return [
+            "datetime" => $year."/".$month."/".$day." ".$hour.":".$minute,
+            "year" => $year,
+            "month" => $month,
+            "day" => $day,
+            "hour" => $hour,
+            "minute" => $minute
+        ];
     }
 
     // get_author_data_by_line, obtiene los datos del autor en base a su alias en el comentario de la primera línea del artículo
@@ -244,11 +252,18 @@
         $line2 = fgets($file_obj); // leemos la segunda linea
         fclose($file_obj);
 
+        $datetime_info = get_date_by_line($line1);
+
         return [
             "filename" => $filename,
-            "datetime" => get_date_by_line($line1),
             "author_data" => get_author_data_by_line($line1),
-            "title" => get_title_by_line($line2)
+            "title" => get_title_by_line($line2),
+            "datetime" => $datetime_info["datetime"],
+            "year" => $datetime_info["year"],
+            "month" => $datetime_info["month"],
+            "day" => $datetime_info["day"],
+            "hour" => $datetime_info["hour"],
+            "minute" => $datetime_info["minute"]
         ];
     }
 
