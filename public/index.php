@@ -432,12 +432,11 @@
 
         <!-- Cosas de la NSA (en modo prueba) -->
         <!-- Google Analytics -->
-        <!-- La carga del script interno se hace después de los estilos para mejorar la performance -->
+        <!-- La carga del script externo se hace después de los estilos para mejorar la performance -->
         <script>
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-
             gtag('config', 'UA-179041248-1');
         </script>
 
@@ -466,10 +465,11 @@
                 margin: 16px 0px; /* porque es un <div> y no un <p> */
             }
 
-            header img {
+            /* Ya no hay imagen en el header */
+            /* header img {
                 width: auto;
                 max-width: 400px;
-            }
+            } */
 
             header p#web_nav {font-size: 1.4em;} /* este valor multiplica al valor definido en el body */
 
@@ -511,13 +511,14 @@
 
         <!-- Cosas de la NSA (en modo prueba) -->
         <!-- Google Analytics -->
-        <!-- La situo aquí para mejorar la carga de la web -->
+        <!-- La sitúo aquí para mejorar la carga de la web -->
         <script async src="https://www.googletagmanager.com/gtag/js?id=UA-179041248-1"></script>
     </head>
 
     <body>
         
         <header id="header" aria-label="Cabecera" tabindex="-1">
+            <!-- Barra de accesibilidad -->
             <nav aria-label="Enlaces de control de la web" style="text-align: left;">
                 <a class="text_size_link" style="font-size: 1.05em;" href="index.php?size=0<?php echo add_page_if_exists(); ?>" aria-label="a, texto a tamaño por defecto.">a</a> 
                 <a class="text_size_link" style="font-size: 1.20em;" href="index.php?size=1<?php echo add_page_if_exists(); ?>" aria-label="a, texto a tamaño grande.">a</a> 
@@ -526,23 +527,9 @@
                 <a href="#main">ir al artículo</a> / 
                 <a href="#footer">ir al pié</a>
             </nav>
-            <!-- Título H1 de la web -->
+            <!-- Título del HEADER -->
             <div id="web_title">record 🐭 la</div>
-            <!-- Para evitar que el contenido se mueva al cargar la imagen puse "height: 180.47px;" al <p>. -->
-            <!-- <p>
-                <a href="https://www.instagram.com/pepunto.reik" aria-label="Artista: @pepunto.reik">
-                    <img src="img/rat<?php echo $COLORS[$COLOR_ID]["header_img_color"]; ?>.webp" alt="Logotipo de la web, una rata cantando: la la la." width="400" height="180">
-                </a>
-                <script type="application/ld+json">
-                    {
-                        "@context": "https://schema.org/",
-                        "@type": "ImageObject",
-                        "contentUrl": "<?php echo $URL; ?>img/rat<?php echo $COLORS[$COLOR_ID]["header_img_color"]; ?>.webp",
-                        "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
-                        "acquireLicensePage": "<?php echo $URL; ?>index.php?page=faq.html"
-                    }
-                </script>
-            </p> -->
+            <!-- Barra de navegación principal -->
             <nav aria-label="Enlaces a las secciones de la página">
                 <p id="web_nav">
                     <a href="index.php" aria-label="Páginas recientes.">reciente</a> / 
@@ -551,9 +538,10 @@
                     <a href="rss.xml" aria-label="Feed RSS para estar al tanto de las novedades de esta web.">rss</a>
                 </p>
             </nav>
+            <!-- Alerta sobre las cookies -->
             <p>
                 <small>
-                    <!-- ¿Debería acortar el mensaje? -->
+                    <!-- Debería dar la opción a desactivar la cookies de google -->
                     Esta página guarda una <a href="index.php?page=cookie.html" aria-label="¡Infórmate sobre las cookies!">cookie</a> funcional para el estilo y <strong>ocho</strong> analíticas para google
                 </small>
             </p>
