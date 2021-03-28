@@ -537,7 +537,7 @@
                     {
                         "@context": "https://schema.org/",
                         "@type": "ImageObject",
-                        "contentUrl": "<?php echo $URL; ?>img/rat<?php echo $COLORS[$COLOR_ID]["header_img_color"]; ?>.svg",
+                        "contentUrl": "<?php echo $URL; ?>img/rat<?php echo $COLORS[$COLOR_ID]["header_img_color"]; ?>.webp",
                         "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
                         "acquireLicensePage": "<?php echo $URL; ?>index.php?page=faq.html"
                     }
@@ -554,7 +554,7 @@
             <p>
                 <small>
                     <!-- ¿Debería acortar el mensaje? -->
-                    Esta página guarda una <a href="index.php?page=cookie.html" aria-label="¡Infórmate sobre las cookies!">cookie</a> funcional para el estilo y ocho analíticas para google
+                    Esta página guarda una <a href="index.php?page=cookie.html" aria-label="¡Infórmate sobre las cookies!">cookie</a> funcional para el estilo y <strong>ocho</strong> analíticas para google
                 </small>
             </p>
         </header>
