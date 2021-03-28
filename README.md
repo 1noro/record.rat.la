@@ -7,3 +7,8 @@ Debido a que siempre estoy iniciando y abandonando nuevos proyectos, y que cada 
 Bueno, si lo que voy a hacer ahora es esto: programar una especie de blog muy sencillo donde escribir o editar un post suponga el mínimo esfuerzo para llevar un seguimiento al menos, de las cosas que estudio, investigo, pruebo y pongo en práctica para no tener que reinventar la rueda cada vez que me pongo delante de un TXT en blanco.
 
 Además esto viene porque ahora me apetece hacer una web, me apetece hacer algo muy sencillo y fácil de gestionar a nivel interno. Hoy por la mañana leí esta (http://motherfuckingwebsite.com/) maravilla y me incito a empezar este proyecto. ¿Vés? Este es un buen ejemplo de lo que quiero hacer con este blog, acordarme del motivo y el procedimiento que sigo al hacer un proyecto.
+
+# To-do list
+
+- Detectar _dark-mode_ con js y cambiar el color automáticamente.
+    - check: https://usefulangle.com/post/318/javascript-check-dark-mode-activated.
