@@ -9,8 +9,23 @@
 
  -->
 <?php
+    // Configuramos el timeout de la cookie de sesión para guardar los ajustes gráficos
+    // Tiempo por defecto: 25 m (1500 s)
+    // Tiempo actual 7 d (604800 s)
+    $timeout = 604800;
+    ini_set( "session.gc_maxlifetime", $timeout );
+    ini_set( "session.cookie_lifetime", $timeout );
+
     // Creamos u obtenemos la cookie funcional que guarda las preferencias del usuario (la paleta de colores)
     session_start();
+
+    // Renovamos la cookie siempre que se entre en una sesión ya creada
+    // (ampliando el tíempo de expiración otros $timeout segundos)
+    $sessionName = session_name();
+    if( isset( $_COOKIE[ $sessionName ] ) ) {
+        setcookie( $sessionName, $_COOKIE[ $sessionName ], time() + $timeout, '/' );
+    }
+
     // Si se entra por primera vez a la web se guarda un cookie de sesión con las preferencias por defecto
     if (!isset($_SESSION["COLOR_ID"])) {
         $_SESSION["COLOR_ID"] = 0;
