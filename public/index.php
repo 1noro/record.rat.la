@@ -352,6 +352,7 @@
         global $DIRECTORY, $FILENAMES, $MONTHS;
         $current_year = "";
         $current_month = "";
+        // $current_day = "";
 
         $file_info_arr = get_sorted_file_info();
 
@@ -366,13 +367,18 @@
                 $current_month = $file_info["month"];
                 printf("<h3>%s</h3>\n", $MONTHS[intval($file_info["month"]) - 1]);
             }
+            // if ($current_day != $file_info["day"]) {
+            //     $current_day = $file_info["day"];
+            //     printf("<blockquote><strong>- %s -</strong></blockquote>\n", $file_info["day"]);
+            // }
             printf(
-                '<blockquote>%s:%s %s - <a href="index.php?page=%s">%s</a></blockquote>' . "\n",
+                '<blockquote>%s %s:%s - <a href="index.php?page=%s">%s</a> - %s</blockquote>' . "\n",
+                $file_info["day"],
                 $file_info["hour"],
                 $file_info["minute"],
-                $file_info["author_data"][0],
                 $file_info["filename"],
-                $file_info["title"]
+                $file_info["title"],
+                $file_info["author_data"][0]
             );
         }
 
