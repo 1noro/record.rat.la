@@ -97,7 +97,7 @@ with open(RSS_FILE_PATH, "w") as f:
         print(">> " + page_path)
         with open(page_path, 'r') as page_file:
             page_content = page_file.read()
-            page_content = page_content.replace("img/", "https://record.rat.la/img/")
+            page_content = page_content.replace('"img/', '"https://record.rat.la/img/')
             # NOTA: el 'author' debe ser un email
             f.write('''
 <item>
