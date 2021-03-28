@@ -291,7 +291,7 @@
         global $PAGES_TO_SHOW;
         $file_info_arr = get_sorted_file_info();
 
-        echo "<h1>Recientes</h1>\n<hr>\n";
+        echo "<h1>Reciente</h1>\n<hr>\n";
 
         $i = 1;
         foreach($file_info_arr as $file_info) {
