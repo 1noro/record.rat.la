@@ -139,6 +139,21 @@
         ]
     ];
 
+    $MONTHS = [
+        "Enero",
+        "Febrero",
+        "Marzo",
+        "Abril",
+        "Mayo",
+        "Junio",
+        "Julio",
+        "Agosto",
+        "Septiembre",
+        "Octubre",
+        "Noviembre",
+        "Diciembre"
+    ];
+
     // --- Utilidades genéricas ---
     // get_url, monta la URL de la página para imprimirla en los headers HTML  en base a la URL dada por el usuario
     function get_url($full) {
@@ -334,6 +349,37 @@
 
     // print_archive, imprime la página 'archivo', donde se listan las páginas ordenadas por fecha DESC
     function print_archive() {
+        global $DIRECTORY, $FILENAMES, $MONTHS;
+        $current_year = "";
+        $current_month = "";
+
+        $file_info_arr = get_sorted_file_info();
+
+        echo "<h1>Archivo</h1>\n";
+
+        foreach($file_info_arr as $file_info) {
+            if ($current_year != $file_info["year"]) {
+                $current_year = $file_info["year"];
+                printf("<h2>%s</h2>\n<hr>\n", $file_info["year"]);
+            }
+            if ($current_month != $file_info["month"]) {
+                $current_month = $file_info["month"];
+                printf("<h3>%s</h3>\n", $MONTHS[intval($file_info["month"]) - 1]);
+            }
+            printf(
+                '<blockquote>%s:%s %s - <a href="index.php?page=%s">%s</a></blockquote>' . "\n",
+                $file_info["hour"],
+                $file_info["minute"],
+                $file_info["author_data"][0],
+                $file_info["filename"],
+                $file_info["title"]
+            );
+        }
+
+        printf("<p>Hay un total de %d páginas en la web.</p>\n", count($FILENAMES));
+    }
+
+    /*function print_archive() {
         global $DIRECTORY, $FILENAMES;
 
         $file_info_arr = get_sorted_file_info();
@@ -351,7 +397,7 @@
         }
         echo "</ul>\n";
         printf("<p>Hay un total de %d páginas en la web.</p>\n", count($FILENAMES));
-    }
+    }*/
 
     // print_page, imprime la página de un artículo cuyo nombre de archivo se pasa como parámetro
     function print_page($filename, $reduce_h1 = false) {
