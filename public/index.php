@@ -547,13 +547,8 @@
                 margin: 16px 0px; /* porque es un <div> y no un <p> */
             }
 
-            /* Ya no hay imagen en el header */
-            /* header img {
-                width: auto;
-                max-width: 400px;
-            } */
-
-            header p#web_nav {font-size: 1.4em;} /* este valor multiplica al valor definido en el body */
+            /* este valor multiplica al valor definido en el body */
+            header p#web_nav {font-size: 1.4em;} 
 
             /* --- contenedor MAIN --- */
             main {

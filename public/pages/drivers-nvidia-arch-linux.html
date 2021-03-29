@@ -1,0 +1,179 @@
+<!-- 202103292256i -->
+<h1>Configurar los drivers de Nvidia en Arch Linux</h1>
+
+<p>
+    Yo antes solo utilizaba mi fabulosa tarjeta gráfica integrada de 
+    <strong>Intel Graphics 2500</strong>, pero durante el confinamiento estuve 
+    jugando a algún que otro videojuego y vi que se quedaba algo corta en 
+    ciertos aspectos, por lo que decidí comprarme una tarjeta gráfica.
+</p>
+
+<p>
+    Me compré una <strong>Nvidia GTX 1070</strong>, por lo que orientaré este 
+    artículo hacia mi modelo. Por suerte, mi configuración habitual es bastante 
+    estándar, por lo que puede que le sirva a mas de uno. Uso el núcleo 
+    de <strong>Linux</strong> por defecto y <strong>Gnome</strong> sobre 
+    <strong>Xorg</strong> en el escritorio, como buen amante del 
+    <em>default</em> que soy. En 
+    <a href="https://wiki.archlinux.org/index.php/NVIDIA#Installation">este apartado de la Arch Wiki</a> 
+    podrás confirmar si tu gráfica se ajusta a estas instrucciones o no.
+</p>
+
+<blockquote>
+    Antes de comenzar a explicar debo informar que en este artículo no vas a 
+    encontrar una mejor solución que <a href="https://wiki.archlinux.org/index.php/NVIDIA">en la Arch Wiki</a>. 
+    Escribo esto para que yó, que ya me he leído la wiki, y la he adaptado a 
+    mi situación, no tenga que volver a hacerlo la próxima vez que instale mi 
+    PC. Si encuentras algún problema durante este proceso puedes consultarme, 
+    pero personalmente te recomiendo que consultes la wiki. Estoy seguro de que 
+    tu solución específica se encuentra ahí.
+</blockquote>
+
+<h2>Eliminar la instalación previa de Intel</h2>
+
+<p>
+    Como parto de mi situación real, veo útil explicar los pasos que seguí 
+    durante la desinstalación de los drivers de <strong>Intel</strong> que 
+    estaban configurados previamente en mi PC.
+</p>
+
+<p>
+    Editamos el archivo <samp>/etc/mkinitcpio.conf</samp> y eliminamos del array <code>MODULES</code> el módulo <code>i915</code>. Como yo no tenía ningún modulo mas, previamente mi array quedaría de la siguiente manera.
+</p>
+
+<pre>
+MODULES=()
+</pre>
+
+<p>
+    Y ejecutamos el <code>mkinitcpio</code>.
+</p>
+
+<pre>
+sudo mkinitcpio -p linux
+</pre>
+
+<p>
+    Configuramos el <strong>GRUB</strong>, para que no cargue el módulo de 
+    <em>kernel</em> que acabamos de quitar, editando el archivo 
+    <samp>/etc/default/grub</samp>.
+</p>
+
+<p>
+    Eliminamos el parámetro <code>i915.enable_guc=2</code> de la línea 
+    <code>GRUB_CMDLINE_LINUX_DEFAULT</code>. Quedando, en mi caso, de la 
+    siguiente forma.
+</p>
+
+<pre>
+GRUB_CMDLINE_LINUX_DEFAULT="loglevel=4 nowatchdog"
+</pre>
+
+<p>
+    Y volvemos a generar la configuración del <strong>GRUB</strong>.
+</p>
+
+<pre>
+sudo grub-mkconfig -o /boot/grub/grub.cfg
+</pre>
+
+<p>
+    Borramos las configuraciones de Intel.
+</p>
+
+<pre>
+sudo rm /etc/X11/xorg.conf.d/20-intel.conf
+rm ~/.drirc
+</pre>
+
+<p>
+    Ponemos en la lista negra los módulos de Intel.
+</p>
+
+<pre>
+sudo echo 'install i915 /bin/false' >> /etc/modprobe.d/blacklist.conf
+sudo echo 'install intel_agp /bin/false' >> /etc/modprobe.d/blacklist.conf
+</pre>
+
+<p>
+    Borramos los drivers de Intel.
+</p>
+
+<pre>
+sudo pacman -Rns xf86-video-intel
+</pre>
+
+<h2>Instalar y configurar los drivers de Nvidia</h2>
+
+<p>
+    Instalamos los controladores y utilidades extra de Nvidia, a ser posible 
+    <u>en este mismo orden</u>.
+</p>
+
+<pre>
+sudo pacman -S nvidia-utils
+sudo pacman -S nvidia
+sudo pacman -S lib32-nvidia-utils
+sudo pacman -S nvidia-settings
+</pre>
+
+<p>
+    Generamos una configuración automática.
+</p>
+
+<pre>
+sudo nvidia-xconfig
+</pre>
+
+<p>
+    Revisamos <samp>/etc/xorg.conf</samp> para ver si nos convencen los parámetros auto-generados, y <strong>comentamos</strong> la siguiente línea si está presente.
+</p>
+
+<pre>
+# Load        "dri"
+</pre>
+
+<p>
+    Agregamos los siguientes módulos al kernel editando el array <code>MODULES</code> del archivo <samp>/etc/mkinitcpio.conf</samp>.
+</p>
+
+<pre>
+MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm)
+</pre>
+
+<p>
+    Y ejecutamos el <code>mkinitcpio</code>.
+</p>
+
+<pre>
+sudo mkinitcpio -p linux
+</pre>
+
+<p>
+    Definimos el parámetro <code>nvidia-drm.modeset=1</code> de arranque del 
+    kernel en la línea <code>GRUB_CMDLINE_LINUX_DEFAULT</code> de la 
+    configuración del <strong>GRUB</strong>, editando el archivo 
+    <samp>/etc/default/grub</samp>.
+</p>
+
+<p>
+    El resultado sería el siguiente.
+</p>
+
+<pre>
+GRUB_CMDLINE_LINUX_DEFAULT="loglevel=4 nowatchdog nvidia-drm.modeset=1"
+</pre>
+
+<p>
+    Y volvemos a generar la configuración del <strong>GRUB</strong>.
+</p>
+
+<pre>
+sudo grub-mkconfig -o /boot/grub/grub.cfg
+</pre>
+
+<p>
+    Ahora solo queda <u>reiniciar</u> la máquina para que se aplique la nueva 
+    configuración. Recuerda cambiar el cable de la pantalla y conectarlo a la 
+    gráfica.
+</p>
