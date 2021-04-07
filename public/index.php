@@ -479,8 +479,8 @@
 <!DOCTYPE html>
 <html lang="es">
     <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
 
         <title><?php echo $TITLE; ?></title>
         <link rel="icon" href="favicon.webp" type="image/webp" sizes="50x50">
@@ -492,8 +492,8 @@
         <link rel="preconnect dns-prefetch" href="https://www.google-analytics.com">
 
         <!-- Revisar: https://css-tricks.com/essential-meta-tags-social-media/ -->
-        <meta name="author" content="Inoro"> <!-- This site was made by https://github.com/1noro -->
-        <meta name="description" content="<?php echo $DESCRIPTION; ?>">
+        <meta name="author" content="Inoro" /> <!-- This site was made by https://github.com/1noro -->
+        <meta name="description" content="<?php echo $DESCRIPTION; ?>" />
         <meta property="og:locale" content="es_ES" />
         <meta property="og:type" content="article" />
         <meta property="og:title" content="<?php echo $TITLE; ?>" />
