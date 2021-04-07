@@ -1,4 +1,4 @@
-<!-- 
+<!--
                _     _
      _ __ __ _| |_  | | __ _
     | '__/ _` | __| | |/ _` |
@@ -7,7 +7,7 @@
 
     record.rat.la by Inoro (github.com/1noro)
 
- -->
+-->
 <?php
     // Configuramos el timeout de la cookie de sesión para guardar los ajustes gráficos
     // Tiempo por defecto: 25 m (1500 s)
