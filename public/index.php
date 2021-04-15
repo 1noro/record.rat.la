@@ -65,7 +65,7 @@
     ];
 
     $COLORS = [
-        // Paleta de colores por defecto 0 (B&W)
+        // Paleta de colores por defecto 0 (G&W)
         [
             "background" => "#FFFFFF",
             "text" => "#222324",
@@ -73,8 +73,8 @@
             "link" => "#0000EE",
             "link_visited" => "#551A8B",
             "link_active" => "#EE0000",
-            "code_background" => "#222324",
-            "code_text" => "#FFFFFF",
+            "code_background" => "#dddcdb",
+            "code_text" => "#222324",
             "header_img_color" => "B"
         ],
         // Melocotón
@@ -136,6 +136,18 @@
             "code_background" => "#2b3139", // 25% mas claro que #22272E
             "code_text" => "#e4e9ed", // 25% mas claro que #ADBAC7
             "header_img_color" => "W"
+        ],
+        // B&W
+        [
+            "background" => "#FFFFFF",
+            "text" => "#222324",
+            "title" => "#222324",
+            "link" => "#0000EE",
+            "link_visited" => "#551A8B",
+            "link_active" => "#EE0000",
+            "code_background" => "#222324",
+            "code_text" => "#FFFFFF",
+            "header_img_color" => "B"
         ]
     ];
 
