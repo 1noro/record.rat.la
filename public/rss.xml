@@ -13,6 +13,131 @@
         </image>
 
 <item>
+    <title>Git quick reference</title>
+    <guid>https://record.rat.la/index.php?page=comandos-utiles-git.html</guid>
+    <link>https://record.rat.la/index.php?page=comandos-utiles-git.html</link>
+    <!--<author>Inoro</author>-->
+    <pubDate>Tue, 13 Apr 2021 21:59:00 +0200</pubDate>
+    <description>
+<![CDATA[<!-- 202104132159i -->
+<h1><em>Git quick reference</em></h1>
+
+<p>Listado de los comandos mas recurrentes en el día a día con <em>git</em>.</p>
+
+<h2>Elementos a tener en cuenta antes de leer los comandos</h2>
+
+<ul>
+    <li>Siempre que puedas poner un único archivo (<code>&lt;file&gt;</code>) en un comando, puedes poner un <code>.</code> para referirte a todos de forma recursiva.</li>
+</ul>
+
+<h2>Obtener un repositorio — <em>clone</em></h2>
+
+<p>Para descargar un repositorio remoto a tu máquina local.</p>
+
+<pre>
+git clone &lt;https_or_ssh_link&gt;
+</pre>
+
+<h2>Antes de hacer un <em>commit</em></h2>
+
+<p>
+    Comprobar el estado del repositorio.
+</p>
+
+<pre>
+git status
+</pre>
+
+<p>
+    Restaurar todos los cambios de un archivo al punto del último commit.
+</p>
+
+<pre>
+git restore &lt;file&gt;
+</pre>
+
+<h3>Comandos sobre el <a href="https://youtu.be/mVjHJFscwsk"><em>staging area</em></a></h3>
+
+<p>
+    Agregar un archivo al <em>staging area</em>.
+</p>
+
+<pre>
+git add &lt;file&gt;
+</pre>
+
+<p>
+    Quitar un archivo del <em>staging area</em>.
+</p>
+
+<pre>
+git restore --staged &lt;file&gt;
+</pre>
+
+<h2>Confirmar los cambios — <em>commit</em></h2>
+
+<p>Una vez agregados los archivos al <em>staging area</em> realizar un <em>commit</em>.</p>
+
+<pre>
+git commit -m "&lt;commit_message&gt;"
+</pre>
+
+<h2>Actualizar el repositorio remoto — <em>push</em></h2>
+
+<p>Una vez realizados uno o más <em>commits</em> se pueden subir los cambios a un repositorio remoto.</p>
+
+<pre>
+git push
+</pre>
+
+<p>Equivalente mas detallada del comando anterior.</p>
+
+<pre>
+git push origin &lt;branch&gt;
+</pre>
+
+<blockquote>
+    Encuentre una referencia que coincida con <code>&lt;branch&gt;</code> 
+    en el repositorio de <em>origin</em> (lo más probable es que encuentre 
+    <em>refs / heads / master / main</em>) y actualice la misma referencia (por 
+    ejemplo, <em>refs / heads / master / main</em>) en el repositorio de 
+    <em>origin</em> con él. Si el <code>&lt;branch&gt;</code> no 
+    existiera de forma remota, se crearía. - <em>Modificación sobre la definición del manual <code>man git push</code></em>.
+</blockquote>
+
+<h2>Trabajar con ramas — <em>branches</em></h2>
+
+<p>
+    Listar ramas <strong>locales</strong>.
+</p>
+
+<pre>
+git branch
+</pre>
+
+<blockquote>
+    Agregando la opción <code>--all</code> se pueden ver también las <strong>ramas remotas</strong>.
+</blockquote>
+
+<p>
+    Crear una rama nueva.
+</p>
+
+<pre>
+git checkout -b &lt;branch_name&gt;
+</pre>
+
+<p>
+    Cambiar de rama.
+</p>
+
+<pre>
+git checkout &lt;branch_name&gt;
+</pre>]]>
+    </description>
+</item>
+
+<item>
     <title>Configurar los drivers de Nvidia en Arch Linux</title>
     <guid>https://record.rat.la/index.php?page=drivers-nvidia-arch-linux.html</guid>
     <link>https://record.rat.la/index.php?page=drivers-nvidia-arch-linux.html</link>
@@ -1197,72 +1322,6 @@ show ip multicast interfaces
 </ul>
 
 <h2>Si pruebas esta configuración y tienes fallos, agrega un nuevo issue a <a href="https://github.com/1noro/ubiquiti-er-movistartv">mi repositorio</a>, o <a href="mailto:ppuubblliicc@protonmail.com">contáctame</a>.</h2>
-]]>
-    </description>
-</item>
-
-<item>
-    <title>Sobre las Cookies</title>
-    <guid>https://record.rat.la/index.php?page=cookie.html</guid>
-    <link>https://record.rat.la/index.php?page=cookie.html</link>
-    <!--<author>Inoro</author>-->
-    <pubDate>Sat, 19 Sep 2020 22:56:00 +0200</pubDate>
-    <description>
-<![CDATA[<!-- 202009192256i -->
-<h1>Sobre las Cookies</h1>
-
-<p>
-    Voy a definir lo que yo creo que es una <em>cookie</em> sin mirar la Wikipedia.
-</p>
-
-<p>
-    <a title="Ir a la web de origen de la imagen." href="https://uxdesign.cc/did-you-know-that-the-free-cookie-clicker-can-explain-key-mechanics-for-freemium-services-bf5140a50c04">
-        <img src="https://record.rat.la/img/cookie.webp" alt="Imagen de cabecera, abuela con una cookie.">
-    </a>
-</p>
-
-<blockquote>
-    Una <em>cookie</em>, <strong>galleta</strong> en castellano, es un valor; un pequeño texto o un número que la página web guarda en tu PC para que la próxima vez que vuelvas a acceder a ella, esta pueda leer esa información. Normalmente haciendo que no tengas que volver a introducir datos, o guardando configuraciones que se cargarán automáticamente.
-</blockquote>
-
-<p>
-    Y dirías tú ¿Y para que le sirve a una web hacer eso? Pues te lo voy a explicar con una parábola.
-</p>
-
-<p>
-    &laquo;Esta era una reina muy feliz a la que le encantaba saludar por su nombre a cada persona que se cruzaba por la calle cuando salía de palacio. Pero tenía un problema, ella era incapaz de saber saber los nombres de todos sus plebeyos, pues eran muchos. Y cada día unos se morían y otros nuevos nacían.
-</p>
-
-<p>
-    Pero un día, mientras dormía tubo una revelación. La próxima vez que viese a alguien por la calle, le preguntaría su nombre, lo escribiría en un papel y se lo pegaría en la frente. Como ella era la reina, a nadie le iba a molestar. Así la próxima vez que ese pobre ciudadano se cruzase con ella, con solo mirarle a la cara, leería el papel que tiene en la frente, y podría saludarlo por su nombre sin tener que volver a preguntárselo.&raquo;
-</p>
-
-<p>
-    ¿Que tal? ¿Bonita, verdad? Pues eso es lo que hago yo con mi web. La única <em>cookie</em> que guardo en tu ordenador es un número que me indica que paleta de colores quieres usar para leer mis artículos. El 0 me dice que quieres la paleta por defecto, el 1 que eres un darks (o un receloso de tu batería) y te gusta leer todo en negro, el 3 que eres un soso y solo quieres los colores como manda el navegador, etc.
-</p>
-
-<p>
-    Y por mi parte, si eres de esos paranoicos de la privacidad (como yo), que piensan que las <em>cookies</em> son el demonio, y haces que tu navegador las borre cada 30 segundos, por mi perfecto, no hay ningún problema. Pero solo vas a poder leer la página con los colores por defecto.
-</p>
-
-<p>
-    Y ahora veamos cómo define la Wikipedia una <em>cookie</em>.
-</p>
-
-<blockquote cite="https://es.wikipedia.org/wiki/Cookie_(inform%C3%A1tica)">
-    El anglicismo <em>cookie</em>, usado también <strong>galleta</strong> o <strong>galleta informática</strong> , es un término que hace referencia a una pequeña información enviada por un sitio web y almacenada en el navegador del usuario, de manera que el sitio web puede consultar la actividad previa del navegador. <a href="https://es.wikipedia.org/wiki/Cookie_(inform%C3%A1tica)">Leer mas...</a>
-</blockquote>
-
-<p>
-    Bueno, pues mas o menos lo que yo dije.
-</p>
-
-<!--
-<h2>¿Porqué tienen mala fama?</h2>
-
-leer https://www.bbc.com/mundo/noticias-40443519
-
--->
 ]]>
     </description>
 </item>

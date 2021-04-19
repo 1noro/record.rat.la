@@ -1,13 +1,21 @@
 <!-- 202104132159i -->
 <h1><em>Git quick reference</em></h1>
 
-<p>... introducción ...</p>
+<p>Listado de los comandos mas recurrentes en el día a día con <em>git</em>.</p>
 
 <h2>Elementos a tener en cuenta antes de leer los comandos</h2>
 
 <ul>
     <li>Siempre que puedas poner un único archivo (<code>&lt;file&gt;</code>) en un comando, puedes poner un <code>.</code> para referirte a todos de forma recursiva.</li>
 </ul>
+
+<h2>Obtener un repositorio — <em>clone</em></h2>
+
+<p>Para descargar un repositorio remoto a tu máquina local.</p>
+
+<pre>
+git clone &lt;https_or_ssh_link&gt;
+</pre>
 
 <h2>Antes de hacer un <em>commit</em></h2>
 
@@ -20,11 +28,21 @@ git status
 </pre>
 
 <p>
-    Restaurar todos los cambios al último commit.
+    Restaurar todos los cambios de un archivo al punto del último commit.
 </p>
 
 <pre>
 git restore &lt;file&gt;
+</pre>
+
+<h3>Comandos sobre el <a href="https://youtu.be/mVjHJFscwsk"><em>staging area</em></a></h3>
+
+<p>
+    Agregar un archivo al <em>staging area</em>.
+</p>
+
+<pre>
+git add &lt;file&gt;
 </pre>
 
 <p>
@@ -35,10 +53,41 @@ git restore &lt;file&gt;
 git restore --staged &lt;file&gt;
 </pre>
 
-<h2>Ramas (<em>branches</em>)</h2>
+<h2>Confirmar los cambios — <em>commit</em></h2>
+
+<p>Una vez agregados los archivos al <em>staging area</em> realizar un <em>commit</em>.</p>
+
+<pre>
+git commit -m "&lt;commit_message&gt;"
+</pre>
+
+<h2>Actualizar el repositorio remoto — <em>push</em></h2>
+
+<p>Una vez realizados uno o más <em>commits</em> se pueden subir los cambios a un repositorio remoto.</p>
+
+<pre>
+git push
+</pre>
+
+<p>Equivalente mas detallada del comando anterior.</p>
+
+<pre>
+git push origin &lt;branch&gt;
+</pre>
+
+<blockquote>
+    Encuentre una referencia que coincida con <code>&lt;branch&gt;</code> 
+    en el repositorio de <em>origin</em> (lo más probable es que encuentre 
+    <em>refs / heads / master / main</em>) y actualice la misma referencia (por 
+    ejemplo, <em>refs / heads / master / main</em>) en el repositorio de 
+    <em>origin</em> con él. Si el <code>&lt;branch&gt;</code> no 
+    existiera de forma remota, se crearía. - <em>Modificación sobre la definición del manual <code>man git push</code></em>.
+</blockquote>
+
+<h2>Trabajar con ramas — <em>branches</em></h2>
 
 <p>
-    Listar ramas locales.
+    Listar ramas <strong>locales</strong>.
 </p>
 
 <pre>
