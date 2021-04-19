@@ -120,7 +120,7 @@ git branch
 </blockquote>
 
 <p>
-    Crear una rama nueva.
+    Crear una rama nueva y moverte a ella.
 </p>
 
 <pre>
@@ -133,7 +133,24 @@ git checkout -b &lt;branch_name&gt;
 
 <pre>
 git checkout &lt;branch_name&gt;
-</pre>]]>
+</pre>
+
+<p>
+    Borrar una rama local.
+</p>
+
+<pre>
+git branch -d &lt;branch_name&gt;
+</pre>
+
+<p>
+    Borrar una rama remota.
+</p>
+
+<pre>
+git push origin --delete &lt;branch_name&gt;
+</pre>
+]]>
     </description>
 </item>
 
