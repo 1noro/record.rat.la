@@ -49,6 +49,14 @@ git status
 </pre>
 
 <p>
+    Ver los cambios realizados sobre un archivo desde el último commit.
+</p>
+
+<pre>
+git diff &lt;file&gt;
+</pre>
+
+<p>
     Restaurar todos los cambios de un archivo al punto del último commit.
 </p>
 
