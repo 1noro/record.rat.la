@@ -674,7 +674,7 @@
                 <p>
                     <a href="https://github.com/1noro">github</a> / 
                     <a href="https://gitlab.com/1noro">gitlab</a> / 
-                    <a href="https://twitter.com/0x12Faab7">twiter</a> / 
+                    <a href="https://twitter.com/0x12Faab7">twitter</a> / 
                     <a href="mailto:ppuubblliicc@protonmail.com">mail</a> (<a href="res/publickey.ppuubblliicc@protonmail.com.asc" aria-label="¡Mándame un correo cifrado con gpg!">gpg</a>)
                 </p>
             </nav>
