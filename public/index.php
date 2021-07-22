@@ -42,7 +42,7 @@
     $DIRECTORY = 'pages/'; // carpeta donde se guardan las páginas
     $TITLE = "Reciente - record.rat.la"; // título de la página por defecto
     $DESCRIPTION = "Blog/web personal donde iré registrando mis proyectos y mis líos mentales."; // Descripción de la página por defecto.
-    $PAGE_IMG = "img/article_default_img_white.webp"; // Imagen del artículo por defecto.
+    $PAGE_IMG = "img/article_default_img_white.jpg"; // Imagen del artículo por defecto.
 
     $AUTHORS = [
         "a" => ["Anon", "404.html"], // Autor por defecto de las páginas anónimas
@@ -519,6 +519,7 @@
         <!-- <meta property="article:modified_time" content="2020-09-21T07:23:04+00:00" /> -->
         <meta name="twitter:creator" content="@0x12Faab7" />
         <!-- <meta name="twitter:site" content="cuenta_del_sitio" /> -->
+        <meta name="twitter:image:src" content="<?php echo get_url(false) . "/" . $PAGE_IMG; ?>" />
         <meta name="robots" content="index, follow" />
         <!-- <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" /> -->
         <!-- <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" /> -->
