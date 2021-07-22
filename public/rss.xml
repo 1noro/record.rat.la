@@ -13,6 +13,88 @@
         </image>
 
 <item>
+    <title>Arañas antiguas (sueño)</title>
+    <guid>https://record.rat.la/index.php?page=aranas-antiguas.html</guid>
+    <link>https://record.rat.la/index.php?page=aranas-antiguas.html</link>
+    <!--<author>Inoro</author>-->
+    <pubDate>Thu, 22 Jul 2021 00:46:00 +0200</pubDate>
+    <description>
+<![CDATA[<!-- 202107220046i -->
+<h1>Arañas antiguas (sueño)</h1>
+
+<p>
+    Esta es la transcripción de un sueño de la noche del 22 de Octubre de 2018.
+</p>
+
+<p>
+    Me gusta escribir los pocos sueños que recuerdo en una especie de diario, 
+    y como este me resultó especialmente teatral me parece lo 
+    suficientemente interesante como para presentarlo aquí.
+</p>
+
+<blockquote>
+    Debo hacer notar que al comienzo de la transcripción hay una nota que 
+    indica que la narración está desordenada, sea lo que sea lo que quiera 
+    decir eso.
+</blockquote>
+
+<p>
+    &laquo;Se presentan ante mi un conjunto de cajas negras. Unas manos sin 
+    rostro definido me las van mostrando una por una. Yo permanezco inmóvil, 
+    sentado frente la misteriosa figura que me presenta los macabros objetos. 
+    Cuando acaba de enseñarme todas las cajas por fuera se dispone a abrir la 
+    primera.
+</p>
+
+<p>
+    El interior de las cajas es de una tela blanca y acolchada, como si de una 
+    cama se tratase. A medida que se va abriendo, observo con auténtico pavor 
+    su horripilante contenido. En su interior veo un conjunto de negras arañas 
+    de diferentes tamaños que se mantienen inmóviles, posadas sobre la sedosa 
+    tela blanca. Una vez abierta por completo, la figura que me muestra la caja 
+    va acercándola hacia mi lentamente, y yo empiezo a sudar frio. Pero da 
+    igual el enorme horror que me invade, no me puedo mover, algo me retiene 
+    en el asiento a pesar de no ver ni notar ninguna sujeción física —estoy 
+    petrificado por el miedo—.
+</p>
+
+<p>
+    Cuando la caja ya está lo suficientemente cerca de mi con su espantoso 
+    contenido a la vista, las arañas empiezan a reanimarse lentamente, huyendo 
+    hacia los bordes. Y antes de que las mas espabiladas intenten saltar fuera 
+    del receptáculo que las mantenía en pausa, la figura con rostro difuso 
+    cierra la tapa de golpe ante mis narices y susurra 
+    —Estas cajas son antiguas, muy antiguas, tan antiguas que los humanos 
+    habían olvidado su existencia. Su contenido es tan antiguo como las cajas, 
+    pero ya ves, a pesar de lo increíble que parezca, ellas siguen vivas—.
+</p>
+
+<p>
+    En ese instante la figura abre una segunda, y el proceso se repite 
+    exactaménte como el anterior, a excepción de mi miedo, el cual aumentaba 
+    con cada caja abierta. El proceso se repitió como el primero hasta llegar 
+    a la última, cuando —justo antes de cerrarse— una de las arañas 
+    consigue escabullirse por el borde de de la caja y cae sobre mis 
+    piernas.&raquo;
+    
+</p>
+
+<p>
+    En ese momento mi terror es tal que no puedo soportarlo y me despierto.
+    Me gusta pensar que si hubiera conseguido seguir durmiendo me hubiera 
+    desmallado en sueños. O ¿quién sabe? igual la esotérica araña causaba en 
+    mí una reacción digna de un relato de H.P. Lovecraft, nunca lo sabremos, y 
+    prefiero no repetirlo.
+</p>
+
+<p>
+    Buenas noches, y tened dulces sueños.
+</p>
+]]>
+    </description>
+</item>
+
+<item>
     <title>Git quick reference</title>
     <guid>https://record.rat.la/index.php?page=comandos-utiles-git.html</guid>
     <link>https://record.rat.la/index.php?page=comandos-utiles-git.html</link>
@@ -1226,141 +1308,6 @@ pragma: no-cache
 <p>
     Escrito originalmente el 25 de Enero de 2015 a las 6:12 PM.
 </p>
-]]>
-    </description>
-</item>
-
-<item>
-    <title>Configurar Ubiquiti EdgeRouter para Movistar TV</title>
-    <guid>https://record.rat.la/index.php?page=ubiquiti-er-movistartv.html</guid>
-    <link>https://record.rat.la/index.php?page=ubiquiti-er-movistartv.html</link>
-    <!--<author>Inoro</author>-->
-    <pubDate>Sun, 20 Sep 2020 01:44:00 +0200</pubDate>
-    <description>
-<![CDATA[<!-- 202009200144i -->
-<h1>Configurar Ubiquiti EdgeRouter para Movistar TV</h1>
-
-<p>
-    Voy a explicar como conseguí, finalmente, hacer que la televisión de Movistar Plus se vea a través de un EdgeRouter de Ubiquiti, ajustando el escenario de ejemplo a mis necesidades en casa.
-</p>
-
-<p>Vamos a suponer que la LAN del HGU es la <strong>192.168.1.0/24</strong> y que la del ER es <strong>192.168.10.0/24</strong>. Esta configuración debería servir para cualquier router EdgeMAX, concretamente este ejemplo se basa en un <strong>ER-X</strong> con la WAN en <strong>eth0</strong> y el resto de puertos configurados como un switch en <strong>switch0</strong>, como se hace en la configuración básica del Wizard.</p>
-
-<blockquote>
-    <p>HGU = Router de Movistar, ER = EdgeRouter.</p>
-</blockquote>
-
-<h2>Si pruebas esta configuración y tienes fallos, agrega un nuevo issue a <a href="https://github.com/1noro/ubiquiti-er-movistartv">mi repositorio</a>, o <a href="mailto:ppuubblliicc@protonmail.com">contáctame</a>.</h2>
-
-<h2>Escenario</h2>
-
-<p><img src="https://record.rat.la/img/202009200144/mapa.webp" alt="Diagrama del escenario"></p>
-
-<h2>1 - Asignar a la interfaz WAN física del ER una IP fija o por DHCP dentro de la red del HGU</h2>
-
-<p><img src="https://record.rat.la/img/202009200144/1-1.webp" alt="imagen 1-1" class="half"></p>
-
-<h2>2 - Enmascarar todo el tráfico hacia la red del HGU con dicha interfaz</h2>
-
-<p><img src="https://record.rat.la/img/202009200144/2-1.webp" alt="imagen 2-1"></p>
-
-<h2>3 - Añadir un par de rutas al ER para las peticiones IGMP/Multicast</h2>
-
-<p>Rutas estáticas de <strong>tipo Gateway</strong>.</p>
-
-<p><img src="https://record.rat.la/img/202009200144/3-1.webp" alt="imagen 3-1"></p>
-
-<p>No estoy seguro de que sean necesarias todas, pero son las que había en la tabla del router HGU, como se puede ver a continuación:</p>
-
-<p><img src="https://record.rat.la/img/202009200144/3-2.webp" alt="imagen 3-2"></p>
-
-<h2>4 - Configurar el Firewall del ER</h2>
-
-<p>Me baso en las dos Rulesets definidas por la configuración básica del ER a través del Wizard, WAN_IN y WAN_LOCAL.</p>
-
-<p><img src="https://record.rat.la/img/202009200144/4-1.webp" alt="imagen 4-1"></p>
-
-<h2>Reglas de WAN_IN:</h2>
-
-<p>Es importante que se <strong>mantengan en el orden</strong> definido.</p>
-
-<p><img src="https://record.rat.la/img/202009200144/4-2.webp" alt="imagen 4-2"></p>
-
-<p><img src="https://record.rat.la/img/202009200144/4-3.webp" alt="imagen 4-3" class="half"></p>
-
-<p><img src="https://record.rat.la/img/202009200144/4-4.webp" alt="imagen 4-4" class="half"></p>
-
-<h2>Reglas de WAN_LOCAL:</h2>
-
-<p><strong>Las mismas</strong> que las de WAN_IN, pero sospecho que no deberían de hacer falta.</p>
-
-<blockquote>
-    <p>Necesita mas pruebas.</p>
-</blockquote>
-
-<h2>5 - <a href="https://help.ui.com/hc/en-us/articles/204961854-EdgeRouter-IGMP-Proxy">Habilitar IGMP Proxy en el ER</a></h2>
-
-<p>Nos conectamos a la <strong>terminal</strong> del ER (por la CLI Web o por SSH).</p>
-
-<pre>
-configure
-</pre>
-
-<pre>
-set protocols igmp-proxy interface eth0 role upstream
-set protocols igmp-proxy interface switch0 role downstream
-</pre>
-
-<pre>
-set protocols igmp-proxy interface eth0 threshold 1
-set protocols igmp-proxy interface eth0 alt-subnet 0.0.0.0/0
-
-set protocols igmp-proxy interface switch0 threshold 1
-set protocols igmp-proxy interface switch0 alt-subnet 0.0.0.0/0
-</pre>
-
-<pre>
-commit ; save
-exit
-</pre>
-
-<h2>Comandos para verificar que el tráfico multicast está fluyendo:</h2>
-
-<pre>
-show ip multicast mfc
-show ip multicast interfaces
-</pre>
-
-<h2>6 - Configuración estática de red en el aparato de Movistar TV</h2>
-
-<ul>
-    <li>Pulsamos el botón superior con forma de persona en el mando de la TV de Movistar repetidas veces durante el arranque, hasta entrar en el <strong>menú de configuración de red</strong>.</li>
-</ul>
-
-<p><img src="https://record.rat.la/img/202009200144/6-1.webp" alt="imagen 6-1" class="half"></p>
-
-<ul>
-    <li>Editamos la configuración en modo estático:
-        <ul>
-            <li>Modo de red: <strong>estático</strong></li>
-            <li>Dirección IP: <strong>192.168.10.40</strong></li>
-            <li>Máscara de Subred: <strong>255.255.255.0</strong></li>
-            <li>Pasarela (Gateway): <strong>192.168.10.1</strong></li>
-            <li>Dirección IP del OPCH: <strong>239.0.2.29:22222</strong></li>
-            <li>DNS Primario: <strong>172.26.23.3</strong></li>
-        </ul>
-    </li>
-</ul>
-
-<h2>Enlaces en los que me he basado</h2>
-
-<ul>
-    <li><a href="https://help.ui.com/hc/en-us/articles/204961854-EdgeRouter-IGMP-Proxy">https://help.ui.com/hc/en-us/articles/204961854-EdgeRouter-IGMP-Proxy</a></li>
-    <li><a href="https://comunidad.movistar.es/t5/Soporte-Fibra-y-ADSL/Routers-ubiquiti-con-HGU-mitrastar/m-p/3441509#M313299">https://comunidad.movistar.es/t5/Soporte-Fibra-y-ADSL/Routers-ubiquiti-con-HGU-mitrastar/m-p/3441509#M313299</a></li>
-    <li><a href="https://comunidad.movistar.es/t5/Soporte-Fibra-y-ADSL/configuracion-del-router-ax-11000-asus-por-conexion-pppoe-ONT/m-p/4217145#M427122">https://comunidad.movistar.es/t5/Soporte-Fibra-y-ADSL/configuracion-del-router-ax-11000-asus-por-conexion-pppoe-ONT/m-p/4217145#M427122</a></li>
-</ul>
-
-<h2>Si pruebas esta configuración y tienes fallos, agrega un nuevo issue a <a href="https://github.com/1noro/ubiquiti-er-movistartv">mi repositorio</a>, o <a href="mailto:ppuubblliicc@protonmail.com">contáctame</a>.</h2>
 ]]>
     </description>
 </item>
