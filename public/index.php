@@ -40,6 +40,7 @@
     $URL = $METHOD . "://" . $DOMAIN . "/";
     $PAGES_TO_SHOW = 2; // número de páginas a mostrar en la página principal
     $DIRECTORY = 'pages/'; // carpeta donde se guardan las páginas
+    // $DIRECTORY = '../factory/'; // carpeta de la factoría, donde están los artículos sin terminar
     $TITLE = "Reciente - record.rat.la"; // título de la página por defecto
     $DESCRIPTION = "Blog/web personal donde iré registrando mis proyectos y mis líos mentales."; // Descripción de la página por defecto.
     $PAGE_IMG = "img/article_default_img_white.jpg"; // Imagen del artículo por defecto.
