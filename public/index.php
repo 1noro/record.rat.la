@@ -619,7 +619,7 @@
                 <a href="#footer">ir al pié</a>
             </nav>
             <!-- Título del HEADER -->
-            <div id="web_title">record 🐭 la</div>
+            <div id="web_title">record <a href="https://youtu.be/dQw4w9WgXcQ" style="text-decoration: none;" aria-label="el enlace perfecto para 🐭.">🐭</a> la</div>
             <!-- Barra de navegación principal -->
             <nav aria-label="Enlaces a las secciones de la página">
                 <p id="web_nav">
