@@ -12,9 +12,9 @@
     // Configuramos el timeout de la cookie de sesión para guardar los ajustes gráficos
     // Tiempo por defecto: 25 m (1500 s)
     // Tiempo actual 7 d (604800 s)
-    $timeout = 604800;
-    ini_set( "session.gc_maxlifetime", $timeout );
-    ini_set( "session.cookie_lifetime", $timeout );
+    // $timeout = 604800;
+    // ini_set( "session.gc_maxlifetime", $timeout );
+    // ini_set( "session.cookie_lifetime", $timeout );
 
     // Creamos u obtenemos la cookie funcional que guarda las preferencias del usuario (la paleta de colores)
     session_start();
