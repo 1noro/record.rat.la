@@ -518,7 +518,7 @@
         <!-- <meta property="article:author" content="idex.php?page=inoro.html" /> -->
         <!-- <meta property="article:published_time" content="2020-09-21T00:04:15+00:00" /> -->
         <!-- <meta property="article:modified_time" content="2020-09-21T07:23:04+00:00" /> -->
-        <meta name="twitter:creator" content="@0x12Faab7" />
+        <!-- <meta name="twitter:creator" content="@example" /> -->
         <!-- <meta name="twitter:site" content="cuenta_del_sitio" /> -->
         <meta name="twitter:image:src" content="<?php echo get_url(false) . "/" . $PAGE_IMG; ?>" />
         <meta name="robots" content="index, follow" />
