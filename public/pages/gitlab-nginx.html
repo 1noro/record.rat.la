@@ -2,7 +2,7 @@
 <h1>Gitlab con NGINX reverse proxy</h1>
 
 <p>
-    Voy a documentar el proceso de instalación de Gitlab en una máquina virtual 
+    Voy a documentar el proceso de instalación de Gitlab en una máquina virtual
     detrás de un NGINX reverse proxy.
 </p>
 
@@ -17,25 +17,34 @@
 <ul>
     <li>Certificado SSL con Let's Encrypt y certbot.</li>
     <li>
-        Escuchar en los puertos 80 (HTTP) y 443 (HTTPs) con una redirección 
+        Escuchar en los puertos 80 (HTTP) y 443 (HTTPs) con una redirección
         automática desde el 80 al 443.
     </li>
     <li>
-        Acceso mediante SSH con clave publica y protegido co fail2ban.
+        Acceso mediante SSH con clave pública y protegido con fail2ban.
     </li>
 </ul>
 
 <h2>Configuración del router</h2>
 
 <p>
-    En la sección de redirección de puertos (port forwarding) de nuestro router 
+    En la sección de redirección de puertos (port forwarding) de nuestro router
     creamos dos registros nuevos sobre el protocolo TCP.
 </p>
 
 <ul>
-    <li>El puerto 80 del router apuntará al puerto 80 de la máquina de NGINX (192.168.1.105), para las conexiones HTTP.</li>
-    <li>El puerto 443 del router apuntará al puerto 443 de la máquina de NGINX (192.168.1.105), para las conexiones HTTPs.</li>
-    <li>El puerto 22 del router apuntará al puerto 22 de la máquina de Gitlab (192.168.1.108), para las conexiones SSH.</li>
+    <li>
+        El puerto 80 del router apuntará al puerto 80 de la máquina de NGINX 
+        (192.168.1.105), para las conexiones HTTP.
+    </li>
+    <li>
+        El puerto 443 del router apuntará al puerto 443 de la máquina de NGINX 
+        (192.168.1.105), para las conexiones HTTPs.
+    </li>
+    <li>
+        El puerto 22 del router apuntará al puerto 22 de la máquina de Gitlab 
+        (192.168.1.108), para las conexiones SSH.
+    </li>
 </ul>
 
 <h2>Configuración de NGINX</h2>
@@ -43,7 +52,8 @@
 <p>Nos situamos en la máquina que va a ejercer de reverse proxy con NGINX.</p>
 
 <p>
-    Creamos el archivo <samp>/etc/nginx/sites-available/git.example.com.conf</samp>
+    Creamos el archivo 
+    <samp>/etc/nginx/sites-available/git.example.com.conf</samp>
 </p>
 
 <pre>
@@ -72,7 +82,7 @@ ln -s /etc/nginx/sites-available/git.example.com.conf /etc/nginx/sites-enabled/
 </pre>
 
 <p>
-    Testeamos la sintaxis de la configuración de NGINX, y si todo va bien, 
+    Testeamos la sintaxis de la configuración de NGINX, y si todo va bien,
     recargamos la configuración.
 </p>
 
@@ -82,7 +92,8 @@ systemctl reload nginx
 </pre>
 
 <p>
-    Con el Virtual Host correctamente configurado en NGINX, ejecutamos el certbot.
+    Con el Virtual Host correctamente configurado en NGINX, ejecutamos el 
+    certbot.
 </p>
 
 <pre>
@@ -90,12 +101,12 @@ certbot --nginx -d git.example.com
 </pre>
 
 <blockquote>
-    Durante el proceso de creación del certificado indicamos que queremos 
+    Durante el proceso de creación del certificado indicamos que queremos
     redireccionar el tráfico HTTP al HTTPs.
 </blockquote>
 
 <p>
-    Archivo <samp>/etc/nginx/sites-available/git.example.com.conf</samp> 
+    Archivo <samp>/etc/nginx/sites-available/git.example.com.conf</samp>
     después de ejecutar el certbot.
 </p>
 
@@ -148,7 +159,7 @@ ssh-copy-id -i ~/.ssh/id_rsa.pub user@192.168.1.108
 <p>Nos situamos en la máquina que va a ejecutar Gitlab (192.168.1.108).</p>
 
 <p>
-    Editamos el archivo <samp>/etc/ssh/sshd_config</samp> y nos aseguramos de 
+    Editamos el archivo <samp>/etc/ssh/sshd_config</samp> y nos aseguramos de
     que las siguientes lineas tengan los valores mostrados.
 </p>
 
@@ -157,7 +168,7 @@ UsePAM yes
 PasswordAuthentication no
 </pre>
 
-<p>Y agregamos la siguiente linea al final.</p>
+<p>Y agregamos la siguiente línea al final.</p>
 
 <pre>
 PermitRootLogin no
@@ -178,7 +189,10 @@ sudo apt update
 sudo apt install fail2ban
 </pre>
 
-<p>Creamos el archivo <samp>/etc/fail2ban/jail.local</samp> y agregamos las siguientes lineas.</p>
+<p>
+    Creamos el archivo <samp>/etc/fail2ban/jail.local</samp> y agregamos las 
+    siguientes lineas.
+</p>
 
 <pre>
 [DEFAULT]
@@ -217,11 +231,13 @@ sudo EXTERNAL_URL="http://git.example.com" apt-get install gitlab-ce
 </pre>
 
 <blockquote>
-    Nótese que el parámetro <samp>EXTERNAL_URL</samp> se define con <samp>http</samp> y no con <samp>https</samp>.
+    Nótese que el parámetro <samp>EXTERNAL_URL</samp> se define con 
+    <samp>http</samp> y no con <samp>https</samp>.
 </blockquote>
 
 <p>
-    Editamos el archivo <samp>/etc/gitlab/gitlab.rb</samp> y agregamos las siguientes lineas al final.
+    Editamos el archivo <samp>/etc/gitlab/gitlab.rb</samp> y agregamos las 
+    siguientes lineas al final.
 </p>
 
 <pre>
@@ -238,7 +254,7 @@ nginx['real_ip_recursive'] = 'on'
 </pre>
 
 <p>
-    Reconfiguramos Gitlab.
+    Re-configuramos Gitlab.
 </p>
 
 <pre>
@@ -246,12 +262,12 @@ sudo gitlab-ctl reconfigure
 </pre>
 
 <blockquote>
-    Hay que espera un rato a que se reconfigure, incluso después de que el 
+    Hay que espera un rato a que se reconfigure, incluso después de que el
     comando haya finalizado.
 </blockquote>
 
 <p>
-    Una vez acabado este proceso ya podremos acceder a nuestro Gitlab a través 
+    Una vez acabado este proceso ya podremos acceder a nuestro Gitlab a través
     de HTTPs para definir la contraseña del usuario <samp>root</samp>.
 </p>
 

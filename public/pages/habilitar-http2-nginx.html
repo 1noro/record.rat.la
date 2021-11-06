@@ -33,7 +33,7 @@ listen 443 ssl http2; # managed by Certbot
 include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
 </pre>
 
-<p>Justo debajo de la linea comentada agregamos la siguiente.</p>
+<p>Justo debajo de la línea comentada agregamos la siguiente.</p>
 
 <pre>
 ssl_ciphers EECDH+CHACHA20:EECDH+AES128:RSA+AES128:EECDH+AES256:RSA+AES256:EECDH+3DES:RSA+3DES:!MD5;
@@ -54,7 +54,7 @@ ssl_ciphers EECDH+CHACHA20:EECDH+AES128:RSA+AES128:EECDH+AES256:RSA+AES256:EECDH
 </pre>
 
 <blockquote>
-    Puede darse el caso en el que el archivo <samp>/etc/nginx/snippets/ssl-params.conf</samp> esté vacío, o no exista. En ese caso solo tendremos que agregar la linea modificada.
+    Puede darse el caso en el que el archivo <samp>/etc/nginx/snippets/ssl-params.conf</samp> esté vacío, o no exista. En ese caso solo tendremos que agregar la línea modificada.
 </blockquote>
 
 <p>Volvemos a comprobar la configuración con <code>nginx -t</code>. Si es correcta, refrescamos la configuración del Nginx.</p>
