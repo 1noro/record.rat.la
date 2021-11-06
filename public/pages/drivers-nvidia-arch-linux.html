@@ -9,9 +9,9 @@
 </p>
 
 <p>
-    Me compré una <strong>Nvidia GTX 1070</strong>, por lo que orientaré este 
+    Me compré una <strong>Nvidia GTX 1070</strong>, por lo que enfocaré este 
     artículo hacia mi modelo. Por suerte, mi configuración habitual es bastante 
-    estándar, por lo que puede que le sirva a mas de uno. Uso el núcleo 
+    estándar, por lo que puede que le sirva a más de uno. Uso el núcleo 
     de <strong>Linux</strong> por defecto y <strong>Gnome</strong> sobre 
     <strong>Xorg</strong> en el escritorio, como buen amante del 
     <em>default</em> que soy. En 
@@ -38,7 +38,9 @@
 </p>
 
 <p>
-    Editamos el archivo <samp>/etc/mkinitcpio.conf</samp> y eliminamos del array <code>MODULES</code> el módulo <code>i915</code>. Como yo no tenía ningún modulo mas, previamente mi array quedaría de la siguiente manera.
+    Editamos el archivo <samp>/etc/mkinitcpio.conf</samp> y eliminamos del 
+    array <code>MODULES</code> el módulo <code>i915</code>. Como yo no tenía 
+    ningún modulo más, previamente mi array quedaría de la siguiente manera.
 </p>
 
 <pre>
@@ -126,7 +128,9 @@ sudo nvidia-xconfig
 </pre>
 
 <p>
-    Revisamos <samp>/etc/xorg.conf</samp> para ver si nos convencen los parámetros auto-generados, y <strong>comentamos</strong> la siguiente línea si está presente.
+    Revisamos <samp>/etc/xorg.conf</samp> para ver si nos convencen los 
+    parámetros auto-generados, y <strong>comentamos</strong> la siguiente 
+    línea si está presente.
 </p>
 
 <pre>
@@ -134,7 +138,8 @@ sudo nvidia-xconfig
 </pre>
 
 <p>
-    Agregamos los siguientes módulos al kernel editando el array <code>MODULES</code> del archivo <samp>/etc/mkinitcpio.conf</samp>.
+    Agregamos los siguientes módulos al kernel editando el array 
+    <code>MODULES</code> del archivo <samp>/etc/mkinitcpio.conf</samp>.
 </p>
 
 <pre>

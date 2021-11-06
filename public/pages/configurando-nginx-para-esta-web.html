@@ -140,7 +140,7 @@ server {
     <li>En primer lugar, necesitamos agregar <samp>index.php</samp> como el primer valor de nuestra directiva de índice para que los archivos denominados <samp>index.php</samp> se sirvan, si están disponibles, cuando se solicita un directorio.</li>
     <li>Podemos modificar la directiva <code>server_name</code> para apuntar al nombre de dominio de nuestro servidor o a la dirección IP pública.</li>
     <li>Para el procesamiento real de PHP, solo necesitamos descomentar un segmento del archivo que maneja las solicitudes de PHP. Éste será el bloque de ubicación <code>~.php$</code>, el fragmento <samp>fastcgi-php.conf</samp> incluido y el socket asociado con <code>php-fpm</code>.</li>
-    <li>También hay que remover los comentarios del bloque de ubicación que trata con archivos <samp>.htaccess</samp>. Nginx no procesa estos archivos. Si alguno de estos archivos encuentra la forma de llegar a un documento root, no deben ser servidos a los visitantes.</li>
+    <li>También hay que eliminar los comentarios del bloque de ubicación que trata con archivos <samp>.htaccess</samp>. Nginx no procesa estos archivos. Si alguno de estos archivos encuentra la forma de llegar a un documento root, no deben ser servidos a los visitantes.</li>
 </ul>
 
 <h3><samp>record.rat.la.conf</samp> modificado</h3>
