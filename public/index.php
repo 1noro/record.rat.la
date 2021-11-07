@@ -37,6 +37,11 @@
         $_SESSION["TEXT_SIZE_ID"] = 0;
     }
 
+    // --- Constantes ---
+    define("PAGE404", "404.html");
+    define("PAGE_COLOR", "color.html");
+    define("DEF_TITLE_SUFFIX", " - record.rat.la");
+
     // --- Variables globales ---
     $DOMAIN = "record.rat.la";
     $METHOD = "https";
@@ -48,7 +53,7 @@
     $PAGE_IMG = "img/article_default_img_white.jpg"; // Imagen del artículo por defecto.
 
     $AUTHORS = [
-        "a" => ["Anon", "404.html"], // autor por defecto
+        "a" => ["Anon", PAGE404], // autor por defecto
         "i" => ["Inoro", "inoro.html"]
     ];
 
@@ -173,10 +178,9 @@
     // get_url, monta la URL de la página para imprimirla en los headers HTML 
     // en base a la URL dada por el usuario
     function get_url($full) {
+        $link = "http";
         if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
             $link = "https";
-        } else {
-            $link = "http";
         }
         $link .= "://";
         $link .= $_SERVER['HTTP_HOST'];
@@ -189,9 +193,8 @@
     function add_page_if_exists() {
         if (isset($_GET["page"])) {
             return "&page=" . $_GET["page"];
-        } else {
-            return "";
         }
+        return "";
     }
 
     // normalize_line, devuelve el contenido de una linea sin espacios ni 
@@ -216,15 +219,15 @@
     // --- Obtención de datos de las páginas ---
     // get_filenames, obtiene los nombres de las páginas en la carpeta 
     // especificada
-    function get_filenames($DIRECTORY) {
-        $FILENAMES = array();
-        $directory_obj = opendir($DIRECTORY);
-        while(false != ($filename = readdir($directory_obj))) {
+    function get_filenames($directory) {
+        $filenames = array();
+        $directoryObj = opendir($directory);
+        while($filename = readdir($directoryObj)) {
             if(($filename != ".") && ($filename != "..")) {
-                $FILENAMES[] = $filename; // put in array
+                $filenames[] = $filename; // put in array
             }
         }
-        return $FILENAMES;
+        return $filenames;
     }
 
     // get_date_by_line, obtiene la fecha de un artículo en base al 
@@ -240,7 +243,6 @@
         $hour = substr($line, 8, 2);
         $minute = substr($line, 10, 2);
 
-        // return $year."/".$month."/".$day." ".$hour.":".$minute;
         return [
             "datetime" => $year."/".$month."/".$day." ".$hour.":".$minute,
             "year" => $year,
@@ -258,15 +260,12 @@
         $line = str_replace("<!-- ", "", $line);
         $line = str_replace(" -->", "", $line);
 
-        $authorid = substr($line, 12, 1);
+        $authorId = substr($line, 12, 1);
 
-        if (array_key_exists($authorid, $GLOBALS["AUTHORS"])) {
-            $result = $GLOBALS["AUTHORS"][$authorid];
-        } else {
-            $result = $GLOBALS["AUTHORS"]["a"];
+        if (array_key_exists($authorId, $GLOBALS["AUTHORS"])) {
+            return $GLOBALS["AUTHORS"][$authorId];
         }
-
-        return $result;
+        return $GLOBALS["AUTHORS"]["a"];
     }
 
     // get_title_by_line, obtiene el título del artículo en base a la 
@@ -287,23 +286,23 @@
         global $DIRECTORY;
         $filepath = $DIRECTORY . $filename;
 
-        $file_obj = fopen($filepath, "r");
-        $line1 = fgets($file_obj); // leemos la primera linea
-        $line2 = fgets($file_obj); // leemos la segunda linea
-        fclose($file_obj);
+        $fileObj = fopen($filepath, "r");
+        $line1 = fgets($fileObj); // leemos la primera linea
+        $line2 = fgets($fileObj); // leemos la segunda linea
+        fclose($fileObj);
 
-        $datetime_info = get_date_by_line($line1);
+        $datetimeInfo = get_date_by_line($line1);
 
         return [
             "filename" => $filename,
             "author_data" => get_author_data_by_line($line1),
             "title" => get_title_by_line($line2),
-            "datetime" => $datetime_info["datetime"],
-            "year" => $datetime_info["year"],
-            "month" => $datetime_info["month"],
-            "day" => $datetime_info["day"],
-            "hour" => $datetime_info["hour"],
-            "minute" => $datetime_info["minute"]
+            "datetime" => $datetimeInfo["datetime"],
+            "year" => $datetimeInfo["year"],
+            "month" => $datetimeInfo["month"],
+            "day" => $datetimeInfo["day"],
+            "hour" => $datetimeInfo["hour"],
+            "minute" => $datetimeInfo["minute"]
         ];
     }
 
@@ -331,16 +330,14 @@
         $html = file_get_contents($filepath);
         preg_match('/<img.+src=[\'"](?P<src>.+?)[\'"].*>/i', $html, $image);
         if (isset($image['src'])) {
-            $src = $image['src'];
-        } else {
-            $src = $GLOBALS["PAGE_IMG"];
+            return $image['src'];
         }
-        return $src;
+        return $GLOBALS["PAGE_IMG"];
     }
 
     // get_sorted_file_info, ...
     function get_sorted_file_info() {
-        global $DIRECTORY, $FILENAMES;
+        global $FILENAMES;
 
         // creamos $file_info_arr y $datetime_arr previamente para ordenar 
         // los archivos por fecha
@@ -362,48 +359,47 @@
     // print_reciente, imprime la portada (las N páginas más recientes)
     function print_reciente() {
         global $PAGES_TO_SHOW;
-        $file_info_arr = get_sorted_file_info();
+        $fileInfoArr = get_sorted_file_info();
 
         echo "<h1>Reciente</h1>\n<hr>\n";
 
-        $i = 1;
-        foreach($file_info_arr as $file_info) {
+        $number = 1;
+        foreach($fileInfoArr as $file_info) {
             print_page($file_info["filename"], true);
-            if ($i >= $PAGES_TO_SHOW) {break;}
+            if ($number >= $PAGES_TO_SHOW) {break;}
             echo "<hr>\n";
-            $i++;
+            $number++;
         }
     }
 
     // print_archive, imprime la página 'archivo', donde se listan las 
     // páginas ordenadas por fecha DESC
     function print_archive() {
-        global $DIRECTORY, $FILENAMES, $MONTHS;
-        $current_year = "";
-        $current_month = "";
-        // $current_day = "";
+        global $FILENAMES, $MONTHS;
+        $currentYear = "";
+        $currentMonth = "";
 
-        $file_info_arr = get_sorted_file_info();
+        $fileInfoArr = get_sorted_file_info();
 
         echo "<h1>Archivo</h1>\n";
 
-        foreach($file_info_arr as $file_info) {
-            if ($current_year != $file_info["year"]) {
-                $current_year = $file_info["year"];
-                printf("<h2>%s</h2>\n<hr>\n", $file_info["year"]);
+        foreach($fileInfoArr as $fileInfo) {
+            if ($currentYear != $fileInfo["year"]) {
+                $currentYear = $fileInfo["year"];
+                printf("<h2>%s</h2>\n<hr>\n", $fileInfo["year"]);
             }
-            if ($current_month != $file_info["month"]) {
-                $current_month = $file_info["month"];
-                printf("<h3>%s</h3>\n", $MONTHS[intval($file_info["month"]) - 1]);
+            if ($currentMonth != $fileInfo["month"]) {
+                $currentMonth = $fileInfo["month"];
+                printf("<h3>%s</h3>\n", $MONTHS[intval($fileInfo["month"]) - 1]);
             }
             printf(
                 '<blockquote>%s %s:%s - <a href="index.php?page=%s">%s</a> - %s</blockquote>' . "\n",
-                $file_info["day"],
-                $file_info["hour"],
-                $file_info["minute"],
-                $file_info["filename"],
-                $file_info["title"],
-                $file_info["author_data"][0]
+                $fileInfo["day"],
+                $fileInfo["hour"],
+                $fileInfo["minute"],
+                $fileInfo["filename"],
+                $fileInfo["title"],
+                $fileInfo["author_data"][0]
             );
         }
 
@@ -412,26 +408,24 @@
 
     // print_page, imprime la página de un artículo cuyo nombre de archivo 
     // se pasa como parámetro
-    function print_page($filename, $reduce_h1 = false) {
+    function print_page($filename, $reduceH1 = false) {
         global $DIRECTORY;
-        global $URL;
-        $filepath = $DIRECTORY . $filename;
-        $file_info = get_file_info($filename);
-        $file_content = file_get_contents($filepath);
-        // $file_content = str_replace("img/", $URL . "img/", $file_content);
-        if ($reduce_h1) $file_content = reduce_h1($file_content);
-        echo $file_content . "\n";
+        $filePath = $DIRECTORY . $filename;
+        $fileInfo = get_file_info($filename);
+        $fileContent = file_get_contents($filePath);
+        if ($reduceH1) { $fileContent = reduce_h1($fileContent); }
+        echo $fileContent . "\n";
         printf(
             '<p style="text-align:right;"><small><a href="index.php?page=%s" aria-label="Página del autor %s.">%s</a> - %s</small></p>' . "\n",
-            $file_info["author_data"][1],
-            $file_info["author_data"][0],
-            $file_info["author_data"][0],
-            $file_info["datetime"]
+            $fileInfo["author_data"][1],
+            $fileInfo["author_data"][0],
+            $fileInfo["author_data"][0],
+            $fileInfo["datetime"]
         );
         printf(
             '<p style="text-align:right;"><small><a href="index.php?page=%s" aria-label="Enlace al contenido, %s, para verlo individualmente.">Enlace al contenido</a></small></p>' . "\n",
             $filename,
-            strtolower($file_info["title"])
+            strtolower($fileInfo["title"])
         );
     }
 
@@ -445,38 +439,36 @@
             $ACTION = 1;
             $TITLE = "Archivo - record.rat.la";
             $DESCRIPTION = "Listado de todas las páginas publicadas en record.rat.la";
-        } elseif ($_GET["page"] == "color.html" && isset($_GET["id"])) {
+        } elseif ($_GET["page"] == PAGE_COLOR && isset($_GET["id"])) {
             // Cambio de paleta de colores
             if ($_GET["id"] >= 0 && $_GET["id"] < count($COLORS)) {
                 $_SESSION["COLOR_ID"] = $_GET["id"];
             }
             $ACTION = 2;
-            $file_info = get_file_info("color.html");
-            $TITLE = $file_info["title"] . " - record.rat.la";
+            $file_info = get_file_info(PAGE_COLOR);
+            $TITLE = $file_info["title"] . DEF_TITLE_SUFFIX;
         } else {
             if (in_array($_GET["page"], $FILENAMES)) {
                 // Artículo
                 $ACTION = 3;
                 $filename = $_GET["page"];
                 $file_info = get_file_info($filename);
-                $TITLE = $file_info["title"] . " - record.rat.la";
+                $TITLE = $file_info["title"] . DEF_TITLE_SUFFIX;
                 $DESCRIPTION = get_description($DIRECTORY . $filename);
                 $PAGE_IMG = get_page_img($DIRECTORY . $filename);
             } else {
                 // Error 404
                 $ACTION = 404;
-                $file_info = get_file_info("404.html");
-                $TITLE = $file_info["title"] . " - record.rat.la";
+                $file_info = get_file_info(PAGE404);
+                $TITLE = $file_info["title"] . DEF_TITLE_SUFFIX;
                 http_response_code(404);
             }
         }
     }
 
-    if (isset($_GET["size"])) {
-        // Cambio de tamaño de texto
-        if ($_GET["size"] >= 0 && $_GET["size"] < count($TEXT_SIZES)) {
-            $_SESSION["TEXT_SIZE_ID"] = $_GET["size"];
-        }
+    // Cambio de tamaño de texto
+    if (isset($_GET["size"]) && $_GET["size"] >= 0 && $_GET["size"] < count($TEXT_SIZES)) {
+        $_SESSION["TEXT_SIZE_ID"] = $_GET["size"];
     }
 
     $COLOR_ID = $_SESSION["COLOR_ID"];
@@ -637,6 +629,7 @@
 <?php
     // Imprimimos lo indicado por la variable $ACTION en el <main>
     switch ($ACTION) {
+        default:
         case 0:
             print_reciente();
             break;
@@ -644,13 +637,13 @@
             print_archive();
             break;
         case 2:
-            print_page("color.html", false);
+            print_page(PAGE_COLOR, false);
             break;
         case 3:
             print_page($_GET["page"], false);
             break;
         case 404:
-            print_page("404.html", false);
+            print_page(PAGE404, false);
             break;
     }
 ?>
