@@ -21,10 +21,10 @@
 
     // Renovamos la cookie siempre que se entre en una sesión ya creada
     // (ampliando el tíempo de expiración otros $timeout segundos)
-    $sessionName = session_name();
-    if( isset( $_COOKIE[ $sessionName ] ) ) {
-        setcookie( $sessionName, $_COOKIE[ $sessionName ], time() + $timeout, '/' );
-    }
+    // $sessionName = session_name();
+    // if( isset( $_COOKIE[ $sessionName ] ) ) {
+    //     setcookie( $sessionName, $_COOKIE[ $sessionName ], time() + $timeout, '/' );
+    // }
 
     // Si se entra por primera vez a la web se guarda un cookie de sesión con las preferencias por defecto
     if (!isset($_SESSION["COLOR_ID"])) {
@@ -495,7 +495,7 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-        <title><?php echo $TITLE; ?></title>
+        <title><?= $TITLE ?></title>
         <link rel="icon" href="favicon.webp" type="image/webp" sizes="50x50">
         <!-- para decirle al navegador que tengo RSS -->
         <link rel="alternate" type="application/rss+xml" href="rss.xml" title="RSS de record.rat.la">
@@ -506,25 +506,25 @@
 
         <!-- Revisar: https://css-tricks.com/essential-meta-tags-social-media/ -->
         <meta name="author" content="Inoro" /> <!-- This site was made by https://github.com/1noro -->
-        <meta name="description" content="<?php echo $DESCRIPTION; ?>" />
+        <meta name="description" content="<?= $DESCRIPTION ?>" />
         <meta property="og:locale" content="es_ES" />
         <meta property="og:type" content="article" />
-        <meta property="og:title" content="<?php echo $TITLE; ?>" />
-        <meta property="og:description" content="<?php echo $DESCRIPTION; ?>" />
-        <meta property="og:url" content="<?php echo get_url(true); ?>" />
+        <meta property="og:title" content="<?= $TITLE ?>" />
+        <meta property="og:description" content="<?= $DESCRIPTION ?>" />
+        <meta property="og:url" content="<?= get_url(true) ?>" />
         <meta property="og:site_name" content="record.rat.la" />
-        <meta property="og:image" content="<?php echo get_url(false) . "/" . $PAGE_IMG; ?>" />
+        <meta property="og:image" content="<?= get_url(false) . '/' . $PAGE_IMG ?>" />
         <meta name="twitter:card" content="summary_large_image" />
         <!-- <meta property="article:author" content="idex.php?page=inoro.html" /> -->
         <!-- <meta property="article:published_time" content="2020-09-21T00:04:15+00:00" /> -->
         <!-- <meta property="article:modified_time" content="2020-09-21T07:23:04+00:00" /> -->
         <!-- <meta name="twitter:creator" content="@example" /> -->
         <!-- <meta name="twitter:site" content="cuenta_del_sitio" /> -->
-        <meta name="twitter:image:src" content="<?php echo get_url(false) . "/" . $PAGE_IMG; ?>" />
+        <meta name="twitter:image:src" content="<?= get_url(false) . '/' . $PAGE_IMG ?>" />
         <meta name="robots" content="index, follow" />
         <!-- <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" /> -->
         <!-- <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" /> -->
-        <!-- <link rel="canonical" href="<?php echo get_url(true); ?>" /> -->
+        <!-- <link rel="canonical" href="<?= get_url(true) ?>" /> -->
 
         <!-- Cosas de la NSA (en modo prueba) -->
         <!-- Google Analytics -->
@@ -538,9 +538,9 @@
 
         <style>
             body {
-                background-color: <?php echo $COLORS[$COLOR_ID]["background"]; ?>;
-                color: <?php echo $COLORS[$COLOR_ID]["text"]; ?>;
-                font-size: <?php echo $TEXT_SIZES[$TEXT_SIZE_ID]["text"]; ?>; /* 1.35em, 14pt */
+                background-color: <?= $COLORS[$COLOR_ID]["background"] ?>;
+                color: <?= $COLORS[$COLOR_ID]["text"] ?>;
+                font-size: <?= $TEXT_SIZES[$TEXT_SIZE_ID]["text"] ?>; /* 1.35em, 14pt */
                 /* font-family: Times, Serif; */
                 font-family: Helvetica, sans-serif;
             }
@@ -548,9 +548,9 @@
             /* --- Enlaces --- */
             a.text_size_link {text-decoration: none;}
             /* Es importante mantener el orden: link - visited - hover - active */
-            a:link {color: <?php echo $COLORS[$COLOR_ID]["link"]; ?>;}
-            a:visited {color: <?php echo $COLORS[$COLOR_ID]["link_visited"]; ?>;}
-            a:active {color: <?php echo $COLORS[$COLOR_ID]["link_active"]; ?>;}
+            a:link {color: <?= $COLORS[$COLOR_ID]["link"] ?>;}
+            a:visited {color: <?= $COLORS[$COLOR_ID]["link_visited"] ?>;}
+            a:active {color: <?= $COLORS[$COLOR_ID]["link_active"] ?>;}
 
             /* --- Contenedores HEADER y FOOTER --- */
             header, footer, p.center {text-align: center;}
@@ -573,7 +573,7 @@
             }
 
             h1, h2, h3, h4, h5, h6 {
-                color: <?php echo $COLORS[$COLOR_ID]["title"]; ?>;
+                color: <?= $COLORS[$COLOR_ID]["title"] ?>;
                 text-align: left;
             }
 
@@ -585,11 +585,11 @@
             code {padding: 1px;}
 
             pre, code {
-                background-color: <?php echo $COLORS[$COLOR_ID]["code_background"]; ?>;
-                color: <?php echo $COLORS[$COLOR_ID]["code_text"]; ?>;
+                background-color: <?= $COLORS[$COLOR_ID]["code_background"] ?>;
+                color: <?= $COLORS[$COLOR_ID]["code_text"] ?>;
             }
 
-            pre, code, samp {font-size: <?php echo $TEXT_SIZES[$TEXT_SIZE_ID]["code"]; ?>; /* 1.1em */}
+            pre, code, samp {font-size: <?= $TEXT_SIZES[$TEXT_SIZE_ID]["code"] ?>; /* 1.1em */}
 
             img {width: 100%;} /* todas las imágenes menos la del header */
 
@@ -611,9 +611,9 @@
         <header id="header" aria-label="Cabecera" tabindex="-1">
             <!-- Barra de accesibilidad -->
             <nav aria-label="Enlaces de control de la web" style="text-align: left;">
-                <a class="text_size_link" style="font-size: 1.05em;" href="index.php?size=0<?php echo add_page_if_exists(); ?>" aria-label="a, texto a tamaño por defecto.">a</a> 
-                <a class="text_size_link" style="font-size: 1.20em;" href="index.php?size=1<?php echo add_page_if_exists(); ?>" aria-label="a, texto a tamaño grande.">a</a> 
-                <a class="text_size_link" style="font-size: 1.35em;" href="index.php?size=2<?php echo add_page_if_exists(); ?>" aria-label="a, texto a tamaño enorme.">a</a> / 
+                <a class="text_size_link" style="font-size: 1.05em;" href="index.php?size=0<?= add_page_if_exists() ?>" aria-label="a, texto a tamaño por defecto.">a</a> 
+                <a class="text_size_link" style="font-size: 1.20em;" href="index.php?size=1<?= add_page_if_exists() ?>" aria-label="a, texto a tamaño grande.">a</a> 
+                <a class="text_size_link" style="font-size: 1.35em;" href="index.php?size=2<?= add_page_if_exists() ?>" aria-label="a, texto a tamaño enorme.">a</a> / 
                 <a href="index.php?page=color.html" aria-label="Cambia la paleta de colores para leer mejor o para molar más.">color</a> / 
                 <a href="#main">ir al artículo</a> / 
                 <a href="#footer">ir al pié</a>
