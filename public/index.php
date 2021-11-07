@@ -9,24 +9,27 @@
 
 -->
 <?php
-    // Configuramos el timeout de la cookie de sesión para guardar los ajustes gráficos
+    // Configuramos el timeout de la cookie de sesión para guardar los 
+    // ajustes gráficos
     // Tiempo por defecto: 25 m (1500 s)
     // Tiempo actual 7 d (604800 s)
     // $timeout = 604800;
     // ini_set( "session.gc_maxlifetime", $timeout );
     // ini_set( "session.cookie_lifetime", $timeout );
 
-    // Creamos u obtenemos la cookie funcional que guarda las preferencias del usuario (la paleta de colores)
+    // Creamos u obtenemos la cookie funcional que guarda las preferencias 
+    // del usuario (la paleta de colores)
     session_start();
 
     // Renovamos la cookie siempre que se entre en una sesión ya creada
-    // (ampliando el tíempo de expiración otros $timeout segundos)
+    // (ampliando el tiempo de expiración otros $timeout segundos)
     // $sessionName = session_name();
     // if( isset( $_COOKIE[ $sessionName ] ) ) {
     //     setcookie( $sessionName, $_COOKIE[ $sessionName ], time() + $timeout, '/' );
     // }
 
-    // Si se entra por primera vez a la web se guarda un cookie de sesión con las preferencias por defecto
+    // Si se entra por primera vez a la web se guarda un cookie de sesión con 
+    // las preferencias por defecto
     if (!isset($_SESSION["COLOR_ID"])) {
         $_SESSION["COLOR_ID"] = 0;
     }
@@ -34,19 +37,18 @@
         $_SESSION["TEXT_SIZE_ID"] = 0;
     }
 
-    // --- Viariables globales ---
+    // --- Variables globales ---
     $DOMAIN = "record.rat.la";
     $METHOD = "https";
     $URL = $METHOD . "://" . $DOMAIN . "/";
     $PAGES_TO_SHOW = 2; // número de páginas a mostrar en la página principal
     $DIRECTORY = 'pages/'; // carpeta donde se guardan las páginas
-    // $DIRECTORY = '../factory/'; // carpeta de la factoría, donde están los artículos sin terminar
     $TITLE = "Reciente - record.rat.la"; // título de la página por defecto
     $DESCRIPTION = "Blog/web personal donde iré registrando mis proyectos y mis líos mentales."; // Descripción de la página por defecto.
     $PAGE_IMG = "img/article_default_img_white.jpg"; // Imagen del artículo por defecto.
 
     $AUTHORS = [
-        "a" => ["Anon", "404.html"], // Autor por defecto de las páginas anónimas
+        "a" => ["Anon", "404.html"], // autor por defecto
         "i" => ["Inoro", "inoro.html"]
     ];
 
@@ -80,7 +82,7 @@
         ],
         // Melocotón
         [
-            "background" => "#EDD1B0", // Peach: #EDD1B0, Orange: #EDDD6E, Yellow: #F8FD89, 4chan: #FFFFEE
+            "background" => "#EDD1B0",
             "text" => "#000000",
             "title" => "#000000",
             "link" => "#0000EE",
@@ -168,7 +170,8 @@
     ];
 
     // --- Utilidades genéricas ---
-    // get_url, monta la URL de la página para imprimirla en los headers HTML  en base a la URL dada por el usuario
+    // get_url, monta la URL de la página para imprimirla en los headers HTML 
+    // en base a la URL dada por el usuario
     function get_url($full) {
         if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
             $link = "https";
@@ -181,7 +184,8 @@
         return $link;
     }
 
-    // add_page_if_exists, devuelve el parámetro de query "page" para concatenar a un enlace, si este está definido
+    // add_page_if_exists, devuelve el parámetro de query "page" para 
+    // concatenar a un enlace, si este está definido
     function add_page_if_exists() {
         if (isset($_GET["page"])) {
             return "&page=" . $_GET["page"];
@@ -190,13 +194,15 @@
         }
     }
 
-    // normalize_line, devuelve el contenido de una linea sin espacios ni salto de linea
+    // normalize_line, devuelve el contenido de una linea sin espacios ni 
+    // salto de linea
     function normalize_line($line) {
         return trim(str_replace("\n", "", $line));
     }
 
-    // reduce_h1, en base a un texto html dado reduce el valor de todos los tag <hN> en uno excepto el <h6>
-    // el inconveniente es que los <h5> y los <h6> quedarán al mismo nivel
+    // reduce_h1, en base a un texto html dado reduce el valor de todos los 
+    // tag <hN> en uno excepto el <h6>. El inconveniente es que los <h5> y 
+    // los <h6> quedarán al mismo nivel
     function reduce_h1($html) {
         $html = str_replace("h5", "h6", $html);
         $html = str_replace("h4", "h5", $html);
@@ -208,7 +214,8 @@
     }
 
     // --- Obtención de datos de las páginas ---
-    // get_filenames, obtiene los nombres de las páginas en la carpeta especificada
+    // get_filenames, obtiene los nombres de las páginas en la carpeta 
+    // especificada
     function get_filenames($DIRECTORY) {
         $FILENAMES = array();
         $directory_obj = opendir($DIRECTORY);
@@ -220,7 +227,8 @@
         return $FILENAMES;
     }
 
-    // get_date_by_line, obtiene la fecha de un articulo en base al comentario de la primera línea del artículo
+    // get_date_by_line, obtiene la fecha de un artículo en base al 
+    // comentario de la primera línea del artículo
     function get_date_by_line($line) {
         $line = normalize_line($line);
         $line = str_replace("<!-- ", "", $line);
@@ -243,7 +251,8 @@
         ];
     }
 
-    // get_author_data_by_line, obtiene los datos del autor en base a su alias en el comentario de la primera línea del artículo
+    // get_author_data_by_line, obtiene los datos del autor en base a su 
+    // alias en el comentario de la primera línea del artículo
     function get_author_data_by_line($line) {
         $line = normalize_line($line);
         $line = str_replace("<!-- ", "", $line);
@@ -260,17 +269,20 @@
         return $result;
     }
 
-    // get_title_by_line, obtiene el título del artículo en base a la segunda línea de una artículo
+    // get_title_by_line, obtiene el título del artículo en base a la 
+    // segunda línea de una artículo
     function get_title_by_line($line) {
         $line = normalize_line($line);
         $line = str_replace("<h1>", "", $line);
         $line = str_replace("</h1>", "", $line);
         
-        // quitamos las tags HTML y luego cambiamos los caracteres especiales por sus códigos HTML (incluidas las " y ')
+        // quitamos las tags HTML y luego cambiamos los caracteres 
+        // especiales por sus códigos HTML (incluidas las " y ')
         return htmlentities(strip_tags($line), ENT_QUOTES); 
     }
 
-    // get_file_info, obtiene en formato diccionario el nombre del archivo, fecha, autor y título de un artículo
+    // get_file_info, obtiene en formato diccionario el nombre del archivo, 
+    // fecha, autor y título de un artículo
     function get_file_info($filename) {
         global $DIRECTORY;
         $filepath = $DIRECTORY . $filename;
@@ -295,7 +307,8 @@
         ];
     }
 
-    // get_description, obtiene el contenido del primer párrafo <p></p> del artículo y lo coloca como description del mismo
+    // get_description, obtiene el contenido del primer párrafo <p></p> del 
+    // artículo y lo coloca como description del mismo
     // TODO: optimizar (sacar de lo que se carga en el main)
     function get_description($filepath) {
         $html = file_get_contents($filepath);
@@ -328,7 +341,9 @@
     // get_sorted_file_info, ...
     function get_sorted_file_info() {
         global $DIRECTORY, $FILENAMES;
-        // creamos $file_info_arr y $datetime_arr previamente para ordenar los archivos por fecha
+
+        // creamos $file_info_arr y $datetime_arr previamente para ordenar 
+        // los archivos por fecha
         $file_info_arr = array();
         $datetime_arr = array();
         foreach($FILENAMES as $filename) {
@@ -337,7 +352,7 @@
             array_push($datetime_arr, $file_info["datetime"]);
         }
 
-        // en base a los dos arrays anteriores ordeno todo por fecha
+        // en base a los dos arrays anteriores ordeno por fecha
         array_multisort($datetime_arr, SORT_DESC, $file_info_arr);
 
         return $file_info_arr;
@@ -360,7 +375,8 @@
         }
     }
 
-    // print_archive, imprime la página 'archivo', donde se listan las páginas ordenadas por fecha DESC
+    // print_archive, imprime la página 'archivo', donde se listan las 
+    // páginas ordenadas por fecha DESC
     function print_archive() {
         global $DIRECTORY, $FILENAMES, $MONTHS;
         $current_year = "";
@@ -380,10 +396,6 @@
                 $current_month = $file_info["month"];
                 printf("<h3>%s</h3>\n", $MONTHS[intval($file_info["month"]) - 1]);
             }
-            // if ($current_day != $file_info["day"]) {
-            //     $current_day = $file_info["day"];
-            //     printf("<blockquote><strong>- %s -</strong></blockquote>\n", $file_info["day"]);
-            // }
             printf(
                 '<blockquote>%s %s:%s - <a href="index.php?page=%s">%s</a> - %s</blockquote>' . "\n",
                 $file_info["day"],
@@ -398,27 +410,8 @@
         printf("<p>Hay un total de %d páginas en la web.</p>\n", count($FILENAMES));
     }
 
-    /*function print_archive() {
-        global $DIRECTORY, $FILENAMES;
-
-        $file_info_arr = get_sorted_file_info();
-
-        echo "<h1>Archivo</h1>\n";
-        echo "<ul>\n";
-        foreach($file_info_arr as $file_info) {
-            printf(
-                '<li><a href="index.php?page=%s">%s</a> (%s) %s</li>' . "\n",
-                $file_info["filename"],
-                $file_info["datetime"],
-                $file_info["author_data"][0],
-                $file_info["title"]
-            );
-        }
-        echo "</ul>\n";
-        printf("<p>Hay un total de %d páginas en la web.</p>\n", count($FILENAMES));
-    }*/
-
-    // print_page, imprime la página de un artículo cuyo nombre de archivo se pasa como parámetro
+    // print_page, imprime la página de un artículo cuyo nombre de archivo 
+    // se pasa como parámetro
     function print_page($filename, $reduce_h1 = false) {
         global $DIRECTORY;
         global $URL;
