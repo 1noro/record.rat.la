@@ -40,9 +40,13 @@
     // --- Constantes ---
     define("E404_PAGE", "404.html");
     define("COLOR_PAGE", "color.html");
-    define("DEF_TITLE_SUFFIX", " - record.rat.la");
+    define("PAGES_TO_SHOW", 2); // número de páginas a mostrar en la portada, "reciente"
     define("DIRECTORY", "pages/"); // carpeta donde se guardan las páginas
-    define("DEF_PAGE_IMG", "img/article_default_img_white.jpg"); // Imagen del artículo por defecto.
+    
+    define("DEF_TITLE_SUFFIX", " - record.rat.la"); // sufijo por defecto del título de la página
+    define("DEF_TITLE", "Reciente" . DEF_TITLE_SUFFIX); // título por defecto de la página
+    define("DEF_DESCRIPTION", "Blog/web personal donde iré registrando mis proyectos y mis líos mentales."); // descripción por defecto de la página
+    define("DEF_PAGE_IMG", "img/article_default_img_white.jpg"); // imagen por defecto del artículo
 
     // --- Requested Values ---
     if (isset($_GET["page"])) { define("REQ_PAGE", $_GET["page"]); }
@@ -50,13 +54,9 @@
     if (isset($_GET["size"])) { define("REQ_SIZE_ID", intval($_GET["size"])); }
 
     // --- Variables globales ---
-    $DOMAIN = "record.rat.la";
-    $METHOD = "https";
-    $URL = $METHOD . "://" . $DOMAIN . "/";
-    $PAGES_TO_SHOW = 2; // número de páginas a mostrar en la página principal
-    $TITLE = "Reciente - record.rat.la"; // título de la página por defecto
-    $DESCRIPTION = "Blog/web personal donde iré registrando mis proyectos y mis líos mentales."; // Descripción de la página por defecto.
-    $PAGE_IMG = DEF_PAGE_IMG; 
+    $TITLE = DEF_TITLE;
+    $DESCRIPTION = DEF_DESCRIPTION; 
+    $PAGE_IMG = DEF_PAGE_IMG;
 
     define("AUTHORS", [
         "a" => ["Anon", E404_PAGE], // autor por defecto
@@ -349,9 +349,9 @@
         $file_info_arr = array();
         $datetime_arr = array();
         foreach($FILENAMES as $filename) {
-            $file_info = get_file_info($filename);
-            array_push($file_info_arr, $file_info);
-            array_push($datetime_arr, $file_info["datetime"]);
+            $fileInfo = get_file_info($filename);
+            array_push($file_info_arr, $fileInfo);
+            array_push($datetime_arr, $fileInfo["datetime"]);
         }
 
         // en base a los dos arrays anteriores ordeno por fecha
@@ -363,15 +363,14 @@
     // --- Impresión de contenidos ---
     // print_reciente, imprime la portada (las N páginas más recientes)
     function print_reciente() {
-        global $PAGES_TO_SHOW;
         $fileInfoArr = get_sorted_file_info();
 
         echo "<h1>Reciente</h1>\n<hr>\n";
 
         $number = 1;
-        foreach($fileInfoArr as $file_info) {
-            print_page($file_info["filename"], true);
-            if ($number >= $PAGES_TO_SHOW) {break;}
+        foreach($fileInfoArr as $fileInfo) {
+            print_page($fileInfo["filename"], true);
+            if ($number >= PAGES_TO_SHOW) {break;}
             echo "<hr>\n";
             $number++;
         }
@@ -449,22 +448,22 @@
                 $_SESSION["COLOR_ID"] = REQ_COLOR_ID;
             }
             $ACTION = 2;
-            $file_info = get_file_info(COLOR_PAGE);
-            $TITLE = $file_info["title"] . DEF_TITLE_SUFFIX;
+            $fileInfo = get_file_info(COLOR_PAGE);
+            $TITLE = $fileInfo["title"] . DEF_TITLE_SUFFIX;
         } else {
             if (in_array(REQ_PAGE, $FILENAMES)) {
                 // Artículo
                 $ACTION = 3;
                 $filename = REQ_PAGE;
-                $file_info = get_file_info($filename);
-                $TITLE = $file_info["title"] . DEF_TITLE_SUFFIX;
+                $fileInfo = get_file_info($filename);
+                $TITLE = $fileInfo["title"] . DEF_TITLE_SUFFIX;
                 $DESCRIPTION = get_description(DIRECTORY . $filename);
                 $PAGE_IMG = get_page_img(DIRECTORY . $filename);
             } else {
                 // Error 404
                 $ACTION = 404;
-                $file_info = get_file_info(E404_PAGE);
-                $TITLE = $file_info["title"] . DEF_TITLE_SUFFIX;
+                $fileInfo = get_file_info(E404_PAGE);
+                $TITLE = $fileInfo["title"] . DEF_TITLE_SUFFIX;
                 http_response_code(404);
             }
         }
