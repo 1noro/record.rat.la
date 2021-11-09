@@ -38,9 +38,11 @@
     }
 
     // --- Constantes ---
-    define("PAGE404", "404.html");
-    define("PAGE_COLOR", "color.html");
+    define("E404_PAGE", "404.html");
+    define("COLOR_PAGE", "color.html");
     define("DEF_TITLE_SUFFIX", " - record.rat.la");
+
+    if (isset($_GET["page"])) { define("REQ_PAGE", $_GET["page"]); }
 
     // --- Variables globales ---
     $DOMAIN = "record.rat.la";
@@ -53,7 +55,7 @@
     $PAGE_IMG = "img/article_default_img_white.jpg"; // Imagen del artículo por defecto.
 
     $AUTHORS = [
-        "a" => ["Anon", PAGE404], // autor por defecto
+        "a" => ["Anon", E404_PAGE], // autor por defecto
         "i" => ["Inoro", "inoro.html"]
     ];
 
@@ -191,8 +193,8 @@
     // add_page_if_exists, devuelve el parámetro de query "page" para 
     // concatenar a un enlace, si este está definido
     function add_page_if_exists() {
-        if (isset($_GET["page"])) {
-            return "&page=" . $_GET["page"];
+        if (defined("REQ_PAGE")) {
+            return "&page=" . REQ_PAGE;
         }
         return "";
     }
@@ -433,25 +435,25 @@
     // procesamos la variable GET "page" y obramos en consecuencia
     $ACTION = 0;
     $FILENAMES = get_filenames($DIRECTORY);
-    if (isset($_GET["page"])) {
-        if ($_GET["page"] == "archive") {
+    if (defined("REQ_PAGE")) {
+        if (REQ_PAGE == "archive") {
             // Archivo
             $ACTION = 1;
             $TITLE = "Archivo - record.rat.la";
             $DESCRIPTION = "Listado de todas las páginas publicadas en record.rat.la";
-        } elseif ($_GET["page"] == PAGE_COLOR && isset($_GET["id"])) {
+        } elseif (REQ_PAGE == COLOR_PAGE && isset($_GET["id"])) {
             // Cambio de paleta de colores
             if ($_GET["id"] >= 0 && $_GET["id"] < count($COLORS)) {
                 $_SESSION["COLOR_ID"] = $_GET["id"];
             }
             $ACTION = 2;
-            $file_info = get_file_info(PAGE_COLOR);
+            $file_info = get_file_info(COLOR_PAGE);
             $TITLE = $file_info["title"] . DEF_TITLE_SUFFIX;
         } else {
-            if (in_array($_GET["page"], $FILENAMES)) {
+            if (in_array(REQ_PAGE, $FILENAMES)) {
                 // Artículo
                 $ACTION = 3;
-                $filename = $_GET["page"];
+                $filename = REQ_PAGE;
                 $file_info = get_file_info($filename);
                 $TITLE = $file_info["title"] . DEF_TITLE_SUFFIX;
                 $DESCRIPTION = get_description($DIRECTORY . $filename);
@@ -459,7 +461,7 @@
             } else {
                 // Error 404
                 $ACTION = 404;
-                $file_info = get_file_info(PAGE404);
+                $file_info = get_file_info(E404_PAGE);
                 $TITLE = $file_info["title"] . DEF_TITLE_SUFFIX;
                 http_response_code(404);
             }
@@ -637,13 +639,13 @@
             print_archive();
             break;
         case 2:
-            print_page(PAGE_COLOR, false);
+            print_page(COLOR_PAGE, false);
             break;
         case 3:
-            print_page($_GET["page"], false);
+            print_page(REQ_PAGE, false);
             break;
         case 404:
-            print_page(PAGE404, false);
+            print_page(E404_PAGE, false);
             break;
     }
 ?>
