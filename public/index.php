@@ -286,9 +286,9 @@
         return htmlentities(strip_tags($line), ENT_QUOTES); 
     }
 
-    // get_file_info, obtiene en formato diccionario el nombre del archivo, 
+    // get_page_info, obtiene en formato diccionario el nombre del archivo, 
     // fecha, autor y título de un artículo
-    function get_file_info($filename) {
+    function get_page_info($filename) {
         $filepath = DIRECTORY . $filename;
 
         $fileObj = fopen($filepath, "r");
@@ -349,7 +349,7 @@
         $file_info_arr = array();
         $datetime_arr = array();
         foreach($FILENAMES as $filename) {
-            $fileInfo = get_file_info($filename);
+            $fileInfo = get_page_info($filename);
             array_push($file_info_arr, $fileInfo);
             array_push($datetime_arr, $fileInfo["datetime"]);
         }
@@ -369,7 +369,8 @@
 
         $number = 1;
         foreach($fileInfoArr as $fileInfo) {
-            print_page($fileInfo["filename"], true);
+            $page = $fileInfo["filename"];
+            print_page(reduce_h1(get_page_content($page)), get_page_info($page));
             if ($number >= PAGES_TO_SHOW) {break;}
             echo "<hr>\n";
             $number++;
@@ -410,13 +411,14 @@
         printf("<p>Hay un total de %d páginas en la web.</p>\n", count($FILENAMES));
     }
 
+    // get_page_content, todo...
+    function get_page_content($filename) {
+        return file_get_contents(DIRECTORY . $filename);
+    }
+
     // print_page, imprime la página de un artículo cuyo nombre de archivo 
     // se pasa como parámetro
-    function print_page($filename, $reduceH1 = false) {
-        $filePath = DIRECTORY . $filename;
-        $fileInfo = get_file_info($filename);
-        $fileContent = file_get_contents($filePath);
-        if ($reduceH1) { $fileContent = reduce_h1($fileContent); }
+    function print_page($fileContent, $fileInfo) {
         echo $fileContent . "\n";
         printf(
             '<p style="text-align:right;"><small><a href="index.php?page=%s" aria-label="Página del autor %s.">%s</a> - %s</small></p>' . "\n",
@@ -427,7 +429,7 @@
         );
         printf(
             '<p style="text-align:right;"><small><a href="index.php?page=%s" aria-label="Enlace al contenido, %s, para verlo individualmente.">Enlace al contenido</a></small></p>' . "\n",
-            $filename,
+            $fileInfo["filename"],
             strtolower($fileInfo["title"])
         );
     }
@@ -448,21 +450,21 @@
                 $_SESSION["COLOR_ID"] = REQ_COLOR_ID;
             }
             $ACTION = 2;
-            $fileInfo = get_file_info(COLOR_PAGE);
+            $fileInfo = get_page_info(COLOR_PAGE);
             $TITLE = $fileInfo["title"] . DEF_TITLE_SUFFIX;
         } else {
             if (in_array(REQ_PAGE, $FILENAMES)) {
                 // Artículo
                 $ACTION = 3;
                 $filename = REQ_PAGE;
-                $fileInfo = get_file_info($filename);
+                $fileInfo = get_page_info($filename);
                 $TITLE = $fileInfo["title"] . DEF_TITLE_SUFFIX;
                 $DESCRIPTION = get_description(DIRECTORY . $filename);
                 $PAGE_IMG = get_page_img(DIRECTORY . $filename);
             } else {
                 // Error 404
                 $ACTION = 404;
-                $fileInfo = get_file_info(E404_PAGE);
+                $fileInfo = get_page_info(E404_PAGE);
                 $TITLE = $fileInfo["title"] . DEF_TITLE_SUFFIX;
                 http_response_code(404);
             }
@@ -640,13 +642,16 @@
             print_archive();
             break;
         case 2:
-            print_page(COLOR_PAGE, false);
+            $page = COLOR_PAGE;
+            print_page(get_page_content($page), get_page_info($page));
             break;
         case 3:
-            print_page(REQ_PAGE, false);
+            $page = REQ_PAGE;
+            print_page(get_page_content($page), get_page_info($page));
             break;
         case 404:
-            print_page(E404_PAGE, false);
+            $page = E404_PAGE;
+            print_page(get_page_content($page), get_page_info($page));
             break;
     }
 ?>
