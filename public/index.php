@@ -41,7 +41,10 @@
     define("E404_PAGE", "404.html");
     define("COLOR_PAGE", "color.html");
     define("DEF_TITLE_SUFFIX", " - record.rat.la");
+    define("DIRECTORY", "pages/"); // carpeta donde se guardan las páginas
+    define("DEF_PAGE_IMG", "img/article_default_img_white.jpg"); // Imagen del artículo por defecto.
 
+    // --- Requested Values ---
     if (isset($_GET["page"])) { define("REQ_PAGE", $_GET["page"]); }
     if (isset($_GET["id"])) { define("REQ_COLOR_ID", intval($_GET["id"])); }
     if (isset($_GET["size"])) { define("REQ_SIZE_ID", intval($_GET["size"])); }
@@ -51,15 +54,14 @@
     $METHOD = "https";
     $URL = $METHOD . "://" . $DOMAIN . "/";
     $PAGES_TO_SHOW = 2; // número de páginas a mostrar en la página principal
-    $DIRECTORY = 'pages/'; // carpeta donde se guardan las páginas
     $TITLE = "Reciente - record.rat.la"; // título de la página por defecto
     $DESCRIPTION = "Blog/web personal donde iré registrando mis proyectos y mis líos mentales."; // Descripción de la página por defecto.
-    $PAGE_IMG = "img/article_default_img_white.jpg"; // Imagen del artículo por defecto.
+    $PAGE_IMG = DEF_PAGE_IMG; 
 
-    $AUTHORS = [
+    define("AUTHORS", [
         "a" => ["Anon", E404_PAGE], // autor por defecto
         "i" => ["Inoro", "inoro.html"]
-    ];
+    ]);
 
     $TEXT_SIZES = [
         [
@@ -266,10 +268,10 @@
 
         $authorId = substr($line, 12, 1);
 
-        if (array_key_exists($authorId, $GLOBALS["AUTHORS"])) {
-            return $GLOBALS["AUTHORS"][$authorId];
+        if (array_key_exists($authorId, AUTHORS)) {
+            return AUTHORS[$authorId];
         }
-        return $GLOBALS["AUTHORS"]["a"];
+        return AUTHORS["a"];
     }
 
     // get_title_by_line, obtiene el título del artículo en base a la 
@@ -287,8 +289,7 @@
     // get_file_info, obtiene en formato diccionario el nombre del archivo, 
     // fecha, autor y título de un artículo
     function get_file_info($filename) {
-        global $DIRECTORY;
-        $filepath = $DIRECTORY . $filename;
+        $filepath = DIRECTORY . $filename;
 
         $fileObj = fopen($filepath, "r");
         $line1 = fgets($fileObj); // leemos la primera linea
@@ -336,7 +337,7 @@
         if (isset($image['src'])) {
             return $image['src'];
         }
-        return $GLOBALS["PAGE_IMG"];
+        return DEF_PAGE_IMG;
     }
 
     // get_sorted_file_info, ...
@@ -413,8 +414,7 @@
     // print_page, imprime la página de un artículo cuyo nombre de archivo 
     // se pasa como parámetro
     function print_page($filename, $reduceH1 = false) {
-        global $DIRECTORY;
-        $filePath = $DIRECTORY . $filename;
+        $filePath = DIRECTORY . $filename;
         $fileInfo = get_file_info($filename);
         $fileContent = file_get_contents($filePath);
         if ($reduceH1) { $fileContent = reduce_h1($fileContent); }
@@ -436,7 +436,7 @@
     // --- Lógica de impresión ---
     // procesamos la variable GET "page" y obramos en consecuencia
     $ACTION = 0;
-    $FILENAMES = get_filenames($DIRECTORY);
+    $FILENAMES = get_filenames(DIRECTORY);
     if (defined("REQ_PAGE")) {
         if (REQ_PAGE == "archive") {
             // Archivo
@@ -458,8 +458,8 @@
                 $filename = REQ_PAGE;
                 $file_info = get_file_info($filename);
                 $TITLE = $file_info["title"] . DEF_TITLE_SUFFIX;
-                $DESCRIPTION = get_description($DIRECTORY . $filename);
-                $PAGE_IMG = get_page_img($DIRECTORY . $filename);
+                $DESCRIPTION = get_description(DIRECTORY . $filename);
+                $PAGE_IMG = get_page_img(DIRECTORY . $filename);
             } else {
                 // Error 404
                 $ACTION = 404;
