@@ -9,33 +9,19 @@
 
 -->
 <?php
-    // Configuramos el timeout de la cookie de sesión para guardar los 
-    // ajustes gráficos
-    // Tiempo por defecto: 25 m (1500 s)
-    // Tiempo actual 7 d (604800 s)
-    // $timeout = 604800;
-    // ini_set( "session.gc_maxlifetime", $timeout );
-    // ini_set( "session.cookie_lifetime", $timeout );
-
     // Creamos u obtenemos la cookie funcional que guarda las preferencias 
     // del usuario (la paleta de colores)
     session_start();
 
-    // Renovamos la cookie siempre que se entre en una sesión ya creada
-    // (ampliando el tiempo de expiración otros $timeout segundos)
-    // $sessionName = session_name();
-    // if( isset( $_COOKIE[ $sessionName ] ) ) {
-    //     setcookie( $sessionName, $_COOKIE[ $sessionName ], time() + $timeout, '/' );
-    // }
-
     // Si se entra por primera vez a la web se guarda un cookie de sesión con 
     // las preferencias por defecto
-    if (!isset($_SESSION["COLOR_ID"])) {
-        $_SESSION["COLOR_ID"] = 0;
-    }
-    if (!isset($_SESSION["TEXT_SIZE_ID"])) {
-        $_SESSION["TEXT_SIZE_ID"] = 0;
-    }
+    if (!isset($_SESSION["COLOR_ID"])) { $_SESSION["COLOR_ID"] = 0; }
+    if (!isset($_SESSION["TEXT_SIZE_ID"])) { $_SESSION["TEXT_SIZE_ID"] = 0; }
+
+    // --- Requested Values ---
+    if (isset($_GET["page"])) { define("REQ_PAGE", $_GET["page"]); }
+    if (isset($_GET["id"])) { define("REQ_COLOR_ID", intval($_GET["id"])); }
+    if (isset($_GET["size"])) { define("REQ_SIZE_ID", intval($_GET["size"])); }
 
     // --- Constantes ---
     define("E404_PAGE", "404.html");
@@ -48,16 +34,6 @@
     define("DEF_TITLE", "Reciente" . DEF_TITLE_SUFFIX); // título por defecto de la página
     define("DEF_DESCRIPTION", "Blog/web personal donde iré registrando mis proyectos y mis líos mentales."); // descripción por defecto de la página
     define("DEF_PAGE_IMG", "img/article_default_img_white.jpg"); // imagen por defecto del artículo
-
-    // --- Requested Values ---
-    if (isset($_GET["page"])) { define("REQ_PAGE", $_GET["page"]); }
-    if (isset($_GET["id"])) { define("REQ_COLOR_ID", intval($_GET["id"])); }
-    if (isset($_GET["size"])) { define("REQ_SIZE_ID", intval($_GET["size"])); }
-
-    // --- Variables globales ---
-    $TITLE = DEF_TITLE;
-    $DESCRIPTION = DEF_DESCRIPTION; 
-    $PAGE_IMG = DEF_PAGE_IMG;
 
     define("AUTHORS", [
         "a" => ["Anon", E404_PAGE], // autor por defecto
@@ -182,18 +158,6 @@
     ]);
 
     // --- Utilidades genéricas ---
-    // get_url, monta la URL de la página para imprimirla en los headers HTML 
-    // en base a la URL dada por el usuario
-    function get_url($full) {
-        $link = "http";
-        if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
-            $link = "https";
-        }
-        $link .= "://";
-        $link .= $_SERVER['HTTP_HOST'];
-        if ($full) {$link .= $_SERVER['REQUEST_URI'];}
-        return $link;
-    }
 
     // add_page_if_exists, devuelve el parámetro de query "page" para 
     // concatenar a un enlace, si este está definido
@@ -219,7 +183,6 @@
         $html = str_replace("h3", "h4", $html);
         $html = str_replace("h2", "h3", $html);
         $html = str_replace("h1", "h2", $html);
-
         return $html;
     }
 
@@ -335,8 +298,8 @@
     function get_page_img($filepath) {
         $html = file_get_contents($filepath);
         preg_match('/<img.+src=[\'"](?P<src>.+?)[\'"].*>/i', $html, $image);
-        if (isset($image['src'])) {
-            return $image['src'];
+        if (isset($image["src"])) {
+            return $image["src"];
         }
         return DEF_PAGE_IMG;
     }
@@ -432,9 +395,23 @@
         );
     }
 
-    // --- Lógica de impresión ---
-    // procesamos la variable GET "page" y obramos en consecuencia
+    // --- Variables globales ---
+    $TITLE = DEF_TITLE;
+    $DESCRIPTION = DEF_DESCRIPTION; 
+    $PAGE_IMG = DEF_PAGE_IMG;
     $ACTION = 0;
+
+    // --- Montamos las variables URL y FULL_URL
+    $URL = "http";
+    if(isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] === 'on') {
+        $URL = "https";
+    }
+    $URL .= "://";
+    $URL .= $_SERVER["HTTP_HOST"];
+    $FULL_URL = $URL . $_SERVER["REQUEST_URI"];
+
+    // --- Lógica de impresión ---
+    // procesamos REQ_PAGE y obramos en consecuencia
     if (defined("REQ_PAGE")) {
         if (REQ_PAGE == "archive") {
             // Archivo
@@ -475,6 +452,7 @@
 
     $COLOR_ID = $_SESSION["COLOR_ID"];
     $TEXT_SIZE_ID = $_SESSION["TEXT_SIZE_ID"];
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -483,7 +461,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 
         <title><?= $TITLE ?></title>
+
+        <!-- para decirle al navegador que tengo un favicon que no es .ico -->
         <link rel="icon" href="favicon.webp" type="image/webp" sizes="50x50">
+
         <!-- para decirle al navegador que tengo RSS -->
         <link rel="alternate" type="application/rss+xml" href="rss.xml" title="RSS de record.rat.la">
 
@@ -498,20 +479,20 @@
         <meta property="og:type" content="article" />
         <meta property="og:title" content="<?= $TITLE ?>" />
         <meta property="og:description" content="<?= $DESCRIPTION ?>" />
-        <meta property="og:url" content="<?= get_url(true) ?>" />
+        <meta property="og:url" content="<?= $FULL_URL ?>" />
         <meta property="og:site_name" content="record.rat.la" />
-        <meta property="og:image" content="<?= get_url(false) . '/' . $PAGE_IMG ?>" />
+        <meta property="og:image" content="<?= $URL . '/' . $PAGE_IMG ?>" />
         <meta name="twitter:card" content="summary_large_image" />
         <!-- <meta property="article:author" content="idex.php?page=inoro.html" /> -->
         <!-- <meta property="article:published_time" content="2020-09-21T00:04:15+00:00" /> -->
         <!-- <meta property="article:modified_time" content="2020-09-21T07:23:04+00:00" /> -->
         <!-- <meta name="twitter:creator" content="@example" /> -->
         <!-- <meta name="twitter:site" content="cuenta_del_sitio" /> -->
-        <meta name="twitter:image:src" content="<?= get_url(false) . '/' . $PAGE_IMG ?>" />
+        <meta name="twitter:image:src" content="<?= $URL . '/' . $PAGE_IMG ?>" />
         <meta name="robots" content="index, follow" />
         <!-- <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" /> -->
         <!-- <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" /> -->
-        <!-- <link rel="canonical" href="<?= get_url(true) ?>" /> -->
+        <!-- <link rel="canonical" href="<?= $FULL_URL ?>" /> -->
 
         <!-- Cosas de la NSA (en modo prueba) -->
         <!-- Google Analytics -->
