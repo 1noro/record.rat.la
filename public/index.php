@@ -42,6 +42,7 @@
     define("COLOR_PAGE", "color.html");
     define("PAGES_TO_SHOW", 2); // número de páginas a mostrar en la portada, "reciente"
     define("DIRECTORY", "pages/"); // carpeta donde se guardan las páginas
+    define("FILENAMES", get_filenames(DIRECTORY)); // obtenemos todas las páginas de la carpeta DIRECTORY
     
     define("DEF_TITLE_SUFFIX", " - record.rat.la"); // sufijo por defecto del título de la página
     define("DEF_TITLE", "Reciente" . DEF_TITLE_SUFFIX); // título por defecto de la página
@@ -165,7 +166,7 @@
         ]
     ];
 
-    $MONTHS = [
+    define("MONTHS", [
         "Enero",
         "Febrero",
         "Marzo",
@@ -178,7 +179,7 @@
         "Octubre",
         "Noviembre",
         "Diciembre"
-    ];
+    ]);
 
     // --- Utilidades genéricas ---
     // get_url, monta la URL de la página para imprimirla en los headers HTML 
@@ -342,22 +343,20 @@
 
     // get_sorted_file_info, ...
     function get_sorted_file_info() {
-        global $FILENAMES;
-
-        // creamos $file_info_arr y $datetime_arr previamente para ordenar 
+        // creamos $fileInfoArr y $datetimeArr previamente para ordenar 
         // los archivos por fecha
-        $file_info_arr = array();
-        $datetime_arr = array();
-        foreach($FILENAMES as $filename) {
+        $fileInfoArr = array();
+        $datetimeArr = array();
+        foreach(FILENAMES as $filename) {
             $fileInfo = get_page_info($filename);
-            array_push($file_info_arr, $fileInfo);
-            array_push($datetime_arr, $fileInfo["datetime"]);
+            array_push($fileInfoArr, $fileInfo);
+            array_push($datetimeArr, $fileInfo["datetime"]);
         }
 
         // en base a los dos arrays anteriores ordeno por fecha
-        array_multisort($datetime_arr, SORT_DESC, $file_info_arr);
+        array_multisort($datetimeArr, SORT_DESC, $fileInfoArr);
 
-        return $file_info_arr;
+        return $fileInfoArr;
     }
 
     // --- Impresión de contenidos ---
@@ -380,7 +379,6 @@
     // print_archive, imprime la página 'archivo', donde se listan las 
     // páginas ordenadas por fecha DESC
     function print_archive() {
-        global $FILENAMES, $MONTHS;
         $currentYear = "";
         $currentMonth = "";
 
@@ -395,7 +393,7 @@
             }
             if ($currentMonth != $fileInfo["month"]) {
                 $currentMonth = $fileInfo["month"];
-                printf("<h3>%s</h3>\n", $MONTHS[intval($fileInfo["month"]) - 1]);
+                printf("<h3>%s</h3>\n", MONTHS[intval($fileInfo["month"]) - 1]);
             }
             printf(
                 '<blockquote>%s %s:%s - <a href="index.php?page=%s">%s</a> - %s</blockquote>' . "\n",
@@ -408,7 +406,7 @@
             );
         }
 
-        printf("<p>Hay un total de %d páginas en la web.</p>\n", count($FILENAMES));
+        printf("<p>Hay un total de %d páginas en la web.</p>\n", count(FILENAMES));
     }
 
     // get_page_content, todo...
@@ -437,7 +435,6 @@
     // --- Lógica de impresión ---
     // procesamos la variable GET "page" y obramos en consecuencia
     $ACTION = 0;
-    $FILENAMES = get_filenames(DIRECTORY);
     if (defined("REQ_PAGE")) {
         if (REQ_PAGE == "archive") {
             // Archivo
@@ -453,7 +450,7 @@
             $fileInfo = get_page_info(COLOR_PAGE);
             $TITLE = $fileInfo["title"] . DEF_TITLE_SUFFIX;
         } else {
-            if (in_array(REQ_PAGE, $FILENAMES)) {
+            if (in_array(REQ_PAGE, FILENAMES)) {
                 // Artículo
                 $ACTION = 3;
                 $filename = REQ_PAGE;
