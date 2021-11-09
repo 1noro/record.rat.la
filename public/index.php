@@ -43,8 +43,8 @@
     define("DEF_TITLE_SUFFIX", " - record.rat.la");
 
     if (isset($_GET["page"])) { define("REQ_PAGE", $_GET["page"]); }
-    if (isset($_GET["id"])) { define("COLOR_ID", $_GET["id"]); }
-    if (isset($_GET["size"])) { define("SIZE_ID", $_GET["size"]); }
+    if (isset($_GET["id"])) { define("REQ_COLOR_ID", intval($_GET["id"])); }
+    if (isset($_GET["size"])) { define("REQ_SIZE_ID", intval($_GET["size"])); }
 
     // --- Variables globales ---
     $DOMAIN = "record.rat.la";
@@ -443,10 +443,10 @@
             $ACTION = 1;
             $TITLE = "Archivo - record.rat.la";
             $DESCRIPTION = "Listado de todas las páginas publicadas en record.rat.la";
-        } elseif (REQ_PAGE == COLOR_PAGE && defined("COLOR_ID")) {
+        } elseif (REQ_PAGE == COLOR_PAGE && defined("REQ_COLOR_ID")) {
             // Cambio de paleta de colores
-            if (COLOR_ID >= 0 && COLOR_ID < count($COLORS)) {
-                $_SESSION["COLOR_ID"] = COLOR_ID;
+            if (REQ_COLOR_ID >= 0 && REQ_COLOR_ID < count($COLORS)) {
+                $_SESSION["COLOR_ID"] = REQ_COLOR_ID;
             }
             $ACTION = 2;
             $file_info = get_file_info(COLOR_PAGE);
@@ -471,8 +471,8 @@
     }
 
     // Cambio de tamaño de texto
-    if (defined("SIZE_ID") && SIZE_ID >= 0 && SIZE_ID < count($TEXT_SIZES)) {
-        $_SESSION["TEXT_SIZE_ID"] = SIZE_ID;
+    if (defined("REQ_SIZE_ID") && REQ_SIZE_ID >= 0 && REQ_SIZE_ID < count($TEXT_SIZES)) {
+        $_SESSION["TEXT_SIZE_ID"] = REQ_SIZE_ID;
     }
 
     $COLOR_ID = $_SESSION["COLOR_ID"];
