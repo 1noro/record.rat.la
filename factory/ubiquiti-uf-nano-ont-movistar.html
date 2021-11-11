@@ -1,0 +1,71 @@
+<!-- 202111111644i -->
+<h1>Ubiquiti UFiber Nano G como ONT de Movistar</h1>
+
+<p>
+    Substituir el Router Smart WiFi (HGU) de Movistar usando como ONT el UF-Nano G de Ubiquiti en una instalación de fibra óptica <a href="https://es.wikipedia.org/wiki/Fibra_hasta_la_casa" aria-label="Artículo de la Wikipedia sobre la fibra hasta la casa, o FTTH">FTTH</a>.
+</p>
+
+<p>
+    <img src="img/20211111/portada-recorte-750.jpg" alt="Caja del dispositivo UF-Nano G de Ubiquiti">
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org/",
+            "@type": "ImageObject",
+            "contentUrl": "https://record.rat.la/img/20211111/portada-recorte-750.jpg",
+            "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+            "acquireLicensePage": "https://record.rat.la/index.php?page=faq.html"
+        }
+    </script>
+</p>
+
+<h2>Consideraciones iniciales</h2>
+
+<p>
+    Este tutorial <strong>es la primera parte</strong> de una proyecto de dos fases que cubriré en publicaciones separadas, cuyo propósito en conjunto es despedirme de una vez por todas del Router Smart WiFi de Movistar en toda mi infraestructura de red y substituirlo por el combo UF-Nano G como ONT mas UDM Pro como router. Con esto me refiero a que una vez realizados todos los pasos de esta primera guía <strong>no vas a tener funcionando internet en tu instalación</strong> hasta que completes la próxima guía.
+</p>
+
+<p>
+    Otra cosa a tener en cuenta antes de seguir este tutorial es que, el hecho de substituir el HGU de Movistar por los dispositivos seleccionados <strong>supondrá que prescinda</strong> intencionadamente de los servicios de <strong>teléfono fijo</strong> y <strong>televisión (Movistar Plus)</strong> incluidos actualmente en mi tarifa. Estes problemas pueden ser solventados con equipos y configuraciones adicionales, pero como a mi no me interesan en principio, voy a prescindir de ellos.
+</p>
+
+<p>
+    Las instrucciones siguientes, aunque los ejemplos y las capturas se realicen con el UF-Nano G, pueden ser aplicadas indistintamente para el modelo <strong>UF-LOCO</strong>, las diferencias entre los dispositivos pueden ser consultadas en la <a href="https://www.ui.com/ufiber/ufiber-nano-g/" aria-label="Página en la web de Ubiquiti sobre el UF-Nano donde se muestra una comparativa con el UF-LOCO">página de Ubiquiti</a>.
+</p>
+
+<p>
+    Durante mi investigación previa a la compra de esta ONT, sobre si esta clase de cambios se pueden realizar en una contratación no empresarial de Movistar, <strong>encontré varios casos de usuarios a los que no les funcionaba</strong> por motivos que pueden tener relación con la <a href="https://www.xatakamovil.com/conectividad/que-ont-olt-que-importantes-quieres-cambiar-router-fibra-tu-operador-uno-neutro">compatibilidad con la OLT</a> (equipo que distribuye la conexión por fibra de un área) instalada en su zona. Yo me considero afortunado porque mi experiencia haya resultado tan sencilla como verás a continuación. De todas formas <a href="https://www.maquinasvirtuales.eu/ont-configurar-huawei-hg8010h/">hay diferentes ONTs disponibles</a> en el mercado que pueden substituir a esta, por lo que parece es una mera cuestión de suerte. Juegas con ventaja (al contrario que yo) si tienes de antemano alguna información privilegiada sobre la infraestructura de la zona, en dicho caso <a href="https://help.ui.com/hc/en-us/articles/115009335068">este artículo de Ubiquiti</a> te puede ayudar a seleccionar el perfil de configuración de la ONT o a verificar antes de comprar el dispositivo la compatibilidad con la misma.
+</p>
+
+<h2>Escenario</h2>
+
+<p>
+    Es necesario tener en cuenta que esta guía está orientada a una <strong>instalación de fibra óptica FTTH de Movistar España</strong>, no es válida para una conexión coaxial o de ADSL.
+</p>
+
+<h3>Material necesario</h3>
+
+<ul>
+    <li>El dispositivo UF-Nano o UF-LOCO.</li>
+    <li>El alimentador POE que viene en la caja.</li>
+    <li>Dos cables <a href="https://es.wikipedia.org/wiki/Cable_de_par_trenzado">ethernet de par trenzado</a> de la categoría acorde con la velocidad contratada <em>(si tienes que compra uno yo recomiendo categoria 6)</em>.</li>
+    <li>Un PC para conectar al dispositivo y realizar la configuración.</li>
+</ul>
+
+<h3>Esquema lógico de la red durante la configuración</h3>
+
+<p>
+    img
+</p>
+
+<h2></h2>
+
+<h2>Bibliografía</h2>
+
+<!-- https://www.ui.com/download/ufiber/ufiber-nano-g -->
+
+<ul>
+    <li><a href="https://www.maquinasvirtuales.eu/ubiquiti-ufiber-loco-primera-configuracion-para-movistar-o2/">https://www.maquinasvirtuales.eu/ubiquiti-ufiber-loco-primera-configuracion-para-movistar-o2/</a></li>
+    <li><a href="https://comunidad.movistar.es/t5/Soporte-Fibra-y-ADSL/Confirmo-que-el-ONT-UBIQUITI-Fiber-Nano-G-es-compatible-Movistar/td-p/3437034">https://comunidad.movistar.es/t5/Soporte-Fibra-y-ADSL/Confirmo-que-el-ONT-UBIQUITI-Fiber-Nano-G-es-compatible-Movistar/td-p/3437034</a></li>
+    <li><a href="https://www.youtube.com/watch?v=xI2DGyBWsFs">https://www.youtube.com/watch?v=xI2DGyBWsFs</a></li>
+    <li><a href="https://dl.ui.com/qsg/UF-Nano/UF-Nano_ES.html">https://dl.ui.com/qsg/UF-Nano/UF-Nano_ES.html</a></li>
+</ul>
