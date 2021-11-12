@@ -18,7 +18,7 @@
     </script>
 </p>
 
-<h2>Consideraciones iniciales</h2>
+<h2>Temas a tener en cuenta – README</h2>
 
 <p>
     Este tutorial <strong>es la primera parte</strong> de una proyecto de dos fases que cubriré en publicaciones separadas, cuyo propósito en conjunto es despedirme de una vez por todas del Router Smart WiFi de Movistar en toda mi infraestructura de red y substituirlo por el combo UF-Nano G como ONT mas UDM Pro como router. Con esto me refiero a que una vez realizados todos los pasos de esta primera guía <strong>no vas a tener funcionando internet en tu instalación</strong> hasta que completes la próxima guía.
@@ -49,15 +49,111 @@
     <li>El alimentador POE que viene en la caja.</li>
     <li>Dos cables <a href="https://es.wikipedia.org/wiki/Cable_de_par_trenzado">ethernet de par trenzado</a> de la categoría acorde con la velocidad contratada <em>(si tienes que compra uno yo recomiendo categoria 6)</em>.</li>
     <li>Un PC para conectar al dispositivo y realizar la configuración.</li>
+    <li>La última versión del <em>firmware</em> del dispositivo a configurar, descargado en el PC.
+        <ul>
+            <li><a href="https://www.ui.com/download/ufiber/ufiber-nano-g">Puedes descargarlo para el UF-Nano G aquí.</a></li>
+            <li><a href="https://www.ui.com/download/ufiber/ufiber-loco">Puedes descargarlo para el UF-LOCO aquí.</a></li>
+        </ul>
+    </li>
 </ul>
 
-<h3>Esquema lógico de la red durante la configuración</h3>
+<h3 id="esquema-logico">Esquema lógico de la red durante la configuración</h3>
 
 <p>
-    img
+    {{img}}
 </p>
 
-<h2></h2>
+<h2>Obtener la <em>GPON Password</em> del HGU de Movistar</h2>
+
+<p>
+    Antes de empezar a configurar la ONT debemos estar conectados a nuestro Router HGU de Movistar tal y como el técnico nos ha dejado. Abrimos un navegador web (Firefox, Chrome, etc) e introducimos en la barra de direcciones: <a href="https://192.168.1.1"><code>https://192.168.1.1</code></a> para acceder a la interfaz de configuración.
+</p>
+
+<blockquote>
+    <em>
+        Si el navegador nos advierte de que no es una conexión segura, ignoramos su advertencia y continuamos.
+    </em>
+</blockquote>
+
+<p>
+    Introducimos la contraseña de 8 dígitos que viene en la etiqueta de debajo del router, encima del código de barras.
+</p>
+
+<p>
+    {{img}}
+</p>
+
+<h3>Router MitraStar</h3>
+
+<p>
+    ...
+</p>
+
+<h3>Router Askey</h3>
+
+<p>
+    ...
+</p>
+
+<h2>Acceder al dispositivo</h2>
+
+<p>
+    El primer paso es conectar todo como se muestra en el <a href="#esquema-logico">esquema lógico</a>, conectando mediante los cables ethernet el UFiber-Nano G al PC y a la corriente a través del alimentador POE. Una vez verificado que todo está conectado y encendido debemos configurar en nuestro PC una IP fija en el rango <code>192.168.1.0/24</code>, como por ejemplo <code>192.168.1.2</code>.
+</p>
+
+<blockquote>
+    <em>
+        No voy a detallar el proceso de configuración de la IP fija en el PC porque depende mucho del SO que estes usando, y lo considero un conocimiento básico en la administración de redes. Si tienes dudas <a href="http://somebooks.es/averiguar-o-establecer-la-direccion-ip-en-la-interfaz-grafica-de-ubuntu-20-04-lts/">aquí puedes ver un ejemplo para Ubuntu 20.04</a>.
+    </em>
+</blockquote>
+
+<p>
+    Una vez configurado el PC correctamente abrimos el navegador web y escribimos en la barra de direcciones: <a href="http://192.168.1.1"><code>http://192.168.1.1</code></a>, pulsamos enter y accederemos a la pantalla de <em>login</em> del dispositivo UF-Nano G.
+</p>
+
+<p>
+    {{img}}
+</p>
+
+<p>
+    El usuario y contraseña por defecto es <code>ubnt</code>, como en la mayoría de equipos Ubiquiti. Una vez introducidos accederemos a la interfaz de  configuración. Lo primero que vemos es un <em>dashboard</em> con diferentes métricas.
+</p>
+
+<p>
+    {{img}}
+</p>
+
+<h2>Cambiar contraseña del usuario <code>ubnt</code></h2>
+
+<p>
+    La medida de seguridad mas básica que debemos adoptar, al configurar cualquier nuevo dispositivo en nuestra red, es cambiar la contraseña del usuario administrador a una de nuestra elección. Para ello, una vez accedido a la interfaz de configuración navegamos hasta: <em>SETTINGS</em> (los engranajes del menu izquierdo) &gt; <em>SYSTEM</em> (en las pestañas superiores) &gt; <em>System Accounts</em> &gt; <em>CHANGE PASSWORD</em>, y ahí pulsamos en el botón que pone <em>CHANGE</em>. Seguidamente nos aparecerá una ventana donde podremos introducir la nueva contraseña que nosotros queramos.
+</p>
+
+<p>
+    {{img}}
+</p>
+
+<p>
+    Una vez introducida pulsamos en el botón <em>CHANGE</em>.
+</p>
+
+<h2>Actualizar la versión del <em>firmware</em></h2>
+
+<p>
+    Quiero hacer notar la <strong>importancia de este paso</strong> con mi anecdota personal, la versión que adquirí del UF-Nano G venía con la primer versión del <em>firmware</em> (<code>v1.0.1</code>, de 2017), la cual no nos permite realizar la configuración tal y como se muestra en esta guia, por lo que me vi en la obligación de actualizar. Además de todo eso, suele ser conveniente, por mejorar temas de seguridad, rendimiento o bugs, actualizar siempre tus dispositivos a la última versión.
+</p>
+
+<p>
+    Desde la misma pantalla de configuración en la que cambiamos la contraseña (<em>SYSTEM</em>) en el apartado de <em>Firmware</em> tenemos la opción <em>UPLOAD FIRMWARE</em>, una vez localizada pulsamos sobre el botón <em>UPLOAD</em> y seleccionamos el archivo con extensión <code>.img</code> que descargamos previamente.
+</p>
+
+<p>
+    {{img}}
+</p>
+
+<p>
+    Aceptamos todo y esperamos a aque se instale y el dispositivo se reinicie. Una vez finalizada la actualización tendremos que volver a iniciar sesión como <code>ubnt</code>.
+</p>
 
 <h2>Bibliografía</h2>
 
