@@ -332,7 +332,9 @@
         $number = 1;
         foreach($fileInfoArr as $fileInfo) {
             $page = $fileInfo["filename"];
+            echo "<article>\n";
             print_page(reduce_h1(get_page_content($page)), get_page_info($page));
+            echo "</article>\n";
             if ($number >= PAGES_TO_SHOW) {break;}
             echo "<hr>\n";
             $number++;
