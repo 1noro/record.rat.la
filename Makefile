@@ -8,7 +8,7 @@ build:
 	@docker build -f local.Dockerfile -t $(IMAGE):$(TAG) .
 
 up:
-	@docker run -d --rm -p 8081:80 --name $(CONTAINER) $(IMAGE):$(TAG)
+	@docker run -d --rm -p 8081:80 -v "$(PWD)/public:/var/www/html" --name $(CONTAINER) $(IMAGE):$(TAG)
 	@echo "Running $(CONTAINER) in http://record.localhost:8081"
 
 down:
