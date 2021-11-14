@@ -1,18 +1,28 @@
+IMAGE=record.localhost
+TAG=latest
+CONTAINER=record.localhost-container
+
 default: help
 
 build:
-	@docker build -t record.rat.la .
+	@docker build -f local.Dockerfile -t $(IMAGE):$(TAG) .
 
 up:
-	@docker run -d --rm -p 8081:80 --name my-record.rat.la record.rat.la
-	@echo "Running my-record.rat.la in http://localhost:8081"
+	@docker run -d --rm -p 8081:80 --name $(CONTAINER) $(IMAGE):$(TAG)
+	@echo "Running $(CONTAINER) in http://record.localhost:8081"
 
 down:
-	@docker stop my-record.rat.la
+	@docker stop $(CONTAINER)
 
 clean:
-	@docker stop my-record.rat.la 2> /dev/null
-	@docker rmi record.rat.la
+	@docker stop $(CONTAINER) 2> /dev/null
+	@docker rmi $(IMAGE):$(TAG)
+
+logs:
+	@docker logs -f $(CONTAINER)
+
+bash-in:
+	@docker exec -it $(CONTAINER) sh
 
 help:
 	@echo "make build"
