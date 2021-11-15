@@ -648,7 +648,7 @@
                     <a href="#header">ir arriba</a> / <a href="#main">ir al artículo</a>
                 </p>
             </nav>
-            <nav aria-label="Enlaces de contacto">
+            <nav id="contacto" aria-label="Enlaces de contacto">
                 <p>
                     <a href="https://github.com/1noro">github</a> / 
                     <a href="https://gitlab.com/1noro">gitlab</a> / 

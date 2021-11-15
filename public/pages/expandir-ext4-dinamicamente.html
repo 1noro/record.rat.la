@@ -1,0 +1,40 @@
+<!-- 202111142116i -->
+<h1>Expandir una partición EXT4 de forma dinámica</h1>
+
+<p>
+    El sistema de archivos EXT4 te permite redimensionar las particiones de un disco duro sin tener que apagar el PC ni borrar tus datos. En caso de no utilizar el 100% de tu disco duro, o si estas gestionando discos virtuales, estes sencillos comandos te pueden facilitar la vida sin tener que volver a formatear el disco.
+</p>
+
+<blockquote>
+    <em>
+        Antes de realizar cualquier modificacion en el disco es necesario señalar la importancia de tener un backup reciente a mano por si metemos la pata.
+    </em>
+</blockquote>
+
+<h2>Aumentar partición hasta un tamaño exacto</h2>
+
+<p>
+    Suponiendo que la partición que quieres expandir es <code>/dev/sdb1</code> (<strong>la única del disco</strong>), con un tamaño inicial de <strong>200MB</strong>, y que quieres que su tamaño sea de <strong>400MB</strong>, podemos ejecutar los siguientes comandos:
+</p>
+
+<pre>
+sudo parted /dev/sdb resizepart 1 400M
+sudo resize2fs /dev/sdb1
+</pre>
+
+<h2>Aumentar partición hasta ocupar la totalidad del disco</h2>
+
+<p>
+    Suponiendo que la partición que quieres expandir es <code>/dev/sdb1</code> (<strong>la única del disco</strong>), cuyo tamano es <strong>menor a la totalidad del disco</strong>, podemos ejecutar los siguientes comandos para que lo ocupe todo:
+</p>
+
+<pre>
+sudo parted /dev/sdb resizepart 1 100%
+sudo resize2fs /dev/sdb1
+</pre>
+
+<blockquote>
+    Cualquier mejora o precaución que veais necesaria añadir a estos comandos es bienvenida, en tal caso solo debeis hacermelo saber a través del <a href="#contacto">medio que prefirais</a>.
+</blockquote>
+
+<!-- https://gist.github.com/1noro/e9718c6f4b0d2b234f09a0567f375bb3 -->
