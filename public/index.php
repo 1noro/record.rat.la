@@ -485,6 +485,7 @@
         <meta property="og:site_name" content="record.rat.la" />
         <meta property="og:image" content="<?= $URL . '/' . $PAGE_IMG ?>" />
         <meta property="article:author" content="idex.php?page=inoro.html" />
+        <!-- hay que habilitarlo -->
         <!-- <meta property="article:published_time" content="2020-09-21T00:04:15+00:00" /> -->
         <!-- <meta property="article:modified_time" content="2020-09-21T07:23:04+00:00" /> -->
         <meta name="twitter:card" content="summary_large_image" />
@@ -494,6 +495,7 @@
         <meta name="robots" content="index, follow" />
         <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
         <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+        <!-- hay que hacer que los parametros del color y de los tamaños no se agreguen a esta url -->
         <link rel="canonical" href="<?= $FULL_URL ?>" />
 
         <!-- Cosas de la NSA (en modo prueba) -->
