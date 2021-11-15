@@ -13,6 +13,57 @@
         </image>
 
 <item>
+    <title>Expandir una partición EXT4 de forma dinámica</title>
+    <guid>https://record.rat.la/index.php?page=expandir-ext4-dinamicamente.html</guid>
+    <link>https://record.rat.la/index.php?page=expandir-ext4-dinamicamente.html</link>
+    <!--<author>Inoro</author>-->
+    <pubDate>Sun, 14 Nov 2021 21:16:00 +0100</pubDate>
+    <description>
+<![CDATA[<!-- 202111142116i -->
+<h1>Expandir una partición EXT4 de forma dinámica</h1>
+
+<p>
+    El sistema de archivos EXT4 te permite redimensionar las particiones de un disco duro sin tener que apagar el PC ni borrar tus datos. En caso de no utilizar el 100% de tu disco duro, o si estas gestionando discos virtuales, estes sencillos comandos te pueden facilitar la vida sin tener que volver a formatear el disco.
+</p>
+
+<blockquote>
+    <em>
+        Antes de realizar cualquier modificacion en el disco es necesario señalar la importancia de tener un backup reciente a mano por si metemos la pata.
+    </em>
+</blockquote>
+
+<h2>Aumentar partición hasta un tamaño exacto</h2>
+
+<p>
+    Suponiendo que la partición que quieres expandir es <code>/dev/sdb1</code> (<strong>la única del disco</strong>), con un tamaño inicial de <strong>200MB</strong>, y que quieres que su tamaño sea de <strong>400MB</strong>, podemos ejecutar los siguientes comandos:
+</p>
+
+<pre>
+sudo parted /dev/sdb resizepart 1 400M
+sudo resize2fs /dev/sdb1
+</pre>
+
+<h2>Aumentar partición hasta ocupar la totalidad del disco</h2>
+
+<p>
+    Suponiendo que la partición que quieres expandir es <code>/dev/sdb1</code> (<strong>la única del disco</strong>), cuyo tamano es <strong>menor a la totalidad del disco</strong>, podemos ejecutar los siguientes comandos para que lo ocupe todo:
+</p>
+
+<pre>
+sudo parted /dev/sdb resizepart 1 100%
+sudo resize2fs /dev/sdb1
+</pre>
+
+<blockquote>
+    Cualquier mejora o precaución que veais necesaria añadir a estos comandos es bienvenida, en tal caso solo debeis hacermelo saber a través del <a href="#contacto">medio que prefirais</a>.
+</blockquote>
+
+<!-- https://gist.github.com/1noro/e9718c6f4b0d2b234f09a0567f375bb3 -->
+]]>
+    </description>
+</item>
+
+<item>
     <title>Häxan: La brujería a través de los tiempos</title>
     <guid>https://record.rat.la/index.php?page=haxan-brujeria-a-traves-del-tiempo.html</guid>
     <link>https://record.rat.la/index.php?page=haxan-brujeria-a-traves-del-tiempo.html</link>
@@ -27,7 +78,7 @@
 </p>
 
 <p>
-    <img src="https://record.rat.la/img/20210727/haxan-750.jpg" alt="Escena de un pasaje de la película.">
+    <img src="https://record.rat.la/img/20210727/haxan-750.jpg" alt="Recreación de una ensoñación en un pasaje del film.">
 </p>
 
 <p>
@@ -72,7 +123,7 @@
 </p>
 
 <p>
-    <img src="https://record.rat.la/img/20210724/yojimbo-750.jpg" alt="Ikio Sawamura y Toshiro Mifune en una de las escenas iniciales del film.">
+    <img src="https://record.rat.la/img/20210724/yojimbo-750.jpg" alt="Ikio Sawamura y Toshiro Mifune.">
 </p>
 
 <p>
@@ -86,7 +137,7 @@
     Posiblemente el germen que dió lugar al <em>spaghetti western</em> debido 
     a que Sergio Leone, precursor del género, plagió el argumento de esta 
     película (cambiando la ambientación) en 
-    <strong>Por un puñado de dólares</strong> (1964). El alegó que lo haciá a 
+    <strong>Por un puñado de dólares</strong> (1964). El alegó que lo hacía a 
     modo de homenaje a Akira Kurosawa, al cuál admiraba mucho, pero el juez 
     dictaminó que no cumplió con el <em>copyright</em> y eso le costó los 
     derechos de distribución en parte de ásia y el 15% de los beneficios de 
@@ -98,8 +149,8 @@
     En mi opinión, todas las versiones de este argumento son de mi agrado y 
     devoción, pero esta destaca por más motivos que la anécdota. Me encanta 
     la fotografía, y, a pesar de no tener ni idea de imagen o color, creo que 
-    este blanco y negro tienen algo especial (si alguien sabe lo que es que me lo cuente). 
-    También soy muy fan de Toshiro Mifune, y su forma de actuar me 
+    este blanco y negro tienen algo especial (si alguien sabe lo que es que me 
+    lo cuente). También soy muy fan de Toshiro Mifune, y su forma de actuar me 
     fascina. Creo que en esta película es una de estas donde se ve al actor en 
     su rol mas icónico, haciendo de samurái solitario, justiciero y 
     carismático. Una de esas imágenes que quedarán para siempre grabadas en la 
@@ -130,63 +181,63 @@
 </p>
 
 <p>
-    Me gusta escribir los pocos sueños que recuerdo en una especie de diario, 
-    y como este me resultó especialmente teatral me parece lo 
+    Me gusta escribir los pocos sueños que recuerdo en una especie de diario,
+    y como este me resultó especialmente teatral me parece lo
     suficientemente interesante como para presentarlo aquí.
 </p>
 
 <blockquote>
-    Debo hacer notar que al comienzo de la transcripción hay una nota que 
-    indica que la narración está desordenada, sea lo que sea lo que quiera 
+    Debo hacer notar que al comienzo de la transcripción hay una nota que
+    indica que la narración está desordenada, sea lo que sea lo que quiera
     decir eso.
 </blockquote>
 
 <p>
-    &laquo;Se presentan ante mi un conjunto de cajas negras. Unas manos sin 
-    rostro definido me las van mostrando una por una. Yo permanezco inmóvil, 
-    sentado frente la misteriosa figura que me presenta los macabros objetos. 
-    Cuando acaba de enseñarme todas las cajas por fuera se dispone a abrir la 
+    &laquo;Se presentan ante mi un conjunto de cajas negras. Unas manos sin
+    rostro definido me las van mostrando una por una. Yo permanezco inmóvil,
+    sentado frente la misteriosa figura que me presenta los macabros objetos.
+    Cuando acaba de enseñarme todas las cajas por fuera se dispone a abrir la
     primera.
 </p>
 
 <p>
-    El interior de las cajas es de una tela blanca y acolchada, como si de una 
-    cama se tratase. A medida que se va abriendo, observo con auténtico pavor 
-    su horripilante contenido. En su interior veo un conjunto de negras arañas 
-    de diferentes tamaños que se mantienen inmóviles, posadas sobre la sedosa 
-    tela blanca. Una vez abierta por completo, la figura que me muestra la caja 
-    va acercándola hacia mi lentamente, y yo empiezo a sudar frio. Pero da 
-    igual el enorme horror que me invade, no me puedo mover, algo me retiene 
-    en el asiento a pesar de no ver ni notar ninguna sujeción física —estoy 
+    El interior de las cajas es de una tela blanca y acolchada, como si de una
+    cama se tratase. A medida que se va abriendo, observo con auténtico pavor
+    su horripilante contenido. En su interior veo un conjunto de negras arañas
+    de diferentes tamaños que se mantienen inmóviles, posadas sobre la sedosa
+    tela blanca. Una vez abierta por completo, la figura que me muestra la caja
+    va acercándola hacia mi lentamente, y yo empiezo a sudar frío. Pero da
+    igual el enorme horror que me invade, no me puedo mover, algo me retiene
+    en el asiento a pesar de no ver ni notar ninguna sujeción física —estoy
     petrificado por el miedo—.
 </p>
 
 <p>
-    Cuando la caja ya está lo suficientemente cerca de mi con su espantoso 
-    contenido a la vista, las arañas empiezan a reanimarse lentamente, huyendo 
-    hacia los bordes. Y antes de que las mas espabiladas intenten saltar fuera 
-    del receptáculo que las mantenía en pausa, la figura con rostro difuso 
-    cierra la tapa de golpe ante mis narices y susurra 
-    —Estas cajas son antiguas, muy antiguas, tan antiguas que los humanos 
-    habían olvidado su existencia. Su contenido es tan antiguo como las cajas, 
+    Cuando la caja ya está lo suficientemente cerca de mi con su espantoso
+    contenido a la vista, las arañas empiezan a reanimarse lentamente, huyendo
+    hacia los bordes. Y antes de que las más espabiladas intenten saltar fuera
+    del receptáculo que las mantenía en pausa, la figura con rostro difuso
+    cierra la tapa de golpe ante mis narices y susurra
+    —Estas cajas son antiguas, muy antiguas, tan antiguas que los humanos
+    habían olvidado su existencia. Su contenido es tan antiguo como las cajas,
     pero ya ves, a pesar de lo increíble que parezca, ellas siguen vivas—.
 </p>
 
 <p>
-    En ese instante la figura abre una segunda, y el proceso se repite 
-    exactaménte como el anterior, a excepción de mi miedo, el cual aumentaba 
-    con cada caja abierta. El proceso se repitió como el primero hasta llegar 
-    a la última, cuando —justo antes de cerrarse— una de las arañas 
-    consigue escabullirse por el borde de de la caja y cae sobre mis 
+    En ese instante la figura abre una segunda, y el proceso se repite
+    exactamente como el anterior, a excepción de mi miedo, el cual aumentaba
+    con cada caja abierta. El proceso se repitió como el primero hasta llegar
+    a la última, cuando —justo antes de cerrarse— una de las arañas
+    consigue escabullirse por el borde de de la caja y cae sobre mis
     piernas.&raquo;
-    
+   
 </p>
 
 <p>
     En ese momento mi terror es tal que no puedo soportarlo y me despierto.
-    Me gusta pensar que si hubiera conseguido seguir durmiendo me hubiera 
-    desmallado en sueños. O ¿quién sabe? igual la esotérica araña causaba en 
-    mí una reacción digna de un relato de H.P. Lovecraft, nunca lo sabremos, y 
+    Me gusta pensar que si hubiera conseguido seguir durmiendo me hubiera
+    desmayado en sueños. O ¿quién sabe? igual la esotérica araña causaba en
+    mí una reacción digna de un relato de H.P. Lovecraft, nunca lo sabremos, y
     prefiero no repetirlo.
 </p>
 
@@ -207,7 +258,7 @@
 <![CDATA[<!-- 202104132159i -->
 <h1><em>Git quick reference</em></h1>
 
-<p>Listado de los comandos mas recurrentes en el día a día con <em>git</em>.</p>
+<p>Listado de los comandos más recurrentes en el día a día con <em>git</em>.</p>
 
 <h2>Elementos a tener en cuenta antes de leer los comandos</h2>
 
@@ -283,7 +334,7 @@ git commit -m "&lt;commit_message&gt;"
 git push
 </pre>
 
-<p>Equivalente mas detallada del comando anterior.</p>
+<p>Equivalente más detallada del comando anterior.</p>
 
 <pre>
 git push origin &lt;branch&gt;
@@ -365,9 +416,9 @@ git push origin --delete &lt;branch_name&gt;
 </p>
 
 <p>
-    Me compré una <strong>Nvidia GTX 1070</strong>, por lo que orientaré este 
+    Me compré una <strong>Nvidia GTX 1070</strong>, por lo que enfocaré este 
     artículo hacia mi modelo. Por suerte, mi configuración habitual es bastante 
-    estándar, por lo que puede que le sirva a mas de uno. Uso el núcleo 
+    estándar, por lo que puede que le sirva a más de uno. Uso el núcleo 
     de <strong>Linux</strong> por defecto y <strong>Gnome</strong> sobre 
     <strong>Xorg</strong> en el escritorio, como buen amante del 
     <em>default</em> que soy. En 
@@ -394,7 +445,9 @@ git push origin --delete &lt;branch_name&gt;
 </p>
 
 <p>
-    Editamos el archivo <samp>/etc/mkinitcpio.conf</samp> y eliminamos del array <code>MODULES</code> el módulo <code>i915</code>. Como yo no tenía ningún modulo mas, previamente mi array quedaría de la siguiente manera.
+    Editamos el archivo <samp>/etc/mkinitcpio.conf</samp> y eliminamos del 
+    array <code>MODULES</code> el módulo <code>i915</code>. Como yo no tenía 
+    ningún modulo más, previamente mi array quedaría de la siguiente manera.
 </p>
 
 <pre>
@@ -482,7 +535,9 @@ sudo nvidia-xconfig
 </pre>
 
 <p>
-    Revisamos <samp>/etc/xorg.conf</samp> para ver si nos convencen los parámetros auto-generados, y <strong>comentamos</strong> la siguiente línea si está presente.
+    Revisamos <samp>/etc/xorg.conf</samp> para ver si nos convencen los 
+    parámetros auto-generados, y <strong>comentamos</strong> la siguiente 
+    línea si está presente.
 </p>
 
 <pre>
@@ -490,7 +545,8 @@ sudo nvidia-xconfig
 </pre>
 
 <p>
-    Agregamos los siguientes módulos al kernel editando el array <code>MODULES</code> del archivo <samp>/etc/mkinitcpio.conf</samp>.
+    Agregamos los siguientes módulos al kernel editando el array 
+    <code>MODULES</code> del archivo <samp>/etc/mkinitcpio.conf</samp>.
 </p>
 
 <pre>
@@ -532,7 +588,8 @@ sudo grub-mkconfig -o /boot/grub/grub.cfg
     Ahora solo queda <u>reiniciar</u> la máquina para que se aplique la nueva 
     configuración. Recuerda cambiar el cable de la pantalla y conectarlo a la 
     gráfica.
-</p>]]>
+</p>
+]]>
     </description>
 </item>
 
@@ -547,8 +604,8 @@ sudo grub-mkconfig -o /boot/grub/grub.cfg
 <h1>Software que utilizo habitualmente</h1>
 
 <p>
-    Escribo esto a modo de reflexión sobre que programas realmente utilizo, 
-    cuales me hacen ser más productivo en mi día a día, y si debería obviar 
+    Escribo esto a modo de reflexión sobre que programas realmente utilizo,
+    cuales me hacen ser más productivo en mi día a día, y si debería obviar
     alguno en futuras instalaciones.
 </p>
 
@@ -558,20 +615,20 @@ sudo grub-mkconfig -o /boot/grub/grub.cfg
 
 <ul>
     <li>
-        <a href="https://archlinux.org/download/"><strong>Arch Linux</strong></a> es mi 
+        <a href="https://archlinux.org/download/"><strong>Arch Linux</strong></a> es mi
         distribución principal actualmente en mi PC y portátil.
     </li>
     <li>
-        <a href="https://www.debian.org/index.es.html"><strong>Debian</strong></a> lo 
-        utilizo en mis servidores, en mi opinión es la mejor opción para un 
+        <a href="https://www.debian.org/index.es.html"><strong>Debian</strong></a> lo
+        utilizo en mis servidores, en mi opinión es la mejor opción para un
         servidor.
     </li>
     <li>
-        <a href="https://ubuntu.com/download/server"><strong>Ubuntu Server LTS</strong></a> 
-        lo utilizo también en mis servidores cuando considero que Debian se 
-        queda un poco anticuado, o si voy a probar una aplicación que está mas 
-        orientada a esta distribución. No suelo tener muchas instalaciones con 
-        este SO, porque muchas veces solo tengo que esperar a la siguiente 
+        <a href="https://ubuntu.com/download/server"><strong>Ubuntu Server LTS</strong></a>
+        lo utilizo también en mis servidores cuando considero que Debian se
+        queda un poco anticuado, o si voy a probar una aplicación que está más
+        orientada a esta distribución. No suelo tener muchas instalaciones con
+        este SO, porque muchas veces solo tengo que esperar a la siguiente
         versión de Debian.
     </li>
 </ul>
@@ -579,83 +636,90 @@ sudo grub-mkconfig -o /boot/grub/grub.cfg
 <h3>Window Manager/Desktop Environment</h3>
 
 <p>
-    <strong>gnome-shell</strong> es el entorno de escritorio que mas me gusta 
-    y estoy muy acostumbrado a su <em>workflow</em> (sobre todo en la versión 
-    40). De todas formas estoy muy interesado en probar un <em>tiling window 
-    manager</em> estilo <strong>dwm</strong> o <strong>i3</strong> en el que 
+    <strong>gnome-shell</strong> es el entorno de escritorio que más me gusta
+    y estoy muy acostumbrado a su <em>workflow</em> (sobre todo en la versión
+    40). De todas formas estoy muy interesado en probar un <em>tiling window
+    manager</em> estilo <strong>dwm</strong> o <strong>i3</strong> en el que
     sea capaz de recordar todos sus comandos.
 </p>
 
 <h3>Terminal</h3>
 
 <p>
-    <strong>gnome-terminal</strong>, la uso porque es la que viene por defecto con 
-    <strong>gnome-shell</strong> pero puede que cambie en algún momento. Busco algo 
-    mas simple, como <strong>st</strong> (simple terminal) de 
-    <a href="https://st.suckless.org/">suckless.org</a>, pero aún debería 
-    probarla por algún tiempo mas para decidirme.
+    <strong>gnome-terminal</strong>, la uso porque es la que viene por defecto
+    con <strong>gnome-shell</strong> pero puede que cambie en algún momento.
+    Busco algo más simple, como <strong>st</strong> (simple terminal) de
+    <a href="https://st.suckless.org/">suckless.org</a>, pero aún debería
+    probarla por algún tiempo más para decidirme.
 </p>
 
 <h3>Shell</h3>
 
 <p>
-    <strong>bash</strong>, soy una persona a la que le gusta el default, por lo que 
-    aún no veo necesario mudarme a <strong>zsh</strong>, a pesar de que promete mucha 
-    mas flexibilidad.
+    <strong>bash</strong>, soy una persona a la que le gusta el default, por
+    lo que aún no veo necesario mudarme a <strong>zsh</strong>, a pesar de
+    que promete mucha más flexibilidad.
 </p>
 
 <h3>Editores de texto y entornos de programación</h3>
 
 <p>
-    Esta sección no solo es confusa, sinó que en realidad yo me encuentro muy 
-    confuso al respecto. Sigo buscando el editor de texto definitivo, he 
-    probado muchos, pero no paro de cambiar. Me gustaría proba <strong>vim</strong> pero 
-    creo que aún no estoy preparado.
+    Esta sección no solo es confusa, sinó que en realidad yo me encuentro muy
+    confuso al respecto. Sigo buscando el editor de texto definitivo, he
+    probado muchos, pero no dejo de cambiar. Me gustaría proba
+    <strong>vim</strong> pero creo que aún no estoy preparado.
 </p>
 
 <ul>
     <li>
-        <strong>Visual Studio Code</strong> es actualmente mi entorno de desarrollo por 
-        defecto. Es rápido y muy extensible gracias a todos los plugins que se 
-        le pueden instalar. Empezé usando <strong>atom</strong> pero acabé canasdome de lo mal que funciona su cliente de <strong>git</strong>
+        <strong>Vim</strong>, resulta que actualmente estoy intentando
+        utilizarlo como único editor de texto para todo mi <em>workflow</em>,
+        que últimamente se traduce en <em>Markdown</em>, <em>BASH</em>,
+        <em>Docker</em>, <em>YAML</em> y algún que otro texto plano.
     </li>
     <li>
-        <strong>geany</strong> para editar texto plano sin necesidad de plugins. Aunque cada vez lo uso menos, y para una función tan simple como esta acabo usando <strong>nano</strong>.
+        <strong>Visual Studio Code</strong> era, hasta hace poco tiempo, mi
+        entorno de desarrollo por defecto. Es rápido y muy extensible gracias
+        a todos los plugins que se le pueden instalar. Empecé usando
+        <strong>atom</strong> pero acabé cansándome de lo mal que funciona su
+        cliente de <strong>git</strong>. A pesar de todo, hoy en día utilizo
+        más <strong>git</strong> desde la terminal que desde <em>GUI</em>.
     </li>
 </ul>
 
 <h3>Navegador web</h3>
 
 <p>
-    Esto es un tema complicado. Como persona que programa páginas web de vez en cuando, normalmente 
-    tengo <strong>Chromium</strong> y <strong>Firefox</strong> instalados, para 
-    poder ver las dos caras de la moneda.
+    Esto es un tema complicado. Como persona que programa páginas web de vez
+    en cuando, normalmente tengo <strong>Chromium</strong> y
+    <strong>Firefox</strong> instalados, para poder ver las dos caras de la
+    moneda.
 </p>
 
 <p>
-    Creo que la mejor opción actualmente es <strong>Firefox</strong> en 
-    conjunto con las extensiones 
-    <a href="https://github.com/gorhill/uBlock">uBlock Origin</a>, 
+    Creo que la mejor opción actualmente es <strong>Firefox</strong> en
+    conjunto con las extensiones
+    <a href="https://github.com/gorhill/uBlock">uBlock Origin</a>,
     <a href="https://www.eff.org/es/https-everywhere">HTTPS Everywhere</a> y
-    <a href="https://addons.mozilla.org/es/firefox/addon/strict-pop-up-blocker/">Strict Pop-up Blocker</a>. 
-    Es cierto que en estos días parece que no es tán rápido como 
-    <strong>Chrome</strong> y derivados, pero ya sabemos que estas estadísticas 
-    suelen variar mucho en cada versíon nueva que sale. Además usar 
-    <strong>Firefox</strong>, en mi caso, es mas una elección que yo hago 
+    <a href="https://addons.mozilla.org/es/firefox/addon/strict-pop-up-blocker/">Strict Pop-up Blocker</a>.
+    Es cierto que en estos días parece que no es tan rápido como
+    <strong>Chrome</strong> y derivados, pero ya sabemos que dichas estadísticas
+    suelen variar mucho en cada versión nueva que sale. Además usar
+    <strong>Firefox</strong>, en mi caso, es más una elección que yo hago
     poniendo la privacidad por delante de la velocidad de navegación.
 </p>
 
 <p>
-    A pesar de todo, he de confesar que, a raíz del dilema privacidad vs 
-    velocidad de navegación, he empezado a probar el navegador 
-    <a href="https://brave.com/es/">Brave</a> (sin ninguna extensión) como 
-    navegador principal, en mi movil primero, puesto que 
-    <strong>Firefox</strong> (a pesar de tener un diseño excelente) es cada 
-    día mas lento, y posteriormente en mi PC, donde más tiempo paso tódos los 
-    días. Aún no puedo sacar ninguna conclusión definitiva de esta experiencia, 
-    y sigo estando a favor de <strong>Firefox</strong>. Sin embargo, si consigo 
-    pasar un par de meses utilizando <strong>Brave</strong> y no encuentro 
-    ningún impedimento puede que termine mudándome. En tal caso supongo que lo 
+    A pesar de todo, he de confesar que, a raíz del dilema privacidad vs
+    velocidad de navegación, he empezado a probar el navegador
+    <a href="https://brave.com/es/">Brave</a> (sin ninguna extensión) como
+    navegador principal, en mi movil primero, puesto que
+    <strong>Firefox</strong> (a pesar de tener un diseño excelente) es cada
+    día más lento, y posteriormente en mi PC, donde más tiempo paso todos los
+    días. Aún no puedo sacar ninguna conclusión definitiva de esta experiencia,
+    y sigo estando a favor de <strong>Firefox</strong>. Sin embargo, si consigo
+    pasar un par de meses utilizando <strong>Brave</strong> y no encuentro
+    ningún impedimento puede que termine mudándome. En tal caso supongo que lo
     anunciaré en un futuro artículo.
 </p>
 
@@ -664,14 +728,15 @@ sudo grub-mkconfig -o /boot/grub/grub.cfg
 <h3>Mensajería instantánea</h3>
 
 <p>
-    <strong>Telegram</strong> y <strong>Signal</strong>, se que 
-    <strong>Telegram</strong> no es tan seguro como <strong>Signal</strong> y 
-    que tiene un montón de carencias a nivel de seguridad. Pero ya me ha 
-    costado demasiado mover a todo mi círculo desde <strong>WhatsApp</strong> 
-    hasta <strong>Telegram</strong> como para ahora decirles que tienen que 
-    usar Signal para hablar conmigo. De todas formas, actualmente, ya lo 
+    <strong>Telegram</strong> y <strong>Signal</strong>, se que
+    <strong>Telegram</strong> no es tan seguro como <strong>Signal</strong> y
+    que tiene un montón de carencias a nivel de seguridad. Pero ya me ha
+    costado demasiado mover a todo mi círculo desde <strong>WhatsApp</strong>
+    hasta <strong>Telegram</strong> como para ahora decirles que tienen que
+    usar Signal para hablar conmigo. De todas formas, actualmente, ya lo
     lo estoy intentando a paulatinamente.
-</p>]]>
+</p>
+]]>
     </description>
 </item>
 
@@ -686,7 +751,7 @@ sudo grub-mkconfig -o /boot/grub/grub.cfg
 <h1>Gitlab con NGINX reverse proxy</h1>
 
 <p>
-    Voy a documentar el proceso de instalación de Gitlab en una máquina virtual 
+    Voy a documentar el proceso de instalación de Gitlab en una máquina virtual
     detrás de un NGINX reverse proxy.
 </p>
 
@@ -701,25 +766,34 @@ sudo grub-mkconfig -o /boot/grub/grub.cfg
 <ul>
     <li>Certificado SSL con Let's Encrypt y certbot.</li>
     <li>
-        Escuchar en los puertos 80 (HTTP) y 443 (HTTPs) con una redirección 
+        Escuchar en los puertos 80 (HTTP) y 443 (HTTPs) con una redirección
         automática desde el 80 al 443.
     </li>
     <li>
-        Acceso mediante SSH con clave publica y protegido co fail2ban.
+        Acceso mediante SSH con clave pública y protegido con fail2ban.
     </li>
 </ul>
 
 <h2>Configuración del router</h2>
 
 <p>
-    En la sección de redirección de puertos (port forwarding) de nuestro router 
+    En la sección de redirección de puertos (port forwarding) de nuestro router
     creamos dos registros nuevos sobre el protocolo TCP.
 </p>
 
 <ul>
-    <li>El puerto 80 del router apuntará al puerto 80 de la máquina de NGINX (192.168.1.105), para las conexiones HTTP.</li>
-    <li>El puerto 443 del router apuntará al puerto 443 de la máquina de NGINX (192.168.1.105), para las conexiones HTTPs.</li>
-    <li>El puerto 22 del router apuntará al puerto 22 de la máquina de Gitlab (192.168.1.108), para las conexiones SSH.</li>
+    <li>
+        El puerto 80 del router apuntará al puerto 80 de la máquina de NGINX 
+        (192.168.1.105), para las conexiones HTTP.
+    </li>
+    <li>
+        El puerto 443 del router apuntará al puerto 443 de la máquina de NGINX 
+        (192.168.1.105), para las conexiones HTTPs.
+    </li>
+    <li>
+        El puerto 22 del router apuntará al puerto 22 de la máquina de Gitlab 
+        (192.168.1.108), para las conexiones SSH.
+    </li>
 </ul>
 
 <h2>Configuración de NGINX</h2>
@@ -727,7 +801,8 @@ sudo grub-mkconfig -o /boot/grub/grub.cfg
 <p>Nos situamos en la máquina que va a ejercer de reverse proxy con NGINX.</p>
 
 <p>
-    Creamos el archivo <samp>/etc/nginx/sites-available/git.example.com.conf</samp>
+    Creamos el archivo 
+    <samp>/etc/nginx/sites-available/git.example.com.conf</samp>
 </p>
 
 <pre>
@@ -756,7 +831,7 @@ ln -s /etc/nginx/sites-available/git.example.com.conf /etc/nginx/sites-enabled/
 </pre>
 
 <p>
-    Testeamos la sintaxis de la configuración de NGINX, y si todo va bien, 
+    Testeamos la sintaxis de la configuración de NGINX, y si todo va bien,
     recargamos la configuración.
 </p>
 
@@ -766,7 +841,8 @@ systemctl reload nginx
 </pre>
 
 <p>
-    Con el Virtual Host correctamente configurado en NGINX, ejecutamos el certbot.
+    Con el Virtual Host correctamente configurado en NGINX, ejecutamos el 
+    certbot.
 </p>
 
 <pre>
@@ -774,12 +850,12 @@ certbot --nginx -d git.example.com
 </pre>
 
 <blockquote>
-    Durante el proceso de creación del certificado indicamos que queremos 
+    Durante el proceso de creación del certificado indicamos que queremos
     redireccionar el tráfico HTTP al HTTPs.
 </blockquote>
 
 <p>
-    Archivo <samp>/etc/nginx/sites-available/git.example.com.conf</samp> 
+    Archivo <samp>/etc/nginx/sites-available/git.example.com.conf</samp>
     después de ejecutar el certbot.
 </p>
 
@@ -832,7 +908,7 @@ ssh-copy-id -i ~/.ssh/id_rsa.pub user@192.168.1.108
 <p>Nos situamos en la máquina que va a ejecutar Gitlab (192.168.1.108).</p>
 
 <p>
-    Editamos el archivo <samp>/etc/ssh/sshd_config</samp> y nos aseguramos de 
+    Editamos el archivo <samp>/etc/ssh/sshd_config</samp> y nos aseguramos de
     que las siguientes lineas tengan los valores mostrados.
 </p>
 
@@ -841,7 +917,7 @@ UsePAM yes
 PasswordAuthentication no
 </pre>
 
-<p>Y agregamos la siguiente linea al final.</p>
+<p>Y agregamos la siguiente línea al final.</p>
 
 <pre>
 PermitRootLogin no
@@ -862,7 +938,10 @@ sudo apt update
 sudo apt install fail2ban
 </pre>
 
-<p>Creamos el archivo <samp>/etc/fail2ban/jail.local</samp> y agregamos las siguientes lineas.</p>
+<p>
+    Creamos el archivo <samp>/etc/fail2ban/jail.local</samp> y agregamos las 
+    siguientes lineas.
+</p>
 
 <pre>
 [DEFAULT]
@@ -901,11 +980,13 @@ sudo EXTERNAL_URL="http://git.example.com" apt-get install gitlab-ce
 </pre>
 
 <blockquote>
-    Nótese que el parámetro <samp>EXTERNAL_URL</samp> se define con <samp>http</samp> y no con <samp>https</samp>.
+    Nótese que el parámetro <samp>EXTERNAL_URL</samp> se define con 
+    <samp>http</samp> y no con <samp>https</samp>.
 </blockquote>
 
 <p>
-    Editamos el archivo <samp>/etc/gitlab/gitlab.rb</samp> y agregamos las siguientes lineas al final.
+    Editamos el archivo <samp>/etc/gitlab/gitlab.rb</samp> y agregamos las 
+    siguientes lineas al final.
 </p>
 
 <pre>
@@ -922,7 +1003,7 @@ nginx['real_ip_recursive'] = 'on'
 </pre>
 
 <p>
-    Reconfiguramos Gitlab.
+    Re-configuramos Gitlab.
 </p>
 
 <pre>
@@ -930,12 +1011,12 @@ sudo gitlab-ctl reconfigure
 </pre>
 
 <blockquote>
-    Hay que espera un rato a que se reconfigure, incluso después de que el 
+    Hay que espera un rato a que se reconfigure, incluso después de que el
     comando haya finalizado.
 </blockquote>
 
 <p>
-    Una vez acabado este proceso ya podremos acceder a nuestro Gitlab a través 
+    Una vez acabado este proceso ya podremos acceder a nuestro Gitlab a través
     de HTTPs para definir la contraseña del usuario <samp>root</samp>.
 </p>
 
@@ -945,7 +1026,8 @@ sudo gitlab-ctl reconfigure
     <li><a href="https://linuxize.com/post/install-configure-fail2ban-on-ubuntu-20-04/">How to Install and Configure Fail2ban on Ubuntu 20.04</a></li>
     <li><a href="https://about.gitlab.com/install/#ubuntu">Gitlab Official Linux package (recommended installation)</a></li>
     <li><a href="https://docs.gitlab.com/omnibus/settings/nginx.html">Gitlab NGINX settings</a></li>
-</ul>]]>
+</ul>
+]]>
     </description>
 </item>
 
@@ -1174,7 +1256,8 @@ print(lista)
 <h1>La forma más rápida de hacer <samp>git push</samp></h1>
 
 <p>
-    Estos tres comandos, que se deben copiar y pegar en bloque, son la forma mas sencilla para subir tus cambios de un repositorio a la nube.
+    Estos tres comandos, que se deben copiar y pegar en bloque, son la forma 
+    más sencilla para subir tus cambios de un repositorio a la nube.
 </p>
 
 <h2>Requisitos previos a la ejecución</h2>
@@ -1184,14 +1267,21 @@ print(lista)
     <li>Situar la terminal en la carpeta raíz del repositorio (la primera).</li>
 </ul>
 
-<p>Para configurar el usuario y el correo electrónico se deben ejecutar los siguientes comandos:</p>
+<p>
+    Para configurar el usuario y el correo electrónico se deben ejecutar los 
+    siguientes comandos:
+</p>
 
 <pre>
 git config --global user.name "nombre"
 git config --global user.email "email@example.com"
 </pre>
 
-<p>Una vez se hayan cumplido los requisitos previos, solo hay que copiar <strong>todos</strong> los comandos que vienen a continuación y los pegamos en la terminal.</p>
+<p>
+    Una vez se hayan cumplido los requisitos previos, solo hay que copiar 
+    <strong>todos</strong> los comandos que vienen a continuación y los 
+    pegamos en la terminal.
+</p>
 
 <pre>
 git add . \
@@ -1200,78 +1290,11 @@ git push
 </pre>
 
 <blockquote>
-    Si tenemos configurado el <em>GIT</em> por <em>SSH</em> no hace falta que pongáis la contraseña, pero si lo tenéis por <em>HTTPS</em>, os solicitará el nombre de usuario y la contraseña de <em>GitHub</em>, <em>GitLab</em>, etc.
+    Si tenemos configurado el <em>GIT</em> por <em>SSH</em> no hace falta que 
+    pongáis la contraseña, pero si lo tenéis por <em>HTTPS</em>, os solicitará 
+    el nombre de usuario y la contraseña de <em>GitHub</em>, 
+    <em>GitLab</em>, etc.
 </blockquote>
-]]>
-    </description>
-</item>
-
-<item>
-    <title>Cowboy Bebop – The Real Folk Blues</title>
-    <guid>https://record.rat.la/index.php?page=cowboy-bebop.html</guid>
-    <link>https://record.rat.la/index.php?page=cowboy-bebop.html</link>
-    <!--<author>Inoro</author>-->
-    <pubDate>Mon, 28 Sep 2020 18:10:00 +0200</pubDate>
-    <description>
-<![CDATA[<!-- 202009281810i -->
-<h1>Cowboy Bebop – <em>The Real Folk Blues</em></h1>
-
-<blockquote>
-    I think it's time to blow this scene.<br>
-    Get everybody and their stuff together.<br>
-    Okay, three, two, one ¡Let's jam!
-</blockquote>
-
-<p>
-    Este artículo lo publiqué originalmente en un antiguo blog que hoy en día está desaparecido. Y ya que últimamente estoy haciendo reorganización y borrado de <em>backups</em> encuentro muchas antiguas joyas. Esta en concreto me gusta bastante, así que decidí re-publicarla. Espero que os anime a ver esta maravillosa serie, por la que sigo sintiendo el mismo aprecio que se ve reflejado aquí.
-</p>
-
-<p>
-    <img src="https://record.rat.la/img/202009281810/cover.webp" alt="Portada del artículo.">
-</p>
-
-<p>
-    La humanidad en el año 2071, una época decadente en la que todo acaba, donde los hombres se dedican a explorar los confines del vasto universo, con la tierra reducida a un desolado desierto convirtiendo a Marte en el planeta con mayor población del universo conocido. Gracias a estas "excelentes" condiciones el nivel de criminalidad ha aumentado de tal forma que todo se asemeja mucho al salvaje oeste, razón por la cual ser un cazarecompensas se ha convertido un oficio muy lucrativo.
-</p>
-
-<p>
-    Este es el paisaje en el que se sitúa Cowboy Bebop, una pequeña y poco conocida obra de arte de 26 episodios con la que, aunque no seas un <a href="https://es.wikipedia.org/wiki/Otaku">otaku</a> de cuidado, podrás disfrutar como el que más con las aventuras que viven los protagonistas de la serie en su vida como cazarecompensas espaciales. Un <em>western</em> intergaláctico con fundamentos muy arraigados en el cine negro y algún guiño de géneros como el <em>cyberpunk</em> al estilo de Blade Runner,  una combinación perfecta de imagen y sonido que producen un sinfín de sensaciones mientras estas sentado tranquilamente frente a tu televisor.
-</p>
-
-<!-- <div class="img-2">
-    <a target="_blank" href="https://record.rat.la/img/de_doc/cbEd.gif">
-        <img src="https://record.rat.la/img/de_doc/cbEd.gif" alt="Edward balanceándose">
-    </a>
-    <div class="desc">
-        Edward y su PC
-    </div>
-</div> -->
-
-<p>
-    La historia se centra en la tripulación de la nave bautizada como <em>Bebop</em>, formada por un grupo de personajes muy variopintos: <strong>Spike</strong>; pasota, sarcástico, divertido, fiel, temerario y con un cierto parecido a Lucky Luck. <strong>Jet</strong>; un amigo de toda confianza que siempre está allí para cuando se le necesita. <strong>Faye</strong>; una chica independiente que viene y va según su parecer y, aunque se empeñe en ocultarlo ella también tiene sentimientos. <strong>Ed</strong>; una niña espontánea, graciosa y muy inteligente, con grandes facetas como <em>hacker</em>. Y <strong>Ein</strong>; un <a href="https://es.wikipedia.org/wiki/Corgi_gal%C3%A9s_de_Pembroke" title="Raza de perro.">corgi</a> que destaca por su gran astucia. Una tropa de cazarecompensas que vagan por el espacio viviendo aventuras y subsistiendo como pueden. Ellos no son buenos, pero tampoco son malos, son personas corrientes como tu o como yo, amigos que te acompañan durante un viaje alucinante dejando un gran vacío cundo este termina. Todos ellos poseen un oscuro pasado que marca parte de su comportamiento, el cual no lograrás entender hasta prácticamente el final de la serie.
-</p>
-
-<p>
-    Nos encontramos ante un <a href="https://es.wikipedia.org/wiki/Anime">anime</a> muy original, el propio hecho de no tener un <a href="https://es.wikipedia.org/wiki/Manga">manga</a> en el que basarse ya lo distingue de la mayoría de los animes convencionales. Además la manera de contar la historia en capítulos individuales y autoconclusivos, es una forma muy versátil de tratar diferentes temas aportando calidad a las diferentes sub-tramas que van surgiendo a lo largo de la serie sobre los pasados inciertos de los protagonistas, presentándonoslos como pequeñas piezas de un gran puzzle que solo lograremos entender al final. Gracias a este recurso de los capítulos separados <a href="https://es.wikipedia.org/wiki/Shin'ichir%C5%8D_Watanabe" title="Shin'ichirō Watanabe">el autor</a> expone una serie de historias muy diferentes que navegan entre géneros como el drama, la comedia, la acción o el terror.
-</p>
-
-<p>
-    Y por último queda resaltar uno de los elementos más importante de la serie, con el cual este anime alcanza mi clasificación como obra de arte. La banda sonora, una preciosa <em>OST</em> centrada no solo en el <a href="https://es.wikipedia.org/wiki/Bebop"><em>bebop</em></a>, como el título indica, sino que recorre todo el jazz adentrándose incluso en otros géneros como el <em>rock</em> o el <em>rhythm&blues</em>, y hasta el <em>funkie</em>. La combinación de imagen y sonido en esta serie es perfecta, sobre todo en las excelentemente coreografiadas escenas de lucha y las batallas espaciales a ritmo del mejor jazz.
-</p>
-
-<!-- <iframe class="yt" width="560" height="315" src="https://www.youtube.com/embed/fS8Klrf1DSo" frameborder="0" allowfullscreen></iframe> -->
-
-<p>
-    Cowboy Bebop es una serie fabulosa, serie que toca un montón de temas usuales y no tan usuales con los que disfrutarás como un niño, proporcionando de vez en cuando momentos muy filosóficos que te hacen reflexionar ante la pantalla. Dejándonos al final de cada capítulo una frase que muchas veces resume a la perfección lo que se acaba de presenciar. Yo también despediré este artículo con una de esas frases.
-</p>
-
-<h3 style="text-align: right;"><em>SEE YOU SPACE COWBOY...</em></h2>
-
-<!-- <iframe class="yt" width="420" height="315" src="https://www.youtube.com/embed/Aw3fN3OPk3A" frameborder="0" allowfullscreen></iframe> -->
-
-<p>
-    Publicado originalmente el 9 de Abril de 2016 en mi antiguo blog.
-</p>
 ]]>
     </description>
 </item>
