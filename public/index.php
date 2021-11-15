@@ -494,7 +494,7 @@
         <meta name="robots" content="index, follow" />
         <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
         <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
-        <link rel="canonical" href="https://record.rat.la/" />
+        <link rel="canonical" href="<?= $FULL_URL ?>" />
 
         <!-- Cosas de la NSA (en modo prueba) -->
         <!-- Google Analytics -->
