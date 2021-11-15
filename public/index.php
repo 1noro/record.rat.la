@@ -214,6 +214,9 @@
         $minute = substr($line, 10, 2);
 
         return [
+            "DATE_W3C" => $year."-".$month."-".$day."T".$hour.":".$minute.":00+01:00", // or DATE_ATOM
+            // +01:00 is Europe/Madrid (Spain, CET) https://en.wikipedia.org/wiki/List_of_time_zones_by_country
+            // +00:00 is UTC
             "datetime" => $year."/".$month."/".$day." ".$hour.":".$minute,
             "year" => $year,
             "month" => $month,
@@ -266,6 +269,7 @@
             "filename" => $filename,
             "author_data" => get_author_data_by_line($line1),
             "title" => get_title_by_line($line2),
+            "DATE_W3C" => $datetimeInfo["DATE_W3C"],
             "datetime" => $datetimeInfo["datetime"],
             "year" => $datetimeInfo["year"],
             "month" => $datetimeInfo["month"],
@@ -402,8 +406,9 @@
     $DESCRIPTION = DEF_DESCRIPTION; 
     $PAGE_IMG = DEF_PAGE_IMG;
     $ACTION = 0;
+    $PUBLISHED = "";
 
-    // --- Montamos las variables URL y FULL_URL
+    // --- Montamos las variables URL, FULL_URL y CANONICAL_URL
     $URL = "http";
     if(isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] === 'on') {
         $URL = "https";
@@ -411,6 +416,10 @@
     $URL .= "://";
     $URL .= $_SERVER["HTTP_HOST"];
     $FULL_URL = $URL . $_SERVER["REQUEST_URI"];
+    $CANONICAL_URL = $FULL_URL;
+    if (defined("REQ_PAGE")) {
+        $CANONICAL_URL = $URL . "/index.php?page=" . REQ_PAGE;
+    }
 
     // --- Lógica de impresión ---
     // procesamos REQ_PAGE y obramos en consecuencia
@@ -435,6 +444,7 @@
                 $filename = REQ_PAGE;
                 $fileInfo = get_page_info($filename);
                 $TITLE = $fileInfo["title"] . DEF_TITLE_SUFFIX;
+                $PUBLISHED = $fileInfo["DATE_W3C"];
                 $DESCRIPTION = get_description(DIRECTORY . $filename);
                 $PAGE_IMG = get_page_img(DIRECTORY . $filename);
             } else {
@@ -481,13 +491,18 @@
         <meta property="og:type" content="article" />
         <meta property="og:title" content="<?= $TITLE ?>" />
         <meta property="og:description" content="<?= $DESCRIPTION ?>" />
-        <meta property="og:url" content="<?= $FULL_URL ?>" />
+        <meta property="og:url" content="<?= $CANONICAL_URL ?>" />
         <meta property="og:site_name" content="record.rat.la" />
         <meta property="og:image" content="<?= $URL . '/' . $PAGE_IMG ?>" />
+        <!-- <meta property="og:image:type" content="image/webp" /> -->
+        <!-- <meta property="og:image:width" content="1200" /> -->
+        <!-- <meta property="og:image:height" content="1200" /> -->
+        <meta property="og:image:alt" content="Portada del artículo." />
         <meta property="article:author" content="idex.php?page=inoro.html" />
-        <!-- hay que habilitarlo -->
-        <!-- <meta property="article:published_time" content="2020-09-21T00:04:15+00:00" /> -->
+<?php if ($PUBLISHED != "") { ?>
+        <meta property="article:published_time" content="<?= $PUBLISHED ?>" />
         <!-- <meta property="article:modified_time" content="2020-09-21T07:23:04+00:00" /> -->
+<?php } ?>
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:image:src" content="<?= $URL . '/' . $PAGE_IMG ?>" />
         <!-- <meta name="twitter:creator" content="@example" /> -->
@@ -496,7 +511,7 @@
         <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
         <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
         <!-- hay que hacer que los parametros del color y de los tamaños no se agreguen a esta url -->
-        <link rel="canonical" href="<?= $FULL_URL ?>" />
+        <link rel="canonical" href="<?= $CANONICAL_URL ?>" />
 
         <!-- Cosas de la NSA (en modo prueba) -->
         <!-- Google Analytics -->
