@@ -31,7 +31,7 @@
     define("FILENAMES", get_filenames(DIRECTORY)); // obtenemos todas las páginas de la carpeta DIRECTORY
     
     define("DEF_TITLE_SUFFIX", " - record.rat.la"); // sufijo por defecto del título de la página
-    define("DEF_TITLE", "Reciente"); // título por defecto de la página
+    define("DEF_TITLE", "Registros de las ratas cantarinas"); // título por defecto de la página
     define("DEF_DESCRIPTION", "Blog/web personal donde iré registrando mis proyectos y mis líos mentales."); // descripción por defecto de la página
     define("DEF_PAGE_IMG", "img/article_default_img_white.jpg"); // imagen por defecto del artículo
 
@@ -429,7 +429,7 @@
         if (REQ_PAGE == "archive") {
             // Archivo
             $ACTION = 1;
-            $TITLE = "Archivo";
+            $TITLE = "Histórico de las ratas cantarinas";
             $DESCRIPTION = "Listado de todas las páginas publicadas en record.rat.la";
         } elseif (REQ_PAGE == COLOR_PAGE && defined("REQ_COLOR_ID")) {
             // Cambio de paleta de colores
