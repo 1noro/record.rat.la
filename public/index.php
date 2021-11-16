@@ -31,7 +31,7 @@
     define("FILENAMES", get_filenames(DIRECTORY)); // obtenemos todas las páginas de la carpeta DIRECTORY
     
     define("DEF_TITLE_SUFFIX", " - record.rat.la"); // sufijo por defecto del título de la página
-    define("DEF_TITLE", "Reciente" . DEF_TITLE_SUFFIX); // título por defecto de la página
+    define("DEF_TITLE", "Reciente"); // título por defecto de la página
     define("DEF_DESCRIPTION", "Blog/web personal donde iré registrando mis proyectos y mis líos mentales."); // descripción por defecto de la página
     define("DEF_PAGE_IMG", "img/article_default_img_white.jpg"); // imagen por defecto del artículo
 
@@ -407,6 +407,7 @@
     $PAGE_IMG = DEF_PAGE_IMG;
     $ACTION = 0;
     $PUBLISHED = "";
+    $ARTICLE_AUTHOR = AUTHORS["i"][1];
 
     // --- Montamos las variables URL, FULL_URL y CANONICAL_URL
     $URL = "http";
@@ -427,7 +428,7 @@
         if (REQ_PAGE == "archive") {
             // Archivo
             $ACTION = 1;
-            $TITLE = "Archivo - record.rat.la";
+            $TITLE = "Archivo";
             $DESCRIPTION = "Listado de todas las páginas publicadas en record.rat.la";
         } elseif (REQ_PAGE == COLOR_PAGE && defined("REQ_COLOR_ID")) {
             // Cambio de paleta de colores
@@ -436,22 +437,23 @@
             }
             $ACTION = 2;
             $fileInfo = get_page_info(COLOR_PAGE);
-            $TITLE = $fileInfo["title"] . DEF_TITLE_SUFFIX;
+            $TITLE = $fileInfo["title"];
         } else {
             if (in_array(REQ_PAGE, FILENAMES)) {
                 // Artículo
                 $ACTION = 3;
                 $filename = REQ_PAGE;
                 $fileInfo = get_page_info($filename);
-                $TITLE = $fileInfo["title"] . DEF_TITLE_SUFFIX;
+                $TITLE = $fileInfo["title"];
                 $PUBLISHED = $fileInfo["DATE_W3C"];
+                $ARTICLE_AUTHOR = $fileInfo["author_data"][1];
                 $DESCRIPTION = get_description(DIRECTORY . $filename);
                 $PAGE_IMG = get_page_img(DIRECTORY . $filename);
             } else {
                 // Error 404
                 $ACTION = 404;
                 $fileInfo = get_page_info(E404_PAGE);
-                $TITLE = $fileInfo["title"] . DEF_TITLE_SUFFIX;
+                $TITLE = $fileInfo["title"];
                 http_response_code(404);
             }
         }
@@ -472,47 +474,61 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-        <title><?= $TITLE ?></title>
+        <title><?= $TITLE . DEF_TITLE_SUFFIX ?></title>
 
-        <!-- para decirle al navegador que tengo un favicon que no es .ico -->
+        <!-- -- LINK -- -->
+        <!-- Para decirle al navegador que tengo un favicon que no es .ico -->
         <link rel="icon" href="favicon.webp" type="image/webp" sizes="50x50">
 
-        <!-- para decirle al navegador que tengo RSS -->
+        <!-- Para decirle a google que la URL original es esta, y no la que se está usando -->
+        <link rel="canonical" href="<?= $CANONICAL_URL ?>" />
+
+        <!-- Para decirle al navegador que tengo RSS -->
         <link rel="alternate" type="application/rss+xml" href="rss.xml" title="RSS de record.rat.la">
 
         <!-- Avisamos al navegador de que se prepare para hacer una petición a los siguientes dominios -->
         <link rel="preconnect dns-prefetch" href="https://www.googletagmanager.com">
         <link rel="preconnect dns-prefetch" href="https://www.google-analytics.com">
 
+        <!-- -- META -- -->
         <!-- Revisar: https://css-tricks.com/essential-meta-tags-social-media/ -->
-        <meta name="author" content="Inoro" /> <!-- This site was made by https://github.com/1noro -->
+        <meta name="title" content="<?= $TITLE ?>">
         <meta name="description" content="<?= $DESCRIPTION ?>" />
-        <meta property="og:locale" content="es_ES" />
+        <meta name="author" content="Inoro" /> <!-- This site was made by https://github.com/1noro -->
+
+        <!-- OG -->
         <meta property="og:type" content="article" />
-        <meta property="og:title" content="<?= $TITLE ?>" />
-        <meta property="og:description" content="<?= $DESCRIPTION ?>" />
-        <meta property="og:url" content="<?= $CANONICAL_URL ?>" />
-        <meta property="og:site_name" content="record.rat.la" />
-        <meta property="og:image" content="<?= $URL . '/' . $PAGE_IMG ?>" />
-        <!-- <meta property="og:image:type" content="image/webp" /> -->
-        <!-- <meta property="og:image:width" content="1200" /> -->
-        <!-- <meta property="og:image:height" content="1200" /> -->
-        <meta property="og:image:alt" content="Portada del artículo." />
-        <meta property="article:author" content="idex.php?page=inoro.html" />
+        <meta property="article:author" content="<?= $URL ?>/index.php?page=<?= $ARTICLE_AUTHOR ?>" />
 <?php if ($PUBLISHED != "") { ?>
         <meta property="article:published_time" content="<?= $PUBLISHED ?>" />
         <!-- <meta property="article:modified_time" content="2020-09-21T07:23:04+00:00" /> -->
 <?php } ?>
+        <meta property="og:url" content="<?= $CANONICAL_URL ?>" />
+        <meta property="og:site_name" content="record.rat.la" />
+        <meta property="og:locale" content="es_ES" />
+        <meta property="og:title" content="<?= $TITLE ?>" />
+        <meta property="og:description" content="<?= $DESCRIPTION ?>" />
+        <meta property="og:image" content="<?= $URL . '/' . $PAGE_IMG ?>" />
+        <meta property="og:image:alt" content="Portada del artículo." />
+        <!-- <meta property="og:image:type" content="image/webp" /> -->
+        <!-- <meta property="og:image:width" content="1200" /> -->
+        <!-- <meta property="og:image:height" content="1200" /> -->
+
+        <!-- Twitter -->
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:image:src" content="<?= $URL . '/' . $PAGE_IMG ?>" />
+        <meta property="twitter:url" content="<?= $CANONICAL_URL ?>">
+        <meta property="twitter:title" content="<?= $TITLE ?>">
+        <meta property="twitter:description" content="<?= $DESCRIPTION ?>">
+        <meta property="twitter:image" content="<?= $URL . '/' . $PAGE_IMG ?>">
+        <!-- <meta name="twitter:image:src" content="<?= $URL . '/' . $PAGE_IMG ?>" /> -->
         <!-- <meta name="twitter:creator" content="@example" /> -->
         <!-- <meta name="twitter:site" content="cuenta_del_sitio" /> -->
+
+        <!-- Scraping -->
         <meta name="robots" content="index, follow" />
         <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
         <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
-        <!-- hay que hacer que los parametros del color y de los tamaños no se agreguen a esta url -->
-        <link rel="canonical" href="<?= $CANONICAL_URL ?>" />
-
+        
         <!-- Cosas de la NSA (en modo prueba) -->
         <!-- Google Analytics -->
         <!-- La carga del script externo se hace después de los estilos para mejorar la performance -->
