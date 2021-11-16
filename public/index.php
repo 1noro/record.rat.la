@@ -406,6 +406,7 @@
     $DESCRIPTION = DEF_DESCRIPTION; 
     $PAGE_IMG = DEF_PAGE_IMG;
     $ACTION = 0;
+    $OG_TYPE = "website";
     $PUBLISHED = "";
     $ARTICLE_AUTHOR = AUTHORS["i"][1];
 
@@ -445,6 +446,7 @@
                 $filename = REQ_PAGE;
                 $fileInfo = get_page_info($filename);
                 $TITLE = $fileInfo["title"];
+                $OG_TYPE = "article";
                 $PUBLISHED = $fileInfo["DATE_W3C"];
                 $ARTICLE_AUTHOR = $fileInfo["author_data"][1];
                 $DESCRIPTION = get_description(DIRECTORY . $filename);
@@ -497,9 +499,9 @@
         <meta name="author" content="Inoro" /> <!-- This site was made by https://github.com/1noro -->
 
         <!-- OG -->
-        <meta property="og:type" content="article" />
+        <meta property="og:type" content="<?= $OG_TYPE ?>" />
+<?php if ($OG_TYPE == "article") { ?>
         <meta property="article:author" content="<?= $URL ?>/index.php?page=<?= $ARTICLE_AUTHOR ?>" />
-<?php if ($PUBLISHED != "") { ?>
         <meta property="article:published_time" content="<?= $PUBLISHED ?>" />
         <!-- <meta property="article:modified_time" content="2020-09-21T07:23:04+00:00" /> -->
 <?php } ?>
@@ -510,7 +512,7 @@
         <meta property="og:description" content="<?= $DESCRIPTION ?>" />
         <meta property="og:image" content="<?= $URL . '/' . $PAGE_IMG ?>" />
         <meta property="og:image:alt" content="Portada del artículo." />
-        <!-- <meta property="og:image:type" content="image/webp" /> -->
+        <meta property="og:image:type" content="<?= mime_content_type($PAGE_IMG) ?>" />
         <!-- <meta property="og:image:width" content="1200" /> -->
         <!-- <meta property="og:image:height" content="1200" /> -->
 

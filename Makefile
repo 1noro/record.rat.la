@@ -22,7 +22,7 @@ logs:
 	@docker logs -f $(CONTAINER)
 
 bash-in:
-	@docker exec -it $(CONTAINER) sh
+	@docker exec -u 0 -it $(CONTAINER) sh
 
 help:
 	@echo "make build"
