@@ -7,6 +7,9 @@
 
     record.rat.la by Inoro (github.com/1noro)
 
+    "Y el pobre anciano Masson se hundió en la negrura de la muerte, con los 
+    locos chillidos de las ratas taladrándole los oídos" - Henry Kuttner
+
 -->
 <?php
     // Creamos u obtenemos la cookie funcional que guarda las preferencias 
@@ -32,7 +35,7 @@
     
     define("DEF_TITLE_SUFFIX", " - record.rat.la"); // sufijo por defecto del título de la página
     define("DEF_TITLE", "Registros de las ratas cantarinas"); // título por defecto de la página
-    define("DEF_DESCRIPTION", "Blog/web personal donde iré registrando mis proyectos y mis líos mentales."); // descripción por defecto de la página
+    define("DEF_DESCRIPTION", "Y el pobre anciano Masson se hundió en la negrura de la muerte, con los locos chillidos de las ratas taladrándole los oídos. ¿Porqué?"); // descripción por defecto de la página
     define("DEF_PAGE_IMG", "img/article_default_img_white.jpg"); // imagen por defecto del artículo
 
     define("AUTHORS", [
@@ -637,6 +640,12 @@
                     <a href="rss.xml" aria-label="Feed RSS para estar al tanto de las novedades de esta web.">rss</a>
                 </p>
             </nav>
+            <!-- Alerta sobre las cookies -->
+            <p>
+                <small>
+                    <em>"Y el pobre anciano Masson se hundió en la negrura de la muerte,<br>con los locos chillidos de las ratas taladrándole los oídos"</em> – Henry Kuttner
+                </small>
+            </p>
             <!-- Alerta sobre las cookies -->
             <p>
                 <small>
