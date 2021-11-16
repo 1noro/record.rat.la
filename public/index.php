@@ -640,12 +640,12 @@
                     <a href="rss.xml" aria-label="Feed RSS para estar al tanto de las novedades de esta web.">rss</a>
                 </p>
             </nav>
-            <!-- Alerta sobre las cookies -->
-            <p>
+            <!-- Cita de Henry Kuttner -->
+            <!-- <p>
                 <small>
                     <em>"Y el pobre anciano Masson se hundió en la negrura de la muerte,<br>con los locos chillidos de las ratas taladrándole los oídos"</em> – Henry Kuttner
                 </small>
-            </p>
+            </p> -->
             <!-- Alerta sobre las cookies -->
             <p>
                 <small>
