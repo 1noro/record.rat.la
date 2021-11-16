@@ -497,6 +497,7 @@
         <meta name="title" content="<?= $TITLE ?>">
         <meta name="description" content="<?= $DESCRIPTION ?>" />
         <meta name="author" content="Inoro" /> <!-- This site was made by https://github.com/1noro -->
+        <meta name="theme-color" content="#000000"> <!-- Para que el navegador sepa que color debe usar en el marco -->
 
         <!-- OG -->
         <meta property="og:type" content="<?= $OG_TYPE ?>" />
