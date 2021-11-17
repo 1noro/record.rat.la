@@ -12,14 +12,43 @@
 
 -->
 <?php
+    // 86400 segundos = 1 día
+    define("COOKIE_OPTIONS", [
+        "expires" => time() + (86400 * 30),
+        "path" => "/",
+        "domain" => $_SERVER['SERVER_NAME'],
+        "secure" => false,
+        "httponly" => true,
+        "samesite" => "Strict"
+    ]);
     // Creamos u obtenemos la cookie funcional que guarda las preferencias 
     // del usuario (la paleta de colores)
-    session_start();
+    // session_start();
 
     // Si se entra por primera vez a la web se guarda un cookie de sesión con 
     // las preferencias por defecto
-    if (!isset($_SESSION["COLOR_ID"])) { $_SESSION["COLOR_ID"] = 0; }
-    if (!isset($_SESSION["TEXT_SIZE_ID"])) { $_SESSION["TEXT_SIZE_ID"] = 0; }
+    // if (!isset($_SESSION["COLOR_ID"])) { $_SESSION["COLOR_ID"] = 0; }
+    // if (!isset($_SESSION["TEXT_SIZE_ID"])) { $_SESSION["TEXT_SIZE_ID"] = 0; }
+    // if (!isset($_COOKIE["COLOR_ID"])) {
+    //     setcookie("COLOR_ID", "0", COOKIE_OPTIONS);
+    // }
+    // if (!isset($_COOKIE["TEXT_SIZE_ID"])) {
+    //     setcookie("TEXT_SIZE_ID", "0", COOKIE_OPTIONS);
+    // }
+
+    $COLOR_ID = 0;
+    if (isset($_COOKIE["COLOR_ID"])) {
+        $COLOR_ID = intval($_COOKIE["COLOR_ID"]);
+    } else {
+        setcookie("COLOR_ID", strval($COLOR_ID), COOKIE_OPTIONS);
+    }
+
+    $TEXT_SIZE_ID = 0;
+    if (isset($_COOKIE["TEXT_SIZE_ID"])) {
+        $TEXT_SIZE_ID = intval($_COOKIE["TEXT_SIZE_ID"]);
+    } else {
+        setcookie("TEXT_SIZE_ID", strval($TEXT_SIZE_ID), COOKIE_OPTIONS);
+    }
 
     // --- Requested Values ---
     if (isset($_GET["page"])) { define("REQ_PAGE", $_GET["page"]); }
@@ -437,7 +466,9 @@
         } elseif (REQ_PAGE == COLOR_PAGE && defined("REQ_COLOR_ID")) {
             // Cambio de paleta de colores
             if (REQ_COLOR_ID >= 0 && REQ_COLOR_ID < count($COLORS)) {
-                $_SESSION["COLOR_ID"] = REQ_COLOR_ID;
+                // $_SESSION["COLOR_ID"] = REQ_COLOR_ID;
+                setcookie("COLOR_ID", strval(REQ_COLOR_ID), COOKIE_OPTIONS);
+                $COLOR_ID = REQ_COLOR_ID;
             }
             $ACTION = 2;
             $fileInfo = get_page_info(COLOR_PAGE);
@@ -466,11 +497,15 @@
 
     // Cambio de tamaño de texto
     if (defined("REQ_SIZE_ID") && REQ_SIZE_ID >= 0 && REQ_SIZE_ID < count($TEXT_SIZES)) {
-        $_SESSION["TEXT_SIZE_ID"] = REQ_SIZE_ID;
+        // $_SESSION["TEXT_SIZE_ID"] = REQ_SIZE_ID;
+        setcookie("TEXT_SIZE_ID", strval(REQ_SIZE_ID), COOKIE_OPTIONS);
+        $TEXT_SIZE_ID = strval(REQ_SIZE_ID);
     }
 
-    $COLOR_ID = $_SESSION["COLOR_ID"];
-    $TEXT_SIZE_ID = $_SESSION["TEXT_SIZE_ID"];
+    // $COLOR_ID = $_SESSION["COLOR_ID"];
+    // $TEXT_SIZE_ID = $_SESSION["TEXT_SIZE_ID"];
+    // $COLOR_ID = intval($_COOKIE["COLOR_ID"]);
+    // $TEXT_SIZE_ID = intval($_COOKIE["TEXT_SIZE_ID"]);
 
 ?>
 <!DOCTYPE html>
@@ -650,7 +685,7 @@
             <p>
                 <small>
                     <!-- Debería dar la opción a desactivar la cookies de google -->
-                    Esta página guarda una <a href="index.php?page=cookie.html" aria-label="¡Infórmate sobre las cookies!">cookie</a> funcional para el estilo y <strong>ocho</strong> analíticas para google
+                    Esta página guarda dos <a href="index.php?page=cookie.html" aria-label="¡Infórmate sobre las cookies!">cookies</a> funcionales para el estilo y <strong>tres</strong> analíticas para google
                 </small>
             </p>
         </header>
