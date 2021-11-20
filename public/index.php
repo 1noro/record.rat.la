@@ -162,6 +162,42 @@
             "code_background" => "#222324",
             "code_text" => "#FFFFFF",
             "header_img_color" => "B"
+        ],
+        // Dracula
+        [
+            "background" => "#282a36",
+            "text" => "#f8f8f2",
+            "title" => "#ff79c6",
+            "link" => "#8be9fd",
+            "link_visited" => "#bd93f9",
+            "link_active" => "#8be9fd",
+            "code_background" => "#44475a",
+            "code_text" => "#FFFFFF",
+            "header_img_color" => "B"
+        ],
+        // Nord
+        [
+            "background" => "#2E3440",
+            "text" => "#D8DEE9",
+            "title" => "#ECEFF4",
+            "link" => "#88c0d0",
+            "link_visited" => "#81a1c1",
+            "link_active" => "#88c0d0",
+            "code_background" => "#4C566A",
+            "code_text" => "#ECEFF4",
+            "header_img_color" => "B"
+        ],
+        // Gruvbox
+        [
+            "background" => "#282828",
+            "text" => "#ebdbb2",
+            "title" => "#ebdbb2",
+            "link" => "#b8bb26",
+            "link_visited" => "#98971a",
+            "link_active" => "#b8bb26",
+            "code_background" => "#3c3836",
+            "code_text" => "#d5c4a1",
+            "header_img_color" => "B"
         ]
     ];
 
@@ -463,6 +499,7 @@
             $ACTION = 2;
             $fileInfo = get_page_info(COLOR_PAGE);
             $TITLE = $fileInfo["title"];
+            $DESCRIPTION = get_description(DIRECTORY . COLOR_PAGE);
         } else {
             if (in_array(REQ_PAGE, FILENAMES)) {
                 // Artículo
