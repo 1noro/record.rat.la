@@ -66,20 +66,7 @@
         "i" => ["Inoro", "inoro.html"]
     ]);
 
-    $TEXT_SIZES = [
-        [
-            "text" => "1.05em",
-            "code" => "1.1em"
-        ],
-        [
-            "text" => "1.2em",
-            "code" => "1.25em"
-        ],
-        [
-            "text" => "1.35em",
-            "code" => "1.4em"
-        ]
-    ];
+    $TEXT_SIZES = ["1.05em", "1.2em", "1.35em"];
 
     $COLORS = [
         // Paleta de colores por defecto 0 (G&W)
@@ -610,9 +597,9 @@
             body {
                 background-color: <?= $COLORS[$COLOR_ID]["background"] ?>;
                 color: <?= $COLORS[$COLOR_ID]["text"] ?>;
-                font-size: <?= $TEXT_SIZES[$TEXT_SIZE_ID]["text"] ?>; /* 1.35em, 14pt */
-                /* font-family: Times, Serif; */
+                /* font-family: 'Times New Roman', Times, serif; */
                 font-family: Helvetica, sans-serif;
+                font-size: <?= $TEXT_SIZES[$TEXT_SIZE_ID] ?>;
             }
 
             /* --- Enlaces --- */
@@ -623,50 +610,35 @@
             a:active {color: <?= $COLORS[$COLOR_ID]["link_active"] ?>;}
 
             /* --- Contenedores HEADER y FOOTER --- */
-            header, footer, p.center {text-align: center;}
+            header, footer {text-align: center;}
 
             header div#web_title {
-                font-size: 1.9em; /* este valor multiplica al valor definido en el body */
+                /* este valor multiplica al valor definido en el body */
+                font-size: 1.9em;
                 font-weight: bold;
                 margin: 16px 0px; /* porque es un <div> y no un <p> */
             }
 
             /* este valor multiplica al valor definido en el body */
-            header p#web_nav {font-size: 1.4em;} 
+            header p#web_nav {font-size: 1.4em;}
 
             /* --- contenedor MAIN --- */
             main {
                 max-width: 750px;
+                margin: 0 auto;
                 /* text-align: justify;
                 text-justify: inter-word; */
-                margin: 0 auto;
             }
 
-            h1, h2, h3, h4, h5, h6 {
-                color: <?= $COLORS[$COLOR_ID]["title"] ?>;
-                text-align: left;
-            }
-
-            pre {
-                padding: 10px;
-                overflow: auto;
-            }
-
+            h1, h2, h3, h4, h5, h6 {color: <?= $COLORS[$COLOR_ID]["title"] ?>;}
+            img {width: 100%;} /* todas las imágenes menos la del header */
+            img.half {width: 50%; display: block; margin: 0 auto;}
+            pre {padding: 10px; overflow: auto;}
             code {padding: 1px;}
 
             pre, code {
                 background-color: <?= $COLORS[$COLOR_ID]["code_background"] ?>;
                 color: <?= $COLORS[$COLOR_ID]["code_text"] ?>;
-            }
-
-            pre, code, samp {font-size: <?= $TEXT_SIZES[$TEXT_SIZE_ID]["code"] ?>; /* 1.1em */}
-
-            img {width: 100%;} /* todas las imágenes menos la del header */
-
-            img.half {
-                width: 50%;
-                display: block;
-                margin: 0 auto;
             }
         </style>
 
@@ -743,7 +715,7 @@
 
         <footer id="footer" aria-label="Licencias y contactos" tabindex="-1">
             <nav aria-label="Enlace al archivo">
-                <p class="center">
+                <p>
                     <a href="index.php?page=archive">[ver más]</a>
                 </p>
             </nav>
