@@ -40,6 +40,9 @@ set-permissions:
 	@find . -type f -exec chmod 644 -- {} +
 	# @chmod 774 set-permissions.sh
 
+.PHONY: rebuild
+rebuild: clean build up
+
 .PHONY: help
 help:
 	@echo "make build"
