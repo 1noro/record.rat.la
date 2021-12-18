@@ -13,6 +13,8 @@
     ],
     "conventionalCommits.scopes": [
         "make",
-        "nginx"
+        "nginx",
+        "page",
+        "css"
     ]
 }
