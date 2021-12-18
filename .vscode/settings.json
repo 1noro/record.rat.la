@@ -10,5 +10,9 @@
         "Movistar",
         "noro",
         "Ubiquiti"
+    ],
+    "conventionalCommits.scopes": [
+        "make",
+        "nginx"
     ]
 }

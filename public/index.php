@@ -12,6 +12,9 @@
 
 -->
 <?php
+
+    // print_r($_SERVER);
+
     // Opciones por defecto para el almacenamiento de cookies 
     // (86400 segundos = 1 día)
     define("COOKIE_OPTIONS", [
@@ -42,7 +45,7 @@
     }
 
     // --- Requested Values ---
-    if (isset($_GET["page"])) { define("REQ_PAGE", $_GET["page"]); }
+    if (isset($_GET["page"])) { define("REQ_PAGE", $_GET["page"][0] == "/" ? substr($_GET["page"], 1) : $_GET["page"]); }
     if (isset($_GET["id"])) { define("REQ_COLOR_ID", intval($_GET["id"])); }
     if (isset($_GET["size"])) { define("REQ_SIZE_ID", intval($_GET["size"])); }
 
