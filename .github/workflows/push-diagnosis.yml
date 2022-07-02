@@ -2,7 +2,7 @@ name: Push diagnosis
 on:
   push:
     branches:
-      - main
+      - master
       - pre
       - 'release_**'
 jobs:
