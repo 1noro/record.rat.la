@@ -47,7 +47,7 @@ rebuild: clean build up
 
 .PHONY: analyze
 analyze:
-	docker run --rm -v $(shell pwd)/public:/app -u $(shell id -u):$(shell id -g) ghcr.io/phpstan/phpstan analyse -l 7 .
+	docker run --rm -v $(shell pwd)/public:/app -u $(shell id -u):$(shell id -g) ghcr.io/phpstan/phpstan analyse -l 8 .
 
 .PHONY: help
 help:

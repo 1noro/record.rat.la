@@ -393,17 +393,26 @@
      * 
      */
     function get_description(string $filepath) : string {
-        $html = file_get_contents($filepath) ?: "<p>Default description</p>";
+        $defaultText = "Default description";
+
+        $html = file_get_contents($filepath) ?: "<p>$defaultText</p>";
+        
         $start = strpos($html, '<p>') ?: 0;
         $end = strpos($html, '</p>', $start);
         $paragraph = strip_tags(substr($html, $start, $end - $start + 4));
         $paragraph = str_replace("\n", "", $paragraph);
         // quitamos el exceso de espacios en blanco delante, atrás y en el medio
         $paragraph = preg_replace('/\s+/', ' ', trim($paragraph));
+
+        if ($paragraph == null) {
+            $paragraph = $defaultText;
+        }
+        
         // si la descripción es mayor a 160 caracteres es malo para el SEO
         if (strlen($paragraph) > 160) {
             $paragraph = mb_substr($paragraph, 0, 160 - 3) . "...";
         }
+
         return trim($paragraph);
     }
 
