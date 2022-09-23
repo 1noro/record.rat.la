@@ -13,7 +13,7 @@ build:
 .PHONY: up
 up:
 	@docker run -d --rm -p 8081:80 -v "$(PWD)/public:/var/www/html" --name $(CONTAINER) $(IMAGE):$(TAG)
-	@echo "Running $(CONTAINER) in http://record.localhost:8081"
+	@echo "Running $(CONTAINER) in http://record.rat.localhost:8081"
 
 .PHONY: down
 down:
