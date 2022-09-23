@@ -259,7 +259,7 @@
      */
     function get_filenames(string $directory) : array {
         $filenames = array();
-        $directoryObj = opendir($directory);
+        $directoryObj = opendir($directory) ?: null;
         while($filename = readdir($directoryObj)) {
             if(($filename != ".") && ($filename != "..")) {
                 $filenames[] = $filename; // put in array
@@ -359,10 +359,15 @@
     function get_page_info(string $filename) : array {
         $filepath = DIRECTORY . $filename;
 
+        $line1 = "<!-- 202009180000a -->"; // Default value for line1
+        $line2 = "<h1>Default title</h1>"; // Default value for line2
+
         $fileObj = fopen($filepath, "r");
-        $line1 = fgets($fileObj); // leemos la primera linea
-        $line2 = fgets($fileObj); // leemos la segunda linea
-        fclose($fileObj);
+        if (is_resource($fileObj)) {
+            $line1 = fgets($fileObj) ?: $line1; // leemos la primera linea
+            $line2 = fgets($fileObj) ?: $line2; // leemos la segunda linea
+            fclose($fileObj);
+        }
 
         $datetimeInfo = get_date_by_line($line1);
 
@@ -388,8 +393,8 @@
      * 
      */
     function get_description(string $filepath) : string {
-        $html = file_get_contents($filepath);
-        $start = strpos($html, '<p>');
+        $html = file_get_contents($filepath) ?: "<p>Default description</p>";
+        $start = strpos($html, '<p>') ?: 0;
         $end = strpos($html, '</p>', $start);
         $paragraph = strip_tags(substr($html, $start, $end - $start + 4));
         $paragraph = str_replace("\n", "", $paragraph);
@@ -408,7 +413,7 @@
      * @todo optimizar (sacar de lo que se carga en el main)
      */
     function get_page_img(string $filepath) : string {
-        $html = file_get_contents($filepath);
+        $html = file_get_contents($filepath) ?: "";
         preg_match('/<img.+src=[\'"](?P<src>.+?)[\'"].*>/i', $html, $image);
         if (isset($image["src"])) {
             return $image["src"];
@@ -450,9 +455,14 @@
 
         $number = 1;
         foreach($fileInfoArr as $fileInfo) {
-            $page = $fileInfo["filename"];
+            $filename = $fileInfo["filename"];
+            
             echo "<article>\n";
-            print_page(reduce_h1(get_page_content($page)), get_page_info($page));
+            if (is_string($filename)) {
+                print_page(reduce_h1(get_page_content($filename)), get_page_info($filename));
+            } else {
+                echo "No page\n";
+            }
             echo "</article>\n";
             if ($number >= PAGES_TO_SHOW) {break;}
             echo "<hr>\n";
@@ -473,23 +483,37 @@
         echo "<h1>Archivo</h1>\n";
 
         foreach($fileInfoArr as $fileInfo) {
-            if ($currentYear != $fileInfo["year"]) {
-                $currentYear = $fileInfo["year"];
-                printf("<h2>%s</h2>\n<hr>\n", $fileInfo["year"]);
+            if (is_string($fileInfo["year"])){
+                if ($currentYear != $fileInfo["year"]) {
+                    $currentYear = $fileInfo["year"];
+                    printf("<h2>%s</h2>\n<hr>\n", $fileInfo["year"]);
+                }
+            } else {
+                echo "<h2>No year</h2>\n<hr>\n";
             }
             if ($currentMonth != $fileInfo["month"]) {
                 $currentMonth = $fileInfo["month"];
                 printf("<h3>%s</h3>\n", MONTHS[intval($fileInfo["month"]) - 1]);
             }
-            printf(
-                '<blockquote>%s %s:%s - <a href="index.php?page=%s">%s</a> - %s</blockquote>' . "\n",
-                $fileInfo["day"],
-                $fileInfo["hour"],
-                $fileInfo["minute"],
-                $fileInfo["filename"],
-                $fileInfo["title"],
-                $fileInfo["author_data"][0]
-            );
+            if (
+                is_string($fileInfo["day"]) &&
+                is_string($fileInfo["hour"]) &&
+                is_string($fileInfo["minute"]) &&
+                is_string($fileInfo["filename"]) &&
+                is_string($fileInfo["title"])
+            ) {
+                printf(
+                    '<blockquote>%s %s:%s - <a href="index.php?page=%s">%s</a> - %s</blockquote>' . "\n",
+                    $fileInfo["day"],
+                    $fileInfo["hour"],
+                    $fileInfo["minute"],
+                    $fileInfo["filename"],
+                    $fileInfo["title"],
+                    $fileInfo["author_data"][0]
+                );
+            } else {
+                echo "<blockquote>No page</blockquote>\n";
+            }
         }
 
         printf("<p>Hay un total de %d páginas en la web.</p>\n", count(FILENAMES));
@@ -499,7 +523,7 @@
      * get_page_content
      */
     function get_page_content(string $filename) : string {
-        return file_get_contents(DIRECTORY . $filename);
+        return file_get_contents(DIRECTORY . $filename) ?: "Empty page";
     }
 
     /**
