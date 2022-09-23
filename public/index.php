@@ -15,8 +15,12 @@
 
     // print_r($_SERVER);
 
-    // Opciones por defecto para el almacenamiento de cookies 
-    // (86400 segundos = 1 día)
+    // --- Gestión de cookies ---
+
+    /**
+     * Opciones por defecto para el almacenamiento de cookies
+     * (86400 segundos = 1 día)
+     */
     define("COOKIE_OPTIONS", [
         "expires" => time() + (86400 * 30),
         "path" => "/",
@@ -26,8 +30,10 @@
         "samesite" => "Strict"
     ]);
 
-    // Si se entra por primera vez a la web se guarda un cookie de COLOR_ID con 
-    // el valor por defecto
+    /**
+     * Si se entra por primera vez a la web se guarda un cookie de COLOR_ID con
+     * el valor por defecto
+     */
     $COLOR_ID = 0;
     if (isset($_COOKIE["COLOR_ID"])) {
         $COLOR_ID = intval($_COOKIE["COLOR_ID"]);
@@ -35,8 +41,10 @@
         setcookie("COLOR_ID", strval($COLOR_ID), COOKIE_OPTIONS);
     }
 
-    // Si se entra por primera vez a la web se guarda un cookie de TEXT_SIZE_ID 
-    // con el valor por defecto
+    /**
+     * Si se entra por primera vez a la web se guarda un cookie de TEXT_SIZE_ID
+     * con el valor por defecto
+     */
     $TEXT_SIZE_ID = 0;
     if (isset($_COOKIE["TEXT_SIZE_ID"])) {
         $TEXT_SIZE_ID = intval($_COOKIE["TEXT_SIZE_ID"]);
@@ -208,25 +216,31 @@
 
     // --- Utilidades genéricas ---
 
-    // add_page_if_exists, devuelve el parámetro de query "page" para 
-    // concatenar a un enlace, si este está definido
-    function add_page_if_exists() {
+    /**
+     * add_page_if_exists, devuelve el parámetro de query "page" para 
+     * concatenar a un enlace, si este está definido
+     */
+    function add_page_if_exists() : string {
         if (defined("REQ_PAGE")) {
             return "&page=" . REQ_PAGE;
         }
         return "";
     }
 
-    // normalize_line, devuelve el contenido de una linea sin espacios ni 
-    // salto de linea
-    function normalize_line($line) {
+    /**
+     * normalize_line, devuelve el contenido de una linea sin espacios ni 
+     * salto de linea
+     */
+    function normalize_line(string $line) : string {
         return trim(str_replace("\n", "", $line));
     }
 
-    // reduce_h1, en base a un texto html dado reduce el valor de todos los 
-    // tag <hN> en uno excepto el <h6>. El inconveniente es que los <h5> y 
-    // los <h6> quedarán al mismo nivel
-    function reduce_h1($html) {
+    /**
+     * reduce_h1, en base a un texto html dado reduce el valor de todos los
+     * tag <hN> en uno excepto el <h6>. El inconveniente es que los <h5> y
+     * los <h6> quedarán al mismo nivel
+     */
+    function reduce_h1(string $html) : string {
         $html = str_replace("h5", "h6", $html);
         $html = str_replace("h4", "h5", $html);
         $html = str_replace("h3", "h4", $html);
@@ -236,9 +250,12 @@
     }
 
     // --- Obtención de datos de las páginas ---
-    // get_filenames, obtiene los nombres de las páginas en la carpeta 
-    // especificada
-    function get_filenames($directory) {
+
+    /**
+     * get_filenames, obtiene los nombres de las páginas en la carpeta
+     * especificada
+     */
+    function get_filenames(string $directory) : array {
         $filenames = array();
         $directoryObj = opendir($directory);
         while($filename = readdir($directoryObj)) {
@@ -249,9 +266,13 @@
         return $filenames;
     }
 
-    // get_date_by_line, obtiene la fecha de un artículo en base al 
-    // comentario de la primera línea del artículo
-    function get_date_by_line($line) {
+    /**
+     * get_date_by_line, obtiene la fecha de un artículo en base al 
+     * comentario de la primera línea del artículo
+     * 
+     * @return array{DATE_W3C: non-falsy-string, datetime: non-falsy-string, year: string, month: string, day: string, hour: string, minute: string}
+     */
+    function get_date_by_line(string $line) : array {
         $line = normalize_line($line);
         $line = str_replace("<!-- ", "", $line);
         $line = str_replace(" -->", "", $line);
@@ -275,9 +296,11 @@
         ];
     }
 
-    // get_author_data_by_line, obtiene los datos del autor en base a su 
-    // alias en el comentario de la primera línea del artículo
-    function get_author_data_by_line($line) {
+    /**
+     * get_author_data_by_line, obtiene los datos del autor en base a su
+     * alias en el comentario de la primera línea del artículo
+     */
+    function get_author_data_by_line(string $line) : array {
         $line = normalize_line($line);
         $line = str_replace("<!-- ", "", $line);
         $line = str_replace(" -->", "", $line);
@@ -290,8 +313,10 @@
         return AUTHORS["a"];
     }
 
-    // get_title_by_line, obtiene el título del artículo en base a la 
-    // segunda línea de una artículo
+    /**
+     * get_title_by_line, obtiene el título del artículo en base a la
+     * segunda línea de una artículo
+     */
     function get_title_by_line($line) {
         $line = normalize_line($line);
         $line = str_replace("<h1>", "", $line);
@@ -302,8 +327,10 @@
         return htmlentities(strip_tags($line), ENT_QUOTES); 
     }
 
-    // get_page_info, obtiene en formato diccionario el nombre del archivo, 
-    // fecha, autor y título de un artículo
+    /**
+     * get_page_info, obtiene en formato diccionario el nombre del archivo,
+     * fecha, autor y título de un artículo
+     */
     function get_page_info($filename) {
         $filepath = DIRECTORY . $filename;
 
@@ -328,9 +355,13 @@
         ];
     }
 
-    // get_description, obtiene el contenido del primer párrafo <p></p> del 
-    // artículo y lo coloca como description del mismo
-    // TODO: optimizar (sacar de lo que se carga en el main)
+    /**
+     * get_description, obtiene el contenido del primer párrafo <p></p> del
+     * artículo y lo coloca como description del mismo
+     * 
+     * @todo optimizar (sacar de lo que se carga en el main)
+     * 
+     */
     function get_description($filepath) {
         $html = file_get_contents($filepath);
         $start = strpos($html, '<p>');
@@ -346,8 +377,11 @@
         return trim($paragraph);
     }
 
-    // get_page_img, obtiene la primera imagen mostrada en el artículo
-    // TODO: optimizar (sacar de lo que se carga en el main)
+    /**
+     * get_page_img, obtiene la primera imagen mostrada en el artículo
+     * 
+     * @todo optimizar (sacar de lo que se carga en el main)
+     */
     function get_page_img($filepath) {
         $html = file_get_contents($filepath);
         preg_match('/<img.+src=[\'"](?P<src>.+?)[\'"].*>/i', $html, $image);
@@ -357,7 +391,9 @@
         return DEF_PAGE_IMG;
     }
 
-    // get_sorted_file_info, ...
+    /**
+     * get_sorted_file_info
+     */
     function get_sorted_file_info() {
         // creamos $fileInfoArr y $datetimeArr previamente para ordenar 
         // los archivos por fecha
@@ -376,7 +412,10 @@
     }
 
     // --- Impresión de contenidos ---
-    // print_reciente, imprime la portada (las N páginas más recientes)
+
+    /**
+     * print_reciente, imprime la portada (las N páginas más recientes)
+     */
     function print_reciente() {
         $fileInfoArr = get_sorted_file_info();
 
@@ -394,8 +433,10 @@
         }
     }
 
-    // print_archive, imprime la página 'archivo', donde se listan las 
-    // páginas ordenadas por fecha DESC
+    /**
+     * print_archive, imprime la página 'archivo', donde se listan las
+     * páginas ordenadas por fecha DESC
+     */
     function print_archive() {
         $currentYear = "";
         $currentMonth = "";
@@ -427,13 +468,17 @@
         printf("<p>Hay un total de %d páginas en la web.</p>\n", count(FILENAMES));
     }
 
-    // get_page_content, todo...
+    /**
+     * get_page_content
+     */
     function get_page_content($filename) {
         return file_get_contents(DIRECTORY . $filename);
     }
 
-    // print_page, imprime la página de un artículo cuyo nombre de archivo 
-    // se pasa como parámetro
+    /**
+     * print_page, imprime la página de un artículo cuyo nombre de archivo
+     * se pasa como parámetro
+     */
     function print_page($fileContent, $fileInfo) {
         echo $fileContent . "\n";
         printf(
