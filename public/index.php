@@ -254,6 +254,8 @@
     /**
      * get_filenames, obtiene los nombres de las páginas en la carpeta
      * especificada
+     * 
+     * @return array<string>
      */
     function get_filenames(string $directory) : array {
         $filenames = array();
@@ -270,7 +272,15 @@
      * get_date_by_line, obtiene la fecha de un artículo en base al 
      * comentario de la primera línea del artículo
      * 
-     * @return array{DATE_W3C: non-falsy-string, datetime: non-falsy-string, year: string, month: string, day: string, hour: string, minute: string}
+     * @return array{
+     *  DATE_W3C: non-falsy-string,
+     *  datetime: non-falsy-string,
+     *  year: string,
+     *  month: string,
+     *  day: string,
+     *  hour: string,
+     *  minute: string
+     * }
      */
     function get_date_by_line(string $line) : array {
         $line = normalize_line($line);
@@ -299,6 +309,8 @@
     /**
      * get_author_data_by_line, obtiene los datos del autor en base a su
      * alias en el comentario de la primera línea del artículo
+     * 
+     * @return array{0: string, 1: string}
      */
     function get_author_data_by_line(string $line) : array {
         $line = normalize_line($line);
@@ -317,7 +329,7 @@
      * get_title_by_line, obtiene el título del artículo en base a la
      * segunda línea de una artículo
      */
-    function get_title_by_line($line) {
+    function get_title_by_line(string $line) : string {
         $line = normalize_line($line);
         $line = str_replace("<h1>", "", $line);
         $line = str_replace("</h1>", "", $line);
@@ -330,8 +342,21 @@
     /**
      * get_page_info, obtiene en formato diccionario el nombre del archivo,
      * fecha, autor y título de un artículo
+     * 
+     * @return array{
+     *  filename: string,
+     *  author_data: array{string, string}, 
+     *  title: string,
+     *  DATE_W3C: non-falsy-string,
+     *  datetime: non-falsy-string,
+     *  year: string,
+     *  month: string,
+     *  day: string,
+     *  hour: string,
+     *  minute: string
+     * }
      */
-    function get_page_info($filename) {
+    function get_page_info(string $filename) : array {
         $filepath = DIRECTORY . $filename;
 
         $fileObj = fopen($filepath, "r");
@@ -362,7 +387,7 @@
      * @todo optimizar (sacar de lo que se carga en el main)
      * 
      */
-    function get_description($filepath) {
+    function get_description(string $filepath) : string {
         $html = file_get_contents($filepath);
         $start = strpos($html, '<p>');
         $end = strpos($html, '</p>', $start);
@@ -382,7 +407,7 @@
      * 
      * @todo optimizar (sacar de lo que se carga en el main)
      */
-    function get_page_img($filepath) {
+    function get_page_img(string $filepath) : string {
         $html = file_get_contents($filepath);
         preg_match('/<img.+src=[\'"](?P<src>.+?)[\'"].*>/i', $html, $image);
         if (isset($image["src"])) {
@@ -393,8 +418,10 @@
 
     /**
      * get_sorted_file_info
+     * 
+     * @return array<int, array<string, array<int, string>|string>>
      */
-    function get_sorted_file_info() {
+    function get_sorted_file_info() : array {
         // creamos $fileInfoArr y $datetimeArr previamente para ordenar 
         // los archivos por fecha
         $fileInfoArr = array();
@@ -416,7 +443,7 @@
     /**
      * print_reciente, imprime la portada (las N páginas más recientes)
      */
-    function print_reciente() {
+    function print_reciente() : void {
         $fileInfoArr = get_sorted_file_info();
 
         echo "<h1>Reciente</h1>\n<hr>\n";
@@ -437,7 +464,7 @@
      * print_archive, imprime la página 'archivo', donde se listan las
      * páginas ordenadas por fecha DESC
      */
-    function print_archive() {
+    function print_archive() : void {
         $currentYear = "";
         $currentMonth = "";
 
@@ -471,15 +498,28 @@
     /**
      * get_page_content
      */
-    function get_page_content($filename) {
+    function get_page_content(string $filename) : string {
         return file_get_contents(DIRECTORY . $filename);
     }
 
     /**
      * print_page, imprime la página de un artículo cuyo nombre de archivo
      * se pasa como parámetro
+     * 
+     * @param array{
+     *  filename: string,
+     *  author_data: array{string, string}, 
+     *  title: string,
+     *  DATE_W3C: non-falsy-string,
+     *  datetime: non-falsy-string,
+     *  year: string,
+     *  month: string,
+     *  day: string,
+     *  hour: string,
+     *  minute: string
+     * } $fileInfo
      */
-    function print_page($fileContent, $fileInfo) {
+    function print_page(string $fileContent, array $fileInfo) : void {
         echo $fileContent . "\n";
         printf(
             '<p style="text-align:right;"><small><a href="index.php?page=%s" aria-label="Página del autor %s.">%s</a> - %s</small></p>' . "\n",
