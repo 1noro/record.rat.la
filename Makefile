@@ -4,7 +4,7 @@ IMAGE=record.localhost
 TAG=latest
 CONTAINER=record.localhost-container
 
-all: build up
+all: help
 
 .PHONY: build
 build:
@@ -49,6 +49,10 @@ rebuild: clean build up
 analyze:
 	docker run --rm -v $(shell pwd)/public:/app -u $(shell id -u):$(shell id -g) ghcr.io/phpstan/phpstan analyse -l 9 .
 
+.PHONY: rss-update
+rss-update:
+	@scripts/rss-update.py
+
 .PHONY: help
 help:
 	@echo "make build"
@@ -56,3 +60,4 @@ help:
 	@echo "make down"
 	@echo "make clean"
 	@echo "make analyze"
+	@echo "make rss-update"
