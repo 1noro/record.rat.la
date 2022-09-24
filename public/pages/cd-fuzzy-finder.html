@@ -1,0 +1,88 @@
+<!-- 202209241659i -->
+<h1>CD fuzzy finder</h1>
+
+<p>
+    Presento aquí mi solución personal al problema de moverse rápido por la Shell de GNU/Linux.
+</p>
+
+<h3>El problema</h3>
+
+<p>
+    Resulta que durante mis largas jornadas de trabajo, donde estoy constantemente entrando y saliendo de carpetas, he notado que moverme con el ratón por el explorador de archivos y luego hacer <em>click</em> derecho en un hueco vacío para abrir un terminal en ese directorio no es un proceso tan rápido como me gustaría. Más de una vez me he encontrado en situaciones en las que estoy recorriendo el mismo camino por cuarta o quinta vez en la misma jornada.
+</p>
+
+<p>
+    Normalmente yo no necesito entrar a los directorios desde un entorno gráfico, suelo acceder para utilizar Git en modo <em>cli</em>, gestionar archivos o abrir un proyecto entero en el editor de código de turno, con comandos como <code>nvim .</code> o <code>code .</code> los cuales me ahorran mucho tiempo ejecutándolos desde el directorio que me interesa, antes hacer el proceso inverso abriendo estos programas desde el entorno gráfico y luego navegar hasta el directorio desde el.
+</p>
+
+<h3>La solución</h3>
+
+<p>
+    Yo ya estoy muy acostumbrado a utilizar el atajo de teclado <code>Ctrl+Alt+T</code> para abrir una nueva instancia de la terminal situada en el directorio <em>home</em> de mi usuario. Y se me ocurrió que si conseguía llegar al directorio deseado lo más rápido posible desde ahí acabaría agradeciéndolo.
+</p>
+
+<p>
+    Conocía el programa <code>fzf</code> (<a href="https://github.com/junegunn/fzf" aria-label="Repositorio de fzf">enlace al repo</a>) que permite hacer una búsqueda sobre una lista de elementos que le mandes como input. Pero realmente, a pesar de el enorme potencial que tiene aún no le había encontrado una utilidad muy clara en mi <em>workflow</em>.
+</p>
+
+<p>
+    Entonces en un momento de lucidez me vino a la mente el siguiente comando.
+</p>
+
+<pre>
+cd "$(find * -type d | fzf)"
+</pre>
+
+<blockquote>
+    Nótese que es necesario haber instalado <code>fzf</code> para que funcione. He aquí la <a href="https://github.com/junegunn/fzf#installation" aria-label="Instrucciones de instalación de fzf">guía de instalación</a>.
+</blockquote>
+
+<p>
+    Lo que hace básicamente es buscar todos los directorios a partir del actual con el comando <code>find</code> y pasar el output al <code>fzf</code>, dónde nosotros buscaremos y seleccionaremos a dónde queremos ir. Después el resultado seleccionado se le pasa como argumento al comando <code>cd</code> el cual nos lleva a la dirección solicitada. Y las dobles comillas se las ponemos por si el directorio solicitado tiene alguna clase de espacio o carácter especial.
+</p>
+
+<p>
+    Y ahora que ya tenía lo que yo quería solo necesitaba que fuese accesible lo más rápido posible, por lo que se me ocurrió agregarlo como un <em>bind</em> en mi <code>~/.bashrc</code>, aunque otra opción buena habría sido agregarlo como alias, pero sin embargo creo que el <em>bind</em> es más rápido en este caso.
+</p>
+
+<p>
+    Al final quedó de esta forma para <strong>bash</strong>, en mi <code>~/.bashrc</code> agregué la siguiente línea.
+</p>
+
+<pre>
+bind '"\C-g":"cd \"$(find * -type d | fzf)\"\C-m"'
+</pre>
+
+<p>
+    Y en caso de usar <strong>zsh</strong> habría que agregar lo siguiente al <code>~/.zshrc</code>.
+</p>
+
+<pre>
+bindkey -s '^g' 'cd "$(find * -type d | fzf)"^M'
+</pre>
+
+<blockquote>
+    En mi caso <em>bindeé</em> la combinación de teclas <code>Ctrl+G</code> para ejecutar la sentencia.
+</blockquote>
+
+<h3>Posibles variaciones</h3>
+
+<p>
+    Hay que tener en cuenta que este comando ignora las carpetas ocultas a propósito porque a mi me conviene, pero si quisieras listar también esos directorios solo habría que modificar el comando <code>find</code>. Una posible solución podría ser algo como lo siguiente.
+</p>
+
+<pre>
+cd "$(find $(pwd) -type d | fzf)"
+</pre>
+
+<p>
+    Otra variante para el comando <code>find</code> podría ser la posibilidad de ignorar ciertos nombres de carpetas. Por ejemplo, en sistemas macOS no me gustaría buscar dentro del contenido de las carpetas <code>Library</code> o <code>Applications</code>, por lo que el comando quedaría de la siguiente forma.
+</p>
+
+<pre>
+cd "$(find * \( -path Library -o -path Applications -o -path opt \) -prune -o -print | fzf)"
+</pre>
+
+<blockquote>
+    He de decir que aún estoy empezando a incorporar esta nueva idea a mi día a día por lo que puede que el comando y, como consecuencia, este articulo puede que sean actualizados a medida que pase el tiempo.
+</blockquote>
