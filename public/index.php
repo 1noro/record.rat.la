@@ -706,9 +706,7 @@
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', 'UA-179041248-1', {
-                cookie_flags: 'max-age=7200;secure;samesite=none'
-            });
+            gtag('config', 'G-W3KC9CP7ZQ');
         </script>
 
         <style>
@@ -764,7 +762,7 @@
         <!-- Cosas de la NSA (en modo prueba) -->
         <!-- Google Analytics -->
         <!-- La sitúo aquí para mejorar la carga de la web -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-179041248-1"></script>
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-W3KC9CP7ZQ"></script>
     </head>
 
     <body>
