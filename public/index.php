@@ -15,8 +15,12 @@
 
     // print_r($_SERVER);
 
-    // Opciones por defecto para el almacenamiento de cookies 
-    // (86400 segundos = 1 día)
+    // --- Gestión de cookies ---
+
+    /**
+     * Opciones por defecto para el almacenamiento de cookies
+     * (86400 segundos = 1 día)
+     */
     define("COOKIE_OPTIONS", [
         "expires" => time() + (86400 * 30),
         "path" => "/",
@@ -26,8 +30,10 @@
         "samesite" => "Strict"
     ]);
 
-    // Si se entra por primera vez a la web se guarda un cookie de COLOR_ID con 
-    // el valor por defecto
+    /**
+     * Si se entra por primera vez a la web se guarda un cookie de COLOR_ID con
+     * el valor por defecto
+     */
     $COLOR_ID = 0;
     if (isset($_COOKIE["COLOR_ID"])) {
         $COLOR_ID = intval($_COOKIE["COLOR_ID"]);
@@ -35,8 +41,10 @@
         setcookie("COLOR_ID", strval($COLOR_ID), COOKIE_OPTIONS);
     }
 
-    // Si se entra por primera vez a la web se guarda un cookie de TEXT_SIZE_ID 
-    // con el valor por defecto
+    /**
+     * Si se entra por primera vez a la web se guarda un cookie de TEXT_SIZE_ID
+     * con el valor por defecto
+     */
     $TEXT_SIZE_ID = 0;
     if (isset($_COOKIE["TEXT_SIZE_ID"])) {
         $TEXT_SIZE_ID = intval($_COOKIE["TEXT_SIZE_ID"]);
@@ -180,11 +188,11 @@
         // Gruvbox
         [
             "background" => "#282828",
-            "text" => "#ebdbb2",
-            "title" => "#ebdbb2",
-            "link" => "#b8bb26",
-            "link_visited" => "#98971a",
-            "link_active" => "#b8bb26",
+            "text" => "#dfdbb2", // dfdbb2, ebdbb2
+            "title" => "#dfdbb2", // dfdbb2, ebdbb2
+            "link" => "#bd859b", // bd859b, b8bb26
+            "link_visited" => "#a65b79", // a65b79, 98971a
+            "link_active" => "#bd859b", // bd859b, b8bb26
             "code_background" => "#3c3836",
             "code_text" => "#d5c4a1",
             "header_img_color" => "B"
@@ -208,25 +216,31 @@
 
     // --- Utilidades genéricas ---
 
-    // add_page_if_exists, devuelve el parámetro de query "page" para 
-    // concatenar a un enlace, si este está definido
-    function add_page_if_exists() {
+    /**
+     * add_page_if_exists, devuelve el parámetro de query "page" para 
+     * concatenar a un enlace, si este está definido
+     */
+    function add_page_if_exists() : string {
         if (defined("REQ_PAGE")) {
             return "&page=" . REQ_PAGE;
         }
         return "";
     }
 
-    // normalize_line, devuelve el contenido de una linea sin espacios ni 
-    // salto de linea
-    function normalize_line($line) {
+    /**
+     * normalize_line, devuelve el contenido de una linea sin espacios ni 
+     * salto de linea
+     */
+    function normalize_line(string $line) : string {
         return trim(str_replace("\n", "", $line));
     }
 
-    // reduce_h1, en base a un texto html dado reduce el valor de todos los 
-    // tag <hN> en uno excepto el <h6>. El inconveniente es que los <h5> y 
-    // los <h6> quedarán al mismo nivel
-    function reduce_h1($html) {
+    /**
+     * reduce_h1, en base a un texto html dado reduce el valor de todos los
+     * tag <hN> en uno excepto el <h6>. El inconveniente es que los <h5> y
+     * los <h6> quedarán al mismo nivel
+     */
+    function reduce_h1(string $html) : string {
         $html = str_replace("h5", "h6", $html);
         $html = str_replace("h4", "h5", $html);
         $html = str_replace("h3", "h4", $html);
@@ -236,11 +250,16 @@
     }
 
     // --- Obtención de datos de las páginas ---
-    // get_filenames, obtiene los nombres de las páginas en la carpeta 
-    // especificada
-    function get_filenames($directory) {
+
+    /**
+     * get_filenames, obtiene los nombres de las páginas en la carpeta
+     * especificada
+     * 
+     * @return array<string>
+     */
+    function get_filenames(string $directory) : array {
         $filenames = array();
-        $directoryObj = opendir($directory);
+        $directoryObj = opendir($directory) ?: null;
         while($filename = readdir($directoryObj)) {
             if(($filename != ".") && ($filename != "..")) {
                 $filenames[] = $filename; // put in array
@@ -249,9 +268,21 @@
         return $filenames;
     }
 
-    // get_date_by_line, obtiene la fecha de un artículo en base al 
-    // comentario de la primera línea del artículo
-    function get_date_by_line($line) {
+    /**
+     * get_date_by_line, obtiene la fecha de un artículo en base al 
+     * comentario de la primera línea del artículo
+     * 
+     * @return array{
+     *  DATE_W3C: non-falsy-string,
+     *  datetime: non-falsy-string,
+     *  year: string,
+     *  month: string,
+     *  day: string,
+     *  hour: string,
+     *  minute: string
+     * }
+     */
+    function get_date_by_line(string $line) : array {
         $line = normalize_line($line);
         $line = str_replace("<!-- ", "", $line);
         $line = str_replace(" -->", "", $line);
@@ -275,9 +306,13 @@
         ];
     }
 
-    // get_author_data_by_line, obtiene los datos del autor en base a su 
-    // alias en el comentario de la primera línea del artículo
-    function get_author_data_by_line($line) {
+    /**
+     * get_author_data_by_line, obtiene los datos del autor en base a su
+     * alias en el comentario de la primera línea del artículo
+     * 
+     * @return array{0: string, 1: string}
+     */
+    function get_author_data_by_line(string $line) : array {
         $line = normalize_line($line);
         $line = str_replace("<!-- ", "", $line);
         $line = str_replace(" -->", "", $line);
@@ -290,9 +325,11 @@
         return AUTHORS["a"];
     }
 
-    // get_title_by_line, obtiene el título del artículo en base a la 
-    // segunda línea de una artículo
-    function get_title_by_line($line) {
+    /**
+     * get_title_by_line, obtiene el título del artículo en base a la
+     * segunda línea de una artículo
+     */
+    function get_title_by_line(string $line) : string {
         $line = normalize_line($line);
         $line = str_replace("<h1>", "", $line);
         $line = str_replace("</h1>", "", $line);
@@ -302,15 +339,35 @@
         return htmlentities(strip_tags($line), ENT_QUOTES); 
     }
 
-    // get_page_info, obtiene en formato diccionario el nombre del archivo, 
-    // fecha, autor y título de un artículo
-    function get_page_info($filename) {
+    /**
+     * get_page_info, obtiene en formato diccionario el nombre del archivo,
+     * fecha, autor y título de un artículo
+     * 
+     * @return array{
+     *  filename: string,
+     *  author_data: array{string, string}, 
+     *  title: string,
+     *  DATE_W3C: non-falsy-string,
+     *  datetime: non-falsy-string,
+     *  year: string,
+     *  month: string,
+     *  day: string,
+     *  hour: string,
+     *  minute: string
+     * }
+     */
+    function get_page_info(string $filename) : array {
         $filepath = DIRECTORY . $filename;
 
+        $line1 = "<!-- 202009180000a -->"; // Default value for line1
+        $line2 = "<h1>Default title</h1>"; // Default value for line2
+
         $fileObj = fopen($filepath, "r");
-        $line1 = fgets($fileObj); // leemos la primera linea
-        $line2 = fgets($fileObj); // leemos la segunda linea
-        fclose($fileObj);
+        if (is_resource($fileObj)) {
+            $line1 = fgets($fileObj) ?: $line1; // leemos la primera linea
+            $line2 = fgets($fileObj) ?: $line2; // leemos la segunda linea
+            fclose($fileObj);
+        }
 
         $datetimeInfo = get_date_by_line($line1);
 
@@ -328,28 +385,44 @@
         ];
     }
 
-    // get_description, obtiene el contenido del primer párrafo <p></p> del 
-    // artículo y lo coloca como description del mismo
-    // TODO: optimizar (sacar de lo que se carga en el main)
-    function get_description($filepath) {
-        $html = file_get_contents($filepath);
-        $start = strpos($html, '<p>');
+    /**
+     * get_description, obtiene el contenido del primer párrafo <p></p> del
+     * artículo y lo coloca como description del mismo
+     * 
+     * @todo optimizar (sacar de lo que se carga en el main)
+     * 
+     */
+    function get_description(string $filepath) : string {
+        $defaultText = "Default description";
+
+        $html = file_get_contents($filepath) ?: "<p>$defaultText</p>";
+
+        $start = strpos($html, '<p>') ?: 0;
         $end = strpos($html, '</p>', $start);
         $paragraph = strip_tags(substr($html, $start, $end - $start + 4));
         $paragraph = str_replace("\n", "", $paragraph);
         // quitamos el exceso de espacios en blanco delante, atrás y en el medio
         $paragraph = preg_replace('/\s+/', ' ', trim($paragraph));
+
+        if ($paragraph == null) {
+            $paragraph = $defaultText;
+        }
+        
         // si la descripción es mayor a 160 caracteres es malo para el SEO
         if (strlen($paragraph) > 160) {
             $paragraph = mb_substr($paragraph, 0, 160 - 3) . "...";
         }
+
         return trim($paragraph);
     }
 
-    // get_page_img, obtiene la primera imagen mostrada en el artículo
-    // TODO: optimizar (sacar de lo que se carga en el main)
-    function get_page_img($filepath) {
-        $html = file_get_contents($filepath);
+    /**
+     * get_page_img, obtiene la primera imagen mostrada en el artículo
+     * 
+     * @todo optimizar (sacar de lo que se carga en el main)
+     */
+    function get_page_img(string $filepath) : string {
+        $html = file_get_contents($filepath) ?: "";
         preg_match('/<img.+src=[\'"](?P<src>.+?)[\'"].*>/i', $html, $image);
         if (isset($image["src"])) {
             return $image["src"];
@@ -357,8 +430,12 @@
         return DEF_PAGE_IMG;
     }
 
-    // get_sorted_file_info, ...
-    function get_sorted_file_info() {
+    /**
+     * get_sorted_file_info
+     * 
+     * @return array<int, array<string, array<int, string>|string>>
+     */
+    function get_sorted_file_info() : array {
         // creamos $fileInfoArr y $datetimeArr previamente para ordenar 
         // los archivos por fecha
         $fileInfoArr = array();
@@ -376,17 +453,25 @@
     }
 
     // --- Impresión de contenidos ---
-    // print_reciente, imprime la portada (las N páginas más recientes)
-    function print_reciente() {
+
+    /**
+     * print_reciente, imprime la portada (las N páginas más recientes)
+     */
+    function print_reciente() : void {
         $fileInfoArr = get_sorted_file_info();
 
         echo "<h1>Reciente</h1>\n<hr>\n";
 
         $number = 1;
         foreach($fileInfoArr as $fileInfo) {
-            $page = $fileInfo["filename"];
+            $filename = $fileInfo["filename"];
+            
             echo "<article>\n";
-            print_page(reduce_h1(get_page_content($page)), get_page_info($page));
+            if (is_string($filename)) {
+                print_page(reduce_h1(get_page_content($filename)), get_page_info($filename));
+            } else {
+                echo "No page\n";
+            }
             echo "</article>\n";
             if ($number >= PAGES_TO_SHOW) {break;}
             echo "<hr>\n";
@@ -394,9 +479,11 @@
         }
     }
 
-    // print_archive, imprime la página 'archivo', donde se listan las 
-    // páginas ordenadas por fecha DESC
-    function print_archive() {
+    /**
+     * print_archive, imprime la página 'archivo', donde se listan las
+     * páginas ordenadas por fecha DESC
+     */
+    function print_archive() : void {
         $currentYear = "";
         $currentMonth = "";
 
@@ -405,36 +492,67 @@
         echo "<h1>Archivo</h1>\n";
 
         foreach($fileInfoArr as $fileInfo) {
-            if ($currentYear != $fileInfo["year"]) {
-                $currentYear = $fileInfo["year"];
-                printf("<h2>%s</h2>\n<hr>\n", $fileInfo["year"]);
+            if (is_string($fileInfo["year"])){
+                if ($currentYear != $fileInfo["year"]) {
+                    $currentYear = $fileInfo["year"];
+                    printf("<h2>%s</h2>\n<hr>\n", $fileInfo["year"]);
+                }
+            } else {
+                echo "<h2>No year</h2>\n<hr>\n";
             }
             if ($currentMonth != $fileInfo["month"]) {
                 $currentMonth = $fileInfo["month"];
                 printf("<h3>%s</h3>\n", MONTHS[intval($fileInfo["month"]) - 1]);
             }
-            printf(
-                '<blockquote>%s %s:%s - <a href="index.php?page=%s">%s</a> - %s</blockquote>' . "\n",
-                $fileInfo["day"],
-                $fileInfo["hour"],
-                $fileInfo["minute"],
-                $fileInfo["filename"],
-                $fileInfo["title"],
-                $fileInfo["author_data"][0]
-            );
+            if (
+                is_string($fileInfo["day"]) &&
+                is_string($fileInfo["hour"]) &&
+                is_string($fileInfo["minute"]) &&
+                is_string($fileInfo["filename"]) &&
+                is_string($fileInfo["title"])
+            ) {
+                printf(
+                    '<blockquote>%s %s:%s - <a href="index.php?page=%s">%s</a> - %s</blockquote>' . "\n",
+                    $fileInfo["day"],
+                    $fileInfo["hour"],
+                    $fileInfo["minute"],
+                    $fileInfo["filename"],
+                    $fileInfo["title"],
+                    $fileInfo["author_data"][0]
+                );
+            } else {
+                echo "<blockquote>No page</blockquote>\n";
+            }
         }
 
         printf("<p>Hay un total de %d páginas en la web.</p>\n", count(FILENAMES));
     }
 
-    // get_page_content, todo...
-    function get_page_content($filename) {
-        return file_get_contents(DIRECTORY . $filename);
+    /**
+     * get_page_content
+     */
+    function get_page_content(string $filename) : string {
+        return file_get_contents(DIRECTORY . $filename) ?: "Empty page";
     }
 
-    // print_page, imprime la página de un artículo cuyo nombre de archivo 
-    // se pasa como parámetro
-    function print_page($fileContent, $fileInfo) {
+    /**
+     * print_page, imprime la página de un artículo cuyo nombre de archivo
+     * se pasa como parámetro
+     * 
+     * @param array{
+     *  filename: string,
+     *  author_data: array{string, string}, 
+     *  title: string,
+     *  DATE_W3C: non-falsy-string,
+     *  datetime: non-falsy-string,
+     *  year: string,
+     *  month: string,
+     *  day: string,
+     *  hour: string,
+     *  minute: string
+     * } $fileInfo
+     */
+    function print_page(string $fileContent, array $fileInfo) : void {
         echo $fileContent . "\n";
         printf(
             '<p style="text-align:right;"><small><a href="index.php?page=%s" aria-label="Página del autor %s.">%s</a> - %s</small></p>' . "\n",
@@ -631,6 +749,7 @@
             }
 
             h1, h2, h3, h4, h5, h6 {color: <?= $COLORS[$COLOR_ID]["title"] ?>;}
+            hr {border: 1px solid <?= $COLORS[$COLOR_ID]["text"] ?>;}
             img {width: 100%;} /* todas las imágenes menos la del header */
             img.half {width: 50%; display: block; margin: 0 auto;}
             pre {padding: 10px; overflow: auto;}
