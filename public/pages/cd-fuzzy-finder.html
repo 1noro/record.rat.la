@@ -5,7 +5,7 @@
     Presento aquí mi solución personal al problema de moverse rápido por la Shell de GNU/Linux.
 </p>
 
-<h3>El problema</h3>
+<h2>El problema</h2>
 
 <p>
     Resulta que durante mis largas jornadas de trabajo, donde estoy constantemente entrando y saliendo de carpetas, he notado que moverme con el ratón por el explorador de archivos y luego hacer <em>click</em> derecho en un hueco vacío para abrir un terminal en ese directorio no es un proceso tan rápido como me gustaría. Más de una vez me he encontrado en situaciones en las que estoy recorriendo el mismo camino por cuarta o quinta vez en la misma jornada.
@@ -15,7 +15,7 @@
     Normalmente yo no necesito entrar a los directorios desde un entorno gráfico, suelo acceder para utilizar Git en modo <em>cli</em>, gestionar archivos o abrir un proyecto entero en el editor de código de turno, con comandos como <code>nvim .</code> o <code>code .</code> los cuales me ahorran mucho tiempo ejecutándolos desde el directorio que me interesa, antes hacer el proceso inverso abriendo estos programas desde el entorno gráfico y luego navegar hasta el directorio desde el.
 </p>
 
-<h3>La solución</h3>
+<h2>La solución</h2>
 
 <p>
     Yo ya estoy muy acostumbrado a utilizar el atajo de teclado <code>Ctrl+Alt+T</code> para abrir una nueva instancia de la terminal situada en el directorio <em>home</em> de mi usuario. Y se me ocurrió que si conseguía llegar al directorio deseado lo más rápido posible desde ahí acabaría agradeciéndolo.
@@ -65,7 +65,7 @@ bindkey -s '^g' 'cd "$(find * -type d | fzf)"^M'
     En mi caso <em>bindeé</em> la combinación de teclas <code>Ctrl+G</code> para ejecutar la sentencia.
 </blockquote>
 
-<h3>Posibles variaciones</h3>
+<h2>Posibles variaciones</h2>
 
 <p>
     Hay que tener en cuenta que este comando ignora las carpetas ocultas a propósito porque a mi me conviene, pero si quisieras listar también esos directorios solo habría que modificar el comando <code>find</code>. Una posible solución podría ser algo como lo siguiente.
