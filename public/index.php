@@ -188,11 +188,11 @@
         // Gruvbox
         [
             "background" => "#282828",
-            "text" => "#ebdbb2",
-            "title" => "#ebdbb2",
-            "link" => "#b8bb26",
-            "link_visited" => "#98971a",
-            "link_active" => "#b8bb26",
+            "text" => "#dfdbb2", // dfdbb2, ebdbb2
+            "title" => "#dfdbb2", // dfdbb2, ebdbb2
+            "link" => "#bd859b", // bd859b, b8bb26
+            "link_visited" => "#a65b79", // a65b79, 98971a
+            "link_active" => "#bd859b", // bd859b, b8bb26
             "code_background" => "#3c3836",
             "code_text" => "#d5c4a1",
             "header_img_color" => "B"
@@ -396,7 +396,7 @@
         $defaultText = "Default description";
 
         $html = file_get_contents($filepath) ?: "<p>$defaultText</p>";
-        
+
         $start = strpos($html, '<p>') ?: 0;
         $end = strpos($html, '</p>', $start);
         $paragraph = strip_tags(substr($html, $start, $end - $start + 4));
@@ -749,6 +749,7 @@
             }
 
             h1, h2, h3, h4, h5, h6 {color: <?= $COLORS[$COLOR_ID]["title"] ?>;}
+            hr {border: 1px solid <?= $COLORS[$COLOR_ID]["text"] ?>;}
             img {width: 100%;} /* todas las imágenes menos la del header */
             img.half {width: 50%; display: block; margin: 0 auto;}
             pre {padding: 10px; overflow: auto;}
