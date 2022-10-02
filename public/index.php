@@ -640,17 +640,17 @@
 <!DOCTYPE html>
 <html lang="es">
     <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <title><?= $TITLE . DEF_TITLE_SUFFIX ?></title>
 
-        <!-- -- LINK -- -->
+        <!-- ## LINK ## -->
         <!-- Para decirle al navegador que tengo un favicon que no es .ico -->
         <link rel="icon" href="favicon.webp" type="image/webp" sizes="50x50">
 
         <!-- Para decirle a google que la URL original es esta, y no la que se está usando -->
-        <link rel="canonical" href="<?= $CANONICAL_URL ?>" />
+        <link rel="canonical" href="<?= $CANONICAL_URL ?>">
 
         <!-- Para decirle al navegador que tengo RSS -->
         <link rel="alternate" type="application/rss+xml" href="rss.xml" title="RSS de record.rat.la">
@@ -659,45 +659,45 @@
         <link rel="preconnect dns-prefetch" href="https://www.googletagmanager.com">
         <link rel="preconnect dns-prefetch" href="https://www.google-analytics.com">
 
-        <!-- -- META -- -->
+        <!-- ## META ## -->
         <!-- Revisar: https://css-tricks.com/essential-meta-tags-social-media/ -->
         <meta name="title" content="<?= $TITLE ?>">
-        <meta name="description" content="<?= $DESCRIPTION ?>" />
-        <meta name="author" content="Inoro" /> <!-- This site was made by https://github.com/1noro -->
+        <meta name="description" content="<?= $DESCRIPTION ?>">
+        <meta name="author" content="Inoro"> <!-- This site was made by https://github.com/1noro -->
         <meta name="theme-color" content="#000000"> <!-- Para que el navegador sepa que color debe usar en el marco -->
 
         <!-- OG -->
-        <meta property="og:type" content="<?= $OG_TYPE ?>" />
+        <meta property="og:type" content="<?= $OG_TYPE ?>">
 <?php if ($OG_TYPE == "article") { ?>
-        <meta property="article:author" content="<?= $URL ?>/index.php?page=<?= $ARTICLE_AUTHOR ?>" />
-        <meta property="article:published_time" content="<?= $PUBLISHED ?>" />
-        <!-- <meta property="article:modified_time" content="2020-09-21T07:23:04+00:00" /> -->
+        <meta property="article:author" content="<?= $URL ?>/index.php?page=<?= $ARTICLE_AUTHOR ?>">
+        <meta property="article:published_time" content="<?= $PUBLISHED ?>">
+        <!-- <meta property="article:modified_time" content="2020-09-21T07:23:04+00:00"> -->
 <?php } ?>
-        <meta property="og:url" content="<?= $CANONICAL_URL ?>" />
-        <meta property="og:site_name" content="record.rat.la" />
-        <meta property="og:locale" content="es_ES" />
-        <meta property="og:title" content="<?= $TITLE ?>" />
-        <meta property="og:description" content="<?= $DESCRIPTION ?>" />
-        <meta property="og:image" content="<?= $URL . '/' . $PAGE_IMG ?>" />
-        <meta property="og:image:alt" content="Portada del artículo." />
-        <meta property="og:image:type" content="<?= mime_content_type($PAGE_IMG) ?>" />
-        <!-- <meta property="og:image:width" content="1200" /> -->
-        <!-- <meta property="og:image:height" content="1200" /> -->
+        <meta property="og:url" content="<?= $CANONICAL_URL ?>">
+        <meta property="og:site_name" content="record.rat.la">
+        <meta property="og:locale" content="es_ES">
+        <meta property="og:title" content="<?= $TITLE ?>">
+        <meta property="og:description" content="<?= $DESCRIPTION ?>">
+        <meta property="og:image" content="<?= $URL . '/' . $PAGE_IMG ?>">
+        <meta property="og:image:alt" content="Portada del artículo.">
+        <meta property="og:image:type" content="<?= mime_content_type($PAGE_IMG) ?>">
+        <!-- <meta property="og:image:width" content="1200"> -->
+        <!-- <meta property="og:image:height" content="1200"> -->
 
         <!-- Twitter -->
-        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:card" content="summary_large_image">
         <meta property="twitter:url" content="<?= $CANONICAL_URL ?>">
         <meta property="twitter:title" content="<?= $TITLE ?>">
         <meta property="twitter:description" content="<?= $DESCRIPTION ?>">
         <meta property="twitter:image" content="<?= $URL . '/' . $PAGE_IMG ?>">
-        <!-- <meta name="twitter:image:src" content="<?= $URL . '/' . $PAGE_IMG ?>" /> -->
-        <!-- <meta name="twitter:creator" content="@example" /> -->
-        <!-- <meta name="twitter:site" content="cuenta_del_sitio" /> -->
+        <!-- <meta name="twitter:image:src" content="<?= $URL . '/' . $PAGE_IMG ?>"> -->
+        <!-- <meta name="twitter:creator" content="@example"> -->
+        <!-- <meta name="twitter:site" content="cuenta_del_sitio"> -->
 
         <!-- Scraping -->
-        <meta name="robots" content="index, follow" />
-        <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
-        <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+        <meta name="robots" content="index, follow">
+        <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+        <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
         
         <!-- Cosas de la NSA (en modo prueba) -->
         <!-- Google Analytics -->
