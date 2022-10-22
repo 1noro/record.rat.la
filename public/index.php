@@ -647,7 +647,7 @@
 
         <!-- ## LINK ## -->
         <!-- Para decirle al navegador que tengo un favicon que no es .ico -->
-        <link rel="icon" href="favicon.webp" type="image/webp" sizes="50x50">
+        <!-- <link rel="icon" href="favicon.webp" type="image/webp" sizes="50x50"> -->
 
         <!-- Para decirle a google que la URL original es esta, y no la que se está usando -->
         <link rel="canonical" href="<?= $CANONICAL_URL ?>">
@@ -656,8 +656,8 @@
         <link rel="alternate" type="application/rss+xml" href="rss.xml" title="RSS de record.rat.la">
 
         <!-- Avisamos al navegador de que se prepare para hacer una petición a los siguientes dominios -->
-        <link rel="preconnect dns-prefetch" href="https://www.googletagmanager.com">
-        <link rel="preconnect dns-prefetch" href="https://www.google-analytics.com">
+        <link rel="preconnect" href="https://www.googletagmanager.com/gtag/js?id=G-W3KC9CP7ZQ">
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com/gtag/js?id=G-W3KC9CP7ZQ">
 
         <!-- ## META ## -->
         <!-- Revisar: https://css-tricks.com/essential-meta-tags-social-media/ -->
