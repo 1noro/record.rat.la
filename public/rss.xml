@@ -13,6 +13,51 @@
         </image>
 
 <item>
+    <title>Emocionado por crear un link blog</title>
+    <guid>https://record.rat.la/index.php?page=emocionado-link-blog.html</guid>
+    <link>https://record.rat.la/index.php?page=emocionado-link-blog.html</link>
+    <!--<author>Inoro</author>-->
+    <pubDate>Sat, 12 Nov 2022 21:11:00 +0100</pubDate>
+    <description>
+<![CDATA[<!-- 202211122111i -->
+<h1>Emocionado por crear un <em>link blog</em></h1>
+
+<p>
+    Últimamente sentía cierta presión porque tenía muchas ganas de retomar el blog pero no sabía con qué. Sin dar nunca este sitio por muerto, sentía que la cosa no avanzaba al ritmo que me gustaría. Ando bastante atareado (más bien, muy metido en la rutina) y tengo poco tiempo para pararme un rato y prensar. Pero creo que he encontrado algo que saciará, al menos en principio, mi sed de publicaciones.
+</p>
+
+<p>
+    El miércoles, a raíz de la compra de Twitter por parte de Elon Musk, estuve leyendo sobre la desbandada de pajarillos que han huido despavoridos buscando un nuevo nido. Y esto me llevó a <a href="">Mastodon</a>, una red social al estilo Twitter pero descentralizada y construida sobre software libre. Yo ya conocía este proyecto, pero nunca me había atrevido a dar el paso de registrarme. Pero esta vez es diferente, esta vez estaba lo suficientemente desocupado como para darle una oportunidad.
+</p>
+
+<p>
+    Empecé por crearme una cuenta en el servidor <a href="https://tilde.zone">tilde.zone</a> y esto me abrió la puerta a un montón de conocimiento nuevo que me ha tenido entretenido por un par de días. He caído en las fauces del <em>small internet</em> (me he defraudado a mi mismo por no haberlo conocido antes) y he descubierto lo que es <a href="">Gemini</a> y <a href="">Gopher</a>, he investigado un poco y ya estoy deseoso de crearme mi propia <em>Gemini capsule</em> en mi servidor. Me descargué un par de clientes de Gemini (<a href="https://ranfdev.com/projects/geopard/">geopard</a> y <a href="https://git.sr.ht/~julienxx/asuka">asuka</a>) y estuve dando una vuelta de reconocimiento por la zona.
+</p>
+
+<p>
+    Muy al principio ya encontré una cápsula que me llamó la atención, se trata de <a href="gemini://carcosa.net">gemini://carcosa.net</a>. Una cápsula propiedad de Jason F. McBrayer (<a href="https://jfm.carcosa.net/">jfm.carcosa.net</a>) desde la cual accedí a su blog personal y... ¡vi la luz! En su blog personal Jason tiene dos secciones principales: el <a href="https://jfm.carcosa.net/blog/">blog en sí</a>, por un lado y un <strong><a href="https://jfm.carcosa.net/links/">link blog</a></strong>, un lugar donde va redactando en un post diario (los días que le cuadran) una lista de links a recursos útiles que le llamaron la atención, en palabras de el mismo:
+</p>
+
+<blockquote>
+    <em>&laquo;Esta es una lista diaria (?) de enlaces que me han parecido interesantes. Algunos son noticias, otros son información oportuna y otros son cosas que debería haber sabido hace mucho tiempo, pero que sólo ahora me han llamado la atención&raquo;</em>
+</blockquote>
+
+<p>
+    Y así es como ví la luz. Ahora el siguiente paso es que le de mi toque personal a la idea y piense en cómo integrarla en esta web ¿o, quizás cree una web separada? No lo se... lo único que tengo en mente ahora mismo es que quiero crearme mi propia cápsula en la geminisfera y, por otra parte, quiero tener un link blog funcionando cuanto antes.
+</p>
+
+<p>
+    Pero para eso, antes me gustaría darle una revisión al estilo visual de esta supuesta nueva sección (o web). Y se me ha ocurrido una posible funcionalidad que involucra el email para publicar lo más rápido posible en esta nueva plataforma (os dejo con la intriga, jeje).
+</p>
+
+<blockquote>
+    P.D. –Poco se comenta que la web de Jason F. McBrayer y esta tienen ambas la misma temática, y no me refiero a la temática tecnológica, sino a la ambientación <em>Lovecraftiana</em> 🐙 que envuelve a ambas–
+</blockquote>
+]]>
+    </description>
+</item>
+
+<item>
     <title>CD fuzzy finder</title>
     <guid>https://record.rat.la/index.php?page=cd-fuzzy-finder.html</guid>
     <link>https://record.rat.la/index.php?page=cd-fuzzy-finder.html</link>
@@ -26,7 +71,7 @@
     Presento aquí mi solución personal al problema de moverse rápido por la Shell de GNU/Linux.
 </p>
 
-<h3>El problema</h3>
+<h2>El problema</h2>
 
 <p>
     Resulta que durante mis largas jornadas de trabajo, donde estoy constantemente entrando y saliendo de carpetas, he notado que moverme con el ratón por el explorador de archivos y luego hacer <em>click</em> derecho en un hueco vacío para abrir un terminal en ese directorio no es un proceso tan rápido como me gustaría. Más de una vez me he encontrado en situaciones en las que estoy recorriendo el mismo camino por cuarta o quinta vez en la misma jornada.
@@ -36,7 +81,7 @@
     Normalmente yo no necesito entrar a los directorios desde un entorno gráfico, suelo acceder para utilizar Git en modo <em>cli</em>, gestionar archivos o abrir un proyecto entero en el editor de código de turno, con comandos como <code>nvim .</code> o <code>code .</code> los cuales me ahorran mucho tiempo ejecutándolos desde el directorio que me interesa, antes hacer el proceso inverso abriendo estos programas desde el entorno gráfico y luego navegar hasta el directorio desde el.
 </p>
 
-<h3>La solución</h3>
+<h2>La solución</h2>
 
 <p>
     Yo ya estoy muy acostumbrado a utilizar el atajo de teclado <code>Ctrl+Alt+T</code> para abrir una nueva instancia de la terminal situada en el directorio <em>home</em> de mi usuario. Y se me ocurrió que si conseguía llegar al directorio deseado lo más rápido posible desde ahí acabaría agradeciéndolo.
@@ -86,7 +131,7 @@ bindkey -s '^g' 'cd "$(find * -type d | fzf)"^M'
     En mi caso <em>bindeé</em> la combinación de teclas <code>Ctrl+G</code> para ejecutar la sentencia.
 </blockquote>
 
-<h3>Posibles variaciones</h3>
+<h2>Posibles variaciones</h2>
 
 <p>
     Hay que tener en cuenta que este comando ignora las carpetas ocultas a propósito porque a mi me conviene, pero si quisieras listar también esos directorios solo habría que modificar el comando <code>find</code>. Una posible solución podría ser algo como lo siguiente.
@@ -1126,220 +1171,6 @@ sudo gitlab-ctl reconfigure
     <li><a href="https://about.gitlab.com/install/#ubuntu">Gitlab Official Linux package (recommended installation)</a></li>
     <li><a href="https://docs.gitlab.com/omnibus/settings/nginx.html">Gitlab NGINX settings</a></li>
 </ul>
-]]>
-    </description>
-</item>
-
-<item>
-    <title>Solución a algunas series numéricas en Java y Python</title>
-    <guid>https://record.rat.la/index.php?page=solucion-series-numericas-java-python.html</guid>
-    <link>https://record.rat.la/index.php?page=solucion-series-numericas-java-python.html</link>
-    <!--<author>Inoro</author>-->
-    <pubDate>Sun, 04 Oct 2020 11:36:00 +0200</pubDate>
-    <description>
-<![CDATA[<!-- 202010041136i -->
-<h1>Solución a algunas series numéricas en Java y Python</h1>
-
-<p>
-    Lista del código que calcula las diferentes series numéricas propuestas en el Ejercicio evaluable 1 de la asignatura Programación Multimedia y Dispositivos Móviles.
-</p>
-
-<blockquote>
-    <em>Voy a tomar como regla que todas las listas serán de 100 elementos como máximo.</em>
-</blockquote>
-
-<h2>1. La serie de Fibonacci</h2>
-
-<p>Mi explicación: Empezando con <samp>[0, 1]</samp>, el siguiente se calcula con la suma de los dos anteriores.</p>
-
-<h3>Fibonacci en Java</h3>
-
-<pre>
-package ej1pmydm;
-
-public class Ej1pmydm {
-    public static void main(String[] args) {
-        double lista[] = new double[100];
-        lista[0] = 0;
-        lista[1] = 1;
-        int i = 1;
-        while (i < lista.length - 1) {
-            lista[i + 1] = lista[i - 1] + lista[i];
-            i++;
-        }
-        for (i = 0; i < lista.length; i++) {
-            System.out.println(lista[i]);
-        }
-    }
-}
-</pre>
-
-<h3>Fibonacci en Python</h3>
-
-<pre>
-lista = [0, 1]
-while len(lista) < 100:
-    lista.append(lista[-2] + lista[-1])
-print(lista)
-</pre>
-
-<h2>2. La serie de Tribonacci</h2>
-
-<p>Mi explicación: Empezando con <samp>[1, 1, 2]</samp>, el siguiente se calcula con la suma de los tres anteriores.</p>
-
-<h3>Tribonacci en Java</h3>
-
-<pre>
-package ej2pmydm;
-
-public class Ej2pmydm {
-    public static void main(String[] args) {
-        double lista[] = new double[100];
-        lista[0] = 1;
-        lista[1] = 1;
-        lista[2] = 2;
-        int i = 2;
-        while (i < lista.length - 1) {
-            lista[i + 1] = lista[i - 2] + lista[i - 1] + lista[i];
-            i++;
-        }
-        for (i = 0; i < lista.length; i++) {
-            System.out.println(lista[i]);
-        }
-    }
-}
-</pre>
-
-<h3>Tribonacci en Python</h3>
-
-<pre>
-lista = [1, 1, 2]
-while len(lista) < 100:
-    lista.append(lista[-3] + lista[-2] + lista[-1])
-print(lista)
-</pre>
-
-<h2>3. La serie en la cual si el anterior es par se suman los tres anteriores y, si es impar, solo los dos anteriores</h2>
-
-<p>
-    Mi explicación: Empezamos con la lista <samp>[1, 1]</samp>.
-    <ul>
-        <li>Si el último es impar, se suman los 2 últimos para calcular el siguiente.</li>
-        <li>Si el último es par, se suman los 3 últimos para calcular el siguiente.</li>
-    </ul>
-</p>
-
-<h3>La serie anterior en Java</h3>
-
-<pre>
-package ej3pmydm;
-
-public class Ej3pmydm {
-    public static void main(String[] args) {
-        double lista[] = new double[100];
-        lista[0] = 1;
-        lista[1] = 1;
-        int i = 1;
-        while (i < lista.length - 1) {
-            if (lista[i] % 2 != 0) {
-                lista[i + 1] = lista[i - 1] + lista[i];
-            } else {
-                lista[i + 1] = lista[i - 2] + lista[i - 1] + lista[i];
-            }
-            i++;
-        }
-        for (i = 0; i < lista.length; i++) {
-            System.out.println(lista[i]);
-        }
-    }
-}
-</pre>
-
-<h3>La serie anterior en Python</h3>
-
-<pre>
-lista = [1, 1]
-while len(lista) < 100:
-    if lista[-1] % 2 != 0:
-        lista.append(lista[-1] + lista[-2])
-    else:
-        lista.append(lista[-1] + lista[-2] + lista[-3])
-print(lista)
-</pre>
-
-<h2>4. La serie de los cuadrados perfectos escritos al revés</h2>
-
-<p>Tengo dudas, no sé si se refiere a esto:</p>
-
-<h3>Los cuadrados perfectos al revés en Java</h3>
-
-<pre>
-package ej4pmydm;
-
-public class Ej4pmydm {
-    public static void main(String[] args) {
-        int lista[] = new int[100];
-        int numero = 100;
-        int i = 0;
-        while (i < lista.length) {
-            lista[i] = numero * numero;
-            numero--;
-            i++;
-        }
-        for (i = 0; i < lista.length; i++) {
-            System.out.println(lista[i]);
-        }
-    }
-}
-</pre>
-
-<h3>Los cuadrados perfectos al revés en Python</h3>
-
-<pre>
-lista = []
-numero = 100
-while numero > 0:
-    lista.append(numero * numero)
-    numero -= 1
-print(lista)
-</pre>
-
-<h2>5. La serie que suma las cifras de los anteriores</h2>
-
-<p>Ojo, se refiere a el <strong>número de cifras</strong>, no a la suma del os valores anteriores.</p>
-
-<h3>La suma las cifras de los anteriores en Java</h3>
-
-<pre>
-package ej5pmydm;
-
-public class Ej5pmydm {
-    public static void main(String[] args) {
-        int lista[] = new int[100];
-        lista[0] = 1;
-        int i = 0;
-        while (i < lista.length - 1) {
-            lista[i+1] = lista[i] + Integer.toString(lista[i]).length();
-            i++;
-        }
-        for (i = 0; i < lista.length; i++) {
-            System.out.println(lista[i]);
-        }
-    }
-}
-</pre>
-
-<h3>La suma las cifras de los anteriores en Python</h3>
-
-<pre>
-lista = [1]
-while len(lista) < 100:
-    nuevo = 0
-    for numero in lista:
-        nuevo += len(str(numero))
-    lista.append(nuevo)
-print(lista)
-</pre>
 ]]>
     </description>
 </item>
