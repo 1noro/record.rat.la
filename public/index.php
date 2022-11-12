@@ -196,7 +196,19 @@
             "code_background" => "#3c3836",
             "code_text" => "#d5c4a1",
             "header_img_color" => "B"
-        ]
+        ],
+        // Melocotón 2, electric boogaloo
+        [
+            "background" => "#f6f5e3",
+            "text" => "#1D1313",
+            "title" => "#1D1313",
+            "link" => "#0000EE",
+            "link_visited" => "#551A8B",
+            "link_active" => "#EE0000",
+            "code_background" => "#F8F8F8",
+            "code_text" => "#000000",
+            "header_img_color" => "B"
+        ],
     ];
 
     define("MONTHS", [
