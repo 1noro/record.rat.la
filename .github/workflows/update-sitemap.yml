@@ -115,6 +115,7 @@ jobs:
         run: |
           pwd
           ls -las
+          ls -las public
           ls -las /public
           id -u
           id -g
