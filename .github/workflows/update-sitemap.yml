@@ -31,14 +31,14 @@ jobs:
           context: .
           target: sitemapgen
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/record.rat.la:sitemapgen-${{ github.sha }}
+          tags: 1noro/record.rat.la:sitemapgen-${{ github.sha }}
 
   generate-sitemap:
     name: Generate sitemap
     needs: build-sitemapgen-image
     runs-on: ubuntu-latest
     container:
-      image: docker.io/${{ secrets.DOCKERHUB_USERNAME }}/record.rat.la:sitemapgen-${{ github.sha }}
+      image: docker.io/1noro/record.rat.la:sitemapgen-${{ github.sha }}
       credentials:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
