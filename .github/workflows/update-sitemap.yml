@@ -21,6 +21,7 @@ jobs:
 
       - name: Get info
         run: |
+          pwd
           ls -las
           id -u
           id -g
@@ -112,6 +113,7 @@ jobs:
 
       - name: Get info
         run: |
+          pwd
           ls -las
           id -u
           id -g
