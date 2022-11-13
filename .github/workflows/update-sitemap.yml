@@ -33,3 +33,32 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/record.rat.la:sitemapgen-${{ github.sha }}
 
+  generate-sitemap:
+    name: Generate sitemap
+    needs: build-sitemapgen-image
+    runs-on: ubuntu-latest
+    container:
+      image: docker.io/${{ secrets.DOCKERHUB_USERNAME }}/record.rat.la:sitemapgen-${{ github.sha }}
+      credentials:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Generate new sitemap
+        run: curl http://localhost/generate-sitemap.php -o public/sitemap.xml
+
+      - name: Commit if there are changes
+        run: |
+          # refrescamos los índices de git
+          git update-index -q --refresh
+          # comprobamos si hay cambios locales
+          if [ -z "$(git diff-index --name-only HEAD --)" ]; then exit 0; fi
+          # setup the username and email. I tend to use 'GitHub Actions Bot' with no email by default
+          git config user.name "GitHub Actions Bot"
+          git config user.email "<>"
+          # Stage the file, commit and push
+          git add public/rss.xml
+          git commit -m "chore(rss): updated rss.xml"
+          git push origin ${{ env.branch }}

@@ -12,11 +12,14 @@ COPY docker/local/php/fpm.conf /etc/php8/php-fpm.d/www.conf
 FROM local AS sitemapgen
 COPY public/ /var/www/html/
 USER root
-RUN apk add --no-cache curl
+RUN apk add --no-cache curl git
+RUN mkdir /workdir && \
+    chmod 777 /workdir
 USER nobody
 COPY docker/sitemap-generator/generate-sitemap.php /var/www/html/generate-sitemap.php
 COPY docker/sitemap-generator/sitemap-config.php /var/www/html/sitemap-config.php
 COPY docker/sitemap-generator/sitemap-generator.php /var/www/html/sitemap-generator.php
+WORKDIR /workdir
 # CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
 
 FROM base AS prod
