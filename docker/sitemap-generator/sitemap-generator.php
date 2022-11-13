@@ -22,7 +22,7 @@ class SitemapGenerator
 		$this->config = $conf;
 		$this->scanned = [];
 		$this->site_url_base = parse_url($this->config['SITE_URL'])['scheme'] . "://" . parse_url($this->config['SITE_URL'])['host'];
-		$this->sitemap_file = fopen($this->config['SAVE_LOC'], "w");
+		// $this->sitemap_file = fopen($this->config['SAVE_LOC'], "w");
 	}
 
 	public function GenerateSitemap()
