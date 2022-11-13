@@ -42,8 +42,8 @@ clean:
 logs:
 	@docker logs -f $(CONTAINER)
 
-.PHONY: bash-in
-bash-in:
+.PHONY: bash
+bash:
 	@docker exec -u 0 -it $(CONTAINER) sh
 
 .PHONY: set-permissions
