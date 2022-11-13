@@ -104,19 +104,25 @@ jobs:
           - 8080:80
     steps:
 
+      - name: Get info
+        run: |
+          ls -las /public
+          id -u
+          id -g
+
       - name: Generate new sitemap
         run: curl -v http://sitemapgen:8080/generate-sitemap.php -o /public/sitemap.xml
 
-      - name: Commit if there are changes
-        run: |
-          # refrescamos los índices de git
-          git update-index -q --refresh
-          # comprobamos si hay cambios locales
-          if [ -z "$(git diff-index --name-only HEAD --)" ]; then exit 0; fi
-          # setup the username and email. I tend to use 'GitHub Actions Bot' with no email by default
-          git config user.name "GitHub Actions Bot"
-          git config user.email "<>"
-          # Stage the file, commit and push
-          git add public/rss.xml
-          git commit -m "chore(rss): updated rss.xml"
-          git push origin ${GITHUB_REF#refs/heads/}
+      # - name: Commit if there are changes
+      #   run: |
+      #     # refrescamos los índices de git
+      #     git update-index -q --refresh
+      #     # comprobamos si hay cambios locales
+      #     if [ -z "$(git diff-index --name-only HEAD --)" ]; then exit 0; fi
+      #     # setup the username and email. I tend to use 'GitHub Actions Bot' with no email by default
+      #     git config user.name "GitHub Actions Bot"
+      #     git config user.email "<>"
+      #     # Stage the file, commit and push
+      #     git add public/rss.xml
+      #     git commit -m "chore(rss): updated rss.xml"
+      #     git push origin ${GITHUB_REF#refs/heads/}
