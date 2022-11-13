@@ -58,6 +58,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Get info
+        run: |
+          cat /etc/hosts
+          ip -4 -o address
+          netstat -tunlp
+
       - name: Generate new sitemap
         run: curl -v http://localhost/generate-sitemap.php -o public/sitemap.xml
 
