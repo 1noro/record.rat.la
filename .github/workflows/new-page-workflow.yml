@@ -1,0 +1,35 @@
+name: New page workflow
+on:
+  push:
+    paths:
+      - 'public/pages/**.html'
+jobs:
+  build:
+    name: Update RSS feed
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Run rss-update.py
+        run: python scripts/rss-update.py
+
+      - name: Extract branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch
+
+      - name: Setup git config
+        run: |
+          # setup the username and email. I tend to use 'GitHub Actions Bot' with no email by default
+          git config user.name "GitHub Actions Bot"
+          git config user.email "<>"
+
+      - name: Commit
+        run: |
+          # Stage the file, commit and push
+          git add public/rss.xml
+          git commit -m "chore(rss): updated rss.xml"
+          git push origin ${{ steps.extract_branch.outputs.branch }}
