@@ -13,38 +13,15 @@ jobs:
         with:
           python-version: '3.10'
 
+      - name: Extract branch name
+        shell: bash
+        run: echo "branch=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_ENV
+
       - name: Install rss-update.py requirements
         run: pip install -r scripts/rss-update-requirements.txt
 
       - name: Run rss-update.py
         run: python scripts/rss-update.py
-
-      - name: Extract branch name
-        shell: bash
-        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-        id: extract_branch
-
-      # - name: Check if there are local changes
-      #   shell: bash
-      #   run: |
-      #     # refrescamos los índices de git
-      #     git update-index -q --refresh
-      #     # comprobamos si hay cambios locales
-      #     # test -n <string>: Check if string length is non-zero
-      #     test -n "$(git diff-index --name-only HEAD --)"
-
-      # - name: Setup git config
-      #   run: |
-      #     # setup the username and email. I tend to use 'GitHub Actions Bot' with no email by default
-      #     git config user.name "GitHub Actions Bot"
-      #     git config user.email "<>"
-
-      # - name: Commit
-      #   run: |
-      #     # Stage the file, commit and push
-      #     git add public/rss.xml
-      #     git commit -m "chore(rss): updated rss.xml"
-      #     git push origin ${{ steps.extract_branch.outputs.branch }}
 
       - name: Commit if there are changes
         run: |
@@ -58,4 +35,4 @@ jobs:
           # Stage the file, commit and push
           git add public/rss.xml
           git commit -m "chore(rss): updated rss.xml"
-          git push origin ${{ steps.extract_branch.outputs.branch }}
+          git push origin ${{ env.branch }}
