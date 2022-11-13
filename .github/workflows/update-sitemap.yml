@@ -33,9 +33,17 @@ jobs:
           push: true
           tags: 1noro/record.rat.la:sitemapgen-${{ github.sha }}
 
+  configure:
+    runs-on: ubuntu-latest
+    # outputs:
+    #   uid_gid: ${{ steps.get-user.outputs.uid_gid }}
+    steps:
+      - id: get-user
+        run: echo "uid_gid=$(id -u):$(id -g)" >> $GITHUB_ENV
+
   generate-sitemap:
     name: Generate sitemap
-    needs: build-sitemapgen-image
+    needs: [build-sitemapgen-image, configure]
     runs-on: ubuntu-latest
     container:
       image: docker.io/1noro/record.rat.la:sitemapgen-${{ github.sha }}
@@ -44,6 +52,7 @@ jobs:
         password: ${{ secrets.DOCKERHUB_TOKEN }}
       ports:
         - 80
+      options: --user ${{ env.uid_gid }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -63,4 +72,4 @@ jobs:
           # Stage the file, commit and push
           git add public/rss.xml
           git commit -m "chore(rss): updated rss.xml"
-          git push origin ${{ env.branch }}
+          git push origin ${GITHUB_REF#refs/heads/}
