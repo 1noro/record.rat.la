@@ -35,8 +35,9 @@ jobs:
 
   configure:
     runs-on: ubuntu-latest
-    # outputs:
-    #   uid_gid: ${{ steps.get-user.outputs.uid_gid }}
+    outputs:
+      # uid_gid: ${{ steps.get-user.outputs.uid_gid }}
+      uid_gid: ${{ env.uid_gid }}
     steps:
       - id: get-user
         run: echo "uid_gid=$(id -u):$(id -g)" >> $GITHUB_ENV
@@ -52,7 +53,7 @@ jobs:
         password: ${{ secrets.DOCKERHUB_TOKEN }}
       ports:
         - 80
-      options: --user ${{ env.uid_gid }}
+      options: --user ${{ needs.configure.outputs.uid_gid }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
