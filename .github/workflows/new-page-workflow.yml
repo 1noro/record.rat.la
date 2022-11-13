@@ -27,8 +27,11 @@ jobs:
       - name: Check if there are local changes
         shell: bash
         run: |
+          # refrescamos los índices de git
           git update-index -q --refresh
-          test -z "$(git diff-index --name-only HEAD --)"
+          # comprobamos si hay cambios locales
+          # test -n <string>: Check if string length is non-zero
+          test -n "$(git diff-index --name-only HEAD --)"
         #   echo "##[set-output name=therearelocalchanges;]$(echo $?)"
         # id: local_changes
 
