@@ -146,7 +146,7 @@ class SitemapGenerator
 
 
 		// Print the amount of pages
-		echo count($pages);
+		// echo count($pages);
 
 		foreach ($pages as $page) {
 			$xml .= "<url><loc>" . $page . "</loc>
@@ -166,7 +166,11 @@ class SitemapGenerator
 		$dom->formatOutput = TRUE;
 
 		// Write XML to file and close it
-		fwrite($this->sitemap_file, $dom->saveXML());
-		fclose($this->sitemap_file);
+		// fwrite($this->sitemap_file, $dom->saveXML());
+		// fclose($this->sitemap_file);
+		
+		// Print resultant XML
+		header('Content-Type: application/xml');
+		echo $dom->saveXML();
 	}
 }
