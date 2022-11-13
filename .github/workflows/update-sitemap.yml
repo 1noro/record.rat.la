@@ -52,7 +52,7 @@ jobs:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
       ports:
-        - 80
+        - 80:80
       # options: --user ${{ needs.configure.outputs.uid_gid }}
     steps:
       # - name: Checkout
