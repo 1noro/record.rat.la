@@ -14,12 +14,12 @@ COPY public/ /var/www/html/
 COPY docker/sitemap-generator/generate-sitemap.php /var/www/html/generate-sitemap.php
 COPY docker/sitemap-generator/sitemap-config.php /var/www/html/sitemap-config.php
 COPY docker/sitemap-generator/sitemap-generator.php /var/www/html/sitemap-generator.php
-USER root
-RUN apk add --no-cache curl git
-RUN mkdir /workdir && \
-    chmod 777 /workdir
-USER nobody
-WORKDIR /workdir
+# USER root
+# RUN apk add --no-cache curl git
+# RUN mkdir /workdir && \
+#     chmod 777 /workdir
+# USER nobody
+# WORKDIR /workdir
 
 FROM base AS prod
 COPY public/ /var/www/html/

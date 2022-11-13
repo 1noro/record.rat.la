@@ -33,13 +33,14 @@ jobs:
           push: true
           tags: 1noro/record.rat.la:sitemapgen-${{ github.sha }}
 
-  # configure:
-  #   runs-on: ubuntu-latest
-  #   outputs:
-  #     uid_gid: ${{ env.uid_gid }}
-  #   steps:
-  #     - id: get-user
-  #       run: echo "uid_gid=$(id -u):$(id -g)" >> $GITHUB_ENV
+  configure:
+    name: Configure
+    runs-on: ubuntu-latest
+    outputs:
+      uid_gid: ${{ env.uid_gid }}
+    steps:
+      - id: get-user
+        run: echo "uid_gid=$(id -u):$(id -g)" >> $GITHUB_ENV
 
   # generate-sitemap:
   #   name: Generate sitemap
@@ -83,8 +84,16 @@ jobs:
 
   generate-sitemap:
     name: Generate sitemap
-    needs: build-sitemapgen-image
+    needs: [build-sitemapgen-image, configure]
     runs-on: ubuntu-latest
+    container:
+      image: docker.io/curlimages/curl
+      credentials:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+      options: --user ${{ needs.configure.outputs.uid_gid }}
+      # volumes:
+      #   - 
     services:
       sitemapgen:
         image: docker.io/1noro/record.rat.la:sitemapgen-${{ github.sha }}
