@@ -13,8 +13,8 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Install rss-update.py dependencies
-        run: pip install -r rss-update-dependencies.txt
+      - name: Install rss-update.py requirements
+        run: pip install -r scripts/rss-update-requirements.txt
 
       - name: Run rss-update.py
         run: python scripts/rss-update.py
