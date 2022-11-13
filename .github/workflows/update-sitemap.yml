@@ -99,8 +99,8 @@ jobs:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
       options: --user ${{ needs.configure.outputs.uid_gid }}
-      # volumes:
-      #   - $GITHUB_WORKSPACE/public:/public
+      volumes:
+        - /home/runner/work/record.rat.la/record.rat.la/public:/public
     services:
       sitemapgen:
         image: docker.io/1noro/record.rat.la:sitemapgen-${{ github.sha }}
@@ -118,8 +118,8 @@ jobs:
           id -u
           id -g
 
-      # - name: Generate new sitemap
-      #   run: curl -v http://sitemapgen:8080/generate-sitemap.php -o /public/sitemap.xml
+      - name: Generate new sitemap
+        run: curl -v http://sitemapgen:8080/generate-sitemap.php -o /public/sitemap.xml
 
       # - name: Commit if there are changes
       #   run: |
