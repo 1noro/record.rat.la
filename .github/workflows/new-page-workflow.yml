@@ -4,7 +4,7 @@ on:
     paths:
       - 'public/pages/**.html'
 jobs:
-  build:
+  update-rss:
     name: Update RSS feed
     runs-on: ubuntu-latest
     steps:
