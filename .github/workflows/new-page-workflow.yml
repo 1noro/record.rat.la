@@ -1,4 +1,4 @@
-name: New page workflow
+name: Public pages updated
 on:
   push:
     paths:
@@ -24,7 +24,16 @@ jobs:
         run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
         id: extract_branch
 
+      - name: Check if there are local changes
+        shell: bash
+        run: |
+          git update-index -q --refresh
+          test -z "$(git diff-index --name-only HEAD --)"
+        #   echo "##[set-output name=therearelocalchanges;]$(echo $?)"
+        # id: local_changes
+
       - name: Setup git config
+        if: ${{ steps.extract_branch.outputs.branch == 1 }}
         run: |
           # setup the username and email. I tend to use 'GitHub Actions Bot' with no email by default
           git config user.name "GitHub Actions Bot"
