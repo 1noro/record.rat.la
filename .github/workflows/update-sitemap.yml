@@ -21,7 +21,7 @@ jobs:
 
       - name: Get info
         run: |
-          ls -las /public
+          ls -las
           id -u
           id -g
 
