@@ -1,5 +1,6 @@
-FROM trafex/php-nginx AS base
+FROM trafex/php-nginx:2.6.0 AS base
 USER root
+RUN rm /var/www/html/test.html
 RUN apk add --no-cache php8-fileinfo
 USER nobody
 

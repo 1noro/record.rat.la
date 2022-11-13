@@ -25,11 +25,11 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and push 1noro/record.rat.la:sitemapgen-${{ github.sha }}
+      - name: Build and push image record.rat.la:sitemapgen-${{ github.sha }}
         uses: docker/build-push-action@v3
         with:
           context: .
           target: sitemapgen
           push: true
-          tags: 1noro/record.rat.la:sitemapgen-${{ github.sha }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/record.rat.la:sitemapgen-${{ github.sha }}
 
