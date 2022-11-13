@@ -42,6 +42,8 @@ jobs:
       credentials:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
+      ports:
+        - 80
     steps:
       - name: Checkout
         uses: actions/checkout@v3
