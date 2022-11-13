@@ -59,7 +59,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Generate new sitemap
-        run: curl http://localhost/generate-sitemap.php -o public/sitemap.xml
+        run: curl -v http://localhost/generate-sitemap.php -o public/sitemap.xml
 
       - name: Commit if there are changes
         run: |
