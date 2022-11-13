@@ -18,6 +18,7 @@ USER root
 RUN apk add --no-cache curl git
 RUN mkdir /workdir && \
     chmod 777 /workdir
+USER nobody
 WORKDIR /workdir
 
 FROM base AS prod
