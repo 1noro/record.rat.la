@@ -66,7 +66,7 @@ jobs:
 
       - name: Generate new sitemap
         # run: curl -v http://localhost/generate-sitemap.php -o public/sitemap.xml
-        run: curl -v http://127.0.0.11/generate-sitemap.php -o sitemap.xml
+        run: curl -v http://172.18.0.2/generate-sitemap.php -o sitemap.xml
 
       - name: Commit if there are changes
         run: |
