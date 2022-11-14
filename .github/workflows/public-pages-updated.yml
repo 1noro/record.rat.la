@@ -35,4 +35,4 @@ jobs:
           # Stage the file, commit and push
           git add public/rss.xml
           git commit -m "chore(rss): updated rss.xml"
-          git push origin ${{ env.branch }}
+          git push -u origin ${{ env.branch }}

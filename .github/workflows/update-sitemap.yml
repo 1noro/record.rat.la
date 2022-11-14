@@ -136,5 +136,5 @@ jobs:
           git config user.email "<>"
           # Stage the file, commit and push
           git add public/sitemap.xml
-          git commit -m "chore(rss): updated rss.xml"
-          git push origin ${{ github.head_ref }}
+          git commit -m "chore(sitemap): updated sitemap.xml"
+          git push -u origin ${{ github.head_ref }}
