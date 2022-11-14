@@ -15,7 +15,7 @@ jobs:
 
       - name: Extract branch name
         shell: bash
-        run: echo "branch=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_ENV
+        run: echo "branch=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
 
       - name: Install rss-update.py requirements
         run: pip install -r scripts/rss-update-requirements.txt
@@ -30,7 +30,7 @@ jobs:
           # comprobamos si hay cambios locales
           if [ -z "$(git diff-index --name-only HEAD --)" ]; then exit 0; fi
           # setup the username and email. I tend to use 'GitHub Actions Bot' with no email by default
-          git config user.name "GitHub Actions Bot"
+          git config user.name "github-actions-bot"
           git config user.email "<>"
           # Stage the file, commit and push
           git add public/rss.xml

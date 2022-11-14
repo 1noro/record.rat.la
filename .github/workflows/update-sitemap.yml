@@ -132,9 +132,9 @@ jobs:
           # comprobamos si hay cambios locales
           if [ -z "$(git diff-index --name-only HEAD --)" ]; then exit 0; fi
           # setup the username and email. I tend to use 'GitHub Actions Bot' with no email by default
-          git config user.name "GitHub Actions Bot"
+          git config user.name "github-actions-bot"
           git config user.email "<>"
           # Stage the file, commit and push
           git add public/sitemap.xml
           git commit -m "chore(rss): updated rss.xml"
-          git push origin ${{ github.base_ref }}
+          git push origin ${{ github.head_ref }}
