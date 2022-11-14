@@ -137,4 +137,4 @@ jobs:
           # Stage the file, commit and push
           git add public/sitemap.xml
           git commit -m "chore(rss): updated rss.xml"
-          git push origin ${GITHUB_REF#refs/heads/}
+          git push origin ${{ github.base_ref }}
