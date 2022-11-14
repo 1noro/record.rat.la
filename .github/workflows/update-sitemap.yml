@@ -135,6 +135,6 @@ jobs:
           git config user.name "GitHub Actions Bot"
           git config user.email "<>"
           # Stage the file, commit and push
-          git add public/rss.xml
+          git add public/sitemap.xml
           git commit -m "chore(rss): updated rss.xml"
           git push origin ${GITHUB_REF#refs/heads/}
