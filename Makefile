@@ -46,6 +46,10 @@ logs:
 bash:
 	@docker exec -u 0 -it $(CONTAINER) sh
 
+.PHONY: bash-normal
+bash-normal:
+	@docker exec -it $(CONTAINER) sh
+
 .PHONY: set-permissions
 set-permissions:
 	@chmod -R 755 .
@@ -71,5 +75,8 @@ help:
 	@echo "make up-sitemapgen"
 	@echo "make down"
 	@echo "make clean"
+	@echo "make logs"
+	@echo "make bash"
+	@echo "make bash-normal"
 	@echo "make analyze"
 	@echo "make rss-update"
