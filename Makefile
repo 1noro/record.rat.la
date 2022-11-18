@@ -1,7 +1,7 @@
 SHELL:=/bin/bash
 
-IMAGE=record.rat.localhost
-TARGET=local
+IMAGE=1noro/record.rat.la
+target=local
 CONTAINER=record.rat.localhost-container
 
 export DOCKER_BUILDKIT=1
@@ -10,7 +10,7 @@ all: help
 
 .PHONY: build
 build:
-	@docker build -f Dockerfile --target $(TARGET) -t $(IMAGE):$(TARGET) .
+	@docker build -f Dockerfile --target $(target) -t $(IMAGE):$(target) .
 
 .PHONY: build-all
 build-all:
@@ -20,13 +20,18 @@ build-all:
 
 .PHONY: up
 up:
-	@docker run -d --rm -p 8081:80 -v "$(PWD)/public:/var/www/html" --name $(CONTAINER) $(IMAGE):$(TARGET)
+	@docker run -d --rm -p 8081:80 -v "$(PWD)/public:/var/www/html" --name $(CONTAINER) $(IMAGE):$(target)
+	@echo "Running $(CONTAINER) in http://record.rat.localhost:8081"
+
+.PHONY: up-prod
+up-prod:
+	@docker run -d --rm -p 8081:80 -v "$(PWD)/public:/var/www/html" --name $(CONTAINER) $(IMAGE):prod
 	@echo "Running $(CONTAINER) in http://record.rat.localhost:8081"
 
 .PHONY: up-sitemapgen
-up-sitemapgen: export TARGET=sitemapgen
+up-sitemapgen: export target=sitemapgen
 up-sitemapgen:
-	@docker run -d --rm -p 8081:80 --name $(CONTAINER) $(IMAGE):$(TARGET)
+	@docker run -d --rm -p 8081:80 --name $(CONTAINER) $(IMAGE):$(target)
 	@echo "Running $(CONTAINER) in http://record.rat.localhost:8081"
 
 .PHONY: down
@@ -36,7 +41,7 @@ down:
 .PHONY: clean
 clean:
 	@docker stop $(CONTAINER) 2> /dev/null || true
-	@docker rmi $(IMAGE):$(TARGET)
+	@docker rmi $(IMAGE):$(target)
 
 .PHONY: logs
 logs:
@@ -56,9 +61,6 @@ set-permissions:
 	@find . -type f -exec chmod 644 -- {} +
 	# @chmod 774 set-permissions.sh
 
-# .PHONY: rebuild
-# rebuild: clean build up
-
 .PHONY: analyze
 analyze:
 	docker run --rm -v $(shell pwd)/public:/app -u $(shell id -u):$(shell id -g) ghcr.io/phpstan/phpstan analyse -l 9 .
@@ -69,9 +71,11 @@ rss-update:
 
 .PHONY: help
 help:
+	@echo "- default target=local (local || prod)"
 	@echo "make build"
 	@echo "make build-all"
 	@echo "make up"
+	@echo "make up-prod"
 	@echo "make up-sitemapgen"
 	@echo "make down"
 	@echo "make clean"
