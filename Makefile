@@ -1,6 +1,6 @@
 SHELL:=/bin/bash
 
-IMAGE=record.rat.localhost
+IMAGE=1noro/record.rat.la
 target=local
 CONTAINER=record.rat.localhost-container
 
