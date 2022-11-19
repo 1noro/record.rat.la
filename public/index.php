@@ -332,17 +332,15 @@
     }
 
     /**
-     * get_title_by_line, obtiene el título del artículo en base a la
-     * segunda línea de una artículo
+     * get_title, obtiene el título del post en base a su contenido
      */
-    function get_title_by_line(string $line) : string {
-        $line = normalize_line($line);
-        $line = str_replace("<h1>", "", $line);
-        $line = str_replace("</h1>", "", $line);
-        
-        // quitamos las tags HTML y luego cambiamos los caracteres 
-        // especiales por sus códigos HTML (incluidas las " y ')
-        return htmlentities(strip_tags($line), ENT_QUOTES); 
+    function get_title(string $content) : string {
+        preg_match_all("/<h1>(.*)<\/h1>/", $content, $matches, PREG_PATTERN_ORDER);
+        /**
+         * quitamos las tags HTML, los espacios sobrantes y luego cambiamos los 
+         * caracteres especiales por sus códigos HTML (incluidas las " y ')
+         */
+        return htmlentities(trim(strip_tags($matches[1][0])), ENT_QUOTES); 
     }
 
     /**
@@ -360,12 +358,10 @@
         $filepath = DIRECTORY . $filename;
 
         $line1 = "<!-- 202009180000a -->"; // Default value for line1
-        $line2 = "<h1>Default title</h1>"; // Default value for line2
 
         $fileObj = fopen($filepath, "r");
         if (is_resource($fileObj)) {
             $line1 = fgets($fileObj) ?: $line1; // leemos la primera linea
-            $line2 = fgets($fileObj) ?: $line2; // leemos la segunda linea
             fclose($fileObj);
         }
 
@@ -375,7 +371,7 @@
         return [
             "filename" => $filename,
             "author_data" => get_author_data_by_line($line1),
-            "title" => get_title_by_line($line2),
+            "title" => get_title($content),
             "publication_datetime" => $datetime_obj
         ];
     }
