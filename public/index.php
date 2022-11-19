@@ -658,9 +658,6 @@
         <title><?= $TITLE . DEF_TITLE_SUFFIX ?></title>
 
         <!-- ## LINK ## -->
-        <!-- Para decirle al navegador que tengo un favicon que no es .ico -->
-        <!-- <link rel="icon" href="favicon.webp" type="image/webp" sizes="50x50"> -->
-
         <!-- Para decirle a google que la URL original es esta, y no la que se está usando -->
         <link rel="canonical" href="<?= $CANONICAL_URL ?>">
 
