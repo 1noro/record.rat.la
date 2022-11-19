@@ -63,7 +63,8 @@
     define("PAGES_TO_SHOW", 2); // número de páginas a mostrar en la portada, "reciente"
     define("DIRECTORY", "pages/"); // carpeta donde se guardan las páginas
     define("FILENAMES", get_filenames(DIRECTORY)); // obtenemos todas las páginas de la carpeta DIRECTORY
-    
+    define("PAGE_DATETIME_FORMAT", "Y/m/d H:i"); // formato de fecha a mostrar una página (https://www.php.net/manual/es/function.date.php)
+
     define("DEF_TITLE_SUFFIX", " - record.rat.la"); // sufijo por defecto del título de la página
     define("DEF_TITLE", "Registros de las ratas cantarinas"); // título por defecto de la página
     define("DEF_DESCRIPTION", "Y el pobre anciano Masson se hundió en la negrura de la muerte, con los locos chillidos de las ratas taladrándole los oídos. ¿Porqué?"); // descripción por defecto de la página
@@ -281,44 +282,6 @@
     }
 
     /**
-     * get_date_by_line, obtiene la fecha de un artículo en base al 
-     * comentario de la primera línea del artículo
-     * 
-     * @return array{
-     *  DATE_W3C: non-falsy-string,
-     *  datetime: non-falsy-string,
-     *  year: string,
-     *  month: string,
-     *  day: string,
-     *  hour: string,
-     *  minute: string
-     * }
-     */
-    // function get_date_by_line(string $line) : array {
-    //     $line = normalize_line($line);
-    //     $line = str_replace("<!-- ", "", $line);
-    //     $line = str_replace(" -->", "", $line);
-
-    //     $year = substr($line, 0, 4);
-    //     $month = substr($line, 4, 2);
-    //     $day = substr($line, 6, 2);
-    //     $hour = substr($line, 8, 2);
-    //     $minute = substr($line, 10, 2);
-
-    //     return [
-    //         "DATE_W3C" => $year."-".$month."-".$day."T".$hour.":".$minute.":00+01:00", // or DATE_ATOM
-    //         // +01:00 is Europe/Madrid (Spain, CET) https://en.wikipedia.org/wiki/List_of_time_zones_by_country
-    //         // +00:00 is UTC
-    //         "datetime" => $year."/".$month."/".$day." ".$hour.":".$minute,
-    //         "year" => $year,
-    //         "month" => $month,
-    //         "day" => $day,
-    //         "hour" => $hour,
-    //         "minute" => $minute
-    //     ];
-    // }
-
-    /**
      * get_publication_datetime, obtiene la fecha de un artículo en base al 
      * comentario "publication_date"
      * 
@@ -390,7 +353,6 @@
      *  filename: string,
      *  author_data: array{string, string}, 
      *  title: string,
-     *  DATE_W3C: non-falsy-string,
      *  datetime: non-falsy-string,
      *  year: string,
      *  month: string,
@@ -415,19 +377,17 @@
         $content = file_get_contents("$filepath");
         $datetime_obj = get_publication_datetime($content);
 
-        // $datetimeInfo = get_date_by_line($line1);
-
         return [
             "filename" => $filename,
             "author_data" => get_author_data_by_line($line1),
             "title" => get_title_by_line($line2),
-            "DATE_W3C" => date_format($datetime_obj, DATE_W3C),
-            "datetime" => date_format($datetime_obj, 'Y/m/d H:i'),
-            "year" => date_format($datetime_obj, 'Y'),
-            "month" => date_format($datetime_obj, 'm'),
-            "day" => date_format($datetime_obj, 'd'),
-            "hour" => date_format($datetime_obj, 'H'),
-            "minute" => date_format($datetime_obj, 'i')
+            "publication_datetime" => $datetime_obj,
+            "datetime" => date_format($datetime_obj, PAGE_DATETIME_FORMAT),
+            "year" => date_format($datetime_obj, "Y"),
+            "month" => date_format($datetime_obj, "m"),
+            "day" => date_format($datetime_obj, "d"),
+            "hour" => date_format($datetime_obj, "H"),
+            "minute" => date_format($datetime_obj, "i")
         ];
     }
 
@@ -589,7 +549,6 @@
      *  filename: string,
      *  author_data: array{string, string}, 
      *  title: string,
-     *  DATE_W3C: non-falsy-string,
      *  datetime: non-falsy-string,
      *  year: string,
      *  month: string,
@@ -662,7 +621,7 @@
                 $fileInfo = get_page_info($filename);
                 $TITLE = $fileInfo["title"];
                 $OG_TYPE = "article";
-                $PUBLISHED = $fileInfo["DATE_W3C"];
+                $PUBLISHED = date_format($fileInfo["publication_datetime"], DATE_W3C);
                 $ARTICLE_AUTHOR = $fileInfo["author_data"][1];
                 $DESCRIPTION = get_description(DIRECTORY . $filename);
                 $PAGE_IMG = get_page_img(DIRECTORY . $filename);
