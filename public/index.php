@@ -354,7 +354,6 @@
      *  author_data: array{string, string}, 
      *  title: string,
      *  publication_datetime: DateTime,
-     *  month: string,
      *  day: string,
      *  hour: string,
      *  minute: string
@@ -381,7 +380,6 @@
             "author_data" => get_author_data_by_line($line1),
             "title" => get_title_by_line($line2),
             "publication_datetime" => $datetime_obj,
-            "month" => date_format($datetime_obj, "m"),
             "day" => date_format($datetime_obj, "d"),
             "hour" => date_format($datetime_obj, "H"),
             "minute" => date_format($datetime_obj, "i")
@@ -496,14 +494,18 @@
 
         foreach($fileInfoArr as $fileInfo) {
             $year = date_format($fileInfo["publication_datetime"], "Y");
+            $month = date_format($fileInfo["publication_datetime"], "n"); // n: 1..12 / m: 01..12
+
             if ($currentYear != $year) {
                 $currentYear = $year;
                 printf("<h2>%s</h2>\n<hr>\n", $year);
             }
-            if ($currentMonth != $fileInfo["month"]) {
-                $currentMonth = $fileInfo["month"];
-                printf("<h3>%s</h3>\n", MONTHS[intval($fileInfo["month"]) - 1]);
+
+            if ($currentMonth != $month) {
+                $currentMonth = $month;
+                printf("<h3>%s</h3>\n", MONTHS[intval($month) - 1]);
             }
+            
             if (
                 is_string($fileInfo["day"]) &&
                 is_string($fileInfo["hour"]) &&
@@ -543,7 +545,7 @@
      *  filename: string,
      *  author_data: array{string, string}, 
      *  title: string,
-     *  month: string,
+     *  publication_datetime: DateTime,
      *  day: string,
      *  hour: string,
      *  minute: string
