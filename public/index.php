@@ -63,7 +63,8 @@
     define("PAGES_TO_SHOW", 2); // número de páginas a mostrar en la portada, "reciente"
     define("DIRECTORY", "pages/"); // carpeta donde se guardan las páginas
     define("FILENAMES", get_filenames(DIRECTORY)); // obtenemos todas las páginas de la carpeta DIRECTORY
-    
+    define("PAGE_DATETIME_FORMAT", "Y/m/d H:i"); // formato de fecha a mostrar una página (https://www.php.net/manual/es/function.date.php)
+
     define("DEF_TITLE_SUFFIX", " - record.rat.la"); // sufijo por defecto del título de la página
     define("DEF_TITLE", "Registros de las ratas cantarinas"); // título por defecto de la página
     define("DEF_DESCRIPTION", "Y el pobre anciano Masson se hundió en la negrura de la muerte, con los locos chillidos de las ratas taladrándole los oídos. ¿Porqué?"); // descripción por defecto de la página
@@ -273,48 +274,42 @@
         $directoryObj = opendir($directory) ?: null;
         while($filename = readdir($directoryObj)) {
             if(($filename != ".") && ($filename != "..")) {
-                $filenames[] = $filename; // put in array
+                // push value to array
+                $filenames[] = $filename;
             }
         }
         return $filenames;
     }
 
     /**
-     * get_date_by_line, obtiene la fecha de un artículo en base al 
-     * comentario de la primera línea del artículo
+     * get_publication_datetime, obtiene la fecha de un artículo en base al 
+     * comentario "publication_date"
      * 
-     * @return array{
-     *  DATE_W3C: non-falsy-string,
-     *  datetime: non-falsy-string,
-     *  year: string,
-     *  month: string,
-     *  day: string,
-     *  hour: string,
-     *  minute: string
-     * }
+     * @return DateTime
      */
-    function get_date_by_line(string $line) : array {
-        $line = normalize_line($line);
-        $line = str_replace("<!-- ", "", $line);
-        $line = str_replace(" -->", "", $line);
+    function get_publication_datetime(string $content) : DateTime {
+        $regex = '/<!-- publication_datetime (\d{4})(\d{2})(\d{2})T(\d{2})(\d{2}) -->/';
+        $matches_count = preg_match_all($regex, $content, $matches, PREG_PATTERN_ORDER);
 
-        $year = substr($line, 0, 4);
-        $month = substr($line, 4, 2);
-        $day = substr($line, 6, 2);
-        $hour = substr($line, 8, 2);
-        $minute = substr($line, 10, 2);
+        // default date: 2000/01/01 00:00
+        $year = '2000';
+        $month = '01';
+        $day = '01';
+        $hour = '00';
+        $minute = '00';
 
-        return [
-            "DATE_W3C" => $year."-".$month."-".$day."T".$hour.":".$minute.":00+01:00", // or DATE_ATOM
-            // +01:00 is Europe/Madrid (Spain, CET) https://en.wikipedia.org/wiki/List_of_time_zones_by_country
-            // +00:00 is UTC
-            "datetime" => $year."/".$month."/".$day." ".$hour.":".$minute,
-            "year" => $year,
-            "month" => $month,
-            "day" => $day,
-            "hour" => $hour,
-            "minute" => $minute
-        ];
+        if ($matches_count != 0) {
+            $year = $matches[1][0];
+            $month = $matches[2][0];
+            $day = $matches[3][0];
+            $hour = $matches[4][0];
+            $minute = $matches[5][0];
+        }
+
+        $datetime_str = $year."/".$month."/".$day." ".$hour.":".$minute;
+        $datetime_obj = date_create($datetime_str, new DateTimeZone("Europe/Madrid"));
+
+        return $datetime_obj;
     }
 
     /**
@@ -358,13 +353,7 @@
      *  filename: string,
      *  author_data: array{string, string}, 
      *  title: string,
-     *  DATE_W3C: non-falsy-string,
-     *  datetime: non-falsy-string,
-     *  year: string,
-     *  month: string,
-     *  day: string,
-     *  hour: string,
-     *  minute: string
+     *  publication_datetime: DateTime
      * }
      */
     function get_page_info(string $filename) : array {
@@ -380,19 +369,14 @@
             fclose($fileObj);
         }
 
-        $datetimeInfo = get_date_by_line($line1);
+        $content = file_get_contents("$filepath");
+        $datetime_obj = get_publication_datetime($content);
 
         return [
             "filename" => $filename,
             "author_data" => get_author_data_by_line($line1),
             "title" => get_title_by_line($line2),
-            "DATE_W3C" => $datetimeInfo["DATE_W3C"],
-            "datetime" => $datetimeInfo["datetime"],
-            "year" => $datetimeInfo["year"],
-            "month" => $datetimeInfo["month"],
-            "day" => $datetimeInfo["day"],
-            "hour" => $datetimeInfo["hour"],
-            "minute" => $datetimeInfo["minute"]
+            "publication_datetime" => $datetime_obj
         ];
     }
 
@@ -444,7 +428,7 @@
     /**
      * get_sorted_file_info
      * 
-     * @return array<int, array<string, array<int, string>|string>>
+     * @return array<int, array<string, array<int, string>|string|DateTime>>
      */
     function get_sorted_file_info() : array {
         // creamos $fileInfoArr y $datetimeArr previamente para ordenar 
@@ -454,7 +438,7 @@
         foreach(FILENAMES as $filename) {
             $fileInfo = get_page_info($filename);
             array_push($fileInfoArr, $fileInfo);
-            array_push($datetimeArr, $fileInfo["datetime"]);
+            array_push($datetimeArr, $fileInfo["publication_datetime"]);
         }
 
         // en base a los dos arrays anteriores ordeno por fecha
@@ -503,30 +487,27 @@
         echo "<h1>Archivo</h1>\n";
 
         foreach($fileInfoArr as $fileInfo) {
-            if (is_string($fileInfo["year"])){
-                if ($currentYear != $fileInfo["year"]) {
-                    $currentYear = $fileInfo["year"];
-                    printf("<h2>%s</h2>\n<hr>\n", $fileInfo["year"]);
-                }
-            } else {
-                echo "<h2>No year</h2>\n<hr>\n";
+            $year = date_format($fileInfo["publication_datetime"], "Y");
+            $month = date_format($fileInfo["publication_datetime"], "n"); // n: 1..12 / m: 01..12
+            $dayHourStr = date_format($fileInfo["publication_datetime"], "d H:i");
+
+            if ($currentYear != $year) {
+                $currentYear = $year;
+                printf("<h2>%s</h2>\n<hr>\n", $year);
             }
-            if ($currentMonth != $fileInfo["month"]) {
-                $currentMonth = $fileInfo["month"];
-                printf("<h3>%s</h3>\n", MONTHS[intval($fileInfo["month"]) - 1]);
+
+            if ($currentMonth != $month) {
+                $currentMonth = $month;
+                printf("<h3>%s</h3>\n", MONTHS[intval($month) - 1]);
             }
+            
             if (
-                is_string($fileInfo["day"]) &&
-                is_string($fileInfo["hour"]) &&
-                is_string($fileInfo["minute"]) &&
                 is_string($fileInfo["filename"]) &&
                 is_string($fileInfo["title"])
             ) {
                 printf(
-                    '<blockquote>%s %s:%s - <a href="index.php?page=%s">%s</a> - %s</blockquote>' . "\n",
-                    $fileInfo["day"],
-                    $fileInfo["hour"],
-                    $fileInfo["minute"],
+                    '<blockquote>%s - <a href="index.php?page=%s">%s</a> - %s</blockquote>' . "\n",
+                    $dayHourStr,
                     $fileInfo["filename"],
                     $fileInfo["title"],
                     $fileInfo["author_data"][0]
@@ -554,13 +535,7 @@
      *  filename: string,
      *  author_data: array{string, string}, 
      *  title: string,
-     *  DATE_W3C: non-falsy-string,
-     *  datetime: non-falsy-string,
-     *  year: string,
-     *  month: string,
-     *  day: string,
-     *  hour: string,
-     *  minute: string
+     *  publication_datetime: DateTime
      * } $fileInfo
      */
     function print_page(string $fileContent, array $fileInfo) : void {
@@ -570,7 +545,7 @@
             $fileInfo["author_data"][1],
             $fileInfo["author_data"][0],
             $fileInfo["author_data"][0],
-            $fileInfo["datetime"]
+            date_format($fileInfo["publication_datetime"], PAGE_DATETIME_FORMAT)
         );
         printf(
             '<p style="text-align:right;"><small><a href="index.php?page=%s" aria-label="Enlace al contenido, %s, para verlo individualmente.">Enlace al contenido</a></small></p>' . "\n",
@@ -627,7 +602,7 @@
                 $fileInfo = get_page_info($filename);
                 $TITLE = $fileInfo["title"];
                 $OG_TYPE = "article";
-                $PUBLISHED = $fileInfo["DATE_W3C"];
+                $PUBLISHED = date_format($fileInfo["publication_datetime"], DATE_W3C);
                 $ARTICLE_AUTHOR = $fileInfo["author_data"][1];
                 $DESCRIPTION = get_description(DIRECTORY . $filename);
                 $PAGE_IMG = get_page_img(DIRECTORY . $filename);
