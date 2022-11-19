@@ -28,8 +28,3 @@ que sigo al hacer un proyecto.
 
 Intentaré cumplir esta visión en la medida de lo posible y no parar de 
 sentir curiosidad por cosas nuevas.
-
-# To-do list
-
-- Detectar _dark-mode_ con js y cambiar el color automáticamente.
-    - check: https://usefulangle.com/post/318/javascript-check-dark-mode-activated.
