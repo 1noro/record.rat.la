@@ -10,10 +10,12 @@ COPY docker/local/php/settings.ini /etc/php8/conf.d/settings.ini
 COPY docker/local/php/fpm.conf /etc/php8/php-fpm.d/www.conf
 
 FROM base AS prod
+ARG VERSION=prod
 COPY public/ /var/www/html/
 COPY docker/prod/nginx/record.rat.la.conf /etc/nginx/conf.d/server.conf
 COPY docker/prod/php/settings.ini /etc/php8/conf.d/settings.ini
 COPY docker/prod/php/fpm.conf /etc/php8/php-fpm.d/www.conf
+RUN echo ${VERSION} > /var/www/html/version.txt
 
 FROM local AS sitemapgen
 COPY public/ /var/www/html/

@@ -10,13 +10,13 @@ all: help
 
 .PHONY: build
 build:
-	@docker build -f Dockerfile --target $(target) -t $(IMAGE):$(target) .
+	@docker build -f Dockerfile --target $(target) --build-arg VERSION=$(shell git log -n 1 --pretty=format:"%H") -t $(IMAGE):$(target) .
 
 .PHONY: build-all
 build-all:
 	@docker build -f Dockerfile --target local -t $(IMAGE):local .
 	@docker build -f Dockerfile --target sitemapgen -t $(IMAGE):sitemapgen .
-	@docker build -f Dockerfile --target prod -t $(IMAGE):prod .
+	@docker build -f Dockerfile --target prod --build-arg VERSION=$(shell git log -n 1 --pretty=format:"%H") -t $(IMAGE):prod .
 
 .PHONY: up
 up:
