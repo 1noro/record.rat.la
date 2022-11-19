@@ -310,6 +310,11 @@
         $datetime_str = $year."/".$month."/".$day." ".$hour.":".$minute;
         $datetime_obj = date_create($datetime_str, new DateTimeZone("Europe/Madrid"));
 
+        // si la fecha no es válida, se devuelve una válida
+        if ($datetime_obj == null) {
+            $datetime_obj = new DateTime();
+        }
+
         return $datetime_obj;
     }
 
@@ -378,13 +383,12 @@
      *  filename: string,
      *  author_data: array{string, string}, 
      *  title: string,
+     *  description: string,
      *  publication_datetime: DateTime
      * }
      */
     function get_page_info(string $filename) : array {
-        $filepath = DIRECTORY . $filename;
-
-        $content = file_get_contents("$filepath");
+        $content = get_page_content($filename);
         $datetime_obj = get_publication_datetime($content);
 
         return [
@@ -413,7 +417,7 @@
     /**
      * get_sorted_file_info
      * 
-     * @return array<int, array<string, array<int, string>|string|DateTime>>
+     * @return array<int, array<string, array<int, string>|string|DateTimeInterface>>
      */
     function get_sorted_file_info() : array {
         // creamos $fileInfoArr y $datetimeArr previamente para ordenar 
@@ -520,6 +524,7 @@
      *  filename: string,
      *  author_data: array{string, string}, 
      *  title: string,
+     *  description: string,
      *  publication_datetime: DateTime
      * } $fileInfo
      */
@@ -546,7 +551,7 @@
     $ACTION = 0;
     $OG_TYPE = "website";
     $PUBLISHED = "";
-    $ARTICLE_AUTHOR = AUTHORS["i"][1];
+    $ARTICLE_AUTHOR = AUTHORS["inoro"][1];
 
     // --- Montamos las variables URL, FULL_URL y CANONICAL_URL
     $URL = "http";
