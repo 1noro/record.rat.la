@@ -353,10 +353,7 @@
      *  filename: string,
      *  author_data: array{string, string}, 
      *  title: string,
-     *  publication_datetime: DateTime,
-     *  day: string,
-     *  hour: string,
-     *  minute: string
+     *  publication_datetime: DateTime
      * }
      */
     function get_page_info(string $filename) : array {
@@ -379,10 +376,7 @@
             "filename" => $filename,
             "author_data" => get_author_data_by_line($line1),
             "title" => get_title_by_line($line2),
-            "publication_datetime" => $datetime_obj,
-            "day" => date_format($datetime_obj, "d"),
-            "hour" => date_format($datetime_obj, "H"),
-            "minute" => date_format($datetime_obj, "i")
+            "publication_datetime" => $datetime_obj
         ];
     }
 
@@ -495,6 +489,7 @@
         foreach($fileInfoArr as $fileInfo) {
             $year = date_format($fileInfo["publication_datetime"], "Y");
             $month = date_format($fileInfo["publication_datetime"], "n"); // n: 1..12 / m: 01..12
+            $dayHourStr = date_format($fileInfo["publication_datetime"], "d H:i");
 
             if ($currentYear != $year) {
                 $currentYear = $year;
@@ -507,17 +502,12 @@
             }
             
             if (
-                is_string($fileInfo["day"]) &&
-                is_string($fileInfo["hour"]) &&
-                is_string($fileInfo["minute"]) &&
                 is_string($fileInfo["filename"]) &&
                 is_string($fileInfo["title"])
             ) {
                 printf(
-                    '<blockquote>%s %s:%s - <a href="index.php?page=%s">%s</a> - %s</blockquote>' . "\n",
-                    $fileInfo["day"],
-                    $fileInfo["hour"],
-                    $fileInfo["minute"],
+                    '<blockquote>%s - <a href="index.php?page=%s">%s</a> - %s</blockquote>' . "\n",
+                    $dayHourStr,
                     $fileInfo["filename"],
                     $fileInfo["title"],
                     $fileInfo["author_data"][0]
@@ -545,10 +535,7 @@
      *  filename: string,
      *  author_data: array{string, string}, 
      *  title: string,
-     *  publication_datetime: DateTime,
-     *  day: string,
-     *  hour: string,
-     *  minute: string
+     *  publication_datetime: DateTime
      * } $fileInfo
      */
     function print_page(string $fileContent, array $fileInfo) : void {
