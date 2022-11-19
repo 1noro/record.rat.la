@@ -19,7 +19,7 @@
     <!--<author>Inoro</author>-->
     <pubDate>Sat, 12 Nov 2022 21:11:00 +0100</pubDate>
     <description>
-<![CDATA[<!-- 202211122111i -->
+<![CDATA[
 <h1>Emocionado por crear un <em>link blog</em></h1>
 
 <p>
@@ -64,7 +64,7 @@
     <!--<author>Inoro</author>-->
     <pubDate>Sat, 24 Sep 2022 16:59:00 +0200</pubDate>
     <description>
-<![CDATA[<!-- 202209241659i -->
+<![CDATA[
 <h1>CD fuzzy finder</h1>
 
 <p>
@@ -163,7 +163,7 @@ cd "$(find * \( -path Library -o -path Applications -o -path opt \) -prune -o -p
     <!--<author>Inoro</author>-->
     <pubDate>Sun, 14 Nov 2021 21:16:00 +0100</pubDate>
     <description>
-<![CDATA[<!-- 202111142116i -->
+<![CDATA[
 <h1>Expandir una partición EXT4 de forma dinámica</h1>
 
 <p>
@@ -214,7 +214,7 @@ sudo resize2fs /dev/sdb1
     <!--<author>Inoro</author>-->
     <pubDate>Tue, 27 Jul 2021 19:02:00 +0200</pubDate>
     <description>
-<![CDATA[<!-- 202107271902i -->
+<![CDATA[
 <h1>Häxan: La brujería a través de los tiempos</h1>
 
 <p>
@@ -259,7 +259,7 @@ sudo resize2fs /dev/sdb1
     <!--<author>Inoro</author>-->
     <pubDate>Sat, 24 Jul 2021 20:57:00 +0200</pubDate>
     <description>
-<![CDATA[<!-- 202107242057i -->
+<![CDATA[
 <h1>Yojimbo <em>(用心棒)</em> – Japón inspira al <em>Western</em></h1>
 
 <p>
@@ -317,7 +317,7 @@ sudo resize2fs /dev/sdb1
     <!--<author>Inoro</author>-->
     <pubDate>Thu, 22 Jul 2021 00:46:00 +0200</pubDate>
     <description>
-<![CDATA[<!-- 202107220046i -->
+<![CDATA[
 <h1>Arañas antiguas – Un sueño esotérico</h1>
 
 <p>
@@ -399,7 +399,7 @@ sudo resize2fs /dev/sdb1
     <!--<author>Inoro</author>-->
     <pubDate>Tue, 13 Apr 2021 21:59:00 +0200</pubDate>
     <description>
-<![CDATA[<!-- 202104132159i -->
+<![CDATA[
 <h1><em>Git quick reference</em></h1>
 
 <p>Listado de los comandos más recurrentes en el día a día con <em>git</em>.</p>
@@ -549,7 +549,7 @@ git push origin --delete &lt;branch_name&gt;
     <!--<author>Inoro</author>-->
     <pubDate>Mon, 29 Mar 2021 22:56:00 +0200</pubDate>
     <description>
-<![CDATA[<!-- 202103292256i -->
+<![CDATA[
 <h1>Configurar los drivers de Nvidia en Arch Linux</h1>
 
 <p>
@@ -744,7 +744,7 @@ sudo grub-mkconfig -o /boot/grub/grub.cfg
     <!--<author>Inoro</author>-->
     <pubDate>Wed, 10 Mar 2021 13:32:00 +0100</pubDate>
     <description>
-<![CDATA[<!-- 202103101332i -->
+<![CDATA[
 <h1>Software que utilizo habitualmente</h1>
 
 <p>
@@ -891,7 +891,7 @@ sudo grub-mkconfig -o /boot/grub/grub.cfg
     <!--<author>Inoro</author>-->
     <pubDate>Sun, 07 Mar 2021 11:07:00 +0100</pubDate>
     <description>
-<![CDATA[<!-- 202103071107i -->
+<![CDATA[
 <h1>Gitlab con NGINX reverse proxy</h1>
 
 <p>
