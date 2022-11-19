@@ -294,29 +294,29 @@
      *  minute: string
      * }
      */
-    function get_date_by_line(string $line) : array {
-        $line = normalize_line($line);
-        $line = str_replace("<!-- ", "", $line);
-        $line = str_replace(" -->", "", $line);
+    // function get_date_by_line(string $line) : array {
+    //     $line = normalize_line($line);
+    //     $line = str_replace("<!-- ", "", $line);
+    //     $line = str_replace(" -->", "", $line);
 
-        $year = substr($line, 0, 4);
-        $month = substr($line, 4, 2);
-        $day = substr($line, 6, 2);
-        $hour = substr($line, 8, 2);
-        $minute = substr($line, 10, 2);
+    //     $year = substr($line, 0, 4);
+    //     $month = substr($line, 4, 2);
+    //     $day = substr($line, 6, 2);
+    //     $hour = substr($line, 8, 2);
+    //     $minute = substr($line, 10, 2);
 
-        return [
-            "DATE_W3C" => $year."-".$month."-".$day."T".$hour.":".$minute.":00+01:00", // or DATE_ATOM
-            // +01:00 is Europe/Madrid (Spain, CET) https://en.wikipedia.org/wiki/List_of_time_zones_by_country
-            // +00:00 is UTC
-            "datetime" => $year."/".$month."/".$day." ".$hour.":".$minute,
-            "year" => $year,
-            "month" => $month,
-            "day" => $day,
-            "hour" => $hour,
-            "minute" => $minute
-        ];
-    }
+    //     return [
+    //         "DATE_W3C" => $year."-".$month."-".$day."T".$hour.":".$minute.":00+01:00", // or DATE_ATOM
+    //         // +01:00 is Europe/Madrid (Spain, CET) https://en.wikipedia.org/wiki/List_of_time_zones_by_country
+    //         // +00:00 is UTC
+    //         "datetime" => $year."/".$month."/".$day." ".$hour.":".$minute,
+    //         "year" => $year,
+    //         "month" => $month,
+    //         "day" => $day,
+    //         "hour" => $hour,
+    //         "minute" => $minute
+    //     ];
+    // }
 
     /**
      * get_publication_datetime, obtiene la fecha de un artículo en base al 
@@ -412,19 +412,22 @@
             fclose($fileObj);
         }
 
-        $datetimeInfo = get_date_by_line($line1);
+        $content = file_get_contents("$filepath");
+        $datetime_obj = get_publication_datetime($content);
+
+        // $datetimeInfo = get_date_by_line($line1);
 
         return [
             "filename" => $filename,
             "author_data" => get_author_data_by_line($line1),
             "title" => get_title_by_line($line2),
-            "DATE_W3C" => $datetimeInfo["DATE_W3C"],
-            "datetime" => $datetimeInfo["datetime"],
-            "year" => $datetimeInfo["year"],
-            "month" => $datetimeInfo["month"],
-            "day" => $datetimeInfo["day"],
-            "hour" => $datetimeInfo["hour"],
-            "minute" => $datetimeInfo["minute"]
+            "DATE_W3C" => date_format($datetime_obj, DATE_W3C),
+            "datetime" => date_format($datetime_obj, 'Y/m/d H:i'),
+            "year" => date_format($datetime_obj, 'Y'),
+            "month" => date_format($datetime_obj, 'm'),
+            "day" => date_format($datetime_obj, 'd'),
+            "hour" => date_format($datetime_obj, 'H'),
+            "minute" => date_format($datetime_obj, 'i')
         ];
     }
 
