@@ -35,6 +35,7 @@ jobs:
 
   deploy-prod:
     name: Deploy in prod env
+    needs: build-prod-image
     runs-on: ubuntu-latest
     steps:
       - name: Stop & delete current container
