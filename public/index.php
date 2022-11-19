@@ -381,7 +381,8 @@
      * 
      * @return array{
      *  filename: string,
-     *  author_data: array{string, string}, 
+     *  author_name: string,
+     *  author_page: string,
      *  title: string,
      *  description: string,
      *  publication_datetime: DateTime
@@ -389,14 +390,16 @@
      */
     function get_page_info(string $filename) : array {
         $content = get_page_content($filename);
-        $datetime_obj = get_publication_datetime($content);
+        $datetimeObj = get_publication_datetime($content);
+        $authorData = get_author_data($content); 
 
         return [
             "filename" => $filename,
-            "author_data" => get_author_data($content),
+            "author_name" => $authorData[0],
+            "author_page" => $authorData[1],
             "title" => get_title($content),
             "description" => get_description($content),
-            "publication_datetime" => $datetime_obj
+            "publication_datetime" => $datetimeObj
         ];
     }
 
@@ -417,7 +420,7 @@
     /**
      * get_sorted_file_info
      * 
-     * @return array<int, array<string, array<int, string>|string|DateTimeInterface>>
+     * @return array<int, array<string, string|DateTimeInterface>>
      */
     function get_sorted_file_info() : array {
         // creamos $fileInfoArr y $datetimeArr previamente para ordenar 
@@ -499,7 +502,7 @@
                     $dayHourStr,
                     $fileInfo["filename"],
                     $fileInfo["title"],
-                    $fileInfo["author_data"][0]
+                    $fileInfo["author_name"]
                 );
             } else {
                 echo "<blockquote>No page</blockquote>\n";
@@ -522,7 +525,8 @@
      * 
      * @param array{
      *  filename: string,
-     *  author_data: array{string, string}, 
+     *  author_name: string,
+     *  author_page: string,
      *  title: string,
      *  description: string,
      *  publication_datetime: DateTime
@@ -532,9 +536,9 @@
         echo $fileContent . "\n";
         printf(
             '<p style="text-align:right;"><small><a href="index.php?page=%s" aria-label="Página del autor %s.">%s</a> - %s</small></p>' . "\n",
-            $fileInfo["author_data"][1],
-            $fileInfo["author_data"][0],
-            $fileInfo["author_data"][0],
+            $fileInfo["author_page"],
+            $fileInfo["author_name"],
+            $fileInfo["author_name"],
             date_format($fileInfo["publication_datetime"], PAGE_DATETIME_FORMAT)
         );
         printf(
@@ -593,7 +597,7 @@
                 $TITLE = $fileInfo["title"];
                 $OG_TYPE = "article";
                 $PUBLISHED = date_format($fileInfo["publication_datetime"], DATE_W3C);
-                $ARTICLE_AUTHOR = $fileInfo["author_data"][1];
+                $ARTICLE_AUTHOR = $fileInfo["author_page"];
                 $DESCRIPTION = $fileInfo["description"];
                 $PAGE_IMG = get_img(DIRECTORY . $filename);
             } else {

@@ -63,7 +63,7 @@ set-permissions:
 
 .PHONY: analyze
 analyze:
-	docker run --rm -v $(shell pwd)/public:/app -u $(shell id -u):$(shell id -g) ghcr.io/phpstan/phpstan analyse -l 9 .
+	docker run --rm -v $(shell pwd)/public:/app -u $(shell id -u):$(shell id -g) ghcr.io/phpstan/phpstan analyse -l 6 .
 
 .PHONY: rss-update
 rss-update:
