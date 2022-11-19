@@ -25,43 +25,39 @@ AUTHORS = {
 TIMEZONE = "Europe/Madrid"
 
 # --- Functions
-def parse_data(line):
-    line = line.replace("<!--", "")
-    line = line.replace("-->", "")
-    line = line.strip()
+def get_publication_datetime(content):
+    timezone = pytz.timezone(TIMEZONE)
 
-    datetime_str = line[:-1]
+    regex = r'<!-- publication_datetime (\d{4})(\d{2})(\d{2})T(\d{2})(\d{2}) -->'
+    match = re.search(regex, content)
+
+    if match == None:
+        return timezone.localize(datetime.now())
+
+    datetime_str = '{year}{month}{day}{hour}{minute}'.format(
+        year = match.group(1),
+        month = match.group(2),
+        day = match.group(3),
+        hour = match.group(4),
+        minute = match.group(5)
+    )
+
     # fecha_str en formato: YYYYmmddHHMM
     datetime_obj = datetime.strptime(datetime_str, '%Y%m%d%H%M')
-    timezone = pytz.timezone(TIMEZONE)
-    datetime_obj = timezone.localize(datetime_obj)
-
-    author_key = line[-1]
-
-    # (pubDate, author)
-    # return (utils.format_datetime(datetime_obj), AUTHORS[author_key][0])
-    return (datetime_obj, AUTHORS[author_key][0])
-
-# def parse_title(line):
-#     line = line.replace("<h1>", "")
-#     line = line.replace("</h1>", "")
-#     line = line.strip()
-
-#     # borramos los tags HTML
-#     regex = re.compile('<.*?>')
-#     title = re.sub(regex, '', line)
-
-#     return title
+    return timezone.localize(datetime_obj)
 
 def get_author(content):
     regex = r'<!-- author (.*) -->'
     match = re.search(regex, content)
-    print(match)
-    return match.group(1)
+    if match == None:
+        return AUTHORS['anon'][0]
+    return AUTHORS[match.group(1)][0]
 
 def get_title(content):
     regex = r'<h1>(.*)<\/h1>'
     match = re.search(regex, content)
+    if match == None:
+        return 'No title'
     # borramos los tags HTML
     return re.sub(re.compile('<.*?>'), '', match.group(1))
 
@@ -75,13 +71,13 @@ for pagename in pagename_list:
     print(">> " + page_path)
     with open(page_path, "r") as f:
         content = f.read()
-        # publication_datetime = get_publication_datetime(content)
+        publication_datetime = get_publication_datetime(content)
         author = get_author(content)
         title = get_title(content)
         pages_list.append({
             "pagename": pagename,
             "title": title,
-            "pubDate": datetime.now(),
+            "pubDate": publication_datetime,
             "author": author
         })
 
