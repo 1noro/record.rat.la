@@ -69,11 +69,12 @@
     define("DEF_TITLE", "Registros de las ratas cantarinas"); // título por defecto de la página
     define("DEF_DESCRIPTION", "Y el pobre anciano Masson se hundió en la negrura de la muerte, con los locos chillidos de las ratas taladrándole los oídos. ¿Porqué?"); // descripción por defecto de la página
     define("DEF_PAGE_IMG", "img/article_default_img_white.jpg"); // imagen por defecto del artículo
+    define("DEF_AUTHOR", "anon"); // datos de autor por defecto
 
     // autor por defecto: Anon
     define("AUTHORS", [
-        "a" => ["Anon", E404_PAGE],
-        "i" => ["Inoro", "inoro.html"]
+        DEF_AUTHOR => ["Anon", E404_PAGE],
+        "inoro" => ["Inoro", "inoro.html"]
     ]);
 
     $TEXT_SIZES = ["1.05em", "1.2em", "1.35em"];
@@ -313,22 +314,22 @@
     }
 
     /**
-     * get_author_data_by_line, obtiene los datos del autor en base a su
+     * get_author_data, obtiene los datos del autor en base a su
      * alias en el comentario de la primera línea del artículo
      * 
      * @return array{0: string, 1: string}
      */
-    function get_author_data_by_line(string $line) : array {
-        $line = normalize_line($line);
-        $line = str_replace("<!-- ", "", $line);
-        $line = str_replace(" -->", "", $line);
+    function get_author_data(string $content) : array {
+        $regex = '/<!-- author (.*) -->/';
+        $matches_count = preg_match_all($regex, $content, $matches, PREG_PATTERN_ORDER);
 
-        $authorId = substr($line, 12, 1);
+        $author = DEF_AUTHOR;
 
-        if (array_key_exists($authorId, AUTHORS)) {
-            return AUTHORS[$authorId];
+        if ($matches_count != 0 && isset(AUTHORS[$matches[1][0]])) {
+            $author = $matches[1][0];
         }
-        return AUTHORS["a"];
+
+        return AUTHORS[$author];
     }
 
     /**
@@ -383,20 +384,12 @@
     function get_page_info(string $filename) : array {
         $filepath = DIRECTORY . $filename;
 
-        $line1 = "<!-- 202009180000a -->"; // Default value for line1
-
-        $fileObj = fopen($filepath, "r");
-        if (is_resource($fileObj)) {
-            $line1 = fgets($fileObj) ?: $line1; // leemos la primera linea
-            fclose($fileObj);
-        }
-
         $content = file_get_contents("$filepath");
         $datetime_obj = get_publication_datetime($content);
 
         return [
             "filename" => $filename,
-            "author_data" => get_author_data_by_line($line1),
+            "author_data" => get_author_data($content),
             "title" => get_title($content),
             "description" => get_description($content),
             "publication_datetime" => $datetime_obj
