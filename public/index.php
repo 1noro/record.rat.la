@@ -346,9 +346,6 @@
     /**
      * get_description, obtiene el contenido del primer párrafo <p></p> del
      * artículo y lo coloca como description del mismo
-     * 
-     * @todo optimizar (sacar de lo que se carga en el main)
-     * 
      */
     function get_description(string $content) : string {
         $defaultText = "Default description";
