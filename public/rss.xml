@@ -19,7 +19,7 @@
     <!--<author>Inoro</author>-->
     <pubDate>Sat, 12 Nov 2022 21:11:00 +0100</pubDate>
     <description>
-<![CDATA[<!-- 202211122111i -->
+<![CDATA[
 <h1>Emocionado por crear un <em>link blog</em></h1>
 
 <p>
@@ -53,6 +53,9 @@
 <blockquote>
     P.D. –Poco se comenta que la web de Jason F. McBrayer y esta tienen ambas la misma temática, y no me refiero a la temática tecnológica, sino a la ambientación <em>Lovecraftiana</em> 🐙 que envuelve a ambas–
 </blockquote>
+
+<!-- publication_datetime 20221112T2111 -->
+<!-- author inoro -->
 ]]>
     </description>
 </item>
@@ -64,7 +67,7 @@
     <!--<author>Inoro</author>-->
     <pubDate>Sat, 24 Sep 2022 16:59:00 +0200</pubDate>
     <description>
-<![CDATA[<!-- 202209241659i -->
+<![CDATA[
 <h1>CD fuzzy finder</h1>
 
 <p>
@@ -152,6 +155,8 @@ cd "$(find * \( -path Library -o -path Applications -o -path opt \) -prune -o -p
 <blockquote>
     He de decir que aún estoy empezando a incorporar esta nueva idea a mi día a día por lo que puede que el comando y, como consecuencia, este articulo puede que sean actualizados a medida que pase el tiempo.
 </blockquote>
+<!-- publication_datetime 20220924T1659 -->
+<!-- author inoro -->
 ]]>
     </description>
 </item>
@@ -163,7 +168,7 @@ cd "$(find * \( -path Library -o -path Applications -o -path opt \) -prune -o -p
     <!--<author>Inoro</author>-->
     <pubDate>Sun, 14 Nov 2021 21:16:00 +0100</pubDate>
     <description>
-<![CDATA[<!-- 202111142116i -->
+<![CDATA[
 <h1>Expandir una partición EXT4 de forma dinámica</h1>
 
 <p>
@@ -203,6 +208,9 @@ sudo resize2fs /dev/sdb1
 </blockquote>
 
 <!-- https://gist.github.com/1noro/e9718c6f4b0d2b234f09a0567f375bb3 -->
+
+<!-- publication_datetime 20211114T2116 -->
+<!-- author inoro -->
 ]]>
     </description>
 </item>
@@ -214,7 +222,7 @@ sudo resize2fs /dev/sdb1
     <!--<author>Inoro</author>-->
     <pubDate>Tue, 27 Jul 2021 19:02:00 +0200</pubDate>
     <description>
-<![CDATA[<!-- 202107271902i -->
+<![CDATA[
 <h1>Häxan: La brujería a través de los tiempos</h1>
 
 <p>
@@ -248,6 +256,9 @@ sudo resize2fs /dev/sdb1
     gusta el cine raro y experimental, o los cuentos de terror al estilo de 
     <em>Lovecraft</em> o <em>Poe</em>.
 </p>
+
+<!-- publication_datetime 20210727T1902 -->
+<!-- author inoro -->
 ]]>
     </description>
 </item>
@@ -259,7 +270,7 @@ sudo resize2fs /dev/sdb1
     <!--<author>Inoro</author>-->
     <pubDate>Sat, 24 Jul 2021 20:57:00 +0200</pubDate>
     <description>
-<![CDATA[<!-- 202107242057i -->
+<![CDATA[
 <h1>Yojimbo <em>(用心棒)</em> – Japón inspira al <em>Western</em></h1>
 
 <p>
@@ -306,6 +317,9 @@ sudo resize2fs /dev/sdb1
     tiene secuela: <strong>Sanjuro</strong> (1962). Ardo en deseos de verla 
     cuanto antes.
 </p>
+
+<!-- publication_datetime 20210724T2057 -->
+<!-- author inoro -->
 ]]>
     </description>
 </item>
@@ -317,7 +331,7 @@ sudo resize2fs /dev/sdb1
     <!--<author>Inoro</author>-->
     <pubDate>Thu, 22 Jul 2021 00:46:00 +0200</pubDate>
     <description>
-<![CDATA[<!-- 202107220046i -->
+<![CDATA[
 <h1>Arañas antiguas – Un sueño esotérico</h1>
 
 <p>
@@ -388,6 +402,8 @@ sudo resize2fs /dev/sdb1
 <p>
     Buenas noches, y tened dulces sueños.
 </p>
+<!-- publication_datetime 20210722T0046 -->
+<!-- author inoro -->
 ]]>
     </description>
 </item>
@@ -399,7 +415,7 @@ sudo resize2fs /dev/sdb1
     <!--<author>Inoro</author>-->
     <pubDate>Tue, 13 Apr 2021 21:59:00 +0200</pubDate>
     <description>
-<![CDATA[<!-- 202104132159i -->
+<![CDATA[
 <h1><em>Git quick reference</em></h1>
 
 <p>Listado de los comandos más recurrentes en el día a día con <em>git</em>.</p>
@@ -538,6 +554,8 @@ git branch -d &lt;branch_name&gt;
 <pre>
 git push origin --delete &lt;branch_name&gt;
 </pre>
+<!-- publication_datetime 20210413T2159 -->
+<!-- author inoro -->
 ]]>
     </description>
 </item>
@@ -549,7 +567,7 @@ git push origin --delete &lt;branch_name&gt;
     <!--<author>Inoro</author>-->
     <pubDate>Mon, 29 Mar 2021 22:56:00 +0200</pubDate>
     <description>
-<![CDATA[<!-- 202103292256i -->
+<![CDATA[
 <h1>Configurar los drivers de Nvidia en Arch Linux</h1>
 
 <p>
@@ -733,6 +751,9 @@ sudo grub-mkconfig -o /boot/grub/grub.cfg
     configuración. Recuerda cambiar el cable de la pantalla y conectarlo a la 
     gráfica.
 </p>
+
+<!-- publication_datetime 20210329T2256 -->
+<!-- author inoro -->
 ]]>
     </description>
 </item>
@@ -744,7 +765,7 @@ sudo grub-mkconfig -o /boot/grub/grub.cfg
     <!--<author>Inoro</author>-->
     <pubDate>Wed, 10 Mar 2021 13:32:00 +0100</pubDate>
     <description>
-<![CDATA[<!-- 202103101332i -->
+<![CDATA[
 <h1>Software que utilizo habitualmente</h1>
 
 <p>
@@ -880,6 +901,9 @@ sudo grub-mkconfig -o /boot/grub/grub.cfg
     usar Signal para hablar conmigo. De todas formas, actualmente, ya lo
     lo estoy intentando a paulatinamente.
 </p>
+
+<!-- publication_datetime 20210310T1332 -->
+<!-- author inoro -->
 ]]>
     </description>
 </item>
@@ -891,7 +915,7 @@ sudo grub-mkconfig -o /boot/grub/grub.cfg
     <!--<author>Inoro</author>-->
     <pubDate>Sun, 07 Mar 2021 11:07:00 +0100</pubDate>
     <description>
-<![CDATA[<!-- 202103071107i -->
+<![CDATA[
 <h1>Gitlab con NGINX reverse proxy</h1>
 
 <p>
@@ -1171,6 +1195,9 @@ sudo gitlab-ctl reconfigure
     <li><a href="https://about.gitlab.com/install/#ubuntu">Gitlab Official Linux package (recommended installation)</a></li>
     <li><a href="https://docs.gitlab.com/omnibus/settings/nginx.html">Gitlab NGINX settings</a></li>
 </ul>
+
+<!-- publication_datetime 20210307T1107 -->
+<!-- author inoro -->
 ]]>
     </description>
 </item>

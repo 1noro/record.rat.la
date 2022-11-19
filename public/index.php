@@ -63,15 +63,18 @@
     define("PAGES_TO_SHOW", 2); // número de páginas a mostrar en la portada, "reciente"
     define("DIRECTORY", "pages/"); // carpeta donde se guardan las páginas
     define("FILENAMES", get_filenames(DIRECTORY)); // obtenemos todas las páginas de la carpeta DIRECTORY
-    
+    define("PAGE_DATETIME_FORMAT", "Y/m/d H:i"); // formato de fecha a mostrar una página (https://www.php.net/manual/es/function.date.php)
+
     define("DEF_TITLE_SUFFIX", " - record.rat.la"); // sufijo por defecto del título de la página
     define("DEF_TITLE", "Registros de las ratas cantarinas"); // título por defecto de la página
     define("DEF_DESCRIPTION", "Y el pobre anciano Masson se hundió en la negrura de la muerte, con los locos chillidos de las ratas taladrándole los oídos. ¿Porqué?"); // descripción por defecto de la página
     define("DEF_PAGE_IMG", "img/article_default_img_white.jpg"); // imagen por defecto del artículo
+    define("DEF_AUTHOR", "anon"); // datos de autor por defecto
 
+    // autor por defecto: Anon
     define("AUTHORS", [
-        "a" => ["Anon", E404_PAGE], // autor por defecto
-        "i" => ["Inoro", "inoro.html"]
+        DEF_AUTHOR => ["Anon", E404_PAGE],
+        "inoro" => ["Inoro", "inoro.html"]
     ]);
 
     $TEXT_SIZES = ["1.05em", "1.2em", "1.35em"];
@@ -253,11 +256,9 @@
      * los <h6> quedarán al mismo nivel
      */
     function reduce_h1(string $html) : string {
-        $html = str_replace("h5", "h6", $html);
-        $html = str_replace("h4", "h5", $html);
-        $html = str_replace("h3", "h4", $html);
-        $html = str_replace("h2", "h3", $html);
-        $html = str_replace("h1", "h2", $html);
+        $search = array("<h5", "</h5", "<h4", "</h4", "<h3", "</h3", "<h2", "</h2", "<h1", "</h1");
+        $replace = array("<h6", "</h6", "<h5", "</h5", "<h4", "</h4", "<h3", "</h3", "<h2", "</h2");
+        $html = str_ireplace($search, $replace, $html);
         return $html;
     }
 
@@ -274,148 +275,94 @@
         $directoryObj = opendir($directory) ?: null;
         while($filename = readdir($directoryObj)) {
             if(($filename != ".") && ($filename != "..")) {
-                $filenames[] = $filename; // put in array
+                // push value to array
+                $filenames[] = $filename;
             }
         }
         return $filenames;
     }
 
     /**
-     * get_date_by_line, obtiene la fecha de un artículo en base al 
-     * comentario de la primera línea del artículo
+     * get_publication_datetime, obtiene la fecha de un artículo en base al 
+     * comentario "publication_date"
      * 
-     * @return array{
-     *  DATE_W3C: non-falsy-string,
-     *  datetime: non-falsy-string,
-     *  year: string,
-     *  month: string,
-     *  day: string,
-     *  hour: string,
-     *  minute: string
-     * }
+     * @return DateTime
      */
-    function get_date_by_line(string $line) : array {
-        $line = normalize_line($line);
-        $line = str_replace("<!-- ", "", $line);
-        $line = str_replace(" -->", "", $line);
+    function get_publication_datetime(string $content) : DateTime {
+        $regex = '/<!-- publication_datetime (\d{4})(\d{2})(\d{2})T(\d{2})(\d{2}) -->/';
+        $matches_count = preg_match_all($regex, $content, $matches, PREG_PATTERN_ORDER);
 
-        $year = substr($line, 0, 4);
-        $month = substr($line, 4, 2);
-        $day = substr($line, 6, 2);
-        $hour = substr($line, 8, 2);
-        $minute = substr($line, 10, 2);
+        // default date: 2000/01/01 00:00
+        $year = '2000';
+        $month = '01';
+        $day = '01';
+        $hour = '00';
+        $minute = '00';
 
-        return [
-            "DATE_W3C" => $year."-".$month."-".$day."T".$hour.":".$minute.":00+01:00", // or DATE_ATOM
-            // +01:00 is Europe/Madrid (Spain, CET) https://en.wikipedia.org/wiki/List_of_time_zones_by_country
-            // +00:00 is UTC
-            "datetime" => $year."/".$month."/".$day." ".$hour.":".$minute,
-            "year" => $year,
-            "month" => $month,
-            "day" => $day,
-            "hour" => $hour,
-            "minute" => $minute
-        ];
+        if ($matches_count != 0) {
+            $year = $matches[1][0];
+            $month = $matches[2][0];
+            $day = $matches[3][0];
+            $hour = $matches[4][0];
+            $minute = $matches[5][0];
+        }
+
+        $datetime_str = $year."/".$month."/".$day." ".$hour.":".$minute;
+        $datetime_obj = date_create($datetime_str, new DateTimeZone("Europe/Madrid"));
+
+        // si la fecha no es válida, se devuelve una válida
+        if ($datetime_obj == null) {
+            $datetime_obj = new DateTime();
+        }
+
+        return $datetime_obj;
     }
 
     /**
-     * get_author_data_by_line, obtiene los datos del autor en base a su
+     * get_author_data, obtiene los datos del autor en base a su
      * alias en el comentario de la primera línea del artículo
      * 
      * @return array{0: string, 1: string}
      */
-    function get_author_data_by_line(string $line) : array {
-        $line = normalize_line($line);
-        $line = str_replace("<!-- ", "", $line);
-        $line = str_replace(" -->", "", $line);
+    function get_author_data(string $content) : array {
+        $regex = '/<!-- author (.*) -->/';
+        $matches_count = preg_match_all($regex, $content, $matches, PREG_PATTERN_ORDER);
 
-        $authorId = substr($line, 12, 1);
+        $author = DEF_AUTHOR;
 
-        if (array_key_exists($authorId, AUTHORS)) {
-            return AUTHORS[$authorId];
+        if ($matches_count != 0 && isset(AUTHORS[$matches[1][0]])) {
+            $author = $matches[1][0];
         }
-        return AUTHORS["a"];
+
+        return AUTHORS[$author];
     }
 
     /**
-     * get_title_by_line, obtiene el título del artículo en base a la
-     * segunda línea de una artículo
+     * get_title, obtiene el título del post en base a su contenido
      */
-    function get_title_by_line(string $line) : string {
-        $line = normalize_line($line);
-        $line = str_replace("<h1>", "", $line);
-        $line = str_replace("</h1>", "", $line);
-        
-        // quitamos las tags HTML y luego cambiamos los caracteres 
-        // especiales por sus códigos HTML (incluidas las " y ')
-        return htmlentities(strip_tags($line), ENT_QUOTES); 
-    }
-
-    /**
-     * get_page_info, obtiene en formato diccionario el nombre del archivo,
-     * fecha, autor y título de un artículo
-     * 
-     * @return array{
-     *  filename: string,
-     *  author_data: array{string, string}, 
-     *  title: string,
-     *  DATE_W3C: non-falsy-string,
-     *  datetime: non-falsy-string,
-     *  year: string,
-     *  month: string,
-     *  day: string,
-     *  hour: string,
-     *  minute: string
-     * }
-     */
-    function get_page_info(string $filename) : array {
-        $filepath = DIRECTORY . $filename;
-
-        $line1 = "<!-- 202009180000a -->"; // Default value for line1
-        $line2 = "<h1>Default title</h1>"; // Default value for line2
-
-        $fileObj = fopen($filepath, "r");
-        if (is_resource($fileObj)) {
-            $line1 = fgets($fileObj) ?: $line1; // leemos la primera linea
-            $line2 = fgets($fileObj) ?: $line2; // leemos la segunda linea
-            fclose($fileObj);
-        }
-
-        $datetimeInfo = get_date_by_line($line1);
-
-        return [
-            "filename" => $filename,
-            "author_data" => get_author_data_by_line($line1),
-            "title" => get_title_by_line($line2),
-            "DATE_W3C" => $datetimeInfo["DATE_W3C"],
-            "datetime" => $datetimeInfo["datetime"],
-            "year" => $datetimeInfo["year"],
-            "month" => $datetimeInfo["month"],
-            "day" => $datetimeInfo["day"],
-            "hour" => $datetimeInfo["hour"],
-            "minute" => $datetimeInfo["minute"]
-        ];
+    function get_title(string $content) : string {
+        preg_match_all("/<h1>(.*)<\/h1>/", $content, $matches, PREG_PATTERN_ORDER);
+        /**
+         * quitamos las tags HTML, los espacios sobrantes y luego cambiamos los 
+         * caracteres especiales por sus códigos HTML (incluidas las " y ')
+         */
+        return htmlentities(trim(strip_tags($matches[1][0])), ENT_QUOTES); 
     }
 
     /**
      * get_description, obtiene el contenido del primer párrafo <p></p> del
      * artículo y lo coloca como description del mismo
-     * 
-     * @todo optimizar (sacar de lo que se carga en el main)
-     * 
      */
-    function get_description(string $filepath) : string {
+    function get_description(string $content) : string {
         $defaultText = "Default description";
 
-        $html = file_get_contents($filepath) ?: "<p>$defaultText</p>";
-
-        $start = strpos($html, '<p>') ?: 0;
-        $end = strpos($html, '</p>', $start);
-        $paragraph = strip_tags(substr($html, $start, $end - $start + 4));
+        $start = strpos($content, '<p>') ?: 0;
+        $end = strpos($content, '</p>', $start);
+        $paragraph = strip_tags(substr($content, $start, $end - $start + 4));
         $paragraph = str_replace("\n", "", $paragraph);
         // quitamos el exceso de espacios en blanco delante, atrás y en el medio
         $paragraph = preg_replace('/\s+/', ' ', trim($paragraph));
-
+    
         if ($paragraph == null) {
             $paragraph = $defaultText;
         }
@@ -424,20 +371,48 @@
         if (strlen($paragraph) > 160) {
             $paragraph = mb_substr($paragraph, 0, 160 - 3) . "...";
         }
-
-        return trim($paragraph);
+    
+        return $paragraph;
     }
 
     /**
-     * get_page_img, obtiene la primera imagen mostrada en el artículo
+     * get_page_info, obtiene en formato diccionario el nombre del archivo,
+     * fecha, autor y título de un artículo
+     * 
+     * @return array{
+     *  filename: string,
+     *  author_name: string,
+     *  author_page: string,
+     *  title: string,
+     *  description: string,
+     *  publication_datetime: DateTime
+     * }
+     */
+    function get_page_info(string $filename) : array {
+        $content = get_page_content($filename);
+        $datetimeObj = get_publication_datetime($content);
+        $authorData = get_author_data($content); 
+
+        return [
+            "filename" => $filename,
+            "author_name" => $authorData[0],
+            "author_page" => $authorData[1],
+            "title" => get_title($content),
+            "description" => get_description($content),
+            "publication_datetime" => $datetimeObj
+        ];
+    }
+
+    /**
+     * get_img, obtiene la primera imagen mostrada en el artículo
      * 
      * @todo optimizar (sacar de lo que se carga en el main)
      */
-    function get_page_img(string $filepath) : string {
+    function get_img(string $filepath) : string {
         $html = file_get_contents($filepath) ?: "";
-        preg_match('/<img.+src=[\'"](?P<src>.+?)[\'"].*>/i', $html, $image);
-        if (isset($image["src"])) {
-            return $image["src"];
+        preg_match('/<img.+src=[\'"](?P<src>.+?)[\'"].*>/i', $html, $matches);
+        if (isset($matches["src"])) {
+            return $matches["src"];
         }
         return DEF_PAGE_IMG;
     }
@@ -445,7 +420,7 @@
     /**
      * get_sorted_file_info
      * 
-     * @return array<int, array<string, array<int, string>|string>>
+     * @return array<int, array<string, string|DateTimeInterface>>
      */
     function get_sorted_file_info() : array {
         // creamos $fileInfoArr y $datetimeArr previamente para ordenar 
@@ -455,7 +430,7 @@
         foreach(FILENAMES as $filename) {
             $fileInfo = get_page_info($filename);
             array_push($fileInfoArr, $fileInfo);
-            array_push($datetimeArr, $fileInfo["datetime"]);
+            array_push($datetimeArr, $fileInfo["publication_datetime"]);
         }
 
         // en base a los dos arrays anteriores ordeno por fecha
@@ -504,33 +479,30 @@
         echo "<h1>Archivo</h1>\n";
 
         foreach($fileInfoArr as $fileInfo) {
-            if (is_string($fileInfo["year"])){
-                if ($currentYear != $fileInfo["year"]) {
-                    $currentYear = $fileInfo["year"];
-                    printf("<h2>%s</h2>\n<hr>\n", $fileInfo["year"]);
-                }
-            } else {
-                echo "<h2>No year</h2>\n<hr>\n";
+            $year = date_format($fileInfo["publication_datetime"], "Y");
+            $month = date_format($fileInfo["publication_datetime"], "n"); // n: 1..12 / m: 01..12
+            $dayHourStr = date_format($fileInfo["publication_datetime"], "d H:i");
+
+            if ($currentYear != $year) {
+                $currentYear = $year;
+                printf("<h2>%s</h2>\n<hr>\n", $year);
             }
-            if ($currentMonth != $fileInfo["month"]) {
-                $currentMonth = $fileInfo["month"];
-                printf("<h3>%s</h3>\n", MONTHS[intval($fileInfo["month"]) - 1]);
+
+            if ($currentMonth != $month) {
+                $currentMonth = $month;
+                printf("<h3>%s</h3>\n", MONTHS[intval($month) - 1]);
             }
+            
             if (
-                is_string($fileInfo["day"]) &&
-                is_string($fileInfo["hour"]) &&
-                is_string($fileInfo["minute"]) &&
                 is_string($fileInfo["filename"]) &&
                 is_string($fileInfo["title"])
             ) {
                 printf(
-                    '<blockquote>%s %s:%s - <a href="index.php?page=%s">%s</a> - %s</blockquote>' . "\n",
-                    $fileInfo["day"],
-                    $fileInfo["hour"],
-                    $fileInfo["minute"],
+                    '<blockquote>%s - <a href="index.php?page=%s">%s</a> - %s</blockquote>' . "\n",
+                    $dayHourStr,
                     $fileInfo["filename"],
                     $fileInfo["title"],
-                    $fileInfo["author_data"][0]
+                    $fileInfo["author_name"]
                 );
             } else {
                 echo "<blockquote>No page</blockquote>\n";
@@ -553,25 +525,21 @@
      * 
      * @param array{
      *  filename: string,
-     *  author_data: array{string, string}, 
+     *  author_name: string,
+     *  author_page: string,
      *  title: string,
-     *  DATE_W3C: non-falsy-string,
-     *  datetime: non-falsy-string,
-     *  year: string,
-     *  month: string,
-     *  day: string,
-     *  hour: string,
-     *  minute: string
+     *  description: string,
+     *  publication_datetime: DateTime
      * } $fileInfo
      */
     function print_page(string $fileContent, array $fileInfo) : void {
         echo $fileContent . "\n";
         printf(
             '<p style="text-align:right;"><small><a href="index.php?page=%s" aria-label="Página del autor %s.">%s</a> - %s</small></p>' . "\n",
-            $fileInfo["author_data"][1],
-            $fileInfo["author_data"][0],
-            $fileInfo["author_data"][0],
-            $fileInfo["datetime"]
+            $fileInfo["author_page"],
+            $fileInfo["author_name"],
+            $fileInfo["author_name"],
+            date_format($fileInfo["publication_datetime"], PAGE_DATETIME_FORMAT)
         );
         printf(
             '<p style="text-align:right;"><small><a href="index.php?page=%s" aria-label="Enlace al contenido, %s, para verlo individualmente.">Enlace al contenido</a></small></p>' . "\n",
@@ -587,7 +555,7 @@
     $ACTION = 0;
     $OG_TYPE = "website";
     $PUBLISHED = "";
-    $ARTICLE_AUTHOR = AUTHORS["i"][1];
+    $ARTICLE_AUTHOR = AUTHORS["inoro"][1];
 
     // --- Montamos las variables URL, FULL_URL y CANONICAL_URL
     $URL = "http";
@@ -619,7 +587,7 @@
             $ACTION = 2;
             $fileInfo = get_page_info(COLOR_PAGE);
             $TITLE = $fileInfo["title"];
-            $DESCRIPTION = get_description(DIRECTORY . COLOR_PAGE);
+            $DESCRIPTION = $fileInfo["description"];
         } else {
             if (in_array(REQ_PAGE, FILENAMES)) {
                 // Artículo
@@ -628,10 +596,10 @@
                 $fileInfo = get_page_info($filename);
                 $TITLE = $fileInfo["title"];
                 $OG_TYPE = "article";
-                $PUBLISHED = $fileInfo["DATE_W3C"];
-                $ARTICLE_AUTHOR = $fileInfo["author_data"][1];
-                $DESCRIPTION = get_description(DIRECTORY . $filename);
-                $PAGE_IMG = get_page_img(DIRECTORY . $filename);
+                $PUBLISHED = date_format($fileInfo["publication_datetime"], DATE_W3C);
+                $ARTICLE_AUTHOR = $fileInfo["author_page"];
+                $DESCRIPTION = $fileInfo["description"];
+                $PAGE_IMG = get_img(DIRECTORY . $filename);
             } else {
                 // Error 404
                 $ACTION = 404;
@@ -658,9 +626,6 @@
         <title><?= $TITLE . DEF_TITLE_SUFFIX ?></title>
 
         <!-- ## LINK ## -->
-        <!-- Para decirle al navegador que tengo un favicon que no es .ico -->
-        <!-- <link rel="icon" href="favicon.webp" type="image/webp" sizes="50x50"> -->
-
         <!-- Para decirle a google que la URL original es esta, y no la que se está usando -->
         <link rel="canonical" href="<?= $CANONICAL_URL ?>">
 
@@ -857,7 +822,8 @@
                 <p>
                     <a href="https://github.com/1noro">github</a> / 
                     <a href="https://gitlab.com/1noro">gitlab</a> / 
-                    <a href="mailto:ppuubblliicc@protonmail.com">mail</a> (<a href="res/publickey.ppuubblliicc@protonmail.com.asc" aria-label="¡Mándame un correo cifrado con gpg!">gpg</a>)
+                    <a href="https://tilde.zone/@1noro">mastodon</a> / 
+                    mail (<a href="res/publickey.ppuubblliicc@protonmail.com.asc" aria-label="¡Mándame un correo cifrado con gpg!">gpg</a>)
                 </p>
             </nav>
             <nav aria-label="Donaciones">

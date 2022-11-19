@@ -25,7 +25,7 @@ up:
 
 .PHONY: up-prod
 up-prod:
-	@docker run -d --rm -p 8081:80 -v "$(PWD)/public:/var/www/html" --name $(CONTAINER) $(IMAGE):prod
+	@docker run -d --rm -p 8081:80 --name $(CONTAINER) $(IMAGE):prod
 	@echo "Running $(CONTAINER) in http://record.rat.localhost:8081"
 
 .PHONY: up-sitemapgen
@@ -63,7 +63,7 @@ set-permissions:
 
 .PHONY: analyze
 analyze:
-	docker run --rm -v $(shell pwd)/public:/app -u $(shell id -u):$(shell id -g) ghcr.io/phpstan/phpstan analyse -l 9 .
+	docker run --rm -v $(shell pwd)/public:/app -u $(shell id -u):$(shell id -g) ghcr.io/phpstan/phpstan analyse -l 6 .
 
 .PHONY: rss-update
 rss-update:
