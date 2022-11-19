@@ -28,3 +28,5 @@ que sigo al hacer un proyecto.
 
 Intentaré cumplir esta visión en la medida de lo posible y no parar de 
 sentir curiosidad por cosas nuevas.
+
+SPDX-License-Identifier: GPL-3.0 OR CC-BY-SA-4.0

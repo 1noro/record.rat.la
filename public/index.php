@@ -831,12 +831,12 @@
             </nav>
             <p>
                 <small>
-                    Creado por <a href="https://github.com/1noro/record.rat.la">Inoro</a> bajo la licencia <a href="LICENSE" aria-label="Todo el código que sustenta la web está bajo la licencia GPLv3.">GPLv3</a>
+                    Creado por <a href="https://github.com/1noro/record.rat.la">Inoro</a> bajo la licencia <a href="LICENSE.GPL-3.0.txt" aria-label="Todo el código que sustenta la web está bajo la licencia GPLv3.">GPLv3</a>
                 </small>
             </p>
             <p>
-                <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" aria-label="Todo el contenido multimedia está bajo la licencia CC-BY-NC-SA.">
-                    <img alt="Licencia Creative Commons BY-NC-SA" style="border-width: 0; width: auto;" src="img/cc.png" width="80" height="15">
+                <a rel="license" href="LICENSE.CC-BY-SA-4.0.txt" aria-label="Todo el contenido multimedia está bajo la licencia CC-BY-SA-4.0.">
+                    <img alt="Licencia Creative Commons BY-SA-4.0" style="border-width: 0; width: auto;" src="img/cc.png" width="80" height="15">
                 </a>
             </p>
         </footer>
