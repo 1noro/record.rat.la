@@ -25,7 +25,7 @@ up:
 
 .PHONY: up-prod
 up-prod:
-	@docker run -d --rm -p 8081:80 -v "$(PWD)/public:/var/www/html" --name $(CONTAINER) $(IMAGE):prod
+	@docker run -d --rm -p 8081:80 --name $(CONTAINER) $(IMAGE):prod
 	@echo "Running $(CONTAINER) in http://record.rat.localhost:8081"
 
 .PHONY: up-sitemapgen
