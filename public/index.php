@@ -353,7 +353,7 @@
      *  filename: string,
      *  author_data: array{string, string}, 
      *  title: string,
-     *  year: string,
+     *  publication_datetime: DateTime,
      *  month: string,
      *  day: string,
      *  hour: string,
@@ -381,7 +381,6 @@
             "author_data" => get_author_data_by_line($line1),
             "title" => get_title_by_line($line2),
             "publication_datetime" => $datetime_obj,
-            "year" => date_format($datetime_obj, "Y"),
             "month" => date_format($datetime_obj, "m"),
             "day" => date_format($datetime_obj, "d"),
             "hour" => date_format($datetime_obj, "H"),
@@ -437,7 +436,7 @@
     /**
      * get_sorted_file_info
      * 
-     * @return array<int, array<string, array<int, string>|string>>
+     * @return array<int, array<string, array<int, string>|string|DateTime>>
      */
     function get_sorted_file_info() : array {
         // creamos $fileInfoArr y $datetimeArr previamente para ordenar 
@@ -496,13 +495,10 @@
         echo "<h1>Archivo</h1>\n";
 
         foreach($fileInfoArr as $fileInfo) {
-            if (is_string($fileInfo["year"])){
-                if ($currentYear != $fileInfo["year"]) {
-                    $currentYear = $fileInfo["year"];
-                    printf("<h2>%s</h2>\n<hr>\n", $fileInfo["year"]);
-                }
-            } else {
-                echo "<h2>No year</h2>\n<hr>\n";
+            $year = date_format($fileInfo["publication_datetime"], "Y");
+            if ($currentYear != $year) {
+                $currentYear = $year;
+                printf("<h2>%s</h2>\n<hr>\n", $year);
             }
             if ($currentMonth != $fileInfo["month"]) {
                 $currentMonth = $fileInfo["month"];
@@ -547,7 +543,6 @@
      *  filename: string,
      *  author_data: array{string, string}, 
      *  title: string,
-     *  year: string,
      *  month: string,
      *  day: string,
      *  hour: string,
