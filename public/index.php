@@ -353,7 +353,6 @@
      *  filename: string,
      *  author_data: array{string, string}, 
      *  title: string,
-     *  datetime: non-falsy-string,
      *  year: string,
      *  month: string,
      *  day: string,
@@ -382,7 +381,6 @@
             "author_data" => get_author_data_by_line($line1),
             "title" => get_title_by_line($line2),
             "publication_datetime" => $datetime_obj,
-            "datetime" => date_format($datetime_obj, PAGE_DATETIME_FORMAT),
             "year" => date_format($datetime_obj, "Y"),
             "month" => date_format($datetime_obj, "m"),
             "day" => date_format($datetime_obj, "d"),
@@ -449,7 +447,7 @@
         foreach(FILENAMES as $filename) {
             $fileInfo = get_page_info($filename);
             array_push($fileInfoArr, $fileInfo);
-            array_push($datetimeArr, $fileInfo["datetime"]);
+            array_push($datetimeArr, $fileInfo["publication_datetime"]);
         }
 
         // en base a los dos arrays anteriores ordeno por fecha
@@ -549,7 +547,6 @@
      *  filename: string,
      *  author_data: array{string, string}, 
      *  title: string,
-     *  datetime: non-falsy-string,
      *  year: string,
      *  month: string,
      *  day: string,
@@ -564,7 +561,7 @@
             $fileInfo["author_data"][1],
             $fileInfo["author_data"][0],
             $fileInfo["author_data"][0],
-            $fileInfo["datetime"]
+            date_format($fileInfo["publication_datetime"], PAGE_DATETIME_FORMAT)
         );
         printf(
             '<p style="text-align:right;"><small><a href="index.php?page=%s" aria-label="Enlace al contenido, %s, para verlo individualmente.">Enlace al contenido</a></small></p>' . "\n",
