@@ -18,8 +18,8 @@ RSS_FILE_PATH = "public/rss.xml"
 PAGES_IN_FEED = 10
 
 AUTHORS = {
-    "a": ["Anon", "404.html"], 
-    "i": ["Inoro", "inoro.html"]
+    "anon": ["Anon", "404.html"], 
+    "inoro": ["Inoro", "inoro.html"]
 }
 
 TIMEZONE = "Europe/Madrid"
@@ -42,16 +42,28 @@ def parse_data(line):
     # return (utils.format_datetime(datetime_obj), AUTHORS[author_key][0])
     return (datetime_obj, AUTHORS[author_key][0])
 
-def parse_title(line):
-    line = line.replace("<h1>", "")
-    line = line.replace("</h1>", "")
-    line = line.strip()
+# def parse_title(line):
+#     line = line.replace("<h1>", "")
+#     line = line.replace("</h1>", "")
+#     line = line.strip()
 
+#     # borramos los tags HTML
+#     regex = re.compile('<.*?>')
+#     title = re.sub(regex, '', line)
+
+#     return title
+
+def get_author(content):
+    regex = r'<!-- author (.*) -->'
+    match = re.search(regex, content)
+    print(match)
+    return match.group(1)
+
+def get_title(content):
+    regex = r'<h1>(.*)<\/h1>'
+    match = re.search(regex, content)
     # borramos los tags HTML
-    regex = re.compile('<.*?>')
-    title = re.sub(regex, '', line)
-
-    return title
+    return re.sub(re.compile('<.*?>'), '', match.group(1))
 
 # --- Main
 pagename_list = [f for f in listdir(PAGES_FOLDER) if isfile(join(PAGES_FOLDER, f))]
@@ -62,12 +74,14 @@ for pagename in pagename_list:
     page_path = PAGES_FOLDER + pagename
     print(">> " + page_path)
     with open(page_path, "r") as f:
-        pub_date, author = parse_data(f.readline())
-        title = parse_title(f.readline())
+        content = f.read()
+        # publication_datetime = get_publication_datetime(content)
+        author = get_author(content)
+        title = get_title(content)
         pages_list.append({
             "pagename": pagename,
             "title": title,
-            "pubDate": pub_date,
+            "pubDate": datetime.now(),
             "author": author
         })
 
