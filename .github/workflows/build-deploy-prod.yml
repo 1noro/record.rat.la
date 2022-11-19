@@ -56,7 +56,7 @@ jobs:
           username: ${{ secrets.PROD_HOST_USER }}
           key: ${{ secrets.ACTIONS_SSH_PRIVATE_KEY }}
           port: ${{ secrets.PROD_HOST_SSH_PORT }}
-          script: docker stop record.rat.la-container
+          script: docker stop record.rat.la-container || true
 
       - name: Deploy new version
         uses: appleboy/ssh-action@master
