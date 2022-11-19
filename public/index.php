@@ -397,15 +397,15 @@
     }
 
     /**
-     * get_page_img, obtiene la primera imagen mostrada en el artículo
+     * get_img, obtiene la primera imagen mostrada en el artículo
      * 
      * @todo optimizar (sacar de lo que se carga en el main)
      */
-    function get_page_img(string $filepath) : string {
+    function get_img(string $filepath) : string {
         $html = file_get_contents($filepath) ?: "";
-        preg_match('/<img.+src=[\'"](?P<src>.+?)[\'"].*>/i', $html, $image);
-        if (isset($image["src"])) {
-            return $image["src"];
+        preg_match('/<img.+src=[\'"](?P<src>.+?)[\'"].*>/i', $html, $matches);
+        if (isset($matches["src"])) {
+            return $matches["src"];
         }
         return DEF_PAGE_IMG;
     }
@@ -590,7 +590,7 @@
                 $PUBLISHED = date_format($fileInfo["publication_datetime"], DATE_W3C);
                 $ARTICLE_AUTHOR = $fileInfo["author_data"][1];
                 $DESCRIPTION = $fileInfo["description"];
-                $PAGE_IMG = get_page_img(DIRECTORY . $filename);
+                $PAGE_IMG = get_img(DIRECTORY . $filename);
             } else {
                 // Error 404
                 $ACTION = 404;
