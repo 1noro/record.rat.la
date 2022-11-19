@@ -273,7 +273,8 @@
         $directoryObj = opendir($directory) ?: null;
         while($filename = readdir($directoryObj)) {
             if(($filename != ".") && ($filename != "..")) {
-                $filenames[] = $filename; // put in array
+                // push value to array
+                $filenames[] = $filename;
             }
         }
         return $filenames;
@@ -315,6 +316,37 @@
             "hour" => $hour,
             "minute" => $minute
         ];
+    }
+
+    /**
+     * get_publication_datetime, obtiene la fecha de un artículo en base al 
+     * comentario "publication_date"
+     * 
+     * @return DateTime
+     */
+    function get_publication_datetime(string $content) : DateTime {
+        $regex = '/<!-- publication_datetime (\d{4})(\d{2})(\d{2})T(\d{2})(\d{2}) -->/';
+        $matches_count = preg_match_all($regex, $content, $matches, PREG_PATTERN_ORDER);
+
+        // default date: 2000/01/01 00:00
+        $year = '2000';
+        $month = '01';
+        $day = '01';
+        $hour = '00';
+        $minute = '00';
+
+        if ($matches_count != 0) {
+            $year = $matches[1][0];
+            $month = $matches[2][0];
+            $day = $matches[3][0];
+            $hour = $matches[4][0];
+            $minute = $matches[5][0];
+        }
+
+        $datetime_str = $year."/".$month."/".$day." ".$hour.":".$minute;
+        $datetime_obj = date_create($datetime_str, new DateTimeZone("Europe/Madrid"));
+
+        return $datetime_obj;
     }
 
     /**
