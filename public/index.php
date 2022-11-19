@@ -69,8 +69,9 @@
     define("DEF_DESCRIPTION", "Y el pobre anciano Masson se hundió en la negrura de la muerte, con los locos chillidos de las ratas taladrándole los oídos. ¿Porqué?"); // descripción por defecto de la página
     define("DEF_PAGE_IMG", "img/article_default_img_white.jpg"); // imagen por defecto del artículo
 
+    // autor por defecto: Anon
     define("AUTHORS", [
-        "a" => ["Anon", E404_PAGE], // autor por defecto
+        "a" => ["Anon", E404_PAGE],
         "i" => ["Inoro", "inoro.html"]
     ]);
 
@@ -253,11 +254,9 @@
      * los <h6> quedarán al mismo nivel
      */
     function reduce_h1(string $html) : string {
-        $html = str_replace("h5", "h6", $html);
-        $html = str_replace("h4", "h5", $html);
-        $html = str_replace("h3", "h4", $html);
-        $html = str_replace("h2", "h3", $html);
-        $html = str_replace("h1", "h2", $html);
+        $search = array("<h5", "</h5", "<h4", "</h4", "<h3", "</h3", "<h2", "</h2", "<h1", "</h1");
+        $replace = array("<h6", "</h6", "<h5", "</h5", "<h4", "</h4", "<h3", "</h3", "<h2", "</h2");
+        $html = str_ireplace($search, $replace, $html);
         return $html;
     }
 
