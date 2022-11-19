@@ -33,6 +33,8 @@ jobs:
           target: prod
           no-cache: true
           push: true
+          build-args: |
+            VERSION=${{ github.sha }}
           tags: 1noro/record.rat.la:prod-${{ github.sha }}
 
   deploy-prod:
