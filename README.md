@@ -29,4 +29,10 @@ que sigo al hacer un proyecto.
 Intentaré cumplir esta visión en la medida de lo posible y no parar de 
 sentir curiosidad por cosas nuevas.
 
-SPDX-License-Identifier: GPL-3.0 OR CC-BY-SA-4.0
+## Licencias
+
+Este trabajo está bajo la licencia GPL-3.0 en lo que respecta al software y 
+bajo la Creative Commons BY-SA-4.0 con respecto al resto de contenido 
+multimedia (imágenes, textos, etc).
+
+`SPDX-License-Identifier: GPL-3.0 AND CC-BY-SA-4.0`
