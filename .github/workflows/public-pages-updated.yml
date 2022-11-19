@@ -1,14 +1,29 @@
 name: Public pages updated
 on:
-  push:
+  pull_request:
+    branches: [ master ]
     paths:
       - 'public/pages/**.html'
+      - 'public/index.html'
 jobs:
+  configure:
+    name: Configure
+    runs-on: ubuntu-latest
+    outputs:
+      uid_gid: ${{ env.uid_gid }}
+    steps:
+      - id: get-user
+        run: echo "uid_gid=$(id -u):$(id -g)" >> $GITHUB_ENV
+
   update-rss:
     name: Update RSS feed
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.head_ref }}
+
       - uses: actions/setup-python@v4
         with:
           python-version: '3.10'
@@ -35,4 +50,89 @@ jobs:
           # Stage the file, commit and push
           git add public/rss.xml
           git commit -m "chore(rss): updated rss.xml"
-          git push -u origin ${{ env.branch }}
+          git push -u origin ${{ github.head_ref }}
+
+  build-sitemapgen-image:
+    name: Build sitemapgen image
+    needs: update-rss
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Get info
+        run: |
+          pwd
+          ls -las
+          id -u
+          id -g
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push image record.rat.la:sitemapgen-${{ github.sha }}
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          target: sitemapgen
+          push: true
+          tags: 1noro/record.rat.la:sitemapgen-${{ github.sha }}
+
+  generate-sitemap:
+    name: Generate sitemap
+    needs: [build-sitemapgen-image, configure]
+    runs-on: ubuntu-latest
+    container:
+      image: docker.io/1noro/cicd-tools:latest
+      credentials:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+      options: --user ${{ needs.configure.outputs.uid_gid }}
+    services:
+      sitemapgen:
+        image: docker.io/1noro/record.rat.la:sitemapgen-${{ github.sha }}
+        credentials:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+        ports:
+          - 8080:80
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.head_ref }}
+
+      - name: Get info
+        run: |
+          pwd
+          ls -las
+          ls -las public
+          # ls -las /public
+          id -u
+          id -g
+
+      - name: Generate new sitemap
+        run: curl -v http://sitemapgen:8080/generate-sitemap.php -o public/sitemap.xml
+
+      - name: Commit if there are changes
+        run: |
+          # refrescamos los índices de git
+          git update-index -q --refresh
+          # comprobamos si hay cambios locales
+          if [ -z "$(git diff-index --name-only HEAD --)" ]; then exit 0; fi
+          # setup the username and email. I tend to use 'GitHub Actions Bot' with no email by default
+          git config user.name "github-actions-bot"
+          git config user.email "<>"
+          # Stage the file, commit and push
+          git add public/sitemap.xml
+          git commit -m "chore(sitemap): updated sitemap.xml"
+          git push -u origin ${{ github.head_ref }}
