@@ -822,7 +822,8 @@
                 <p>
                     <a href="https://github.com/1noro">github</a> / 
                     <a href="https://gitlab.com/1noro">gitlab</a> / 
-                    <a href="mailto:ppuubblliicc@protonmail.com">mail</a> (<a href="res/publickey.ppuubblliicc@protonmail.com.asc" aria-label="¡Mándame un correo cifrado con gpg!">gpg</a>)
+                    <a href="https://tilde.zone/@1noro">mastodon</a> / 
+                    mail (<a href="res/publickey.ppuubblliicc@protonmail.com.asc" aria-label="¡Mándame un correo cifrado con gpg!">gpg</a>)
                 </p>
             </nav>
             <nav aria-label="Donaciones">
