@@ -344,6 +344,35 @@
     }
 
     /**
+     * get_description, obtiene el contenido del primer párrafo <p></p> del
+     * artículo y lo coloca como description del mismo
+     * 
+     * @todo optimizar (sacar de lo que se carga en el main)
+     * 
+     */
+    function get_description(string $content) : string {
+        $defaultText = "Default description";
+
+        $start = strpos($content, '<p>') ?: 0;
+        $end = strpos($content, '</p>', $start);
+        $paragraph = strip_tags(substr($content, $start, $end - $start + 4));
+        $paragraph = str_replace("\n", "", $paragraph);
+        // quitamos el exceso de espacios en blanco delante, atrás y en el medio
+        $paragraph = preg_replace('/\s+/', ' ', trim($paragraph));
+    
+        if ($paragraph == null) {
+            $paragraph = $defaultText;
+        }
+        
+        // si la descripción es mayor a 160 caracteres es malo para el SEO
+        if (strlen($paragraph) > 160) {
+            $paragraph = mb_substr($paragraph, 0, 160 - 3) . "...";
+        }
+    
+        return $paragraph;
+    }
+
+    /**
      * get_page_info, obtiene en formato diccionario el nombre del archivo,
      * fecha, autor y título de un artículo
      * 
@@ -372,39 +401,9 @@
             "filename" => $filename,
             "author_data" => get_author_data_by_line($line1),
             "title" => get_title($content),
+            "description" => get_description($content),
             "publication_datetime" => $datetime_obj
         ];
-    }
-
-    /**
-     * get_description, obtiene el contenido del primer párrafo <p></p> del
-     * artículo y lo coloca como description del mismo
-     * 
-     * @todo optimizar (sacar de lo que se carga en el main)
-     * 
-     */
-    function get_description(string $filepath) : string {
-        $defaultText = "Default description";
-
-        $html = file_get_contents($filepath) ?: "<p>$defaultText</p>";
-
-        $start = strpos($html, '<p>') ?: 0;
-        $end = strpos($html, '</p>', $start);
-        $paragraph = strip_tags(substr($html, $start, $end - $start + 4));
-        $paragraph = str_replace("\n", "", $paragraph);
-        // quitamos el exceso de espacios en blanco delante, atrás y en el medio
-        $paragraph = preg_replace('/\s+/', ' ', trim($paragraph));
-
-        if ($paragraph == null) {
-            $paragraph = $defaultText;
-        }
-        
-        // si la descripción es mayor a 160 caracteres es malo para el SEO
-        if (strlen($paragraph) > 160) {
-            $paragraph = mb_substr($paragraph, 0, 160 - 3) . "...";
-        }
-
-        return trim($paragraph);
     }
 
     /**
@@ -589,7 +588,7 @@
             $ACTION = 2;
             $fileInfo = get_page_info(COLOR_PAGE);
             $TITLE = $fileInfo["title"];
-            $DESCRIPTION = get_description(DIRECTORY . COLOR_PAGE);
+            $DESCRIPTION = $fileInfo["description"];
         } else {
             if (in_array(REQ_PAGE, FILENAMES)) {
                 // Artículo
@@ -600,7 +599,7 @@
                 $OG_TYPE = "article";
                 $PUBLISHED = date_format($fileInfo["publication_datetime"], DATE_W3C);
                 $ARTICLE_AUTHOR = $fileInfo["author_data"][1];
-                $DESCRIPTION = get_description(DIRECTORY . $filename);
+                $DESCRIPTION = $fileInfo["description"];
                 $PAGE_IMG = get_page_img(DIRECTORY . $filename);
             } else {
                 // Error 404
