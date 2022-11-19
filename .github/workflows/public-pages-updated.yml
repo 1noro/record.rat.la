@@ -19,7 +19,11 @@ jobs:
     name: Update RSS feed
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.head_ref }}
+
       - uses: actions/setup-python@v4
         with:
           python-version: '3.10'
@@ -46,7 +50,7 @@ jobs:
           # Stage the file, commit and push
           git add public/rss.xml
           git commit -m "chore(rss): updated rss.xml"
-          git push -u origin ${{ env.branch }}
+          git push -u origin ${{ github.head_ref }}
 
   build-sitemapgen-image:
     name: Build sitemapgen image
