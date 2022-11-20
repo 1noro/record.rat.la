@@ -69,7 +69,7 @@
 
     // autor por defecto: Anon
     define("AUTHORS", [
-        DEF_AUTHOR => ["Anon", E404_PAGE],
+        DEF_AUTHOR => ["Anon", "anon.html"],
         "inoro" => ["Inoro", "inoro.html"]
     ]);
 

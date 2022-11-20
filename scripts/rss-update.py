@@ -18,7 +18,7 @@ RSS_FILE_PATH = "public/rss.xml"
 PAGES_IN_FEED = 10
 
 AUTHORS = {
-    "anon": ["Anon", "404.html"], 
+    "anon": ["Anon", "anon.html"], 
     "inoro": ["Inoro", "inoro.html"]
 }
 
