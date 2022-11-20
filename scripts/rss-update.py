@@ -13,7 +13,7 @@ import re
 from operator import itemgetter
 
 # --- Global
-PAGES_FOLDER = "public/pages/"
+PAGES_FOLDER = "public/pages/posts/"
 RSS_FILE_PATH = "public/rss.xml"
 PAGES_IN_FEED = 10
 
