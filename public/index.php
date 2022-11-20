@@ -45,7 +45,7 @@
      * Si se entra por primera vez a la web se guarda un cookie de TEXT_SIZE_ID
      * con el valor por defecto
      */
-    $TEXT_SIZE_ID = 0;
+    $TEXT_SIZE_ID = 1;
     // if (isset($_COOKIE["TEXT_SIZE_ID"])) {
     //     $TEXT_SIZE_ID = intval($_COOKIE["TEXT_SIZE_ID"]);
     // } else {
@@ -241,7 +241,7 @@
 
     function convert_title_to_link(string $filename, string $title, string $html) : string {
         $search = "/<h1>(.*)<\/h1>/i";
-        $substitution = "<h1><a class=\"title_link\" href=\"show?filename=${filename}\" aria-label=\"Enlace al contenido, ${title}, para verlo individualmente.\">$1</a></h1>";
+        $substitution = "<h1 class=\"underline\"><a class=\"title_link\" href=\"show?filename=${filename}\" aria-label=\"Enlace al contenido, ${title}, para verlo individualmente.\">$1</a></h1>";
         return preg_replace($search, $substitution, $html);
     }
 
@@ -439,7 +439,7 @@
     function home_action() : void {
         $fileInfoArr = get_sorted_file_info();
 
-        echo "<h1>Últimas publicaciones</h1>\n";
+        echo "<h1>Publicaciones recientes</h1>\n";
 
         $number = 1;
         foreach($fileInfoArr as $fileInfo) {
@@ -485,7 +485,7 @@
 
             if ($currentYear != $year) {
                 $currentYear = $year;
-                printf("<h2>%s</h2>\n<hr>\n", $year);
+                printf("<h2 class=\"underline\">%s</h2>\n", $year);
             }
 
             if ($currentMonth != $month) {
@@ -746,8 +746,8 @@
             body {
                 background-color: <?= $COLORS[$COLOR_ID]["background"] ?>;
                 color: <?= $COLORS[$COLOR_ID]["text"] ?>;
-                /* font-family: 'Times New Roman', Times, serif; */
-                font-family: Helvetica, sans-serif;
+                font-family: 'Times New Roman', Times, serif;
+                /* font-family: Helvetica, sans-serif; */
                 font-size: <?= $TEXT_SIZES[$TEXT_SIZE_ID] ?>;
             }
 
@@ -760,6 +760,7 @@
 
             a.title_link:link {
                 color: <?= $COLORS[$COLOR_ID]["text"] ?>;
+                text-decoration: none;
                 /* text-decoration-thickness: 1.5px; */
             }
             a.title_link:visited {color: <?= $COLORS[$COLOR_ID]["text"] ?>;}
@@ -787,6 +788,7 @@
             }
 
             h1, h2, h3, h4, h5, h6 {color: <?= $COLORS[$COLOR_ID]["title"] ?>;}
+            h2.underline {border-bottom: thin solid black;}
             hr {border: 1px solid <?= $COLORS[$COLOR_ID]["text"] ?>;}
             img {width: 100%;} /* todas las imágenes menos la del header */
             img.half {width: 50%; display: block; margin: 0 auto;}
@@ -818,9 +820,9 @@
             <!-- Barra de navegación principal -->
             <nav aria-label="Enlaces a las secciones de la página">
                 <p id="web_nav">
-                    <a href="/" aria-label="Páginas recientes.">reciente</a> / 
-                    <a href="archive" aria-label="El archivo de páginas ordenadas por fecha.">archivo</a> / 
-                    <a href="faq" aria-label="Preguntas frecuentes sobre esta página (faq).">faq</a> / 
+                    <a href="/" aria-label="Páginas recientes.">reciente</a> &nbsp;
+                    <a href="archive" aria-label="El archivo de páginas ordenadas por fecha.">archivo</a> &nbsp;
+                    <a href="faq" aria-label="Preguntas frecuentes sobre esta página (faq).">faq</a> &nbsp;
                     <a href="rss.xml" aria-label="Feed RSS para estar al tanto de las novedades de esta web.">rss</a>
                 </p>
             </nav>
@@ -881,7 +883,7 @@
                 </p>
             </nav>
             <nav aria-label="Donaciones">
-                <a href="donations">donaciones - págame un café</a>
+                <a href="donations">donaciones &middot; págame un café</a>
             </nav>
             <p>
                 <small>
