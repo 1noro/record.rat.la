@@ -59,7 +59,7 @@
     define("POST_FOLDER", "pages/posts/"); // carpeta donde se guardan las páginas
     define("COMMON_FOLDER", "pages/common/"); // carpeta donde se guardan las páginas
     define("POST_FILENAMES", get_filenames(POST_FOLDER)); // obtenemos todas las páginas de la carpeta POST_FOLDER
-    define("PAGE_DATETIME_FORMAT", "Y/m/d H:i"); // formato de fecha a mostrar una página (https://www.php.net/manual/es/function.date.php)
+    define("PAGE_DATETIME_FORMAT", "Y/m/d \· H:i"); // formato de fecha a mostrar una página (https://www.php.net/manual/es/function.date.php)
 
     define("DEF_TITLE_SUFFIX", " - record.rat.la"); // sufijo por defecto del título de la página
     define("DEF_TITLE", "Registros de las ratas cantarinas"); // título por defecto de la página
@@ -239,6 +239,12 @@
         return $html;
     }
 
+    function convert_title_to_link(string $filename, string $title, string $html) : string {
+        $search = "/<h1>(.*)<\/h1>/i";
+        $substitution = "<h1><a class=\"title_link\" href=\"show?filename=${filename}\" aria-label=\"Enlace al contenido, ${title}, para verlo individualmente.\">$1</a></h1>";
+        return preg_replace($search, $substitution, $html);
+    }
+
     // --- Obtención de datos de las páginas ---
 
     /**
@@ -318,7 +324,7 @@
      * get_title, obtiene el título del post en base a su contenido
      */
     function get_title(string $content) : string {
-        preg_match_all("/<h1>(.*)<\/h1>/", $content, $matches, PREG_PATTERN_ORDER);
+        preg_match_all("/<h1>(.*)<\/h1>/i", $content, $matches, PREG_PATTERN_ORDER);
         /**
          * quitamos las tags HTML, los espacios sobrantes y luego cambiamos los 
          * caracteres especiales por sus códigos HTML (incluidas las " y ')
@@ -433,7 +439,7 @@
     function home_action() : void {
         $fileInfoArr = get_sorted_file_info();
 
-        echo "<h1>Reciente</h1>\n<hr>\n";
+        echo "<h1>Últimas publicaciones</h1>\n";
 
         $number = 1;
         foreach($fileInfoArr as $fileInfo) {
@@ -441,13 +447,21 @@
             
             echo "<article>\n";
             if (is_string($filename)) {
-                print_page(reduce_h1(get_page_content(POST_FOLDER . $filename)), get_page_info(POST_FOLDER . $filename));
+                $filepath = POST_FOLDER . $filename;
+                $pageInfo = get_page_info($filepath);
+                $content = convert_title_to_link(
+                    $filename,
+                    $pageInfo["title"],
+                    get_page_content(POST_FOLDER . $filename)
+                );
+                $content = reduce_h1($content);
+                print_page($content, $pageInfo);
             } else {
                 echo "No page\n";
             }
             echo "</article>\n";
             if ($number >= PAGES_TO_SHOW) {break;}
-            echo "<hr>\n";
+            // echo "<hr>\n";
             $number++;
         }
     }
@@ -484,7 +498,7 @@
                 is_string($fileInfo["title"])
             ) {
                 printf(
-                    '<blockquote>%s - <a href="index.php?page=%s">%s</a> - %s</blockquote>' . "\n",
+                    '<blockquote>%s - <a href="show?filename=%s">%s</a> - %s</blockquote>' . "\n",
                     $dayHourStr,
                     $fileInfo["filename"],
                     $fileInfo["title"],
@@ -515,17 +529,17 @@
     function print_page(string $fileContent, array $fileInfo) : void {
         echo $fileContent . "\n";
         printf(
-            '<p style="text-align:right;"><small><a href="author?username=%s" aria-label="Página del autor %s.">%s</a> - %s</small></p>' . "\n",
+            '<p style="text-align:right;"><small>Publicado por <a href="author?username=%s" aria-label="Página del autor %s.">%s</a> el %s</small></p>' . "\n",
             $fileInfo["author_username"],
             $fileInfo["author_real_name"],
             $fileInfo["author_real_name"],
             date_format($fileInfo["publication_datetime"], PAGE_DATETIME_FORMAT)
         );
-        printf(
-            '<p style="text-align:right;"><small><a href="show?filename=%s" aria-label="Enlace al contenido, %s, para verlo individualmente.">Enlace al contenido</a></small></p>' . "\n",
-            $fileInfo["filename"],
-            strtolower($fileInfo["title"])
-        );
+        // printf(
+        //     '<p style="text-align:right;"><small><a href="show?filename=%s" aria-label="Enlace al contenido, %s, para verlo individualmente.">Enlace al contenido</a></small></p>' . "\n",
+        //     $fileInfo["filename"],
+        //     strtolower($fileInfo["title"])
+        // );
     }
 
     // --- Variables globales ---
@@ -743,6 +757,13 @@
             a:link {color: <?= $COLORS[$COLOR_ID]["link"] ?>;}
             a:visited {color: <?= $COLORS[$COLOR_ID]["link_visited"] ?>;}
             a:active {color: <?= $COLORS[$COLOR_ID]["link_active"] ?>;}
+
+            a.title_link:link {
+                color: <?= $COLORS[$COLOR_ID]["text"] ?>;
+                /* text-decoration-thickness: 1.5px; */
+            }
+            a.title_link:visited {color: <?= $COLORS[$COLOR_ID]["text"] ?>;}
+            a.title_link:active {color: <?= $COLORS[$COLOR_ID]["text"] ?>;}
 
             /* --- Contenedores HEADER y FOOTER --- */
             header, footer {text-align: center;}
