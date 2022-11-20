@@ -5,6 +5,7 @@ on:
       - master
     paths:
       - 'public/**'
+      - 'docker/prod/**'
 
 jobs:
   build-prod-image:
