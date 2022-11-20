@@ -299,7 +299,7 @@
      * get_author_data, obtiene los datos del autor en base a su
      * alias en el comentario de la primera línea del artículo
      * 
-     * @return array{0: string, 1: string}
+     * @return array{0: string, 1: string, 2: string}
      */
     function get_author_data(string $content) : array {
         $regex = '/<!-- author (.*) -->/';
@@ -467,7 +467,7 @@
         foreach($fileInfoArr as $fileInfo) {
             $year = date_format($fileInfo["publication_datetime"], "Y");
             $month = date_format($fileInfo["publication_datetime"], "n"); // n: 1..12 / m: 01..12
-            $dayHourStr = date_format($fileInfo["publication_datetime"], "d H:i");
+            $dayHourStr = date_format($fileInfo["publication_datetime"], "d \· H:i");
 
             if ($currentYear != $year) {
                 $currentYear = $year;
