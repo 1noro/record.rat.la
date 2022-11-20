@@ -550,7 +550,7 @@
     $FILEPATH = "";
     $OG_TYPE = "website";
     $PUBLISHED = "";
-    $ARTICLE_AUTHOR = AUTHORS["inoro"][1];
+    $ARTICLE_AUTHOR = "inoro";
 
     // --- Montamos las variables URL, FULL_URL y CANONICAL_URL
     $URL = "http";
@@ -586,7 +586,7 @@
             $TITLE = $fileInfo["title"];
             $OG_TYPE = "article";
             $PUBLISHED = date_format($fileInfo["publication_datetime"], DATE_W3C);
-            $ARTICLE_AUTHOR = $fileInfo["author_page"];
+            $ARTICLE_AUTHOR = $fileInfo["author_username"];
             $DESCRIPTION = $fileInfo["description"];
             $PAGE_IMG = get_img($FILEPATH);
         } else {
@@ -606,7 +606,7 @@
             $TITLE = $fileInfo["title"];
             $OG_TYPE = "article";
             $PUBLISHED = date_format($fileInfo["publication_datetime"], DATE_W3C);
-            $ARTICLE_AUTHOR = $fileInfo["author_page"];
+            $ARTICLE_AUTHOR = $fileInfo["author_username"];
             $DESCRIPTION = $fileInfo["description"];
             $PAGE_IMG = get_img($FILEPATH);
         } else {
@@ -625,7 +625,7 @@
         $TITLE = $fileInfo["title"];
         $OG_TYPE = "article";
         $PUBLISHED = date_format($fileInfo["publication_datetime"], DATE_W3C);
-        $ARTICLE_AUTHOR = $fileInfo["author_page"];
+        $ARTICLE_AUTHOR = $fileInfo["author_username"];
         $DESCRIPTION = $fileInfo["description"];
         $PAGE_IMG = get_img($FILEPATH);
     } elseif ('/donations' === $uri) {
@@ -637,7 +637,7 @@
         $TITLE = $fileInfo["title"];
         $OG_TYPE = "article";
         $PUBLISHED = date_format($fileInfo["publication_datetime"], DATE_W3C);
-        $ARTICLE_AUTHOR = $fileInfo["author_page"];
+        $ARTICLE_AUTHOR = $fileInfo["author_username"];
         $DESCRIPTION = $fileInfo["description"];
         $PAGE_IMG = get_img($FILEPATH);
     } elseif ('/description' === $uri) {
@@ -649,7 +649,7 @@
         $TITLE = $fileInfo["title"];
         $OG_TYPE = "article";
         $PUBLISHED = date_format($fileInfo["publication_datetime"], DATE_W3C);
-        $ARTICLE_AUTHOR = $fileInfo["author_page"];
+        $ARTICLE_AUTHOR = $fileInfo["author_username"];
         $DESCRIPTION = $fileInfo["description"];
         $PAGE_IMG = get_img($FILEPATH);
     } elseif ('/cookie' === $uri) {
@@ -661,7 +661,7 @@
         $TITLE = $fileInfo["title"];
         $OG_TYPE = "article";
         $PUBLISHED = date_format($fileInfo["publication_datetime"], DATE_W3C);
-        $ARTICLE_AUTHOR = $fileInfo["author_page"];
+        $ARTICLE_AUTHOR = $fileInfo["author_username"];
         $DESCRIPTION = $fileInfo["description"];
         $PAGE_IMG = get_img($FILEPATH);
     } else {
@@ -702,7 +702,7 @@
         <!-- OG -->
         <meta property="og:type" content="<?= $OG_TYPE ?>">
 <?php if ($OG_TYPE == "article") { ?>
-        <meta property="article:author" content="<?= $URL ?>/index.php?page=<?= $ARTICLE_AUTHOR ?>">
+        <meta property="article:author" content="<?= $URL ?>/author?username=<?= $ARTICLE_AUTHOR ?>">
         <meta property="article:published_time" content="<?= $PUBLISHED ?>">
         <!-- <meta property="article:modified_time" content="2020-09-21T07:23:04+00:00"> -->
 <?php } ?>

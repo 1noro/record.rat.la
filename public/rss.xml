@@ -14,8 +14,8 @@
 
 <item>
     <title>Emocionado por crear un link blog</title>
-    <guid>https://record.rat.la/index.php?page=emocionado-link-blog.html</guid>
-    <link>https://record.rat.la/index.php?page=emocionado-link-blog.html</link>
+    <guid>https://record.rat.la/show?filename=emocionado-link-blog.html</guid>
+    <link>https://record.rat.la/show?filename=emocionado-link-blog.html</link>
     <!--<author>Inoro</author>-->
     <pubDate>Sat, 12 Nov 2022 21:11:00 +0100</pubDate>
     <description>
@@ -62,8 +62,8 @@
 
 <item>
     <title>CD fuzzy finder</title>
-    <guid>https://record.rat.la/index.php?page=cd-fuzzy-finder.html</guid>
-    <link>https://record.rat.la/index.php?page=cd-fuzzy-finder.html</link>
+    <guid>https://record.rat.la/show?filename=cd-fuzzy-finder.html</guid>
+    <link>https://record.rat.la/show?filename=cd-fuzzy-finder.html</link>
     <!--<author>Inoro</author>-->
     <pubDate>Sat, 24 Sep 2022 16:59:00 +0200</pubDate>
     <description>
@@ -163,8 +163,8 @@ cd "$(find * \( -path Library -o -path Applications -o -path opt \) -prune -o -p
 
 <item>
     <title>Expandir una partición EXT4 de forma dinámica</title>
-    <guid>https://record.rat.la/index.php?page=expandir-ext4-dinamicamente.html</guid>
-    <link>https://record.rat.la/index.php?page=expandir-ext4-dinamicamente.html</link>
+    <guid>https://record.rat.la/show?filename=expandir-ext4-dinamicamente.html</guid>
+    <link>https://record.rat.la/show?filename=expandir-ext4-dinamicamente.html</link>
     <!--<author>Inoro</author>-->
     <pubDate>Sun, 14 Nov 2021 21:16:00 +0100</pubDate>
     <description>
@@ -217,8 +217,8 @@ sudo resize2fs /dev/sdb1
 
 <item>
     <title>Häxan: La brujería a través de los tiempos</title>
-    <guid>https://record.rat.la/index.php?page=haxan-brujeria-a-traves-del-tiempo.html</guid>
-    <link>https://record.rat.la/index.php?page=haxan-brujeria-a-traves-del-tiempo.html</link>
+    <guid>https://record.rat.la/show?filename=haxan-brujeria-a-traves-del-tiempo.html</guid>
+    <link>https://record.rat.la/show?filename=haxan-brujeria-a-traves-del-tiempo.html</link>
     <!--<author>Inoro</author>-->
     <pubDate>Tue, 27 Jul 2021 19:02:00 +0200</pubDate>
     <description>
@@ -265,8 +265,8 @@ sudo resize2fs /dev/sdb1
 
 <item>
     <title>Yojimbo (用心棒) – Japón inspira al Western</title>
-    <guid>https://record.rat.la/index.php?page=yojimbo-japon-inspira-western.html</guid>
-    <link>https://record.rat.la/index.php?page=yojimbo-japon-inspira-western.html</link>
+    <guid>https://record.rat.la/show?filename=yojimbo-japon-inspira-western.html</guid>
+    <link>https://record.rat.la/show?filename=yojimbo-japon-inspira-western.html</link>
     <!--<author>Inoro</author>-->
     <pubDate>Sat, 24 Jul 2021 20:57:00 +0200</pubDate>
     <description>
@@ -326,8 +326,8 @@ sudo resize2fs /dev/sdb1
 
 <item>
     <title>Arañas antiguas – Un sueño esotérico</title>
-    <guid>https://record.rat.la/index.php?page=aranas-antiguas-sueno-esoterico.html</guid>
-    <link>https://record.rat.la/index.php?page=aranas-antiguas-sueno-esoterico.html</link>
+    <guid>https://record.rat.la/show?filename=aranas-antiguas-sueno-esoterico.html</guid>
+    <link>https://record.rat.la/show?filename=aranas-antiguas-sueno-esoterico.html</link>
     <!--<author>Inoro</author>-->
     <pubDate>Thu, 22 Jul 2021 00:46:00 +0200</pubDate>
     <description>
@@ -410,8 +410,8 @@ sudo resize2fs /dev/sdb1
 
 <item>
     <title>Git quick reference</title>
-    <guid>https://record.rat.la/index.php?page=comandos-utiles-git.html</guid>
-    <link>https://record.rat.la/index.php?page=comandos-utiles-git.html</link>
+    <guid>https://record.rat.la/show?filename=comandos-utiles-git.html</guid>
+    <link>https://record.rat.la/show?filename=comandos-utiles-git.html</link>
     <!--<author>Inoro</author>-->
     <pubDate>Tue, 13 Apr 2021 21:59:00 +0200</pubDate>
     <description>
@@ -562,8 +562,8 @@ git push origin --delete &lt;branch_name&gt;
 
 <item>
     <title>Configurar los drivers de Nvidia en Arch Linux</title>
-    <guid>https://record.rat.la/index.php?page=drivers-nvidia-arch-linux.html</guid>
-    <link>https://record.rat.la/index.php?page=drivers-nvidia-arch-linux.html</link>
+    <guid>https://record.rat.la/show?filename=drivers-nvidia-arch-linux.html</guid>
+    <link>https://record.rat.la/show?filename=drivers-nvidia-arch-linux.html</link>
     <!--<author>Inoro</author>-->
     <pubDate>Mon, 29 Mar 2021 22:56:00 +0200</pubDate>
     <description>
@@ -760,8 +760,8 @@ sudo grub-mkconfig -o /boot/grub/grub.cfg
 
 <item>
     <title>Software que utilizo habitualmente</title>
-    <guid>https://record.rat.la/index.php?page=mi-software.html</guid>
-    <link>https://record.rat.la/index.php?page=mi-software.html</link>
+    <guid>https://record.rat.la/show?filename=mi-software.html</guid>
+    <link>https://record.rat.la/show?filename=mi-software.html</link>
     <!--<author>Inoro</author>-->
     <pubDate>Wed, 10 Mar 2021 13:32:00 +0100</pubDate>
     <description>
@@ -910,8 +910,8 @@ sudo grub-mkconfig -o /boot/grub/grub.cfg
 
 <item>
     <title>Gitlab con NGINX reverse proxy</title>
-    <guid>https://record.rat.la/index.php?page=gitlab-nginx.html</guid>
-    <link>https://record.rat.la/index.php?page=gitlab-nginx.html</link>
+    <guid>https://record.rat.la/show?filename=gitlab-nginx.html</guid>
+    <link>https://record.rat.la/show?filename=gitlab-nginx.html</link>
     <!--<author>Inoro</author>-->
     <pubDate>Sun, 07 Mar 2021 11:07:00 +0100</pubDate>
     <description>
