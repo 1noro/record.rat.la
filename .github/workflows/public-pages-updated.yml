@@ -3,7 +3,7 @@ on:
   pull_request:
     branches: [ master ]
     paths:
-      - 'public/pages/**.html'
+      - 'public/pages/**/**.html'
       - 'public/index.html'
 jobs:
   configure:

@@ -21,49 +21,45 @@
      * Opciones por defecto para el almacenamiento de cookies
      * (86400 segundos = 1 día)
      */
-    define("COOKIE_OPTIONS", [
-        "expires" => time() + (86400 * 30),
-        "path" => "/",
-        "domain" => $_SERVER['SERVER_NAME'],
-        "secure" => false,
-        "httponly" => true,
-        "samesite" => "Strict"
-    ]);
+    // define("COOKIE_OPTIONS", [
+    //     "expires" => time() + (86400 * 30),
+    //     "path" => "/",
+    //     "domain" => $_SERVER['SERVER_NAME'],
+    //     "secure" => false,
+    //     "httponly" => true,
+    //     "samesite" => "Strict"
+    // ]);
 
     /**
      * Si se entra por primera vez a la web se guarda un cookie de COLOR_ID con
      * el valor por defecto
      */
-    $COLOR_ID = 0;
-    if (isset($_COOKIE["COLOR_ID"])) {
-        $COLOR_ID = intval($_COOKIE["COLOR_ID"]);
-    } else {
-        setcookie("COLOR_ID", strval($COLOR_ID), COOKIE_OPTIONS);
-    }
+    $COLOR_ID = 10;
+    // if (isset($_COOKIE["COLOR_ID"])) {
+    //     $COLOR_ID = intval($_COOKIE["COLOR_ID"]);
+    // } else {
+    //     setcookie("COLOR_ID", strval($COLOR_ID), COOKIE_OPTIONS);
+    // }
 
     /**
      * Si se entra por primera vez a la web se guarda un cookie de TEXT_SIZE_ID
      * con el valor por defecto
      */
-    $TEXT_SIZE_ID = 0;
-    if (isset($_COOKIE["TEXT_SIZE_ID"])) {
-        $TEXT_SIZE_ID = intval($_COOKIE["TEXT_SIZE_ID"]);
-    } else {
-        setcookie("TEXT_SIZE_ID", strval($TEXT_SIZE_ID), COOKIE_OPTIONS);
-    }
-
-    // --- Requested Values ---
-    if (isset($_GET["page"])) { define("REQ_PAGE", $_GET["page"][0] == "/" ? substr($_GET["page"], 1) : $_GET["page"]); }
-    if (isset($_GET["id"])) { define("REQ_COLOR_ID", intval($_GET["id"])); }
-    if (isset($_GET["size"])) { define("REQ_SIZE_ID", intval($_GET["size"])); }
+    $TEXT_SIZE_ID = 1;
+    // if (isset($_COOKIE["TEXT_SIZE_ID"])) {
+    //     $TEXT_SIZE_ID = intval($_COOKIE["TEXT_SIZE_ID"]);
+    // } else {
+    //     setcookie("TEXT_SIZE_ID", strval($TEXT_SIZE_ID), COOKIE_OPTIONS);
+    // }
 
     // --- Constantes ---
     define("E404_PAGE", "404.html");
     define("COLOR_PAGE", "color.html");
     define("PAGES_TO_SHOW", 2); // número de páginas a mostrar en la portada, "reciente"
-    define("DIRECTORY", "pages/"); // carpeta donde se guardan las páginas
-    define("FILENAMES", get_filenames(DIRECTORY)); // obtenemos todas las páginas de la carpeta DIRECTORY
-    define("PAGE_DATETIME_FORMAT", "Y/m/d H:i"); // formato de fecha a mostrar una página (https://www.php.net/manual/es/function.date.php)
+    define("POST_FOLDER", "pages/posts/"); // carpeta donde se guardan las páginas
+    define("COMMON_FOLDER", "pages/common/"); // carpeta donde se guardan las páginas
+    define("POST_FILENAMES", get_filenames(POST_FOLDER)); // obtenemos todas las páginas de la carpeta POST_FOLDER
+    define("PAGE_DATETIME_FORMAT", "Y/m/d \· H:i"); // formato de fecha a mostrar una página (https://www.php.net/manual/es/function.date.php)
 
     define("DEF_TITLE_SUFFIX", " - record.rat.la"); // sufijo por defecto del título de la página
     define("DEF_TITLE", "Registros de las ratas cantarinas"); // título por defecto de la página
@@ -73,7 +69,7 @@
 
     // autor por defecto: Anon
     define("AUTHORS", [
-        DEF_AUTHOR => ["Anon", E404_PAGE],
+        DEF_AUTHOR => ["Anon", "anon.html"],
         "inoro" => ["Inoro", "inoro.html"]
     ]);
 
@@ -232,25 +228,6 @@
     // --- Utilidades genéricas ---
 
     /**
-     * add_page_if_exists, devuelve el parámetro de query "page" para 
-     * concatenar a un enlace, si este está definido
-     */
-    function add_page_if_exists() : string {
-        if (defined("REQ_PAGE")) {
-            return "&page=" . REQ_PAGE;
-        }
-        return "";
-    }
-
-    /**
-     * normalize_line, devuelve el contenido de una linea sin espacios ni 
-     * salto de linea
-     */
-    function normalize_line(string $line) : string {
-        return trim(str_replace("\n", "", $line));
-    }
-
-    /**
      * reduce_h1, en base a un texto html dado reduce el valor de todos los
      * tag <hN> en uno excepto el <h6>. El inconveniente es que los <h5> y
      * los <h6> quedarán al mismo nivel
@@ -260,6 +237,12 @@
         $replace = array("<h6", "</h6", "<h5", "</h5", "<h4", "</h4", "<h3", "</h3", "<h2", "</h2");
         $html = str_ireplace($search, $replace, $html);
         return $html;
+    }
+
+    function convert_title_to_link(string $filename, string $title, string $html) : string {
+        $search = "/<h1>(.*)<\/h1>/i";
+        $substitution = "<h1 class=\"underline\"><a class=\"title_link\" href=\"show?filename=${filename}\" aria-label=\"Enlace al contenido, ${title}, para verlo individualmente.\">$1</a></h1>";
+        return preg_replace($search, $substitution, $html);
     }
 
     // --- Obtención de datos de las páginas ---
@@ -322,7 +305,7 @@
      * get_author_data, obtiene los datos del autor en base a su
      * alias en el comentario de la primera línea del artículo
      * 
-     * @return array{0: string, 1: string}
+     * @return array{0: string, 1: string, 2: string}
      */
     function get_author_data(string $content) : array {
         $regex = '/<!-- author (.*) -->/';
@@ -334,14 +317,14 @@
             $author = $matches[1][0];
         }
 
-        return AUTHORS[$author];
+        return array(AUTHORS[$author][0], AUTHORS[$author][1], $author);
     }
 
     /**
      * get_title, obtiene el título del post en base a su contenido
      */
     function get_title(string $content) : string {
-        preg_match_all("/<h1>(.*)<\/h1>/", $content, $matches, PREG_PATTERN_ORDER);
+        preg_match_all("/<h1>(.*)<\/h1>/i", $content, $matches, PREG_PATTERN_ORDER);
         /**
          * quitamos las tags HTML, los espacios sobrantes y luego cambiamos los 
          * caracteres especiales por sus códigos HTML (incluidas las " y ')
@@ -376,27 +359,36 @@
     }
 
     /**
+     * get_page_content
+     */
+    function get_page_content(string $filepath) : string {
+        return file_get_contents($filepath) ?: "Empty page";
+    }
+
+    /**
      * get_page_info, obtiene en formato diccionario el nombre del archivo,
      * fecha, autor y título de un artículo
      * 
      * @return array{
      *  filename: string,
-     *  author_name: string,
+     *  author_real_name: string,
      *  author_page: string,
+     *  author_username: string,
      *  title: string,
      *  description: string,
      *  publication_datetime: DateTime
      * }
      */
-    function get_page_info(string $filename) : array {
-        $content = get_page_content($filename);
+    function get_page_info(string $filepath) : array {
+        $content = get_page_content($filepath);
         $datetimeObj = get_publication_datetime($content);
-        $authorData = get_author_data($content); 
+        $authorData = get_author_data($content);
 
         return [
-            "filename" => $filename,
-            "author_name" => $authorData[0],
+            "filename" => basename($filepath),
+            "author_real_name" => $authorData[0],
             "author_page" => $authorData[1],
+            "author_username" => $authorData[2],
             "title" => get_title($content),
             "description" => get_description($content),
             "publication_datetime" => $datetimeObj
@@ -427,8 +419,8 @@
         // los archivos por fecha
         $fileInfoArr = array();
         $datetimeArr = array();
-        foreach(FILENAMES as $filename) {
-            $fileInfo = get_page_info($filename);
+        foreach(POST_FILENAMES as $filename) {
+            $fileInfo = get_page_info(POST_FOLDER . $filename);
             array_push($fileInfoArr, $fileInfo);
             array_push($datetimeArr, $fileInfo["publication_datetime"]);
         }
@@ -442,12 +434,12 @@
     // --- Impresión de contenidos ---
 
     /**
-     * print_reciente, imprime la portada (las N páginas más recientes)
+     * home_action, imprime la portada (las N páginas más recientes)
      */
-    function print_reciente() : void {
+    function home_action() : void {
         $fileInfoArr = get_sorted_file_info();
 
-        echo "<h1>Reciente</h1>\n<hr>\n";
+        echo "<h1>Publicaciones recientes</h1>\n";
 
         $number = 1;
         foreach($fileInfoArr as $fileInfo) {
@@ -455,22 +447,30 @@
             
             echo "<article>\n";
             if (is_string($filename)) {
-                print_page(reduce_h1(get_page_content($filename)), get_page_info($filename));
+                $filepath = POST_FOLDER . $filename;
+                $pageInfo = get_page_info($filepath);
+                $content = convert_title_to_link(
+                    $filename,
+                    $pageInfo["title"],
+                    get_page_content(POST_FOLDER . $filename)
+                );
+                $content = reduce_h1($content);
+                print_page($content, $pageInfo);
             } else {
                 echo "No page\n";
             }
             echo "</article>\n";
             if ($number >= PAGES_TO_SHOW) {break;}
-            echo "<hr>\n";
+            // echo "<hr>\n";
             $number++;
         }
     }
 
     /**
-     * print_archive, imprime la página 'archivo', donde se listan las
+     * archive_action, imprime la página 'archivo', donde se listan las
      * páginas ordenadas por fecha DESC
      */
-    function print_archive() : void {
+    function archive_action() : void {
         $currentYear = "";
         $currentMonth = "";
 
@@ -481,11 +481,11 @@
         foreach($fileInfoArr as $fileInfo) {
             $year = date_format($fileInfo["publication_datetime"], "Y");
             $month = date_format($fileInfo["publication_datetime"], "n"); // n: 1..12 / m: 01..12
-            $dayHourStr = date_format($fileInfo["publication_datetime"], "d H:i");
+            $dayHourStr = date_format($fileInfo["publication_datetime"], "d \· H:i");
 
             if ($currentYear != $year) {
                 $currentYear = $year;
-                printf("<h2>%s</h2>\n<hr>\n", $year);
+                printf("<h2 class=\"underline\">%s</h2>\n", $year);
             }
 
             if ($currentMonth != $month) {
@@ -498,25 +498,18 @@
                 is_string($fileInfo["title"])
             ) {
                 printf(
-                    '<blockquote>%s - <a href="index.php?page=%s">%s</a> - %s</blockquote>' . "\n",
+                    '<blockquote>%s - <a href="show?filename=%s">%s</a> - %s</blockquote>' . "\n",
                     $dayHourStr,
                     $fileInfo["filename"],
                     $fileInfo["title"],
-                    $fileInfo["author_name"]
+                    $fileInfo["author_real_name"]
                 );
             } else {
                 echo "<blockquote>No page</blockquote>\n";
             }
         }
 
-        printf("<p>Hay un total de %d páginas en la web.</p>\n", count(FILENAMES));
-    }
-
-    /**
-     * get_page_content
-     */
-    function get_page_content(string $filename) : string {
-        return file_get_contents(DIRECTORY . $filename) ?: "Empty page";
+        printf("<p>Hay un total de %d páginas en la web.</p>\n", count(POST_FILENAMES));
     }
 
     /**
@@ -525,8 +518,9 @@
      * 
      * @param array{
      *  filename: string,
-     *  author_name: string,
+     *  author_real_name: string,
      *  author_page: string,
+     *  author_username: string,
      *  title: string,
      *  description: string,
      *  publication_datetime: DateTime
@@ -535,17 +529,17 @@
     function print_page(string $fileContent, array $fileInfo) : void {
         echo $fileContent . "\n";
         printf(
-            '<p style="text-align:right;"><small><a href="index.php?page=%s" aria-label="Página del autor %s.">%s</a> - %s</small></p>' . "\n",
-            $fileInfo["author_page"],
-            $fileInfo["author_name"],
-            $fileInfo["author_name"],
+            '<p style="text-align:right;"><small>Publicado por <a href="author?username=%s" aria-label="Página del autor %s.">%s</a> el %s</small></p>' . "\n",
+            $fileInfo["author_username"],
+            $fileInfo["author_real_name"],
+            $fileInfo["author_real_name"],
             date_format($fileInfo["publication_datetime"], PAGE_DATETIME_FORMAT)
         );
-        printf(
-            '<p style="text-align:right;"><small><a href="index.php?page=%s" aria-label="Enlace al contenido, %s, para verlo individualmente.">Enlace al contenido</a></small></p>' . "\n",
-            $fileInfo["filename"],
-            strtolower($fileInfo["title"])
-        );
+        // printf(
+        //     '<p style="text-align:right;"><small><a href="show?filename=%s" aria-label="Enlace al contenido, %s, para verlo individualmente.">Enlace al contenido</a></small></p>' . "\n",
+        //     $fileInfo["filename"],
+        //     strtolower($fileInfo["title"])
+        // );
     }
 
     // --- Variables globales ---
@@ -553,9 +547,10 @@
     $DESCRIPTION = DEF_DESCRIPTION; 
     $PAGE_IMG = DEF_PAGE_IMG;
     $ACTION = 0;
+    $FILEPATH = "";
     $OG_TYPE = "website";
     $PUBLISHED = "";
-    $ARTICLE_AUTHOR = AUTHORS["inoro"][1];
+    $ARTICLE_AUTHOR = "inoro";
 
     // --- Montamos las variables URL, FULL_URL y CANONICAL_URL
     $URL = "http";
@@ -566,54 +561,115 @@
     $URL .= $_SERVER["HTTP_HOST"];
     $FULL_URL = $URL . $_SERVER["REQUEST_URI"];
     $CANONICAL_URL = $FULL_URL;
-    if (defined("REQ_PAGE")) {
-        $CANONICAL_URL = $URL . "/index.php?page=" . REQ_PAGE;
-    }
 
     // --- Lógica de impresión ---
-    // procesamos REQ_PAGE y obramos en consecuencia
-    if (defined("REQ_PAGE")) {
-        if (REQ_PAGE == "archive") {
-            // Archivo
-            $ACTION = 1;
-            $TITLE = "Histórico de las ratas cantarinas";
-            $DESCRIPTION = "Listado de todas las páginas publicadas en record.rat.la";
-        } elseif (REQ_PAGE == COLOR_PAGE && defined("REQ_COLOR_ID")) {
-            // Cambio de paleta de colores
-            if (REQ_COLOR_ID >= 0 && REQ_COLOR_ID < count($COLORS)) {
-                setcookie("COLOR_ID", strval(REQ_COLOR_ID), COOKIE_OPTIONS);
-                $COLOR_ID = REQ_COLOR_ID;
-            }
-            $ACTION = 2;
-            $fileInfo = get_page_info(COLOR_PAGE);
-            $TITLE = $fileInfo["title"];
-            $DESCRIPTION = $fileInfo["description"];
-        } else {
-            if (in_array(REQ_PAGE, FILENAMES)) {
-                // Artículo
-                $ACTION = 3;
-                $filename = REQ_PAGE;
-                $fileInfo = get_page_info($filename);
-                $TITLE = $fileInfo["title"];
-                $OG_TYPE = "article";
-                $PUBLISHED = date_format($fileInfo["publication_datetime"], DATE_W3C);
-                $ARTICLE_AUTHOR = $fileInfo["author_page"];
-                $DESCRIPTION = $fileInfo["description"];
-                $PAGE_IMG = get_img(DIRECTORY . $filename);
-            } else {
-                // Error 404
-                $ACTION = 404;
-                $fileInfo = get_page_info(E404_PAGE);
-                $TITLE = $fileInfo["title"];
-                http_response_code(404);
-            }
-        }
-    }
 
-    // Cambio de tamaño de texto
-    if (defined("REQ_SIZE_ID") && REQ_SIZE_ID >= 0 && REQ_SIZE_ID < count($TEXT_SIZES)) {
-        setcookie("TEXT_SIZE_ID", strval(REQ_SIZE_ID), COOKIE_OPTIONS);
-        $TEXT_SIZE_ID = strval(REQ_SIZE_ID);
+    // route the request internally
+    $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+    if ('/' === $uri) {
+        // Home
+        $ACTION = 0;
+        $TITLE = DEF_TITLE;
+        $DESCRIPTION = DEF_DESCRIPTION;
+    } elseif ('/archive' === $uri) {
+        // Archivo
+        $ACTION = 1;
+        $TITLE = "Histórico de las ratas cantarinas";
+        $DESCRIPTION = "Listado de todas las páginas publicadas en record.rat.la";
+    } elseif ('/show' === $uri && isset($_GET['filename'])) {
+        if (in_array($_GET['filename'], POST_FILENAMES)) {
+            // Post
+            $ACTION = 2;
+            $filename = $_GET['filename'];
+            $FILEPATH = POST_FOLDER . $filename;
+            $fileInfo = get_page_info($FILEPATH);
+            $TITLE = $fileInfo["title"];
+            $OG_TYPE = "article";
+            $PUBLISHED = date_format($fileInfo["publication_datetime"], DATE_W3C);
+            $ARTICLE_AUTHOR = $fileInfo["author_username"];
+            $DESCRIPTION = $fileInfo["description"];
+            $PAGE_IMG = get_img($FILEPATH);
+        } else {
+            // Error 404
+            $ACTION = 404;
+            $fileInfo = get_page_info(COMMON_FOLDER . E404_PAGE);
+            $TITLE = $fileInfo["title"];
+            http_response_code(404);
+        }
+    } elseif ('/author' === $uri && isset($_GET['username'])) {
+        if (isset(AUTHORS[$_GET['username']])) {
+            // Author page
+            $ACTION = 2;
+            $filename = AUTHORS[$_GET['username']][1];
+            $FILEPATH = COMMON_FOLDER . $filename;
+            $fileInfo = get_page_info($FILEPATH);
+            $TITLE = $fileInfo["title"];
+            $OG_TYPE = "article";
+            $PUBLISHED = date_format($fileInfo["publication_datetime"], DATE_W3C);
+            $ARTICLE_AUTHOR = $fileInfo["author_username"];
+            $DESCRIPTION = $fileInfo["description"];
+            $PAGE_IMG = get_img($FILEPATH);
+        } else {
+            // Error 404
+            $ACTION = 404;
+            $fileInfo = get_page_info(COMMON_FOLDER . E404_PAGE);
+            $TITLE = $fileInfo["title"];
+            http_response_code(404);
+        }
+    } elseif ('/faq' === $uri) {
+        // FAQ
+        $ACTION = 2;
+        $filename = "faq.html";
+        $FILEPATH = COMMON_FOLDER . $filename;
+        $fileInfo = get_page_info($FILEPATH);
+        $TITLE = $fileInfo["title"];
+        $OG_TYPE = "article";
+        $PUBLISHED = date_format($fileInfo["publication_datetime"], DATE_W3C);
+        $ARTICLE_AUTHOR = $fileInfo["author_username"];
+        $DESCRIPTION = $fileInfo["description"];
+        $PAGE_IMG = get_img($FILEPATH);
+    } elseif ('/donations' === $uri) {
+        // Donations
+        $ACTION = 2;
+        $filename = "donaciones.html";
+        $FILEPATH = COMMON_FOLDER . $filename;
+        $fileInfo = get_page_info($FILEPATH);
+        $TITLE = $fileInfo["title"];
+        $OG_TYPE = "article";
+        $PUBLISHED = date_format($fileInfo["publication_datetime"], DATE_W3C);
+        $ARTICLE_AUTHOR = $fileInfo["author_username"];
+        $DESCRIPTION = $fileInfo["description"];
+        $PAGE_IMG = get_img($FILEPATH);
+    } elseif ('/description' === $uri) {
+        // Description
+        $ACTION = 2;
+        $filename = "descripcion.html";
+        $FILEPATH = COMMON_FOLDER . $filename;
+        $fileInfo = get_page_info($FILEPATH);
+        $TITLE = $fileInfo["title"];
+        $OG_TYPE = "article";
+        $PUBLISHED = date_format($fileInfo["publication_datetime"], DATE_W3C);
+        $ARTICLE_AUTHOR = $fileInfo["author_username"];
+        $DESCRIPTION = $fileInfo["description"];
+        $PAGE_IMG = get_img($FILEPATH);
+    } elseif ('/cookie' === $uri) {
+        // Cookie
+        $ACTION = 2;
+        $filename = "cookie.html";
+        $FILEPATH = COMMON_FOLDER . $filename;
+        $fileInfo = get_page_info($FILEPATH);
+        $TITLE = $fileInfo["title"];
+        $OG_TYPE = "article";
+        $PUBLISHED = date_format($fileInfo["publication_datetime"], DATE_W3C);
+        $ARTICLE_AUTHOR = $fileInfo["author_username"];
+        $DESCRIPTION = $fileInfo["description"];
+        $PAGE_IMG = get_img($FILEPATH);
+    } else {
+        // Error 404
+        $ACTION = 404;
+        $fileInfo = get_page_info(COMMON_FOLDER . E404_PAGE);
+        $TITLE = $fileInfo["title"];
+        http_response_code(404);
     }
 
 ?>
@@ -633,8 +689,8 @@
         <link rel="alternate" type="application/rss+xml" href="rss.xml" title="RSS de record.rat.la">
 
         <!-- Avisamos al navegador de que se prepare para hacer una petición a los siguientes dominios -->
-        <link rel="preconnect" href="https://www.googletagmanager.com/gtag/js?id=G-W3KC9CP7ZQ">
-        <link rel="dns-prefetch" href="https://www.googletagmanager.com/gtag/js?id=G-W3KC9CP7ZQ">
+        <!-- <link rel="preconnect" href="https://www.googletagmanager.com/gtag/js?id=G-W3KC9CP7ZQ">
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com/gtag/js?id=G-W3KC9CP7ZQ"> -->
 
         <!-- ## META ## -->
         <!-- Revisar: https://css-tricks.com/essential-meta-tags-social-media/ -->
@@ -646,7 +702,7 @@
         <!-- OG -->
         <meta property="og:type" content="<?= $OG_TYPE ?>">
 <?php if ($OG_TYPE == "article") { ?>
-        <meta property="article:author" content="<?= $URL ?>/index.php?page=<?= $ARTICLE_AUTHOR ?>">
+        <meta property="article:author" content="<?= $URL ?>/author?username=<?= $ARTICLE_AUTHOR ?>">
         <meta property="article:published_time" content="<?= $PUBLISHED ?>">
         <!-- <meta property="article:modified_time" content="2020-09-21T07:23:04+00:00"> -->
 <?php } ?>
@@ -679,19 +735,19 @@
         <!-- Cosas de la NSA (en modo prueba) -->
         <!-- Google Analytics -->
         <!-- La carga del script externo se hace después de los estilos para mejorar la performance -->
-        <script>
+        <!-- <script>
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
             gtag('config', 'G-W3KC9CP7ZQ');
-        </script>
+        </script> -->
 
         <style>
             body {
                 background-color: <?= $COLORS[$COLOR_ID]["background"] ?>;
                 color: <?= $COLORS[$COLOR_ID]["text"] ?>;
-                /* font-family: 'Times New Roman', Times, serif; */
-                font-family: Helvetica, sans-serif;
+                font-family: 'Times New Roman', Times, serif;
+                /* font-family: Helvetica, sans-serif; */
                 font-size: <?= $TEXT_SIZES[$TEXT_SIZE_ID] ?>;
             }
 
@@ -701,6 +757,14 @@
             a:link {color: <?= $COLORS[$COLOR_ID]["link"] ?>;}
             a:visited {color: <?= $COLORS[$COLOR_ID]["link_visited"] ?>;}
             a:active {color: <?= $COLORS[$COLOR_ID]["link_active"] ?>;}
+
+            a.title_link:link {
+                color: <?= $COLORS[$COLOR_ID]["text"] ?>;
+                text-decoration: none;
+                /* text-decoration-thickness: 1.5px; */
+            }
+            a.title_link:visited {color: <?= $COLORS[$COLOR_ID]["text"] ?>;}
+            a.title_link:active {color: <?= $COLORS[$COLOR_ID]["text"] ?>;}
 
             /* --- Contenedores HEADER y FOOTER --- */
             header, footer {text-align: center;}
@@ -724,6 +788,7 @@
             }
 
             h1, h2, h3, h4, h5, h6 {color: <?= $COLORS[$COLOR_ID]["title"] ?>;}
+            h2.underline {border-bottom: thin solid black;}
             hr {border: 1px solid <?= $COLORS[$COLOR_ID]["text"] ?>;}
             img {width: 100%;} /* todas las imágenes menos la del header */
             img.half {width: 50%; display: block; margin: 0 auto;}
@@ -739,7 +804,7 @@
         <!-- Cosas de la NSA (en modo prueba) -->
         <!-- Google Analytics -->
         <!-- La sitúo aquí para mejorar la carga de la web -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-W3KC9CP7ZQ"></script>
+        <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-W3KC9CP7ZQ"></script> -->
     </head>
 
     <body>
@@ -747,10 +812,6 @@
         <header id="header" aria-label="Cabecera" tabindex="-1">
             <!-- Barra de accesibilidad -->
             <nav aria-label="Enlaces de control de la web" style="text-align: left;">
-                <a class="text_size_link" style="font-size: 1.05em;" href="index.php?size=0<?= add_page_if_exists() ?>" aria-label="a, texto a tamaño por defecto.">a</a> 
-                <a class="text_size_link" style="font-size: 1.20em;" href="index.php?size=1<?= add_page_if_exists() ?>" aria-label="a, texto a tamaño grande.">a</a> 
-                <a class="text_size_link" style="font-size: 1.35em;" href="index.php?size=2<?= add_page_if_exists() ?>" aria-label="a, texto a tamaño enorme.">a</a> / 
-                <a href="index.php?page=color.html" aria-label="Cambia la paleta de colores para leer mejor o para molar más.">color</a> / 
                 <a href="#main">ir al artículo</a> / 
                 <a href="#footer">ir al pié</a>
             </nav>
@@ -759,25 +820,25 @@
             <!-- Barra de navegación principal -->
             <nav aria-label="Enlaces a las secciones de la página">
                 <p id="web_nav">
-                    <a href="index.php" aria-label="Páginas recientes.">reciente</a> / 
-                    <a href="index.php?page=archive" aria-label="El archivo de páginas ordenadas por fecha.">archivo</a> / 
-                    <a href="index.php?page=faq.html" aria-label="Preguntas frecuentes sobre esta página (faq).">faq</a> / 
+                    <a href="/" aria-label="Páginas recientes.">reciente</a> &nbsp;
+                    <a href="archive" aria-label="El archivo de páginas ordenadas por fecha.">archivo</a> &nbsp;
+                    <a href="faq" aria-label="Preguntas frecuentes sobre esta página (faq).">faq</a> &nbsp;
                     <a href="rss.xml" aria-label="Feed RSS para estar al tanto de las novedades de esta web.">rss</a>
                 </p>
             </nav>
             <!-- Cita de Henry Kuttner -->
-            <!-- <p>
+            <p>
                 <small>
                     <em>"Y el pobre anciano Masson se hundió en la negrura de la muerte,<br>con los locos chillidos de las ratas taladrándole los oídos"</em> – Henry Kuttner
                 </small>
-            </p> -->
-            <!-- Alerta sobre las cookies -->
-            <p>
-                <small>
-                    <!-- Debería dar la opción a desactivar la cookies de google -->
-                    Esta página guarda dos <a href="index.php?page=cookie.html" aria-label="¡Infórmate sobre las cookies!">cookies</a> funcionales para el estilo y <strong>tres</strong> analíticas para google
-                </small>
             </p>
+            <!-- Alerta sobre las cookies -->
+            <!-- Debería dar la opción a desactivar la cookies de google -->
+            <!-- <p>
+                <small>
+                    Esta página guarda dos <a href="cookie" aria-label="¡Infórmate sobre las cookies!">cookies</a> funcionales para el estilo y <strong>tres</strong> analíticas para google
+                </small>
+            </p> -->
         </header>
 
         <main id="main" aria-label="Contenido principal" tabindex="-1">
@@ -786,22 +847,17 @@
     switch ($ACTION) {
         default:
         case 0:
-            print_reciente();
+            home_action();
             break;
         case 1:
-            print_archive();
+            archive_action();
             break;
         case 2:
-            $page = COLOR_PAGE;
-            print_page(get_page_content($page), get_page_info($page));
-            break;
-        case 3:
-            $page = REQ_PAGE;
-            print_page(get_page_content($page), get_page_info($page));
+            print_page(get_page_content($FILEPATH), get_page_info($FILEPATH));
             break;
         case 404:
-            $page = E404_PAGE;
-            print_page(get_page_content($page), get_page_info($page));
+            $filepath = COMMON_FOLDER . E404_PAGE;
+            print_page(get_page_content($filepath), get_page_info($filepath));
             break;
     }
 ?>
@@ -810,7 +866,7 @@
         <footer id="footer" aria-label="Licencias y contactos" tabindex="-1">
             <nav aria-label="Enlace al archivo">
                 <p>
-                    <a href="index.php?page=archive">[ver más]</a>
+                    <a href="archive">[ver más]</a>
                 </p>
             </nav>
             <nav aria-label="Moverse por esta página">
@@ -827,7 +883,7 @@
                 </p>
             </nav>
             <nav aria-label="Donaciones">
-                <a href="index.php?page=donaciones.html">donaciones - págame un café</a>
+                <a href="donations">donaciones &middot; págame un café</a>
             </nav>
             <p>
                 <small>

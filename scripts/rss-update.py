@@ -13,12 +13,12 @@ import re
 from operator import itemgetter
 
 # --- Global
-PAGES_FOLDER = "public/pages/"
+PAGES_FOLDER = "public/pages/posts/"
 RSS_FILE_PATH = "public/rss.xml"
 PAGES_IN_FEED = 10
 
 AUTHORS = {
-    "anon": ["Anon", "404.html"], 
+    "anon": ["Anon", "anon.html"], 
     "inoro": ["Inoro", "inoro.html"]
 }
 
@@ -112,8 +112,8 @@ with open(RSS_FILE_PATH, "w") as f:
             f.write('''
 <item>
     <title>{}</title>
-    <guid>https://record.rat.la/index.php?page={}</guid>
-    <link>https://record.rat.la/index.php?page={}</link>
+    <guid>https://record.rat.la/show?filename={}</guid>
+    <link>https://record.rat.la/show?filename={}</link>
     <!--<author>{}</author>-->
     <pubDate>{}</pubDate>
     <description>
