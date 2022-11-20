@@ -52,11 +52,6 @@
     //     setcookie("TEXT_SIZE_ID", strval($TEXT_SIZE_ID), COOKIE_OPTIONS);
     // }
 
-    // --- Requested Values ---
-    // if (isset($_GET["page"])) { define("REQ_PAGE", $_GET["page"][0] == "/" ? substr($_GET["page"], 1) : $_GET["page"]); }
-    // if (isset($_GET["id"])) { define("REQ_COLOR_ID", intval($_GET["id"])); }
-    // if (isset($_GET["size"])) { define("REQ_SIZE_ID", intval($_GET["size"])); }
-
     // --- Constantes ---
     define("E404_PAGE", "404.html");
     define("COLOR_PAGE", "color.html");
@@ -231,25 +226,6 @@
     ]);
 
     // --- Utilidades genéricas ---
-
-    /**
-     * add_page_if_exists, devuelve el parámetro de query "page" para 
-     * concatenar a un enlace, si este está definido
-     */
-    // function add_page_if_exists() : string {
-    //     if (defined("REQ_PAGE")) {
-    //         return "&page=" . REQ_PAGE;
-    //     }
-    //     return "";
-    // }
-
-    /**
-     * normalize_line, devuelve el contenido de una linea sin espacios ni 
-     * salto de linea
-     */
-    // function normalize_line(string $line) : string {
-    //     return trim(str_replace("\n", "", $line));
-    // }
 
     /**
      * reduce_h1, en base a un texto html dado reduce el valor de todos los
@@ -571,9 +547,6 @@
     $URL .= $_SERVER["HTTP_HOST"];
     $FULL_URL = $URL . $_SERVER["REQUEST_URI"];
     $CANONICAL_URL = $FULL_URL;
-    // if (defined("REQ_PAGE")) {
-    //     $CANONICAL_URL = $URL . "/index.php?page=" . REQ_PAGE;
-    // }
 
     // --- Lógica de impresión ---
 
@@ -685,12 +658,6 @@
         http_response_code(404);
     }
 
-    // // Cambio de tamaño de texto
-    // if (defined("REQ_SIZE_ID") && REQ_SIZE_ID >= 0 && REQ_SIZE_ID < count($TEXT_SIZES)) {
-    //     setcookie("TEXT_SIZE_ID", strval(REQ_SIZE_ID), COOKIE_OPTIONS);
-    //     $TEXT_SIZE_ID = strval(REQ_SIZE_ID);
-    // }
-
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -708,8 +675,8 @@
         <link rel="alternate" type="application/rss+xml" href="rss.xml" title="RSS de record.rat.la">
 
         <!-- Avisamos al navegador de que se prepare para hacer una petición a los siguientes dominios -->
-        <link rel="preconnect" href="https://www.googletagmanager.com/gtag/js?id=G-W3KC9CP7ZQ">
-        <link rel="dns-prefetch" href="https://www.googletagmanager.com/gtag/js?id=G-W3KC9CP7ZQ">
+        <!-- <link rel="preconnect" href="https://www.googletagmanager.com/gtag/js?id=G-W3KC9CP7ZQ">
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com/gtag/js?id=G-W3KC9CP7ZQ"> -->
 
         <!-- ## META ## -->
         <!-- Revisar: https://css-tricks.com/essential-meta-tags-social-media/ -->
@@ -754,12 +721,12 @@
         <!-- Cosas de la NSA (en modo prueba) -->
         <!-- Google Analytics -->
         <!-- La carga del script externo se hace después de los estilos para mejorar la performance -->
-        <script>
+        <!-- <script>
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
             gtag('config', 'G-W3KC9CP7ZQ');
-        </script>
+        </script> -->
 
         <style>
             body {
@@ -814,7 +781,7 @@
         <!-- Cosas de la NSA (en modo prueba) -->
         <!-- Google Analytics -->
         <!-- La sitúo aquí para mejorar la carga de la web -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-W3KC9CP7ZQ"></script>
+        <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-W3KC9CP7ZQ"></script> -->
     </head>
 
     <body>
@@ -837,18 +804,18 @@
                 </p>
             </nav>
             <!-- Cita de Henry Kuttner -->
-            <!-- <p>
+            <p>
                 <small>
                     <em>"Y el pobre anciano Masson se hundió en la negrura de la muerte,<br>con los locos chillidos de las ratas taladrándole los oídos"</em> – Henry Kuttner
                 </small>
-            </p> -->
+            </p>
             <!-- Alerta sobre las cookies -->
-            <p>
+            <!-- Debería dar la opción a desactivar la cookies de google -->
+            <!-- <p>
                 <small>
-                    <!-- Debería dar la opción a desactivar la cookies de google -->
                     Esta página guarda dos <a href="cookie" aria-label="¡Infórmate sobre las cookies!">cookies</a> funcionales para el estilo y <strong>tres</strong> analíticas para google
                 </small>
-            </p>
+            </p> -->
         </header>
 
         <main id="main" aria-label="Contenido principal" tabindex="-1">
