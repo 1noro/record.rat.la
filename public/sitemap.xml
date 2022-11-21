@@ -4,169 +4,169 @@
   <!-- PHP-sitemap-generator by https://github.com/tristangoossens modified by 1noro -->
   <url>
     <loc>https://record.rat.la/</loc>
-    <lastmod>2022-11-20T13:21:07+00:00</lastmod>
+    <lastmod>2022-11-21T00:39:55+00:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>1</priority>
   </url>
   <url>
     <loc>https://record.rat.la/archive</loc>
-    <lastmod>2022-11-20T13:21:07+00:00</lastmod>
+    <lastmod>2022-11-21T00:39:55+00:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>1</priority>
   </url>
   <url>
     <loc>https://record.rat.la/faq</loc>
-    <lastmod>2022-11-20T13:21:07+00:00</lastmod>
+    <lastmod>2022-11-21T00:39:55+00:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>1</priority>
   </url>
   <url>
     <loc>https://record.rat.la/rss.xml</loc>
-    <lastmod>2022-11-20T13:21:07+00:00</lastmod>
+    <lastmod>2022-11-21T00:39:55+00:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>1</priority>
   </url>
   <url>
     <loc>https://record.rat.la/description</loc>
-    <lastmod>2022-11-20T13:21:07+00:00</lastmod>
+    <lastmod>2022-11-21T00:39:55+00:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>1</priority>
   </url>
   <url>
     <loc>https://record.rat.la/author?username=inoro</loc>
-    <lastmod>2022-11-20T13:21:07+00:00</lastmod>
+    <lastmod>2022-11-21T00:39:55+00:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>1</priority>
   </url>
   <url>
     <loc>https://record.rat.la/res/publickey.ppuubblliicc@protonmail.com.asc</loc>
-    <lastmod>2022-11-20T13:21:07+00:00</lastmod>
+    <lastmod>2022-11-21T00:39:55+00:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>1</priority>
   </url>
   <url>
     <loc>https://record.rat.la/donations</loc>
-    <lastmod>2022-11-20T13:21:07+00:00</lastmod>
+    <lastmod>2022-11-21T00:39:55+00:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>1</priority>
   </url>
   <url>
     <loc>https://record.rat.la/LICENSE.GPL-3.0.txt</loc>
-    <lastmod>2022-11-20T13:21:07+00:00</lastmod>
+    <lastmod>2022-11-21T00:39:55+00:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>1</priority>
   </url>
   <url>
     <loc>https://record.rat.la/LICENSE.CC-BY-SA-4.0.txt</loc>
-    <lastmod>2022-11-20T13:21:07+00:00</lastmod>
+    <lastmod>2022-11-21T00:39:55+00:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>1</priority>
   </url>
   <url>
     <loc>https://record.rat.la/show?filename=mi-software.html</loc>
-    <lastmod>2022-11-20T13:21:07+00:00</lastmod>
+    <lastmod>2022-11-21T00:39:55+00:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>1</priority>
   </url>
   <url>
     <loc>https://record.rat.la/show?filename=emocionado-link-blog.html</loc>
-    <lastmod>2022-11-20T13:21:07+00:00</lastmod>
+    <lastmod>2022-11-21T00:39:55+00:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>1</priority>
   </url>
   <url>
     <loc>https://record.rat.la/show?filename=cd-fuzzy-finder.html</loc>
-    <lastmod>2022-11-20T13:21:07+00:00</lastmod>
+    <lastmod>2022-11-21T00:39:55+00:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>1</priority>
   </url>
   <url>
     <loc>https://record.rat.la/show?filename=expandir-ext4-dinamicamente.html</loc>
-    <lastmod>2022-11-20T13:21:07+00:00</lastmod>
+    <lastmod>2022-11-21T00:39:55+00:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>1</priority>
   </url>
   <url>
     <loc>https://record.rat.la/show?filename=haxan-brujeria-a-traves-del-tiempo.html</loc>
-    <lastmod>2022-11-20T13:21:07+00:00</lastmod>
+    <lastmod>2022-11-21T00:39:55+00:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>1</priority>
   </url>
   <url>
     <loc>https://record.rat.la/show?filename=yojimbo-japon-inspira-western.html</loc>
-    <lastmod>2022-11-20T13:21:07+00:00</lastmod>
+    <lastmod>2022-11-21T00:39:55+00:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>1</priority>
   </url>
   <url>
     <loc>https://record.rat.la/show?filename=aranas-antiguas-sueno-esoterico.html</loc>
-    <lastmod>2022-11-20T13:21:07+00:00</lastmod>
+    <lastmod>2022-11-21T00:39:55+00:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>1</priority>
   </url>
   <url>
     <loc>https://record.rat.la/show?filename=comandos-utiles-git.html</loc>
-    <lastmod>2022-11-20T13:21:07+00:00</lastmod>
+    <lastmod>2022-11-21T00:39:55+00:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>1</priority>
   </url>
   <url>
     <loc>https://record.rat.la/show?filename=drivers-nvidia-arch-linux.html</loc>
-    <lastmod>2022-11-20T13:21:07+00:00</lastmod>
+    <lastmod>2022-11-21T00:39:55+00:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>1</priority>
   </url>
   <url>
     <loc>https://record.rat.la/show?filename=gitlab-nginx.html</loc>
-    <lastmod>2022-11-20T13:21:07+00:00</lastmod>
+    <lastmod>2022-11-21T00:39:55+00:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>1</priority>
   </url>
   <url>
     <loc>https://record.rat.la/show?filename=solucion-series-numericas-java-python.html</loc>
-    <lastmod>2022-11-20T13:21:07+00:00</lastmod>
+    <lastmod>2022-11-21T00:39:55+00:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>1</priority>
   </url>
   <url>
     <loc>https://record.rat.la/show?filename=la-forma-mas-rapida-de-hacer-un-git-push.html</loc>
-    <lastmod>2022-11-20T13:21:07+00:00</lastmod>
+    <lastmod>2022-11-21T00:39:55+00:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>1</priority>
   </url>
   <url>
     <loc>https://record.rat.la/show?filename=cowboy-bebop.html</loc>
-    <lastmod>2022-11-20T13:21:07+00:00</lastmod>
+    <lastmod>2022-11-21T00:39:55+00:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>1</priority>
   </url>
   <url>
     <loc>https://record.rat.la/show?filename=habilitar-http2-nginx.html</loc>
-    <lastmod>2022-11-20T13:21:07+00:00</lastmod>
+    <lastmod>2022-11-21T00:39:55+00:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>1</priority>
   </url>
   <url>
     <loc>https://record.rat.la/show?filename=configurando-nginx-para-esta-web.html</loc>
-    <lastmod>2022-11-20T13:21:07+00:00</lastmod>
+    <lastmod>2022-11-21T00:39:55+00:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>1</priority>
   </url>
   <url>
     <loc>https://record.rat.la/show?filename=los-buenos-dias-en-los-chats.html</loc>
-    <lastmod>2022-11-20T13:21:07+00:00</lastmod>
+    <lastmod>2022-11-21T00:39:55+00:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>1</priority>
   </url>
   <url>
     <loc>https://record.rat.la/show?filename=ubiquiti-er-movistartv.html</loc>
-    <lastmod>2022-11-20T13:21:07+00:00</lastmod>
+    <lastmod>2022-11-21T00:39:55+00:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>1</priority>
   </url>
   <url>
     <loc>https://record.rat.la/show?filename=genesis.html</loc>
-    <lastmod>2022-11-20T13:21:07+00:00</lastmod>
+    <lastmod>2022-11-21T00:39:55+00:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>1</priority>
   </url>
