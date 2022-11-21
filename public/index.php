@@ -45,7 +45,7 @@
      * Si se entra por primera vez a la web se guarda un cookie de TEXT_SIZE_ID
      * con el valor por defecto
      */
-    $TEXT_SIZE_ID = 1;
+    // $TEXT_SIZE_ID = 2;
     // if (isset($_COOKIE["TEXT_SIZE_ID"])) {
     //     $TEXT_SIZE_ID = intval($_COOKIE["TEXT_SIZE_ID"]);
     // } else {
@@ -62,8 +62,8 @@
     define("PAGE_DATETIME_FORMAT", "Y/m/d \· H:i"); // formato de fecha a mostrar una página (https://www.php.net/manual/es/function.date.php)
 
     define("DEF_TITLE_SUFFIX", " - record.rat.la"); // sufijo por defecto del título de la página
-    define("DEF_TITLE", "Registros de las ratas cantarinas"); // título por defecto de la página
-    define("DEF_DESCRIPTION", "Y el pobre anciano Masson se hundió en la negrura de la muerte, con los locos chillidos de las ratas taladrándole los oídos. ¿Porqué?"); // descripción por defecto de la página
+    define("DEF_TITLE", "Publicaciones recientes"); // título por defecto de la página
+    define("DEF_DESCRIPTION", "Bienvenido a record.rat.la, donde las ratas del cementerio de Salem cantan y registran sus desvaríos mentales."); // descripción por defecto de la página
     define("DEF_PAGE_IMG", "img/article_default_img_white.jpg"); // imagen por defecto del artículo
     define("DEF_AUTHOR", "anon"); // datos de autor por defecto
 
@@ -73,7 +73,7 @@
         "inoro" => ["Inoro", "inoro.html"]
     ]);
 
-    $TEXT_SIZES = ["1.05em", "1.2em", "1.35em"];
+    // $TEXT_SIZES = ["1.05em", "1.2em", "1.35em"];
 
     $COLORS = [
         // Paleta de colores por defecto 0 (G&W)
@@ -241,7 +241,7 @@
 
     function convert_title_to_link(string $filename, string $title, string $html) : string {
         $search = "/<h1>(.*)<\/h1>/i";
-        $substitution = "<h1 class=\"underline\"><a class=\"title_link\" href=\"show?filename=${filename}\" aria-label=\"Enlace al contenido, ${title}, para verlo individualmente.\">$1</a></h1>";
+        $substitution = "<h1><a class=\"title_link\" href=\"show?filename=${filename}\" aria-label=\"Enlace al contenido, ${title}, para verlo individualmente.\">$1</a></h1>";
         return preg_replace($search, $substitution, $html);
     }
 
@@ -440,6 +440,16 @@
         $fileInfoArr = get_sorted_file_info();
 
         echo "<h1>Publicaciones recientes</h1>\n";
+        echo "
+            <p>
+                Bienvenido a <em>record.rat.la</em>, donde las ratas del 
+                cementerio de Salem cantan y registran sus desvaríos mentales. 
+                Estas son las últimas publicaciones, si quieres leer más puedes 
+                ir al <a href=\"archive\">archivo</a>. Y si estás confuso y no 
+                entiendes de que vá todo esto puedes leer las 
+                <a href=\"faq\">preguntas frecuentes</a>.
+            </p>
+        ";
 
         $number = 1;
         foreach($fileInfoArr as $fileInfo) {
@@ -461,7 +471,6 @@
             }
             echo "</article>\n";
             if ($number >= PAGES_TO_SHOW) {break;}
-            // echo "<hr>\n";
             $number++;
         }
     }
@@ -476,7 +485,8 @@
 
         $fileInfoArr = get_sorted_file_info();
 
-        echo "<h1>Archivo</h1>\n";
+        echo "<h1>El archivo de las ratas cantarinas</h1>\n";
+        echo "<p>Registro cronológico de todas las publicaciones de la web.</p>\n";
 
         foreach($fileInfoArr as $fileInfo) {
             $year = date_format($fileInfo["publication_datetime"], "Y");
@@ -485,7 +495,7 @@
 
             if ($currentYear != $year) {
                 $currentYear = $year;
-                printf("<h2 class=\"underline\">%s</h2>\n", $year);
+                printf("<h2>– Año %s –</h2>\n", $year);
             }
 
             if ($currentMonth != $month) {
@@ -535,11 +545,6 @@
             $fileInfo["author_real_name"],
             date_format($fileInfo["publication_datetime"], PAGE_DATETIME_FORMAT)
         );
-        // printf(
-        //     '<p style="text-align:right;"><small><a href="show?filename=%s" aria-label="Enlace al contenido, %s, para verlo individualmente.">Enlace al contenido</a></small></p>' . "\n",
-        //     $fileInfo["filename"],
-        //     strtolower($fileInfo["title"])
-        // );
     }
 
     // --- Variables globales ---
@@ -574,8 +579,8 @@
     } elseif ('/archive' === $uri) {
         // Archivo
         $ACTION = 1;
-        $TITLE = "Histórico de las ratas cantarinas";
-        $DESCRIPTION = "Listado de todas las páginas publicadas en record.rat.la";
+        $TITLE = "El archivo de las ratas cantarinas";
+        $DESCRIPTION = "Registro cronológico de todas las publicaciones de la web.";
     } elseif ('/show' === $uri && isset($_GET['filename'])) {
         if (in_array($_GET['filename'], POST_FILENAMES)) {
             // Post
@@ -743,12 +748,42 @@
         </script> -->
 
         <style>
+            @font-face {
+                font-family: 'eb-garamond';
+                src: local('EB Garamond'), local('EBGaramond'),
+                    url('res/eb-garamond/EBGaramond-Regular.ttf');
+                font-weight: normal;
+                font-style: normal;
+            }
+
+            @font-face {
+                font-family: 'eb-garamond';
+                src: url('res/eb-garamond/EBGaramond-Italic.ttf');
+                font-weight: normal;
+                font-style: italic;
+            }
+
+            @font-face {
+                font-family: 'eb-garamond';
+                src: url('res/eb-garamond/EBGaramond-Bold.ttf');
+                font-weight: bold;
+                font-style: normal;
+            }
+
+            @font-face {
+                font-family: 'eb-garamond';
+                src: url('res/eb-garamond/EBGaramond-BoldItalic.ttf');
+                font-weight: bold;
+                font-style: italic;
+            }
+
             body {
                 background-color: <?= $COLORS[$COLOR_ID]["background"] ?>;
                 color: <?= $COLORS[$COLOR_ID]["text"] ?>;
-                font-family: 'Times New Roman', Times, serif;
+                /* font-family: 'Times New Roman', Times, serif; */
                 /* font-family: Helvetica, sans-serif; */
-                font-size: <?= $TEXT_SIZES[$TEXT_SIZE_ID] ?>;
+                font-family: 'eb-garamond', serif;
+                font-size: 1.30em;
             }
 
             /* --- Enlaces --- */
@@ -758,11 +793,7 @@
             a:visited {color: <?= $COLORS[$COLOR_ID]["link_visited"] ?>;}
             a:active {color: <?= $COLORS[$COLOR_ID]["link_active"] ?>;}
 
-            a.title_link:link {
-                color: <?= $COLORS[$COLOR_ID]["text"] ?>;
-                text-decoration: none;
-                /* text-decoration-thickness: 1.5px; */
-            }
+            a.title_link:link {color: <?= $COLORS[$COLOR_ID]["text"] ?>;}
             a.title_link:visited {color: <?= $COLORS[$COLOR_ID]["text"] ?>;}
             a.title_link:active {color: <?= $COLORS[$COLOR_ID]["text"] ?>;}
 
@@ -778,18 +809,20 @@
 
             /* este valor multiplica al valor definido en el body */
             header p#web_nav {font-size: 1.4em;}
+            header p#header_quote {
+                max-width: 550px;
+                margin: 0 auto;
+            }
 
             /* --- contenedor MAIN --- */
             main {
-                max-width: 750px;
+                max-width: 800px;
                 margin: 0 auto;
                 /* text-align: justify;
                 text-justify: inter-word; */
             }
 
             h1, h2, h3, h4, h5, h6 {color: <?= $COLORS[$COLOR_ID]["title"] ?>;}
-            h2.underline {border-bottom: thin solid black;}
-            hr {border: 1px solid <?= $COLORS[$COLOR_ID]["text"] ?>;}
             img {width: 100%;} /* todas las imágenes menos la del header */
             img.half {width: 50%; display: block; margin: 0 auto;}
             pre {padding: 10px; overflow: auto;}
@@ -827,9 +860,13 @@
                 </p>
             </nav>
             <!-- Cita de Henry Kuttner -->
-            <p>
+            <p id="header_quote">
                 <small>
-                    <em>"Y el pobre anciano Masson se hundió en la negrura de la muerte,<br>con los locos chillidos de las ratas taladrándole los oídos"</em> – Henry Kuttner
+                    <em>
+                        "Y el pobre anciano Masson se hundió en la negrura de 
+                        la muerte, con los locos chillidos de las ratas 
+                        taladrándole los oídos"
+                    </em> – Henry Kuttner
                 </small>
             </p>
             <!-- Alerta sobre las cookies -->
@@ -866,7 +903,7 @@
         <footer id="footer" aria-label="Licencias y contactos" tabindex="-1">
             <nav aria-label="Enlace al archivo">
                 <p>
-                    <a href="archive">[ver más]</a>
+                    <a href="archive">&laquo;más publicaciones&raquo;</a>
                 </p>
             </nav>
             <nav aria-label="Moverse por esta página">
