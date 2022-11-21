@@ -5,7 +5,7 @@
     | | | (_| | |_ _| | (_| |
     |_|  \__,_|\__(_)_|\__,_|
 
-    record.rat.la by Inoro (github.com/1noro)
+    record.rat.la by Inoro <https://github.com/1noro>
 
     "Y el pobre anciano Masson se hundió en la negrura de la muerte, con los 
     locos chillidos de las ratas taladrándole los oídos" - Henry Kuttner
@@ -335,6 +335,9 @@
     /**
      * get_description, obtiene el contenido del primer párrafo <p></p> del
      * artículo y lo coloca como description del mismo
+     * 
+     * @todo: mejorar la eficiencia de esta función
+     * 
      */
     function get_description(string $content) : string {
         $defaultText = "Default description";
@@ -351,8 +354,9 @@
         }
         
         // si la descripción es mayor a 160 caracteres es malo para el SEO
+        // con el preg replace eliminamos la ultima palabra par que no quede cortado
         if (strlen($paragraph) > 160) {
-            $paragraph = mb_substr($paragraph, 0, 160 - 3) . "...";
+            $paragraph = preg_replace('/\W\w+\s*(\W*)$/', '$1', mb_substr($paragraph, 0, 160 - 3)) . "...";
         }
     
         return $paragraph;
@@ -485,7 +489,7 @@
 
         $fileInfoArr = get_sorted_file_info();
 
-        echo "<h1>El archivo de las ratas cantarinas</h1>\n";
+        echo "<h1>Historias de una rata</h1>\n";
         echo "<p>Registro cronológico de todas las publicaciones de la web.</p>\n";
 
         foreach($fileInfoArr as $fileInfo) {
@@ -508,11 +512,11 @@
                 is_string($fileInfo["title"])
             ) {
                 printf(
-                    '<blockquote>%s - <a href="show?filename=%s">%s</a> - %s</blockquote>' . "\n",
+                    '<blockquote>%s · <a href="show?filename=%s">%s</a><br>%s</blockquote>' . "\n",
                     $dayHourStr,
                     $fileInfo["filename"],
                     $fileInfo["title"],
-                    $fileInfo["author_real_name"]
+                    $fileInfo["description"]
                 );
             } else {
                 echo "<blockquote>No page</blockquote>\n";
@@ -579,7 +583,7 @@
     } elseif ('/archive' === $uri) {
         // Archivo
         $ACTION = 1;
-        $TITLE = "El archivo de las ratas cantarinas";
+        $TITLE = "Historias de una rata";
         $DESCRIPTION = "Registro cronológico de todas las publicaciones de la web.";
     } elseif ('/show' === $uri && isset($_GET['filename'])) {
         if (in_array($_GET['filename'], POST_FILENAMES)) {
@@ -696,6 +700,10 @@
         <!-- Avisamos al navegador de que se prepare para hacer una petición a los siguientes dominios -->
         <!-- <link rel="preconnect" href="https://www.googletagmanager.com/gtag/js?id=G-W3KC9CP7ZQ">
         <link rel="dns-prefetch" href="https://www.googletagmanager.com/gtag/js?id=G-W3KC9CP7ZQ"> -->
+        <link rel="preload" href="res/eb-garamond/EBGaramond-Regular.ttf" as="font" type="font/woff2" crossorigin>
+        <link rel="preload" href="res/eb-garamond/EBGaramond-Italic.ttf" as="font" type="font/woff2" crossorigin>
+        <link rel="preload" href="res/eb-garamond/EBGaramond-Bold.ttf" as="font" type="font/woff2" crossorigin>
+        <link rel="preload" href="res/eb-garamond/EBGaramond-BoldItalic.ttf" as="font" type="font/woff2" crossorigin>
 
         <!-- ## META ## -->
         <!-- Revisar: https://css-tricks.com/essential-meta-tags-social-media/ -->
@@ -754,6 +762,7 @@
                     url('res/eb-garamond/EBGaramond-Regular.ttf');
                 font-weight: normal;
                 font-style: normal;
+                font-display: swap;
             }
 
             @font-face {
@@ -761,6 +770,7 @@
                 src: url('res/eb-garamond/EBGaramond-Italic.ttf');
                 font-weight: normal;
                 font-style: italic;
+                font-display: swap;
             }
 
             @font-face {
@@ -768,6 +778,7 @@
                 src: url('res/eb-garamond/EBGaramond-Bold.ttf');
                 font-weight: bold;
                 font-style: normal;
+                font-display: swap;
             }
 
             @font-face {
@@ -775,6 +786,7 @@
                 src: url('res/eb-garamond/EBGaramond-BoldItalic.ttf');
                 font-weight: bold;
                 font-style: italic;
+                font-display: swap;
             }
 
             body {
@@ -900,37 +912,33 @@
 ?>
         </main>
 
-        <footer id="footer" aria-label="Licencias y contactos" tabindex="-1">
-            <nav aria-label="Enlace al archivo">
+        <footer id="footer" aria-label="Licencias, contactos y más enlaces." tabindex="-1">
+            <nav aria-label="Enlace al archivo de publicaciones">
                 <p>
                     <a href="archive">&laquo;más publicaciones&raquo;</a>
                 </p>
             </nav>
-            <nav aria-label="Moverse por esta página">
+            <nav aria-label="Moverse por esta página.">
                 <p>
                     <a href="#header">ir arriba</a> / <a href="#main">ir al artículo</a>
                 </p>
             </nav>
-            <nav id="contacto" aria-label="Enlaces de contacto">
+            <nav id="contacto" aria-label="Enlaces de contacto.">
                 <p>
-                    <a href="https://github.com/1noro">github</a> / 
-                    <a href="https://gitlab.com/1noro">gitlab</a> / 
-                    <a href="https://tilde.zone/@1noro">mastodon</a> / 
+                    <a href="https://github.com/1noro" aria-label="Enlace a mi perfil de GitHub">github</a> / 
+                    <a href="https://gitlab.com/1noro" aria-label="Enlace a mi perfil de GitLab">gitlab</a> / 
+                    <a href="https://tilde.zone/@1noro" aria-label="Enlace a mi perfil de Mastodon">mastodon</a> / 
                     mail (<a href="res/publickey.ppuubblliicc@protonmail.com.asc" aria-label="¡Mándame un correo cifrado con gpg!">gpg</a>)
                 </p>
             </nav>
-            <nav aria-label="Donaciones">
+            <nav aria-label="Puedes contribuir a mis proyectos donando en estos enlaces.">
                 <a href="donations">donaciones &middot; págame un café</a>
             </nav>
             <p>
                 <small>
-                    Creado por <a href="https://github.com/1noro/record.rat.la">Inoro</a> bajo la licencia <a href="LICENSE.GPL-3.0.txt" aria-label="Todo el código que sustenta la web está bajo la licencia GPLv3.">GPLv3</a>
+                    Software creado por <a href="https://github.com/1noro/record.rat.la">Inoro</a> bajo la licencia <a rel="license" href="LICENSE.GPL-3.0.txt" aria-label="Todo el código que sustenta la web está bajo la licencia GPLv3.">GPLv3</a><br>
+                    Multimedia bajo la licencia <a rel="license" href="LICENSE.CC-BY-SA-4.0.txt" aria-label="Texto de la licencia Creative Commons BY-SA-4.0.">Creative Commons BY-SA-4.0</a>
                 </small>
-            </p>
-            <p>
-                <a rel="license" href="LICENSE.CC-BY-SA-4.0.txt" aria-label="Todo el contenido multimedia está bajo la licencia CC-BY-SA-4.0.">
-                    <img alt="Licencia Creative Commons BY-SA-4.0" style="border-width: 0; width: auto;" src="img/cc.png" width="80" height="15">
-                </a>
             </p>
         </footer>
     </body>
