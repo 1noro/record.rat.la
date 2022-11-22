@@ -286,7 +286,18 @@ function get_img(string $filepath) : string {
 /**
  * get_sorted_page_info
  * 
- * @return array<int, array<string, string|DateTimeInterface>>
+ * @return array<
+ *  int,
+ *  array{
+ *      filename: string,
+ *      filepath: string,                   
+ *       author_real_name: string,
+ *       author_page: string,
+ *       author_username: string,
+ *       title: string,
+ *       description: string,
+ *       publication_datetime: DateTime
+ *  }>
  */
 function get_sorted_page_info() : array {
     // creamos $fileInfoArr y $datetimeArr previamente para ordenar 
@@ -328,17 +339,13 @@ function home_action() : void {
     $number = 1;
     foreach($pageInfoArr as $pageInfo) {
         echo "<article>\n";
-        if (is_string($pageInfo["filename"])) {
-            $content = convert_title_to_link(
-                $pageInfo["filename"],
-                $pageInfo["title"],
-                get_page_content($pageInfo["filepath"])
-            );
-            $content = reduce_h1($content);
-            print_page($content, $pageInfo);
-        } else {
-            echo "No page\n";
-        }
+        $content = convert_title_to_link(
+            $pageInfo["filename"],
+            $pageInfo["title"],
+            get_page_content($pageInfo["filepath"])
+        );
+        $content = reduce_h1($content);
+        print_page($content, $pageInfo);
         echo "</article>\n";
         if ($number >= PAGES_TO_SHOW) {
             break;
@@ -374,21 +381,14 @@ function archive_action() : void {
             $currentMonth = $month;
             printf("<h3>%s</h3>\n", MONTHS[intval($month) - 1]);
         }
-        
-        if (
-            is_string($pageInfo["filename"]) &&
-            is_string($pageInfo["title"])
-        ) {
-            printf(
-                '<blockquote>%s · <a href="show?filename=%s">%s</a><br>%s</blockquote>' . "\n",
-                $dayHourStr,
-                $pageInfo["filename"],
-                $pageInfo["title"],
-                $pageInfo["description"]
-            );
-        } else {
-            echo "<blockquote>No page</blockquote>\n";
-        }
+
+        printf(
+            '<blockquote>%s · <a href="show?filename=%s">%s</a><br>%s</blockquote>' . "\n",
+            $dayHourStr,
+            $pageInfo["filename"],
+            $pageInfo["title"],
+            $pageInfo["description"]
+        );
     }
 
     printf("<p>Hay un total de %d páginas en la web.</p>\n", count(POST_FILENAMES));
@@ -468,11 +468,8 @@ if ('/' === $uri) {
         $DESCRIPTION = $fileInfo["description"];
         $PAGE_IMG = get_img($FILEPATH);
     } else {
-        // Error 404
+        // Error 404 (Post not found)
         $ACTION = 404;
-        $fileInfo = get_page_info(COMMON_FOLDER . E404_PAGE);
-        $TITLE = $fileInfo["title"];
-        http_response_code(404);
     }
 } elseif ('/author' === $uri && isset($_GET['username'])) {
     if (isset(AUTHORS[$_GET['username']])) {
@@ -487,11 +484,8 @@ if ('/' === $uri) {
         $DESCRIPTION = $fileInfo["description"];
         $PAGE_IMG = get_img($FILEPATH);
     } else {
-        // Error 404
+        // Error 404 (Username not found)
         $ACTION = 404;
-        $fileInfo = get_page_info(COMMON_FOLDER . E404_PAGE);
-        $TITLE = $fileInfo["title"];
-        http_response_code(404);
     }
 } elseif ('/faq' === $uri) {
     // FAQ
@@ -544,7 +538,12 @@ if ('/' === $uri) {
 } else {
     // Error 404
     $ACTION = 404;
-    $fileInfo = get_page_info(COMMON_FOLDER . E404_PAGE);
+}
+
+if ($ACTION == 404) {
+    $ACTION = 2; // esto es muy poco elegante
+    $FILEPATH = COMMON_FOLDER . E404_PAGE;
+    $fileInfo = get_page_info($FILEPATH);
     $TITLE = $fileInfo["title"];
     http_response_code(404);
 }
@@ -771,10 +770,6 @@ if ('/' === $uri) {
             break;
         case 2:
             print_page(get_page_content($FILEPATH), get_page_info($FILEPATH));
-            break;
-        case 404:
-            $filepath = COMMON_FOLDER . E404_PAGE;
-            print_page(get_page_content($filepath), get_page_info($filepath));
             break;
     }
 ?>
