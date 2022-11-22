@@ -106,6 +106,9 @@ function reduce_h1(string $html) : string {
     return $html;
 }
 
+/**
+ * convert_title_to_link
+ */
 function convert_title_to_link(string $filename, string $title, string $html) : string {
     $search = "/<h1>(.*)<\/h1>/i";
     $substitution = "<h1><a class=\"title_link\" href=\"show?filename=${filename}\" aria-label=\"Enlace al contenido, ${title}, para verlo individualmente.\">$1</a></h1>";
@@ -242,6 +245,7 @@ function get_page_content(string $filepath) : string {
  * 
  * @return array{
  *  filename: string,
+ *  filepath: string,
  *  author_real_name: string,
  *  author_page: string,
  *  author_username: string,
@@ -255,6 +259,7 @@ function get_page_info(string $filepath) : array {
     $authorData = get_author_data($content);
     return [
         "filename" => basename($filepath),
+        "filepath" => $filepath,
         "author_real_name" => $authorData[0],
         "author_page" => $authorData[1],
         "author_username" => $authorData[2],
@@ -279,11 +284,11 @@ function get_img(string $filepath) : string {
 }
 
 /**
- * get_sorted_file_info
+ * get_sorted_page_info
  * 
  * @return array<int, array<string, string|DateTimeInterface>>
  */
-function get_sorted_file_info() : array {
+function get_sorted_page_info() : array {
     // creamos $fileInfoArr y $datetimeArr previamente para ordenar 
     // los archivos por fecha
     $fileInfoArr = [];
@@ -306,7 +311,7 @@ function get_sorted_file_info() : array {
  * home_action, imprime la portada (las N páginas más recientes)
  */
 function home_action() : void {
-    $fileInfoArr = get_sorted_file_info();
+    $pageInfoArr = get_sorted_page_info();
 
     echo "<h1>Publicaciones recientes</h1>\n";
     echo "
@@ -317,21 +322,17 @@ function home_action() : void {
             ir al <a href=\"archive\">archivo</a>. Y si estás confuso y no 
             entiendes de que vá todo esto puedes leer las 
             <a href=\"faq\">preguntas frecuentes</a>.
-        </p>
+        </p>\n
     ";
 
     $number = 1;
-    foreach($fileInfoArr as $fileInfo) {
-        $filename = $fileInfo["filename"];
-        
+    foreach($pageInfoArr as $pageInfo) {
         echo "<article>\n";
-        if (is_string($filename)) {
-            $filepath = POST_FOLDER . $filename;
-            $pageInfo = get_page_info($filepath);
+        if (is_string($pageInfo["filename"])) {
             $content = convert_title_to_link(
-                $filename,
+                $pageInfo["filename"],
                 $pageInfo["title"],
-                get_page_content(POST_FOLDER . $filename)
+                get_page_content($pageInfo["filepath"])
             );
             $content = reduce_h1($content);
             print_page($content, $pageInfo);
@@ -339,7 +340,9 @@ function home_action() : void {
             echo "No page\n";
         }
         echo "</article>\n";
-        if ($number >= PAGES_TO_SHOW) {break;}
+        if ($number >= PAGES_TO_SHOW) {
+            break;
+        }
         $number++;
     }
 }
@@ -352,15 +355,15 @@ function archive_action() : void {
     $currentYear = "";
     $currentMonth = "";
 
-    $fileInfoArr = get_sorted_file_info();
+    $pageInfoArr = get_sorted_page_info();
 
     echo "<h1>Historias de una rata</h1>\n";
     echo "<p>Registro cronológico de todas las publicaciones de la web.</p>\n";
 
-    foreach($fileInfoArr as $fileInfo) {
-        $year = date_format($fileInfo["publication_datetime"], "Y");
-        $month = date_format($fileInfo["publication_datetime"], "n"); // n: 1..12 / m: 01..12
-        $dayHourStr = date_format($fileInfo["publication_datetime"], "d \· H:i");
+    foreach($pageInfoArr as $pageInfo) {
+        $year = date_format($pageInfo["publication_datetime"], "Y");
+        $month = date_format($pageInfo["publication_datetime"], "n"); // n: 1..12 / m: 01..12
+        $dayHourStr = date_format($pageInfo["publication_datetime"], "d \· H:i");
 
         if ($currentYear != $year) {
             $currentYear = $year;
@@ -373,15 +376,15 @@ function archive_action() : void {
         }
         
         if (
-            is_string($fileInfo["filename"]) &&
-            is_string($fileInfo["title"])
+            is_string($pageInfo["filename"]) &&
+            is_string($pageInfo["title"])
         ) {
             printf(
                 '<blockquote>%s · <a href="show?filename=%s">%s</a><br>%s</blockquote>' . "\n",
                 $dayHourStr,
-                $fileInfo["filename"],
-                $fileInfo["title"],
-                $fileInfo["description"]
+                $pageInfo["filename"],
+                $pageInfo["title"],
+                $pageInfo["description"]
             );
         } else {
             echo "<blockquote>No page</blockquote>\n";
@@ -397,22 +400,23 @@ function archive_action() : void {
  * 
  * @param array{
  *  filename: string,
+ *  filepath: string,
  *  author_real_name: string,
  *  author_page: string,
  *  author_username: string,
  *  title: string,
  *  description: string,
  *  publication_datetime: DateTime
- * } $fileInfo
+ * } $pageInfo
  */
-function print_page(string $fileContent, array $fileInfo) : void {
-    echo $fileContent . "\n";
+function print_page(string $pageContent, array $pageInfo) : void {
+    echo $pageContent . "\n";
     printf(
         '<p style="text-align:right;"><small>Publicado por <a href="author?username=%s" aria-label="Página del autor %s.">%s</a> el %s</small></p>' . "\n",
-        $fileInfo["author_username"],
-        $fileInfo["author_real_name"],
-        $fileInfo["author_real_name"],
-        date_format($fileInfo["publication_datetime"], PAGE_DATETIME_FORMAT)
+        $pageInfo["author_username"],
+        $pageInfo["author_real_name"],
+        $pageInfo["author_real_name"],
+        date_format($pageInfo["publication_datetime"], PAGE_DATETIME_FORMAT)
     );
 }
 
@@ -423,8 +427,8 @@ $PAGE_IMG = DEF_PAGE_IMG;
 $ACTION = 0;
 $FILEPATH = "";
 $OG_TYPE = "website";
-$PUBLISHED = "";
-$ARTICLE_AUTHOR = "inoro";
+$ARTICLE_AUTHOR_USERNAME = "inoro";
+$ARTICLE_PUBLISHED_DATETIME = "";
 
 // --- Montamos las variables URL, FULL_URL y CANONICAL_URL
 $URL = "http";
@@ -459,8 +463,8 @@ if ('/' === $uri) {
         $fileInfo = get_page_info($FILEPATH);
         $TITLE = $fileInfo["title"];
         $OG_TYPE = "article";
-        $PUBLISHED = date_format($fileInfo["publication_datetime"], DATE_W3C);
-        $ARTICLE_AUTHOR = $fileInfo["author_username"];
+        $ARTICLE_AUTHOR_USERNAME = $fileInfo["author_username"];
+        $ARTICLE_PUBLISHED_DATETIME = date_format($fileInfo["publication_datetime"], DATE_W3C);
         $DESCRIPTION = $fileInfo["description"];
         $PAGE_IMG = get_img($FILEPATH);
     } else {
@@ -478,9 +482,8 @@ if ('/' === $uri) {
         $FILEPATH = COMMON_FOLDER . $filename;
         $fileInfo = get_page_info($FILEPATH);
         $TITLE = $fileInfo["title"];
-        $OG_TYPE = "article";
-        $PUBLISHED = date_format($fileInfo["publication_datetime"], DATE_W3C);
-        $ARTICLE_AUTHOR = $fileInfo["author_username"];
+        $OG_TYPE = "profile";
+        // @todo: agregar variables del og:type profile
         $DESCRIPTION = $fileInfo["description"];
         $PAGE_IMG = get_img($FILEPATH);
     } else {
@@ -498,8 +501,8 @@ if ('/' === $uri) {
     $fileInfo = get_page_info($FILEPATH);
     $TITLE = $fileInfo["title"];
     $OG_TYPE = "article";
-    $PUBLISHED = date_format($fileInfo["publication_datetime"], DATE_W3C);
-    $ARTICLE_AUTHOR = $fileInfo["author_username"];
+    $ARTICLE_AUTHOR_USERNAME = $fileInfo["author_username"];
+    $ARTICLE_PUBLISHED_DATETIME = date_format($fileInfo["publication_datetime"], DATE_W3C);
     $DESCRIPTION = $fileInfo["description"];
     $PAGE_IMG = get_img($FILEPATH);
 } elseif ('/donations' === $uri) {
@@ -510,8 +513,8 @@ if ('/' === $uri) {
     $fileInfo = get_page_info($FILEPATH);
     $TITLE = $fileInfo["title"];
     $OG_TYPE = "article";
-    $PUBLISHED = date_format($fileInfo["publication_datetime"], DATE_W3C);
-    $ARTICLE_AUTHOR = $fileInfo["author_username"];
+    $ARTICLE_AUTHOR_USERNAME = $fileInfo["author_username"];
+    $ARTICLE_PUBLISHED_DATETIME = date_format($fileInfo["publication_datetime"], DATE_W3C);
     $DESCRIPTION = $fileInfo["description"];
     $PAGE_IMG = get_img($FILEPATH);
 } elseif ('/description' === $uri) {
@@ -522,8 +525,8 @@ if ('/' === $uri) {
     $fileInfo = get_page_info($FILEPATH);
     $TITLE = $fileInfo["title"];
     $OG_TYPE = "article";
-    $PUBLISHED = date_format($fileInfo["publication_datetime"], DATE_W3C);
-    $ARTICLE_AUTHOR = $fileInfo["author_username"];
+    $ARTICLE_AUTHOR_USERNAME = $fileInfo["author_username"];
+    $ARTICLE_PUBLISHED_DATETIME = date_format($fileInfo["publication_datetime"], DATE_W3C);
     $DESCRIPTION = $fileInfo["description"];
     $PAGE_IMG = get_img($FILEPATH);
 } elseif ('/cookie' === $uri) {
@@ -534,8 +537,8 @@ if ('/' === $uri) {
     $fileInfo = get_page_info($FILEPATH);
     $TITLE = $fileInfo["title"];
     $OG_TYPE = "article";
-    $PUBLISHED = date_format($fileInfo["publication_datetime"], DATE_W3C);
-    $ARTICLE_AUTHOR = $fileInfo["author_username"];
+    $ARTICLE_AUTHOR_USERNAME = $fileInfo["author_username"];
+    $ARTICLE_PUBLISHED_DATETIME = date_format($fileInfo["publication_datetime"], DATE_W3C);
     $DESCRIPTION = $fileInfo["description"];
     $PAGE_IMG = get_img($FILEPATH);
 } else {
@@ -580,8 +583,8 @@ if ('/' === $uri) {
         <!-- OG -->
         <meta property="og:type" content="<?= $OG_TYPE ?>">
 <?php if ($OG_TYPE == "article") { ?>
-        <meta property="article:author" content="<?= $URL ?>/author?username=<?= $ARTICLE_AUTHOR ?>">
-        <meta property="article:published_time" content="<?= $PUBLISHED ?>">
+        <meta property="article:author" content="<?= $URL ?>/author?username=<?= $ARTICLE_AUTHOR_USERNAME ?>">
+        <meta property="article:published_time" content="<?= $ARTICLE_PUBLISHED_DATETIME ?>">
         <!-- <meta property="article:modified_time" content="2020-09-21T07:23:04+00:00"> -->
 <?php } ?>
         <meta property="og:url" content="<?= $CANONICAL_URL ?>">
