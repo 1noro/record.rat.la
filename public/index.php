@@ -13,658 +13,472 @@
 -->
 <?php
 
-    // print_r($_SERVER);
+// --- Gestión de cookies ---
 
-    // --- Gestión de cookies ---
+/**
+ * Opciones por defecto para el almacenamiento de cookies
+ * (86400 segundos = 1 día)
+ */
+// define("COOKIE_OPTIONS", [
+//     "expires" => time() + (86400 * 30),
+//     "path" => "/",
+//     "domain" => $_SERVER['SERVER_NAME'],
+//     "secure" => false,
+//     "httponly" => true,
+//     "samesite" => "Strict"
+// ]);
 
-    /**
-     * Opciones por defecto para el almacenamiento de cookies
-     * (86400 segundos = 1 día)
-     */
-    // define("COOKIE_OPTIONS", [
-    //     "expires" => time() + (86400 * 30),
-    //     "path" => "/",
-    //     "domain" => $_SERVER['SERVER_NAME'],
-    //     "secure" => false,
-    //     "httponly" => true,
-    //     "samesite" => "Strict"
-    // ]);
+$COLOR_ID = 0;
 
-    /**
-     * Si se entra por primera vez a la web se guarda un cookie de COLOR_ID con
-     * el valor por defecto
-     */
-    $COLOR_ID = 10;
-    // if (isset($_COOKIE["COLOR_ID"])) {
-    //     $COLOR_ID = intval($_COOKIE["COLOR_ID"]);
-    // } else {
-    //     setcookie("COLOR_ID", strval($COLOR_ID), COOKIE_OPTIONS);
-    // }
+/**
+ * Si se entra por primera vez a la web se guarda un cookie de TEXT_SIZE_ID
+ * con el valor por defecto
+ */
+// $TEXT_SIZE_ID = 2;
+// if (isset($_COOKIE["TEXT_SIZE_ID"])) {
+//     $TEXT_SIZE_ID = intval($_COOKIE["TEXT_SIZE_ID"]);
+// } else {
+//     setcookie("TEXT_SIZE_ID", strval($TEXT_SIZE_ID), COOKIE_OPTIONS);
+// }
 
-    /**
-     * Si se entra por primera vez a la web se guarda un cookie de TEXT_SIZE_ID
-     * con el valor por defecto
-     */
-    // $TEXT_SIZE_ID = 2;
-    // if (isset($_COOKIE["TEXT_SIZE_ID"])) {
-    //     $TEXT_SIZE_ID = intval($_COOKIE["TEXT_SIZE_ID"]);
-    // } else {
-    //     setcookie("TEXT_SIZE_ID", strval($TEXT_SIZE_ID), COOKIE_OPTIONS);
-    // }
+// --- Constantes ---
+define("E404_PAGE", "404.html");
+define("COLOR_PAGE", "color.html");
+define("PAGES_TO_SHOW", 2); // número de páginas a mostrar en la portada, "reciente"
+define("POST_FOLDER", "pages/posts/"); // carpeta donde se guardan las páginas
+define("COMMON_FOLDER", "pages/common/"); // carpeta donde se guardan las páginas
+define("POST_FILENAMES", get_filenames(POST_FOLDER)); // obtenemos todas las páginas de la carpeta POST_FOLDER
+define("PAGE_DATETIME_FORMAT", "Y/m/d \· H:i"); // formato de fecha a mostrar una página (https://www.php.net/manual/es/function.date.php)
 
-    // --- Constantes ---
-    define("E404_PAGE", "404.html");
-    define("COLOR_PAGE", "color.html");
-    define("PAGES_TO_SHOW", 2); // número de páginas a mostrar en la portada, "reciente"
-    define("POST_FOLDER", "pages/posts/"); // carpeta donde se guardan las páginas
-    define("COMMON_FOLDER", "pages/common/"); // carpeta donde se guardan las páginas
-    define("POST_FILENAMES", get_filenames(POST_FOLDER)); // obtenemos todas las páginas de la carpeta POST_FOLDER
-    define("PAGE_DATETIME_FORMAT", "Y/m/d \· H:i"); // formato de fecha a mostrar una página (https://www.php.net/manual/es/function.date.php)
+define("DEF_TITLE_SUFFIX", " - record.rat.la"); // sufijo por defecto del título de la página
+define("DEF_TITLE", "Publicaciones recientes"); // título por defecto de la página
+define("DEF_DESCRIPTION", "Bienvenido a record.rat.la, donde las ratas del cementerio de Salem cantan y registran sus desvaríos mentales."); // descripción por defecto de la página
+define("DEF_PAGE_IMG", "img/article_default_img_white.jpg"); // imagen por defecto del artículo
+define("DEF_AUTHOR", "anon"); // datos de autor por defecto
 
-    define("DEF_TITLE_SUFFIX", " - record.rat.la"); // sufijo por defecto del título de la página
-    define("DEF_TITLE", "Publicaciones recientes"); // título por defecto de la página
-    define("DEF_DESCRIPTION", "Bienvenido a record.rat.la, donde las ratas del cementerio de Salem cantan y registran sus desvaríos mentales."); // descripción por defecto de la página
-    define("DEF_PAGE_IMG", "img/article_default_img_white.jpg"); // imagen por defecto del artículo
-    define("DEF_AUTHOR", "anon"); // datos de autor por defecto
+// autor por defecto: Anon
+define("AUTHORS", [
+    DEF_AUTHOR => ["Anon", "anon.html"],
+    "inoro" => ["Inoro", "inoro.html"]
+]);
 
-    // autor por defecto: Anon
-    define("AUTHORS", [
-        DEF_AUTHOR => ["Anon", "anon.html"],
-        "inoro" => ["Inoro", "inoro.html"]
-    ]);
+// $TEXT_SIZES = ["1.05em", "1.2em", "1.35em"];
 
-    // $TEXT_SIZES = ["1.05em", "1.2em", "1.35em"];
+$COLORS = [
+    // Melocotón 2, electric boogaloo
+    [
+        "background" => "#f6f5e3",
+        "text" => "#1D1313",
+        "title" => "#1D1313",
+        "link" => "#0000EE",
+        "link_visited" => "#551A8B",
+        "link_active" => "#EE0000",
+        "code_background" => "#F8F8F8",
+        "code_text" => "#000000",
+        "header_img_color" => "B"
+    ]
+];
 
-    $COLORS = [
-        // Paleta de colores por defecto 0 (G&W)
-        [
-            "background" => "#FFFFFF",
-            "text" => "#222324",
-            "title" => "#222324",
-            "link" => "#0000EE",
-            "link_visited" => "#551A8B",
-            "link_active" => "#EE0000",
-            "code_background" => "#dddcdb",
-            "code_text" => "#222324",
-            "header_img_color" => "B"
-        ],
-        // Melocotón
-        [
-            "background" => "#EDD1B0",
-            "text" => "#000000",
-            "title" => "#000000",
-            "link" => "#0000EE",
-            "link_visited" => "#551A8B",
-            "link_active" => "#EE0000",
-            "code_background" => "#FFFFEE", // #dfdebe, #f8bba5
-            "code_text" => "inherit",
-            "header_img_color" => "B"
-        ],
-        // Modo oscuro
-        [
-            "background" => "#000000",
-            "text" => "#FFFFFF",
-            "title" => "#FFFFFF",
-            "link" => "#20B2AA", // #FFFF00
-            "link_visited" => "#7FB5B5", // #CCCC00
-            "link_active" => "#0000FF",
-            "code_background" => "#FFFFFF",
-            "code_text" => "#000000",
-            "header_img_color" => "W"
-        ],
-        // Auto
-        [
-            "background" => "auto",
-            "text" => "auto",
-            "title" => "auto",
-            "link" => "auto",
-            "link_visited" => "auto",
-            "link_active" => "auto",
-            "code_background" => "auto",
-            "code_text" => "auto",
-            "header_img_color" => "B"
-        ],
-        // N-O-D-E
-        [
-            "background" => "#222222",
-            "text" => "#C8C8C8",
-            "title" => "#FFFFFF",
-            "link" => "#FFFFFF",
-            "link_visited" => "#FFFFFF",
-            "link_active" => "#FFFFFF",
-            "code_background" => "#1F1F1F",
-            "code_text" => "#C8C8C8",
-            "header_img_color" => "W"
-        ],
-        // GitHub Dark dimmed
-        [
-            "background" => "#22272E",
-            "text" => "#ADBAC7",
-            "title" => "#ADBAC7",
-            "link" => "#539BF5",
-            "link_visited" => "#539BF5",
-            "link_active" => "#539BF5",
-            "code_background" => "#2b3139", // 25% mas claro que #22272E
-            "code_text" => "#e4e9ed", // 25% mas claro que #ADBAC7
-            "header_img_color" => "W"
-        ],
-        // B&W
-        [
-            "background" => "#FFFFFF",
-            "text" => "#222324",
-            "title" => "#222324",
-            "link" => "#0000EE",
-            "link_visited" => "#551A8B",
-            "link_active" => "#EE0000",
-            "code_background" => "#222324",
-            "code_text" => "#FFFFFF",
-            "header_img_color" => "B"
-        ],
-        // Dracula
-        [
-            "background" => "#282a36",
-            "text" => "#f8f8f2",
-            "title" => "#ff79c6",
-            "link" => "#8be9fd",
-            "link_visited" => "#bd93f9",
-            "link_active" => "#8be9fd",
-            "code_background" => "#44475a",
-            "code_text" => "#FFFFFF",
-            "header_img_color" => "B"
-        ],
-        // Nord
-        [
-            "background" => "#2E3440",
-            "text" => "#D8DEE9",
-            "title" => "#ECEFF4",
-            "link" => "#88c0d0",
-            "link_visited" => "#81a1c1",
-            "link_active" => "#88c0d0",
-            "code_background" => "#4C566A",
-            "code_text" => "#ECEFF4",
-            "header_img_color" => "B"
-        ],
-        // Gruvbox
-        [
-            "background" => "#282828",
-            "text" => "#dfdbb2", // dfdbb2, ebdbb2
-            "title" => "#dfdbb2", // dfdbb2, ebdbb2
-            "link" => "#bd859b", // bd859b, b8bb26
-            "link_visited" => "#a65b79", // a65b79, 98971a
-            "link_active" => "#bd859b", // bd859b, b8bb26
-            "code_background" => "#3c3836",
-            "code_text" => "#d5c4a1",
-            "header_img_color" => "B"
-        ],
-        // Melocotón 2, electric boogaloo
-        [
-            "background" => "#f6f5e3",
-            "text" => "#1D1313",
-            "title" => "#1D1313",
-            "link" => "#0000EE",
-            "link_visited" => "#551A8B",
-            "link_active" => "#EE0000",
-            "code_background" => "#F8F8F8",
-            "code_text" => "#000000",
-            "header_img_color" => "B"
-        ],
-    ];
+define("MONTHS", [
+    "Enero",
+    "Febrero",
+    "Marzo",
+    "Abril",
+    "Mayo",
+    "Junio",
+    "Julio",
+    "Agosto",
+    "Septiembre",
+    "Octubre",
+    "Noviembre",
+    "Diciembre"
+]);
 
-    define("MONTHS", [
-        "Enero",
-        "Febrero",
-        "Marzo",
-        "Abril",
-        "Mayo",
-        "Junio",
-        "Julio",
-        "Agosto",
-        "Septiembre",
-        "Octubre",
-        "Noviembre",
-        "Diciembre"
-    ]);
+// --- Utilidades genéricas ---
 
-    // --- Utilidades genéricas ---
+/**
+ * reduce_h1, en base a un texto html dado reduce el valor de todos los
+ * tag <hN> en uno excepto el <h6>. El inconveniente es que los <h5> y
+ * los <h6> quedarán al mismo nivel
+ */
+function reduce_h1(string $html) : string {
+    $search = array("<h5", "</h5", "<h4", "</h4", "<h3", "</h3", "<h2", "</h2", "<h1", "</h1");
+    $replace = array("<h6", "</h6", "<h5", "</h5", "<h4", "</h4", "<h3", "</h3", "<h2", "</h2");
+    $html = str_ireplace($search, $replace, $html);
+    return $html;
+}
 
-    /**
-     * reduce_h1, en base a un texto html dado reduce el valor de todos los
-     * tag <hN> en uno excepto el <h6>. El inconveniente es que los <h5> y
-     * los <h6> quedarán al mismo nivel
-     */
-    function reduce_h1(string $html) : string {
-        $search = array("<h5", "</h5", "<h4", "</h4", "<h3", "</h3", "<h2", "</h2", "<h1", "</h1");
-        $replace = array("<h6", "</h6", "<h5", "</h5", "<h4", "</h4", "<h3", "</h3", "<h2", "</h2");
-        $html = str_ireplace($search, $replace, $html);
-        return $html;
-    }
+function convert_title_to_link(string $filename, string $title, string $html) : string {
+    $search = "/<h1>(.*)<\/h1>/i";
+    $substitution = "<h1><a class=\"title_link\" href=\"show?filename=${filename}\" aria-label=\"Enlace al contenido, ${title}, para verlo individualmente.\">$1</a></h1>";
+    return preg_replace($search, $substitution, $html);
+}
 
-    function convert_title_to_link(string $filename, string $title, string $html) : string {
-        $search = "/<h1>(.*)<\/h1>/i";
-        $substitution = "<h1><a class=\"title_link\" href=\"show?filename=${filename}\" aria-label=\"Enlace al contenido, ${title}, para verlo individualmente.\">$1</a></h1>";
-        return preg_replace($search, $substitution, $html);
-    }
+// --- Obtención de datos de las páginas ---
 
-    // --- Obtención de datos de las páginas ---
-
-    /**
-     * get_filenames, obtiene los nombres de las páginas en la carpeta
-     * especificada
-     * 
-     * @return array<string>
-     */
-    function get_filenames(string $directory) : array {
-        $filenames = array();
-        $directoryObj = opendir($directory) ?: null;
-        while($filename = readdir($directoryObj)) {
-            if(($filename != ".") && ($filename != "..")) {
-                // push value to array
-                $filenames[] = $filename;
-            }
+/**
+ * get_filenames, obtiene los nombres de las páginas en la carpeta
+ * especificada
+ * 
+ * @return array<string>
+ */
+function get_filenames(string $directory) : array {
+    $filenames = array();
+    $directoryObj = opendir($directory) ?: null;
+    while($filename = readdir($directoryObj)) {
+        if(($filename != ".") && ($filename != "..")) {
+            // push value to array
+            $filenames[] = $filename;
         }
-        return $filenames;
+    }
+    return $filenames;
+}
+
+/**
+ * get_publication_datetime, obtiene la fecha de un artículo en base al 
+ * comentario "publication_date"
+ * 
+ * @return DateTime
+ */
+function get_publication_datetime(string $content) : DateTime {
+    $regex = '/<!-- publication_datetime (\d{4})(\d{2})(\d{2})T(\d{2})(\d{2}) -->/';
+    $matches_count = preg_match_all($regex, $content, $matches, PREG_PATTERN_ORDER);
+
+    // default date: 2000/01/01 00:00
+    $year = '2000';
+    $month = '01';
+    $day = '01';
+    $hour = '00';
+    $minute = '00';
+
+    if ($matches_count != 0) {
+        $year = $matches[1][0];
+        $month = $matches[2][0];
+        $day = $matches[3][0];
+        $hour = $matches[4][0];
+        $minute = $matches[5][0];
     }
 
-    /**
-     * get_publication_datetime, obtiene la fecha de un artículo en base al 
-     * comentario "publication_date"
-     * 
-     * @return DateTime
-     */
-    function get_publication_datetime(string $content) : DateTime {
-        $regex = '/<!-- publication_datetime (\d{4})(\d{2})(\d{2})T(\d{2})(\d{2}) -->/';
-        $matches_count = preg_match_all($regex, $content, $matches, PREG_PATTERN_ORDER);
+    $datetime_str = $year."/".$month."/".$day." ".$hour.":".$minute;
+    $datetime_obj = date_create($datetime_str, new DateTimeZone("Europe/Madrid"));
 
-        // default date: 2000/01/01 00:00
-        $year = '2000';
-        $month = '01';
-        $day = '01';
-        $hour = '00';
-        $minute = '00';
-
-        if ($matches_count != 0) {
-            $year = $matches[1][0];
-            $month = $matches[2][0];
-            $day = $matches[3][0];
-            $hour = $matches[4][0];
-            $minute = $matches[5][0];
-        }
-
-        $datetime_str = $year."/".$month."/".$day." ".$hour.":".$minute;
-        $datetime_obj = date_create($datetime_str, new DateTimeZone("Europe/Madrid"));
-
-        // si la fecha no es válida, se devuelve una válida
-        if ($datetime_obj == null) {
-            $datetime_obj = new DateTime();
-        }
-
-        return $datetime_obj;
+    // si la fecha no es válida, se devuelve una válida
+    if ($datetime_obj == null) {
+        $datetime_obj = new DateTime();
     }
 
-    /**
-     * get_author_data, obtiene los datos del autor en base a su
-     * alias en el comentario de la primera línea del artículo
-     * 
-     * @return array{0: string, 1: string, 2: string}
-     */
-    function get_author_data(string $content) : array {
-        $regex = '/<!-- author (.*) -->/';
-        $matches_count = preg_match_all($regex, $content, $matches, PREG_PATTERN_ORDER);
+    return $datetime_obj;
+}
 
-        $author = DEF_AUTHOR;
+/**
+ * get_author_data, obtiene los datos del autor en base a su
+ * alias en el comentario de la primera línea del artículo
+ * 
+ * @return array{0: string, 1: string, 2: string}
+ */
+function get_author_data(string $content) : array {
+    $regex = '/<!-- author (.*) -->/';
+    $matches_count = preg_match_all($regex, $content, $matches, PREG_PATTERN_ORDER);
 
-        if ($matches_count != 0 && isset(AUTHORS[$matches[1][0]])) {
-            $author = $matches[1][0];
-        }
+    $author = DEF_AUTHOR;
 
-        return array(AUTHORS[$author][0], AUTHORS[$author][1], $author);
+    if ($matches_count != 0 && isset(AUTHORS[$matches[1][0]])) {
+        $author = $matches[1][0];
     }
 
+    return array(AUTHORS[$author][0], AUTHORS[$author][1], $author);
+}
+
+/**
+ * get_title, obtiene el título del post en base a su contenido
+ */
+function get_title(string $content) : string {
+    preg_match_all("/<h1>(.*)<\/h1>/i", $content, $matches, PREG_PATTERN_ORDER);
     /**
-     * get_title, obtiene el título del post en base a su contenido
+     * quitamos las tags HTML, los espacios sobrantes y luego cambiamos los 
+     * caracteres especiales por sus códigos HTML (incluidas las " y ')
      */
-    function get_title(string $content) : string {
-        preg_match_all("/<h1>(.*)<\/h1>/i", $content, $matches, PREG_PATTERN_ORDER);
-        /**
-         * quitamos las tags HTML, los espacios sobrantes y luego cambiamos los 
-         * caracteres especiales por sus códigos HTML (incluidas las " y ')
-         */
-        return htmlentities(trim(strip_tags($matches[1][0])), ENT_QUOTES); 
+    return htmlentities(trim(strip_tags($matches[1][0])), ENT_QUOTES); 
+}
+
+/**
+ * get_description, obtiene el contenido del primer párrafo <p></p> del
+ * artículo y lo coloca como description del mismo
+ * 
+ * @todo: mejorar la eficiencia de esta función
+ * 
+ */
+function get_description(string $content) : string {
+    $defaultText = "Default description";
+
+    $start = strpos($content, '<p>') ?: 0;
+    $end = strpos($content, '</p>', $start);
+    $paragraph = strip_tags(substr($content, $start, $end - $start + 4));
+    $paragraph = str_replace("\n", "", $paragraph);
+    // quitamos el exceso de espacios en blanco delante, atrás y en el medio
+    $paragraph = preg_replace('/\s+/', ' ', trim($paragraph));
+
+    if ($paragraph == null) {
+        $paragraph = $defaultText;
     }
-
-    /**
-     * get_description, obtiene el contenido del primer párrafo <p></p> del
-     * artículo y lo coloca como description del mismo
-     * 
-     * @todo: mejorar la eficiencia de esta función
-     * 
-     */
-    function get_description(string $content) : string {
-        $defaultText = "Default description";
-
-        $start = strpos($content, '<p>') ?: 0;
-        $end = strpos($content, '</p>', $start);
-        $paragraph = strip_tags(substr($content, $start, $end - $start + 4));
-        $paragraph = str_replace("\n", "", $paragraph);
-        // quitamos el exceso de espacios en blanco delante, atrás y en el medio
-        $paragraph = preg_replace('/\s+/', ' ', trim($paragraph));
     
-        if ($paragraph == null) {
-            $paragraph = $defaultText;
+    // si la descripción es mayor a 160 caracteres es malo para el SEO
+    // con el preg replace eliminamos la ultima palabra par que no quede cortado
+    if (strlen($paragraph) > 160) {
+        $paragraph = preg_replace('/\W\w+\s*(\W*)$/', '$1', mb_substr($paragraph, 0, 160 - 3)) . "...";
+    }
+
+    return $paragraph;
+}
+
+/**
+ * get_page_content
+ */
+function get_page_content(string $filepath) : string {
+    return file_get_contents($filepath) ?: "Empty page";
+}
+
+/**
+ * get_page_info, obtiene en formato diccionario el nombre del archivo,
+ * fecha, autor y título de un artículo
+ * 
+ * @return array{
+ *  filename: string,
+ *  author_real_name: string,
+ *  author_page: string,
+ *  author_username: string,
+ *  title: string,
+ *  description: string,
+ *  publication_datetime: DateTime
+ * }
+ */
+function get_page_info(string $filepath) : array {
+    $content = get_page_content($filepath);
+    $datetimeObj = get_publication_datetime($content);
+    $authorData = get_author_data($content);
+
+    return [
+        "filename" => basename($filepath),
+        "author_real_name" => $authorData[0],
+        "author_page" => $authorData[1],
+        "author_username" => $authorData[2],
+        "title" => get_title($content),
+        "description" => get_description($content),
+        "publication_datetime" => $datetimeObj
+    ];
+}
+
+/**
+ * get_img, obtiene la primera imagen mostrada en el artículo
+ * 
+ * @todo optimizar (sacar de lo que se carga en el main)
+ */
+function get_img(string $filepath) : string {
+    $html = file_get_contents($filepath) ?: "";
+    preg_match('/<img.+src=[\'"](?P<src>.+?)[\'"].*>/i', $html, $matches);
+    if (isset($matches["src"])) {
+        return $matches["src"];
+    }
+    return DEF_PAGE_IMG;
+}
+
+/**
+ * get_sorted_file_info
+ * 
+ * @return array<int, array<string, string|DateTimeInterface>>
+ */
+function get_sorted_file_info() : array {
+    // creamos $fileInfoArr y $datetimeArr previamente para ordenar 
+    // los archivos por fecha
+    $fileInfoArr = array();
+    $datetimeArr = array();
+    foreach(POST_FILENAMES as $filename) {
+        $fileInfo = get_page_info(POST_FOLDER . $filename);
+        array_push($fileInfoArr, $fileInfo);
+        array_push($datetimeArr, $fileInfo["publication_datetime"]);
+    }
+
+    // en base a los dos arrays anteriores ordeno por fecha
+    array_multisort($datetimeArr, SORT_DESC, $fileInfoArr);
+
+    return $fileInfoArr;
+}
+
+// --- Impresión de contenidos ---
+
+/**
+ * home_action, imprime la portada (las N páginas más recientes)
+ */
+function home_action() : void {
+    $fileInfoArr = get_sorted_file_info();
+
+    echo "<h1>Publicaciones recientes</h1>\n";
+    echo "
+        <p>
+            Bienvenido a <em>record.rat.la</em>, donde las ratas del 
+            cementerio de Salem cantan y registran sus desvaríos mentales. 
+            Estas son las últimas publicaciones, si quieres leer más puedes 
+            ir al <a href=\"archive\">archivo</a>. Y si estás confuso y no 
+            entiendes de que vá todo esto puedes leer las 
+            <a href=\"faq\">preguntas frecuentes</a>.
+        </p>
+    ";
+
+    $number = 1;
+    foreach($fileInfoArr as $fileInfo) {
+        $filename = $fileInfo["filename"];
+        
+        echo "<article>\n";
+        if (is_string($filename)) {
+            $filepath = POST_FOLDER . $filename;
+            $pageInfo = get_page_info($filepath);
+            $content = convert_title_to_link(
+                $filename,
+                $pageInfo["title"],
+                get_page_content(POST_FOLDER . $filename)
+            );
+            $content = reduce_h1($content);
+            print_page($content, $pageInfo);
+        } else {
+            echo "No page\n";
+        }
+        echo "</article>\n";
+        if ($number >= PAGES_TO_SHOW) {break;}
+        $number++;
+    }
+}
+
+/**
+ * archive_action, imprime la página 'archivo', donde se listan las
+ * páginas ordenadas por fecha DESC
+ */
+function archive_action() : void {
+    $currentYear = "";
+    $currentMonth = "";
+
+    $fileInfoArr = get_sorted_file_info();
+
+    echo "<h1>Historias de una rata</h1>\n";
+    echo "<p>Registro cronológico de todas las publicaciones de la web.</p>\n";
+
+    foreach($fileInfoArr as $fileInfo) {
+        $year = date_format($fileInfo["publication_datetime"], "Y");
+        $month = date_format($fileInfo["publication_datetime"], "n"); // n: 1..12 / m: 01..12
+        $dayHourStr = date_format($fileInfo["publication_datetime"], "d \· H:i");
+
+        if ($currentYear != $year) {
+            $currentYear = $year;
+            printf("<h2>– Año %s –</h2>\n", $year);
+        }
+
+        if ($currentMonth != $month) {
+            $currentMonth = $month;
+            printf("<h3>%s</h3>\n", MONTHS[intval($month) - 1]);
         }
         
-        // si la descripción es mayor a 160 caracteres es malo para el SEO
-        // con el preg replace eliminamos la ultima palabra par que no quede cortado
-        if (strlen($paragraph) > 160) {
-            $paragraph = preg_replace('/\W\w+\s*(\W*)$/', '$1', mb_substr($paragraph, 0, 160 - 3)) . "...";
-        }
-    
-        return $paragraph;
-    }
-
-    /**
-     * get_page_content
-     */
-    function get_page_content(string $filepath) : string {
-        return file_get_contents($filepath) ?: "Empty page";
-    }
-
-    /**
-     * get_page_info, obtiene en formato diccionario el nombre del archivo,
-     * fecha, autor y título de un artículo
-     * 
-     * @return array{
-     *  filename: string,
-     *  author_real_name: string,
-     *  author_page: string,
-     *  author_username: string,
-     *  title: string,
-     *  description: string,
-     *  publication_datetime: DateTime
-     * }
-     */
-    function get_page_info(string $filepath) : array {
-        $content = get_page_content($filepath);
-        $datetimeObj = get_publication_datetime($content);
-        $authorData = get_author_data($content);
-
-        return [
-            "filename" => basename($filepath),
-            "author_real_name" => $authorData[0],
-            "author_page" => $authorData[1],
-            "author_username" => $authorData[2],
-            "title" => get_title($content),
-            "description" => get_description($content),
-            "publication_datetime" => $datetimeObj
-        ];
-    }
-
-    /**
-     * get_img, obtiene la primera imagen mostrada en el artículo
-     * 
-     * @todo optimizar (sacar de lo que se carga en el main)
-     */
-    function get_img(string $filepath) : string {
-        $html = file_get_contents($filepath) ?: "";
-        preg_match('/<img.+src=[\'"](?P<src>.+?)[\'"].*>/i', $html, $matches);
-        if (isset($matches["src"])) {
-            return $matches["src"];
-        }
-        return DEF_PAGE_IMG;
-    }
-
-    /**
-     * get_sorted_file_info
-     * 
-     * @return array<int, array<string, string|DateTimeInterface>>
-     */
-    function get_sorted_file_info() : array {
-        // creamos $fileInfoArr y $datetimeArr previamente para ordenar 
-        // los archivos por fecha
-        $fileInfoArr = array();
-        $datetimeArr = array();
-        foreach(POST_FILENAMES as $filename) {
-            $fileInfo = get_page_info(POST_FOLDER . $filename);
-            array_push($fileInfoArr, $fileInfo);
-            array_push($datetimeArr, $fileInfo["publication_datetime"]);
-        }
-
-        // en base a los dos arrays anteriores ordeno por fecha
-        array_multisort($datetimeArr, SORT_DESC, $fileInfoArr);
-
-        return $fileInfoArr;
-    }
-
-    // --- Impresión de contenidos ---
-
-    /**
-     * home_action, imprime la portada (las N páginas más recientes)
-     */
-    function home_action() : void {
-        $fileInfoArr = get_sorted_file_info();
-
-        echo "<h1>Publicaciones recientes</h1>\n";
-        echo "
-            <p>
-                Bienvenido a <em>record.rat.la</em>, donde las ratas del 
-                cementerio de Salem cantan y registran sus desvaríos mentales. 
-                Estas son las últimas publicaciones, si quieres leer más puedes 
-                ir al <a href=\"archive\">archivo</a>. Y si estás confuso y no 
-                entiendes de que vá todo esto puedes leer las 
-                <a href=\"faq\">preguntas frecuentes</a>.
-            </p>
-        ";
-
-        $number = 1;
-        foreach($fileInfoArr as $fileInfo) {
-            $filename = $fileInfo["filename"];
-            
-            echo "<article>\n";
-            if (is_string($filename)) {
-                $filepath = POST_FOLDER . $filename;
-                $pageInfo = get_page_info($filepath);
-                $content = convert_title_to_link(
-                    $filename,
-                    $pageInfo["title"],
-                    get_page_content(POST_FOLDER . $filename)
-                );
-                $content = reduce_h1($content);
-                print_page($content, $pageInfo);
-            } else {
-                echo "No page\n";
-            }
-            echo "</article>\n";
-            if ($number >= PAGES_TO_SHOW) {break;}
-            $number++;
+        if (
+            is_string($fileInfo["filename"]) &&
+            is_string($fileInfo["title"])
+        ) {
+            printf(
+                '<blockquote>%s · <a href="show?filename=%s">%s</a><br>%s</blockquote>' . "\n",
+                $dayHourStr,
+                $fileInfo["filename"],
+                $fileInfo["title"],
+                $fileInfo["description"]
+            );
+        } else {
+            echo "<blockquote>No page</blockquote>\n";
         }
     }
 
-    /**
-     * archive_action, imprime la página 'archivo', donde se listan las
-     * páginas ordenadas por fecha DESC
-     */
-    function archive_action() : void {
-        $currentYear = "";
-        $currentMonth = "";
+    printf("<p>Hay un total de %d páginas en la web.</p>\n", count(POST_FILENAMES));
+}
 
-        $fileInfoArr = get_sorted_file_info();
+/**
+ * print_page, imprime la página de un artículo cuyo nombre de archivo
+ * se pasa como parámetro
+ * 
+ * @param array{
+ *  filename: string,
+ *  author_real_name: string,
+ *  author_page: string,
+ *  author_username: string,
+ *  title: string,
+ *  description: string,
+ *  publication_datetime: DateTime
+ * } $fileInfo
+ */
+function print_page(string $fileContent, array $fileInfo) : void {
+    echo $fileContent . "\n";
+    printf(
+        '<p style="text-align:right;"><small>Publicado por <a href="author?username=%s" aria-label="Página del autor %s.">%s</a> el %s</small></p>' . "\n",
+        $fileInfo["author_username"],
+        $fileInfo["author_real_name"],
+        $fileInfo["author_real_name"],
+        date_format($fileInfo["publication_datetime"], PAGE_DATETIME_FORMAT)
+    );
+}
 
-        echo "<h1>Historias de una rata</h1>\n";
-        echo "<p>Registro cronológico de todas las publicaciones de la web.</p>\n";
+// --- Variables globales ---
+$TITLE = DEF_TITLE;
+$DESCRIPTION = DEF_DESCRIPTION; 
+$PAGE_IMG = DEF_PAGE_IMG;
+$ACTION = 0;
+$FILEPATH = "";
+$OG_TYPE = "website";
+$PUBLISHED = "";
+$ARTICLE_AUTHOR = "inoro";
 
-        foreach($fileInfoArr as $fileInfo) {
-            $year = date_format($fileInfo["publication_datetime"], "Y");
-            $month = date_format($fileInfo["publication_datetime"], "n"); // n: 1..12 / m: 01..12
-            $dayHourStr = date_format($fileInfo["publication_datetime"], "d \· H:i");
+// --- Montamos las variables URL, FULL_URL y CANONICAL_URL
+$URL = "http";
+if(isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] === 'on') {
+    $URL = "https";
+}
+$URL .= "://";
+$URL .= $_SERVER["HTTP_HOST"];
+$FULL_URL = $URL . $_SERVER["REQUEST_URI"];
+$CANONICAL_URL = $FULL_URL;
 
-            if ($currentYear != $year) {
-                $currentYear = $year;
-                printf("<h2>– Año %s –</h2>\n", $year);
-            }
+// --- Lógica de impresión ---
 
-            if ($currentMonth != $month) {
-                $currentMonth = $month;
-                printf("<h3>%s</h3>\n", MONTHS[intval($month) - 1]);
-            }
-            
-            if (
-                is_string($fileInfo["filename"]) &&
-                is_string($fileInfo["title"])
-            ) {
-                printf(
-                    '<blockquote>%s · <a href="show?filename=%s">%s</a><br>%s</blockquote>' . "\n",
-                    $dayHourStr,
-                    $fileInfo["filename"],
-                    $fileInfo["title"],
-                    $fileInfo["description"]
-                );
-            } else {
-                echo "<blockquote>No page</blockquote>\n";
-            }
-        }
-
-        printf("<p>Hay un total de %d páginas en la web.</p>\n", count(POST_FILENAMES));
-    }
-
-    /**
-     * print_page, imprime la página de un artículo cuyo nombre de archivo
-     * se pasa como parámetro
-     * 
-     * @param array{
-     *  filename: string,
-     *  author_real_name: string,
-     *  author_page: string,
-     *  author_username: string,
-     *  title: string,
-     *  description: string,
-     *  publication_datetime: DateTime
-     * } $fileInfo
-     */
-    function print_page(string $fileContent, array $fileInfo) : void {
-        echo $fileContent . "\n";
-        printf(
-            '<p style="text-align:right;"><small>Publicado por <a href="author?username=%s" aria-label="Página del autor %s.">%s</a> el %s</small></p>' . "\n",
-            $fileInfo["author_username"],
-            $fileInfo["author_real_name"],
-            $fileInfo["author_real_name"],
-            date_format($fileInfo["publication_datetime"], PAGE_DATETIME_FORMAT)
-        );
-    }
-
-    // --- Variables globales ---
-    $TITLE = DEF_TITLE;
-    $DESCRIPTION = DEF_DESCRIPTION; 
-    $PAGE_IMG = DEF_PAGE_IMG;
+// route the request internally
+$uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+if ('/' === $uri) {
+    // Home
     $ACTION = 0;
-    $FILEPATH = "";
-    $OG_TYPE = "website";
-    $PUBLISHED = "";
-    $ARTICLE_AUTHOR = "inoro";
-
-    // --- Montamos las variables URL, FULL_URL y CANONICAL_URL
-    $URL = "http";
-    if(isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] === 'on') {
-        $URL = "https";
+    $TITLE = DEF_TITLE;
+    $DESCRIPTION = DEF_DESCRIPTION;
+} elseif ('/archive' === $uri) {
+    // Archivo
+    $ACTION = 1;
+    $TITLE = "Historias de una rata";
+    $DESCRIPTION = "Registro cronológico de todas las publicaciones de la web.";
+} elseif ('/show' === $uri && isset($_GET['filename'])) {
+    if (in_array($_GET['filename'], POST_FILENAMES)) {
+        // Post
+        $ACTION = 2;
+        $filename = $_GET['filename'];
+        $FILEPATH = POST_FOLDER . $filename;
+        $fileInfo = get_page_info($FILEPATH);
+        $TITLE = $fileInfo["title"];
+        $OG_TYPE = "article";
+        $PUBLISHED = date_format($fileInfo["publication_datetime"], DATE_W3C);
+        $ARTICLE_AUTHOR = $fileInfo["author_username"];
+        $DESCRIPTION = $fileInfo["description"];
+        $PAGE_IMG = get_img($FILEPATH);
+    } else {
+        // Error 404
+        $ACTION = 404;
+        $fileInfo = get_page_info(COMMON_FOLDER . E404_PAGE);
+        $TITLE = $fileInfo["title"];
+        http_response_code(404);
     }
-    $URL .= "://";
-    $URL .= $_SERVER["HTTP_HOST"];
-    $FULL_URL = $URL . $_SERVER["REQUEST_URI"];
-    $CANONICAL_URL = $FULL_URL;
-
-    // --- Lógica de impresión ---
-
-    // route the request internally
-    $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-    if ('/' === $uri) {
-        // Home
-        $ACTION = 0;
-        $TITLE = DEF_TITLE;
-        $DESCRIPTION = DEF_DESCRIPTION;
-    } elseif ('/archive' === $uri) {
-        // Archivo
-        $ACTION = 1;
-        $TITLE = "Historias de una rata";
-        $DESCRIPTION = "Registro cronológico de todas las publicaciones de la web.";
-    } elseif ('/show' === $uri && isset($_GET['filename'])) {
-        if (in_array($_GET['filename'], POST_FILENAMES)) {
-            // Post
-            $ACTION = 2;
-            $filename = $_GET['filename'];
-            $FILEPATH = POST_FOLDER . $filename;
-            $fileInfo = get_page_info($FILEPATH);
-            $TITLE = $fileInfo["title"];
-            $OG_TYPE = "article";
-            $PUBLISHED = date_format($fileInfo["publication_datetime"], DATE_W3C);
-            $ARTICLE_AUTHOR = $fileInfo["author_username"];
-            $DESCRIPTION = $fileInfo["description"];
-            $PAGE_IMG = get_img($FILEPATH);
-        } else {
-            // Error 404
-            $ACTION = 404;
-            $fileInfo = get_page_info(COMMON_FOLDER . E404_PAGE);
-            $TITLE = $fileInfo["title"];
-            http_response_code(404);
-        }
-    } elseif ('/author' === $uri && isset($_GET['username'])) {
-        if (isset(AUTHORS[$_GET['username']])) {
-            // Author page
-            $ACTION = 2;
-            $filename = AUTHORS[$_GET['username']][1];
-            $FILEPATH = COMMON_FOLDER . $filename;
-            $fileInfo = get_page_info($FILEPATH);
-            $TITLE = $fileInfo["title"];
-            $OG_TYPE = "article";
-            $PUBLISHED = date_format($fileInfo["publication_datetime"], DATE_W3C);
-            $ARTICLE_AUTHOR = $fileInfo["author_username"];
-            $DESCRIPTION = $fileInfo["description"];
-            $PAGE_IMG = get_img($FILEPATH);
-        } else {
-            // Error 404
-            $ACTION = 404;
-            $fileInfo = get_page_info(COMMON_FOLDER . E404_PAGE);
-            $TITLE = $fileInfo["title"];
-            http_response_code(404);
-        }
-    } elseif ('/faq' === $uri) {
-        // FAQ
+} elseif ('/author' === $uri && isset($_GET['username'])) {
+    if (isset(AUTHORS[$_GET['username']])) {
+        // Author page
         $ACTION = 2;
-        $filename = "faq.html";
-        $FILEPATH = COMMON_FOLDER . $filename;
-        $fileInfo = get_page_info($FILEPATH);
-        $TITLE = $fileInfo["title"];
-        $OG_TYPE = "article";
-        $PUBLISHED = date_format($fileInfo["publication_datetime"], DATE_W3C);
-        $ARTICLE_AUTHOR = $fileInfo["author_username"];
-        $DESCRIPTION = $fileInfo["description"];
-        $PAGE_IMG = get_img($FILEPATH);
-    } elseif ('/donations' === $uri) {
-        // Donations
-        $ACTION = 2;
-        $filename = "donaciones.html";
-        $FILEPATH = COMMON_FOLDER . $filename;
-        $fileInfo = get_page_info($FILEPATH);
-        $TITLE = $fileInfo["title"];
-        $OG_TYPE = "article";
-        $PUBLISHED = date_format($fileInfo["publication_datetime"], DATE_W3C);
-        $ARTICLE_AUTHOR = $fileInfo["author_username"];
-        $DESCRIPTION = $fileInfo["description"];
-        $PAGE_IMG = get_img($FILEPATH);
-    } elseif ('/description' === $uri) {
-        // Description
-        $ACTION = 2;
-        $filename = "descripcion.html";
-        $FILEPATH = COMMON_FOLDER . $filename;
-        $fileInfo = get_page_info($FILEPATH);
-        $TITLE = $fileInfo["title"];
-        $OG_TYPE = "article";
-        $PUBLISHED = date_format($fileInfo["publication_datetime"], DATE_W3C);
-        $ARTICLE_AUTHOR = $fileInfo["author_username"];
-        $DESCRIPTION = $fileInfo["description"];
-        $PAGE_IMG = get_img($FILEPATH);
-    } elseif ('/cookie' === $uri) {
-        // Cookie
-        $ACTION = 2;
-        $filename = "cookie.html";
+        $filename = AUTHORS[$_GET['username']][1];
         $FILEPATH = COMMON_FOLDER . $filename;
         $fileInfo = get_page_info($FILEPATH);
         $TITLE = $fileInfo["title"];
@@ -680,6 +494,61 @@
         $TITLE = $fileInfo["title"];
         http_response_code(404);
     }
+} elseif ('/faq' === $uri) {
+    // FAQ
+    $ACTION = 2;
+    $filename = "faq.html";
+    $FILEPATH = COMMON_FOLDER . $filename;
+    $fileInfo = get_page_info($FILEPATH);
+    $TITLE = $fileInfo["title"];
+    $OG_TYPE = "article";
+    $PUBLISHED = date_format($fileInfo["publication_datetime"], DATE_W3C);
+    $ARTICLE_AUTHOR = $fileInfo["author_username"];
+    $DESCRIPTION = $fileInfo["description"];
+    $PAGE_IMG = get_img($FILEPATH);
+} elseif ('/donations' === $uri) {
+    // Donations
+    $ACTION = 2;
+    $filename = "donaciones.html";
+    $FILEPATH = COMMON_FOLDER . $filename;
+    $fileInfo = get_page_info($FILEPATH);
+    $TITLE = $fileInfo["title"];
+    $OG_TYPE = "article";
+    $PUBLISHED = date_format($fileInfo["publication_datetime"], DATE_W3C);
+    $ARTICLE_AUTHOR = $fileInfo["author_username"];
+    $DESCRIPTION = $fileInfo["description"];
+    $PAGE_IMG = get_img($FILEPATH);
+} elseif ('/description' === $uri) {
+    // Description
+    $ACTION = 2;
+    $filename = "descripcion.html";
+    $FILEPATH = COMMON_FOLDER . $filename;
+    $fileInfo = get_page_info($FILEPATH);
+    $TITLE = $fileInfo["title"];
+    $OG_TYPE = "article";
+    $PUBLISHED = date_format($fileInfo["publication_datetime"], DATE_W3C);
+    $ARTICLE_AUTHOR = $fileInfo["author_username"];
+    $DESCRIPTION = $fileInfo["description"];
+    $PAGE_IMG = get_img($FILEPATH);
+} elseif ('/cookie' === $uri) {
+    // Cookie
+    $ACTION = 2;
+    $filename = "cookie.html";
+    $FILEPATH = COMMON_FOLDER . $filename;
+    $fileInfo = get_page_info($FILEPATH);
+    $TITLE = $fileInfo["title"];
+    $OG_TYPE = "article";
+    $PUBLISHED = date_format($fileInfo["publication_datetime"], DATE_W3C);
+    $ARTICLE_AUTHOR = $fileInfo["author_username"];
+    $DESCRIPTION = $fileInfo["description"];
+    $PAGE_IMG = get_img($FILEPATH);
+} else {
+    // Error 404
+    $ACTION = 404;
+    $fileInfo = get_page_info(COMMON_FOLDER . E404_PAGE);
+    $TITLE = $fileInfo["title"];
+    http_response_code(404);
+}
 
 ?>
 <!DOCTYPE html>
