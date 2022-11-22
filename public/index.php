@@ -43,7 +43,6 @@ $COLOR_ID = 0;
 
 // --- Constantes ---
 define("E404_PAGE", "404.html");
-define("COLOR_PAGE", "color.html");
 define("PAGES_TO_SHOW", 2); // número de páginas a mostrar en la portada, "reciente"
 define("POST_FOLDER", "pages/posts/"); // carpeta donde se guardan las páginas
 define("COMMON_FOLDER", "pages/common/"); // carpeta donde se guardan las páginas
@@ -54,11 +53,11 @@ define("DEF_TITLE_SUFFIX", " - record.rat.la"); // sufijo por defecto del títul
 define("DEF_TITLE", "Publicaciones recientes"); // título por defecto de la página
 define("DEF_DESCRIPTION", "Bienvenido a record.rat.la, donde las ratas del cementerio de Salem cantan y registran sus desvaríos mentales."); // descripción por defecto de la página
 define("DEF_PAGE_IMG", "img/article_default_img_white.jpg"); // imagen por defecto del artículo
-define("DEF_AUTHOR", "anon"); // datos de autor por defecto
+define("DEF_AUTHOR_USERNAME", "anon"); // datos de autor por defecto
 
 // autor por defecto: Anon
 define("AUTHORS", [
-    DEF_AUTHOR => ["Anon", "anon.html"],
+    DEF_AUTHOR_USERNAME => ["Anon", "anon.html"],
     "inoro" => ["Inoro", "inoro.html"]
 ]);
 
@@ -74,8 +73,7 @@ $COLORS = [
         "link_visited" => "#551A8B",
         "link_active" => "#EE0000",
         "code_background" => "#F8F8F8",
-        "code_text" => "#000000",
-        "header_img_color" => "B"
+        "code_text" => "#000000"
     ]
 ];
 
@@ -102,8 +100,8 @@ define("MONTHS", [
  * los <h6> quedarán al mismo nivel
  */
 function reduce_h1(string $html) : string {
-    $search = array("<h5", "</h5", "<h4", "</h4", "<h3", "</h3", "<h2", "</h2", "<h1", "</h1");
-    $replace = array("<h6", "</h6", "<h5", "</h5", "<h4", "</h4", "<h3", "</h3", "<h2", "</h2");
+    $search = ["<h5", "</h5", "<h4", "</h4", "<h3", "</h3", "<h2", "</h2", "<h1", "</h1"];
+    $replace = ["<h6", "</h6", "<h5", "</h5", "<h4", "</h4", "<h3", "</h3", "<h2", "</h2"];
     $html = str_ireplace($search, $replace, $html);
     return $html;
 }
@@ -123,7 +121,7 @@ function convert_title_to_link(string $filename, string $title, string $html) : 
  * @return array<string>
  */
 function get_filenames(string $directory) : array {
-    $filenames = array();
+    $filenames = [];
     $directoryObj = opendir($directory) ?: null;
     while($filename = readdir($directoryObj)) {
         if(($filename != ".") && ($filename != "..")) {
@@ -180,13 +178,13 @@ function get_author_data(string $content) : array {
     $regex = '/<!-- author (.*) -->/';
     $matches_count = preg_match_all($regex, $content, $matches, PREG_PATTERN_ORDER);
 
-    $author = DEF_AUTHOR;
+    $username = DEF_AUTHOR_USERNAME;
 
     if ($matches_count != 0 && isset(AUTHORS[$matches[1][0]])) {
-        $author = $matches[1][0];
+        $username = $matches[1][0];
     }
 
-    return array(AUTHORS[$author][0], AUTHORS[$author][1], $author);
+    return [AUTHORS[$username][0], AUTHORS[$username][1], $username];
 }
 
 /**
@@ -254,9 +252,7 @@ function get_page_content(string $filepath) : string {
  */
 function get_page_info(string $filepath) : array {
     $content = get_page_content($filepath);
-    $datetimeObj = get_publication_datetime($content);
     $authorData = get_author_data($content);
-
     return [
         "filename" => basename($filepath),
         "author_real_name" => $authorData[0],
@@ -264,7 +260,7 @@ function get_page_info(string $filepath) : array {
         "author_username" => $authorData[2],
         "title" => get_title($content),
         "description" => get_description($content),
-        "publication_datetime" => $datetimeObj
+        "publication_datetime" => get_publication_datetime($content)
     ];
 }
 
@@ -290,8 +286,8 @@ function get_img(string $filepath) : string {
 function get_sorted_file_info() : array {
     // creamos $fileInfoArr y $datetimeArr previamente para ordenar 
     // los archivos por fecha
-    $fileInfoArr = array();
-    $datetimeArr = array();
+    $fileInfoArr = [];
+    $datetimeArr = [];
     foreach(POST_FILENAMES as $filename) {
         $fileInfo = get_page_info(POST_FOLDER . $filename);
         array_push($fileInfoArr, $fileInfo);
