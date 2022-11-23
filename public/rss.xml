@@ -153,7 +153,7 @@ cd "$(find * \( -path Library -o -path Applications -o -path opt \) -prune -o -p
 </pre>
 
 <blockquote>
-    He de decir que aún estoy empezando a incorporar esta nueva idea a mi día a día por lo que puede que el comando y, como consecuencia, este articulo puede que sean actualizados a medida que pase el tiempo.
+    He de decir que aún estoy empezando a incorporar esta nueva idea a mi día a día por lo que puede que el comando y, como consecuencia, este articulo sean actualizados a medida que pase el tiempo.
 </blockquote>
 <!-- publication_datetime 20220924T1659 -->
 <!-- author inoro -->
