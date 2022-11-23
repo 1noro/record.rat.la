@@ -4,7 +4,7 @@ on:
     branches: [ master ]
     paths:
       - 'public/pages/**/**.html'
-      - 'public/index.html'
+      - 'public/index.php'
 jobs:
   configure:
     name: Configure
