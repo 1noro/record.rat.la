@@ -327,11 +327,12 @@ function home_action() : void {
     echo "<h1>Publicaciones recientes</h1>\n";
     echo "
         <p>
-            Bienvenido a <em>record.rat.la</em>, donde las ratas del 
-            cementerio de Salem cantan y registran sus desvaríos mentales. 
-            Estas son las últimas publicaciones, si quieres leer más puedes 
-            ir al <a href=\"archive\">archivo</a>. Y si estás confuso y no 
-            entiendes de que vá todo esto puedes leer las 
+            Bienvenido a <em>record.rat.la</em>, donde 
+            <a href=\"author?username=inoro\" aria-label=\"Página del autor Inoro.\">un servidor</a>, 
+            junto a las ratas del cementerio de Salem, registran sus desvaríos 
+            mentales. Estas son las publicaciones más recientes, si quieres 
+            leer más puedes ir al <a href=\"archive\">archivo</a>. Y si estás 
+            confuso y no entiendes de que vá todo esto puedes leer las 
             <a href=\"faq\">preguntas frecuentes</a>.
         </p>\n
     ";
