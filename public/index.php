@@ -567,10 +567,10 @@ if ($ACTION == 404) {
         <!-- Avisamos al navegador de que se prepare para hacer una petición a los siguientes dominios -->
         <!-- <link rel="preconnect" href="https://www.googletagmanager.com/gtag/js?id=G-W3KC9CP7ZQ">
         <link rel="dns-prefetch" href="https://www.googletagmanager.com/gtag/js?id=G-W3KC9CP7ZQ"> -->
-        <link rel="preload" href="res/eb-garamond/EBGaramond-Regular.ttf" as="font" type="font/woff2" crossorigin>
-        <link rel="preload" href="res/eb-garamond/EBGaramond-Italic.ttf" as="font" type="font/woff2" crossorigin>
-        <link rel="preload" href="res/eb-garamond/EBGaramond-Bold.ttf" as="font" type="font/woff2" crossorigin>
-        <link rel="preload" href="res/eb-garamond/EBGaramond-BoldItalic.ttf" as="font" type="font/woff2" crossorigin>
+        <link rel="preload" href="res/eb-garamond/EBGaramond-Regular.ttf" as="font" type="font/ttf" crossorigin>
+        <link rel="preload" href="res/eb-garamond/EBGaramond-Italic.ttf" as="font" type="font/ttf" crossorigin>
+        <link rel="preload" href="res/eb-garamond/EBGaramond-Bold.ttf" as="font" type="font/ttf" crossorigin>
+        <link rel="preload" href="res/eb-garamond/EBGaramond-BoldItalic.ttf" as="font" type="font/ttf" crossorigin>
 
         <!-- ## META ## -->
         <!-- Revisar: https://css-tricks.com/essential-meta-tags-social-media/ -->
