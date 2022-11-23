@@ -51,7 +51,7 @@ define("PAGE_DATETIME_FORMAT", "Y/m/d \· H:i"); // formato de fecha a mostrar u
 
 define("DEF_TITLE_SUFFIX", " - record.rat.la"); // sufijo por defecto del título de la página
 define("DEF_TITLE", "Publicaciones recientes"); // título por defecto de la página
-define("DEF_DESCRIPTION", "Bienvenido a record.rat.la, donde las ratas del cementerio de Salem cantan y registran sus desvaríos mentales."); // descripción por defecto de la página
+define("DEF_DESCRIPTION", "Bienvenido a record.rat.la, donde un servidor, junto a las ratas del cementerio de Salem, registran sus desvaríos mentales. "); // descripción por defecto de la página
 define("DEF_PAGE_IMG", "img/article_default_img_white.jpg"); // imagen por defecto del artículo
 define("DEF_AUTHOR_USERNAME", "anon"); // datos de autor por defecto
 
@@ -326,12 +326,13 @@ function home_action() : void {
 
     echo "<h1>Publicaciones recientes</h1>\n";
     echo "
-        <p>
-            Bienvenido a <em>record.rat.la</em>, donde las ratas del 
-            cementerio de Salem cantan y registran sus desvaríos mentales. 
-            Estas son las últimas publicaciones, si quieres leer más puedes 
-            ir al <a href=\"archive\">archivo</a>. Y si estás confuso y no 
-            entiendes de que vá todo esto puedes leer las 
+        <p aria-label=\"Texto de presentación de la web\">
+            Bienvenido a <em>record.rat.la</em>, donde 
+            <a href=\"author?username=inoro\" aria-label=\"Página del autor Inoro.\">un servidor</a>, 
+            junto a las ratas del cementerio de Salem, registran sus desvaríos 
+            mentales. Estas son las publicaciones más recientes, si quieres 
+            leer más puedes ir al <a href=\"archive\">archivo</a>. Y si estás 
+            confuso y no entiendes de que vá todo esto puedes leer las 
             <a href=\"faq\">preguntas frecuentes</a>.
         </p>\n
     ";
@@ -728,7 +729,9 @@ if ($ACTION == 404) {
                 <a href="#footer">ir al pié</a>
             </nav>
             <!-- Título del HEADER -->
-            <div id="web_title">record <a href="https://youtu.be/dQw4w9WgXcQ" style="text-decoration: none;" aria-label="el enlace perfecto para 🐭.">🐭</a> la</div>
+            <div id="web_title" aria-label="Título de la cabecera">
+                record <a href="https://youtu.be/dQw4w9WgXcQ" style="text-decoration: none;" aria-label="el enlace perfecto para 🐭.">🐭</a> la
+            </div>
             <!-- Barra de navegación principal -->
             <nav aria-label="Enlaces a las secciones de la página">
                 <p id="web_nav">
@@ -739,7 +742,7 @@ if ($ACTION == 404) {
                 </p>
             </nav>
             <!-- Cita de Henry Kuttner -->
-            <p id="header_quote">
+            <p id="header_quote" aria-label="Cita del relato Las Ratas del Cementerio de Henry Kuttner">
                 <small>
                     <em>
                         "Y el pobre anciano Masson se hundió en la negrura de 
@@ -775,18 +778,18 @@ if ($ACTION == 404) {
 ?>
         </main>
 
-        <footer id="footer" aria-label="Licencias, contactos y más enlaces." tabindex="-1">
+        <footer id="footer" aria-label="Licencias, contactos y más enlaces" tabindex="-1">
             <nav aria-label="Enlace al archivo de publicaciones">
                 <p>
                     <a href="archive">&laquo;más publicaciones&raquo;</a>
                 </p>
             </nav>
-            <nav aria-label="Moverse por esta página.">
+            <nav aria-label="Moverse por esta página">
                 <p>
                     <a href="#header">ir arriba</a> / <a href="#main">ir al artículo</a>
                 </p>
             </nav>
-            <nav id="contacto" aria-label="Enlaces de contacto.">
+            <nav id="contacto" aria-label="Enlaces de contacto">
                 <p>
                     <a href="https://github.com/1noro" aria-label="Enlace a mi perfil de GitHub">github</a> / 
                     <a href="https://gitlab.com/1noro" aria-label="Enlace a mi perfil de GitLab">gitlab</a> / 
@@ -794,10 +797,10 @@ if ($ACTION == 404) {
                     mail (<a href="res/publickey.ppuubblliicc@protonmail.com.asc" aria-label="¡Mándame un correo cifrado con gpg!">gpg</a>)
                 </p>
             </nav>
-            <nav aria-label="Puedes contribuir a mis proyectos donando en estos enlaces.">
+            <nav aria-label="Puedes contribuir a mis proyectos donando en estos enlaces">
                 <a href="donations">donaciones &middot; págame un café</a>
             </nav>
-            <p>
+            <p aria-label="Información sobre las licencias de la página">
                 <small>
                     Software creado por <a href="https://github.com/1noro/record.rat.la">Inoro</a> bajo la licencia <a rel="license" href="LICENSE.GPL-3.0.txt" aria-label="Todo el código que sustenta la web está bajo la licencia GPLv3.">GPLv3</a><br>
                     Multimedia bajo la licencia <a rel="license" href="LICENSE.CC-BY-SA-4.0.txt" aria-label="Texto de la licencia Creative Commons BY-SA-4.0.">Creative Commons BY-SA-4.0</a>
