@@ -52,7 +52,7 @@ define("PAGE_DATETIME_FORMAT", "Y/m/d \· H:i"); // formato de fecha a mostrar u
 define("DEF_TITLE_SUFFIX", " - record.rat.la"); // sufijo por defecto del título de la página
 define("DEF_TITLE", "Publicaciones recientes"); // título por defecto de la página
 define("DEF_DESCRIPTION", "Bienvenido a record.rat.la, donde un servidor, junto a las ratas del cementerio de Salem, registran sus desvaríos mentales. "); // descripción por defecto de la página
-define("DEF_PAGE_IMG", "img/article_default_img_white.jpg"); // imagen por defecto del artículo
+define("DEF_PAGE_IMG", "img/article_default_img_peach.jpg"); // imagen por defecto del artículo
 define("DEF_AUTHOR_USERNAME", "anon"); // datos de autor por defecto
 
 // autor por defecto: Anon
@@ -680,7 +680,7 @@ if ($ACTION == 404) {
             header, footer {text-align: center;}
 
             svg#title_rat {
-                /* width: initial; */
+                width: initial;
                 height: 0.8em;
             }
 
