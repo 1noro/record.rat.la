@@ -421,6 +421,89 @@ function print_page(string $pageContent, array $pageInfo) : void {
     );
 }
 
+function get_article_structured_data(array $pageInfo, string $canonical_url, string $page_url) : string {
+    return json_encode([
+        "@context" => "https://schema.org/",
+        "@type" => "BlogPosting",
+        "@id" => $canonical_url,
+        // "mainEntityOfPage" => "https://dataliberate.com/2019/05/14/library-metadata-evolution-final-mile/",
+        "headline" => $pageInfo["title"],
+        "name" => $pageInfo["title"],
+        "description" => $pageInfo["description"],
+        "datePublished" => date_format($pageInfo["publication_datetime"], DATE_ISO8601),
+        // "dateModified" => "2019-05-14",
+        "author" => [
+            "@type" => "Person",
+            "@id" => "https://record.rat.la/author?username=" . $pageInfo["author_username"],
+            "name" => $pageInfo["author_real_name"],
+            "url" => "https://record.rat.la/author?username=" . $pageInfo["author_username"],
+            // "image" => [
+            //     "@type" => "ImageObject",
+            //     "@id" => "https://secure.gravatar.com/avatar/bbdd78abba6116d6f5bfa2c992de6592?s=96&d=mm&r=g",
+            //     "url" => "https://secure.gravatar.com/avatar/bbdd78abba6116d6f5bfa2c992de6592?s=96&d=mm&r=g",
+            //     "height" => "96",
+            //     "width" => "96"
+            // ]
+        ],
+        // "publisher" => [
+        //     "@type" => "Organization",
+        //     "@id" => "https://dataliberate.com",
+        //     "name" => "Data Liberate",
+        //     "logo" => [
+        //         "@type" => "ImageObject",
+        //         "@id" => "https://dataliberate.com/wp-content/uploads/2011/12/Data_Liberate_Logo-200.png",
+        //         "url" => "https://dataliberate.com/wp-content/uploads/2011/12/Data_Liberate_Logo-200.png",
+        //         "width" => "600",
+        //         "height" => "60"
+        //     ]
+        // ],
+        "image" => [
+            "@type" => "ImageObject",
+            "@id" => $page_url,
+            "url" => $page_url,
+            // "height" => "362",
+            // "width" => "388"
+        ],
+        "url" => $canonical_url,
+        "isPartOf" => [
+            "@type" => "Blog",
+            "@id" => "https://record.rat.la/",
+            "name" => "record.rat.la",
+            // "publisher" => [
+            //     "@type" => "Organization",
+            //     "@id" => "https://dataliberate.com",
+            //     "name" => "Data Liberate"
+            // ]
+            "author" => [
+                "@type" => "Person",
+                "@id" => "https://record.rat.la/author?username=inoro",
+                "name" => "Inoro",
+                "url" => "https://record.rat.la/author?username=inoro",
+                // "image" => [
+                //     "@type" => "ImageObject",
+                //     "@id" => "https://secure.gravatar.com/avatar/bbdd78abba6116d6f5bfa2c992de6592?s=96&d=mm&r=g",
+                //     "url" => "https://secure.gravatar.com/avatar/bbdd78abba6116d6f5bfa2c992de6592?s=96&d=mm&r=g",
+                //     "height" => "96",
+                //     "width" => "96"
+                // ]
+            ]
+        ],
+        // "wordCount" => "488",
+        // "keywords" => [
+        //     "Bibframe2Schema.org",
+        //     "Libraries",
+        //     "Library of Congress"
+        // ],
+        // "aggregateRating" => [
+        //     "@type" => "AggregateRating",
+        //     "@id" => "https://dataliberate.com/2019/05/14/library-metadata-evolution-final-mile/#aggregate",
+        //     "url" => "https://dataliberate.com/2019/05/14/library-metadata-evolution-final-mile/",
+        //     "ratingValue" => "2.5",
+        //     "ratingCount" => "2"
+        // ]
+    ]);
+}
+
 // --- Variables globales ---
 $TITLE = DEF_TITLE;
 $DESCRIPTION = DEF_DESCRIPTION; 
@@ -430,6 +513,7 @@ $FILEPATH = "";
 $OG_TYPE = "website";
 $ARTICLE_AUTHOR_USERNAME = "inoro";
 $ARTICLE_PUBLISHED_DATETIME = "";
+$ARTICLE_STRUCTURED_DATA = "";
 
 // --- Montamos las variables URL, FULL_URL y CANONICAL_URL
 $URL = "http";
@@ -463,11 +547,12 @@ if ('/' === $uri) {
         $FILEPATH = POST_FOLDER . $filename;
         $fileInfo = get_page_info($FILEPATH);
         $TITLE = $fileInfo["title"];
+        $DESCRIPTION = $fileInfo["description"];
+        $PAGE_IMG = get_img($FILEPATH);
         $OG_TYPE = "article";
         $ARTICLE_AUTHOR_USERNAME = $fileInfo["author_username"];
         $ARTICLE_PUBLISHED_DATETIME = date_format($fileInfo["publication_datetime"], DATE_W3C);
-        $DESCRIPTION = $fileInfo["description"];
-        $PAGE_IMG = get_img($FILEPATH);
+        $ARTICLE_STRUCTURED_DATA = get_article_structured_data($fileInfo, $CANONICAL_URL, $URL . '/' . $PAGE_IMG);
     } else {
         // Error 404 (Post not found)
         $ACTION = 404;
@@ -721,6 +806,10 @@ if ($ACTION == 404) {
                 color: <?= $COLORS[$COLOR_ID]["code_text"] ?>;
             }
         </style>
+
+<?php if ($ARTICLE_STRUCTURED_DATA != "") { ?>
+        <script type="application/ld+json"><?= $ARTICLE_STRUCTURED_DATA ?></script>
+<?php } ?>
 
         <!-- Cosas de la NSA (en modo prueba) -->
         <!-- Google Analytics -->
