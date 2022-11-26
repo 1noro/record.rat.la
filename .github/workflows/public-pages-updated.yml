@@ -121,7 +121,7 @@ jobs:
           id -g
 
       - name: Generate new sitemap
-        run: curl -v http://sitemapgen:8080/generate-sitemap.php -o public/sitemap.xml
+        run: curl -v http://sitemapgen:8080/sitemapgen -o public/sitemap.xml
 
       - name: Commit if there are changes
         run: |
