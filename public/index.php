@@ -135,6 +135,42 @@ function get_full_uri() : string {
     return get_base_uri() . $_SERVER["REQUEST_URI"];
 }
 
+/**
+ * get_filenames, obtiene los nombres de las páginas en la carpeta
+ * especificada
+ * 
+ * @return array<string>
+ */
+function get_filenames(string $directory) : array {
+    $filenames = [];
+    $directoryObj = opendir($directory) ?: null;
+    while($filename = readdir($directoryObj)) {
+        if(($filename != ".") && ($filename != "..")) {
+            // push value to array
+            $filenames[] = $filename;
+        }
+    }
+    return $filenames;
+}
+
+/**
+ * get_sorted_post_arr
+ */
+function get_sorted_post_arr() : array {
+    // creamos $fileInfoArr y $datetimeArr previamente para ordenar 
+    // los archivos por fecha
+    $post_arr = [];
+    $publication_datetime_arr = [];
+    foreach(POST_FILENAMES as $filename) {
+        $post = new ContentPage(POST_FOLDER . $filename, get_base_uri() . "/show?filename=" . $filename);
+        array_push($post_arr, $post);
+        array_push($publication_datetime_arr, $post->get_publication_datetime());
+    }
+    // en base a los dos arrays anteriores ordeno por fecha
+    array_multisort($publication_datetime_arr, SORT_DESC, $post_arr);
+    return $post_arr;
+}
+
 // --- Clases ---
 
 class Author {
@@ -155,10 +191,10 @@ class Author {
 
 }
 
-interface HtmlInteractuator {
+interface HtmlInteractor {
     public function get_title() : string;
-    public function get_description() : string;
     public function get_html_title() : string;
+    public function get_description() : string;
     public function get_canonical_url() : string;
     public function get_og_type() : string;
     public function get_cover_img_url() : string;
@@ -166,7 +202,91 @@ interface HtmlInteractuator {
     public function get_content_to_print() : string;
 }
 
-class ContentPage implements HtmlInteractuator {
+abstract class GeneratedPage implements HtmlInteractor {
+
+    protected string $title;
+    protected string $description;
+    protected string $og_type = "website";
+
+    abstract protected function get_generated_content();
+
+    public function get_title() : string {
+        return $this->title;
+    }
+
+    public function get_html_title() : string {
+        return $this->title . DEF_TITLE_SUFFIX;
+    }
+
+    public function get_description() : string {
+        return $this->description;
+    }
+    
+    public function get_canonical_url() : string {
+        return get_full_uri();
+    }
+
+    public function get_og_type() : string {
+        return $this->og_type;
+    }
+
+    public function get_cover_img_url() : string {
+        return get_base_uri() . "/" . DEF_PAGE_IMG;
+    }
+
+    public function get_cover_img_mime_type() : string {
+        // @todo: list($width, $height, $type, $attr) = getimagesize(DEF_PAGE_IMG);
+        return mime_content_type(DEF_PAGE_IMG);
+    }
+
+    public function get_content_to_print() : string {
+        return $this->get_generated_content();
+    }
+}
+
+class HomePage extends GeneratedPage {
+
+    public function __construct() {
+        $this->title = DEF_TITLE;
+        $this->description = DEF_DESCRIPTION;
+    }
+
+    function get_generated_content() : string {
+        $post_arr = get_sorted_post_arr();
+        $content = "";
+
+        $content .= "<h1>Publicaciones recientes</h1>\n";
+        $content .= "
+            <p>
+                Bienvenido a <em>record.rat.la</em>, donde 
+                <a href=\"author?username=inoro\" aria-label=\"Página del autor Inoro.\">un servidor</a>, 
+                junto a las ratas del cementerio de Salem, registran sus desvaríos 
+                mentales. Estas son las publicaciones más recientes, si quieres 
+                leer más puedes ir al <a href=\"archive\">archivo</a>. Y si estás 
+                confuso y no entiendes de que vá todo esto puedes leer las 
+                <a href=\"faq\">preguntas frecuentes</a>.
+            </p>\n
+        ";
+
+        $number = 1;
+        foreach($post_arr as $post) {
+            $content = convert_title_to_link(
+                $post->get_file_name(),
+                $post->get_title(),
+                $post->get_content_to_print()
+            );
+            $content .= "<article>\n$content\n</article>\n";
+            if ($number >= PAGES_TO_SHOW) {
+                break;
+            }
+            $number++;
+        }
+        return $content;
+    }
+
+}
+
+class ContentPage implements HtmlInteractor {
 
     // File properties
     private string $file_path;
@@ -441,95 +561,6 @@ class ContentPage implements HtmlInteractuator {
 
 
 
-// class GeneratedPage {
-
-// }
-
-// --- Obtención de datos de las páginas ---
-
-/**
- * get_filenames, obtiene los nombres de las páginas en la carpeta
- * especificada
- * 
- * @return array<string>
- */
-function get_filenames(string $directory) : array {
-    $filenames = [];
-    $directoryObj = opendir($directory) ?: null;
-    while($filename = readdir($directoryObj)) {
-        if(($filename != ".") && ($filename != "..")) {
-            // push value to array
-            $filenames[] = $filename;
-        }
-    }
-    return $filenames;
-}
-
-/**
- * get_page_info, obtiene en formato diccionario el nombre del archivo,
- * fecha, autor y título de un artículo
- * 
- * @return array{
- *  filename: string,
- *  filepath: string,
- *  author_real_name: string,
- *  author_page: string,
- *  author_username: string,
- *  title: string,
- *  description: string,
- *  publication_datetime: DateTime
- * }
- */
-// function get_page_info(string $filepath) : array {
-//     $content = get_page_content($filepath);
-//     $authorData = get_author_data($content);
-//     return [
-//         "filename" => basename($filepath),
-//         "filepath" => $filepath,
-//         "author_real_name" => $authorData[0],
-//         "author_page" => $authorData[1],
-//         "author_username" => $authorData[2],
-//         "title" => get_title($content),
-//         "description" => get_description($content),
-//         "publication_datetime" => get_publication_datetime($content)
-//     ];
-// }
-
-
-
-/**
- * get_sorted_page_info
- * 
- * @return array<
- *  int,
- *  array{
- *      filename: string,
- *      filepath: string,                   
- *       author_real_name: string,
- *       author_page: string,
- *       author_username: string,
- *       title: string,
- *       description: string,
- *       publication_datetime: DateTime
- *  }>
- */
-// function get_sorted_page_info() : array {
-//     // creamos $fileInfoArr y $datetimeArr previamente para ordenar 
-//     // los archivos por fecha
-//     $fileInfoArr = [];
-//     $datetimeArr = [];
-//     foreach(POST_FILENAMES as $filename) {
-//         $fileInfo = get_page_info(POST_FOLDER . $filename);
-//         array_push($fileInfoArr, $fileInfo);
-//         array_push($datetimeArr, $fileInfo["publication_datetime"]);
-//     }
-
-//     // en base a los dos arrays anteriores ordeno por fecha
-//     array_multisort($datetimeArr, SORT_DESC, $fileInfoArr);
-
-//     return $fileInfoArr;
-// }
-
 // --- Impresión de contenidos ---
 
 /**
@@ -758,7 +789,9 @@ $page;
 
 // route the request internally
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-if ('/show' === $uri && isset($_GET['filename'])) {
+if ('/' === $uri) {
+    $page = new HomePage();
+} elseif ('/show' === $uri && isset($_GET['filename'])) {
     if (in_array($_GET['filename'], POST_FILENAMES)) {
         // Post
         $page = new ContentPage(POST_FOLDER . $_GET['filename'], get_full_uri());
