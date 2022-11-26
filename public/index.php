@@ -898,22 +898,7 @@ if ($ACTION == 404) {
         </header>
 
         <main id="main" aria-label="Contenido principal" tabindex="-1">
-<?php
-    // Imprimimos lo indicado por la variable $ACTION en el <main>
-    // switch ($ACTION) {
-    //     default:
-    //     case 0:
-    //         home_action();
-    //         break;
-    //     case 1:
-    //         archive_action();
-    //         break;
-    //     case 2:
-    //         print_page(get_page_content($FILEPATH), get_page_info($FILEPATH));
-    //         break;
-    // }
-    echo $page->get_content_to_print();
-?>
+            <?= $page->get_content_to_print() ?>
         </main>
 
         <footer id="footer" aria-label="Licencias, contactos y más enlaces" tabindex="-1">
