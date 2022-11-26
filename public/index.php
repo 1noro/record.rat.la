@@ -1,4 +1,5 @@
-<!--
+<?php
+/*
                _     _
      _ __ __ _| |_  | | __ _
     | '__/ _` | __| | |/ _` |
@@ -9,14 +10,7 @@
 
     "Y el pobre anciano Masson se hundió en la negrura de la muerte, con los 
     locos chillidos de las ratas taladrándole los oídos" - Henry Kuttner
-
--->
-<?php
-
-// echo "<pre>";
-// print_r($_SERVER);
-// echo "<pre>";
-// die();
+*/
 
 // --- Gestión de cookies ---
 
@@ -565,13 +559,14 @@ class ContentPage implements HtmlInteractor {
             //         "height" => "60"
             //     ]
             // ],
-            "image" => [
-                "@type" => "ImageObject",
-                "@id" => $this->get_cover_img_url(),
-                "url" => $this->get_cover_img_url(),
-                // "height" => "362",
-                // "width" => "388"
-            ],
+            // "image" => [
+            //     "@type" => "ImageObject",
+            //     "@id" => $this->get_cover_img_url(),
+            //     "url" => $this->get_cover_img_url(),
+            //     "height" => "362",
+            //     "width" => "388"
+            // ],
+            "image" => [$this->get_cover_img_url()],
             "url" => $this->get_url(),
             "isPartOf" => [
                 "@type" => "Blog",
@@ -653,6 +648,13 @@ if ('/' === $uri) {
     $page = new ContentPage(COMMON_FOLDER . "descripcion.html", get_full_uri());
 } elseif ('/cookie' === $uri) {
     $page = new ContentPage(COMMON_FOLDER . "cookie.html", get_full_uri());
+} elseif ('/sitemapgen' === $uri) {
+    // only for cicd tools
+    if (file_exists("generate-sitemap.php")) {
+        include "generate-sitemap.php";
+        die();
+    }
+    $ACTION = 404;
 } else {
     // Error 404 (Page not found)
     $ACTION = 404;
