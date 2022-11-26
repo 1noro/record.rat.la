@@ -276,12 +276,12 @@ class HomePage extends GeneratedPage {
 
         $number = 1;
         foreach($post_arr as $post) {
-            $content = convert_title_to_link(
+            $post_content = reduce_h1(convert_title_to_link(
                 $post->get_file_name(),
                 $post->get_title(),
                 $post->get_content_to_print()
-            );
-            $content .= "<article>\n$content\n</article>\n";
+            ));
+            $content .= "<article>\n" . $post_content . "\n</article>\n";
             if ($number >= PAGES_TO_SHOW) {
                 break;
             }
@@ -615,172 +615,11 @@ class ContentPage implements HtmlInteractor {
 }
 
 
-// --- Impresión de contenidos ---
-
-
-
-/**
- * archive_action, imprime la página 'archivo', donde se listan las
- * páginas ordenadas por fecha DESC
- */
-// function archive_action() : void {
-//     $currentYear = "";
-//     $currentMonth = "";
-
-//     $pageInfoArr = get_sorted_page_info();
-
-//     echo "<h1>Historias de una rata</h1>\n";
-//     echo "<p>Registro cronológico de todas las publicaciones de la web.</p>\n";
-
-//     foreach($pageInfoArr as $pageInfo) {
-//         $year = date_format($pageInfo["publication_datetime"], "Y");
-//         $month = date_format($pageInfo["publication_datetime"], "n"); // n: 1..12 / m: 01..12
-//         $dayHourStr = date_format($pageInfo["publication_datetime"], "d \· H:i");
-
-//         if ($currentYear != $year) {
-//             $currentYear = $year;
-//             printf("<h2>– Año %s –</h2>\n", $year);
-//         }
-
-//         if ($currentMonth != $month) {
-//             $currentMonth = $month;
-//             printf("<h3>%s</h3>\n", MONTHS[intval($month) - 1]);
-//         }
-
-//         printf(
-//             '<blockquote>%s · <a href="show?filename=%s">%s</a><br>%s</blockquote>' . "\n",
-//             $dayHourStr,
-//             $pageInfo["filename"],
-//             $pageInfo["title"],
-//             $pageInfo["description"]
-//         );
-//     }
-
-//     printf("<p>Hay un total de %d páginas en la web.</p>\n", count(POST_FILENAMES));
-// }
-
-
 // --- Variables globales ---
-// $TITLE = DEF_TITLE;
-// $DESCRIPTION = DEF_DESCRIPTION; 
-// $PAGE_IMG = DEF_PAGE_IMG;
 $ACTION = 0;
 $page;
-// $FILEPATH = "";
-// $OG_TYPE = "website";
-// $ARTICLE_AUTHOR_USERNAME = "inoro";
-// $ARTICLE_PUBLISHED_DATETIME = "";
-// $ARTICLE_STRUCTURED_DATA = "";
 
-// --- Lógica de impresión ---
-
-// route the request internally
-// $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-// if ('/' === $uri) {
-//     // Home
-//     $ACTION = 0;
-//     $TITLE = DEF_TITLE;
-//     $DESCRIPTION = DEF_DESCRIPTION;
-// } elseif ('/archive' === $uri) {
-//     // Archivo
-//     $ACTION = 1;
-//     $TITLE = "Historias de una rata";
-//     $DESCRIPTION = "Registro cronológico de todas las publicaciones de la web.";
-// } elseif ('/show' === $uri && isset($_GET['filename'])) {
-//     if (in_array($_GET['filename'], POST_FILENAMES)) {
-//         // Post
-//         $ACTION = 2;
-//         $filename = $_GET['filename'];
-//         $FILEPATH = POST_FOLDER . $filename;
-//         $fileInfo = get_page_info($FILEPATH);
-//         $TITLE = $fileInfo["title"];
-//         $DESCRIPTION = $fileInfo["description"];
-//         $PAGE_IMG = get_img($FILEPATH);
-//         $OG_TYPE = "article";
-//         $ARTICLE_AUTHOR_USERNAME = $fileInfo["author_username"];
-//         $ARTICLE_PUBLISHED_DATETIME = date_format($fileInfo["publication_datetime"], DATE_W3C);
-//         $ARTICLE_STRUCTURED_DATA = get_article_structured_data($fileInfo, $CANONICAL_URL, $URL . '/' . $PAGE_IMG);
-//     } else {
-//         // Error 404 (Post not found)
-//         $ACTION = 404;
-//     }
-// } elseif ('/author' === $uri && isset($_GET['username'])) {
-//     if (isset(AUTHORS[$_GET['username']])) {
-//         // Author page
-//         $ACTION = 2;
-//         $filename = AUTHORS[$_GET['username']][1];
-//         $FILEPATH = COMMON_FOLDER . $filename;
-//         $fileInfo = get_page_info($FILEPATH);
-//         $TITLE = $fileInfo["title"];
-//         $OG_TYPE = "profile";
-//         // @todo: agregar variables del og:type profile
-//         $DESCRIPTION = $fileInfo["description"];
-//         $PAGE_IMG = get_img($FILEPATH);
-//     } else {
-//         // Error 404 (Username not found)
-//         $ACTION = 404;
-//     }
-// } elseif ('/faq' === $uri) {
-//     // FAQ
-//     $ACTION = 2;
-//     $filename = "faq.html";
-//     $FILEPATH = COMMON_FOLDER . $filename;
-//     $fileInfo = get_page_info($FILEPATH);
-//     $TITLE = $fileInfo["title"];
-//     $OG_TYPE = "article";
-//     $ARTICLE_AUTHOR_USERNAME = $fileInfo["author_username"];
-//     $ARTICLE_PUBLISHED_DATETIME = date_format($fileInfo["publication_datetime"], DATE_W3C);
-//     $DESCRIPTION = $fileInfo["description"];
-//     $PAGE_IMG = get_img($FILEPATH);
-// } elseif ('/donations' === $uri) {
-//     // Donations
-//     $ACTION = 2;
-//     $filename = "donaciones.html";
-//     $FILEPATH = COMMON_FOLDER . $filename;
-//     $fileInfo = get_page_info($FILEPATH);
-//     $TITLE = $fileInfo["title"];
-//     $OG_TYPE = "article";
-//     $ARTICLE_AUTHOR_USERNAME = $fileInfo["author_username"];
-//     $ARTICLE_PUBLISHED_DATETIME = date_format($fileInfo["publication_datetime"], DATE_W3C);
-//     $DESCRIPTION = $fileInfo["description"];
-//     $PAGE_IMG = get_img($FILEPATH);
-// } elseif ('/description' === $uri) {
-//     // Description
-//     $ACTION = 2;
-//     $filename = "descripcion.html";
-//     $FILEPATH = COMMON_FOLDER . $filename;
-//     $fileInfo = get_page_info($FILEPATH);
-//     $TITLE = $fileInfo["title"];
-//     $OG_TYPE = "article";
-//     $ARTICLE_AUTHOR_USERNAME = $fileInfo["author_username"];
-//     $ARTICLE_PUBLISHED_DATETIME = date_format($fileInfo["publication_datetime"], DATE_W3C);
-//     $DESCRIPTION = $fileInfo["description"];
-//     $PAGE_IMG = get_img($FILEPATH);
-// } elseif ('/cookie' === $uri) {
-//     // Cookie
-//     $ACTION = 2;
-//     $filename = "cookie.html";
-//     $FILEPATH = COMMON_FOLDER . $filename;
-//     $fileInfo = get_page_info($FILEPATH);
-//     $TITLE = $fileInfo["title"];
-//     $OG_TYPE = "article";
-//     $ARTICLE_AUTHOR_USERNAME = $fileInfo["author_username"];
-//     $ARTICLE_PUBLISHED_DATETIME = date_format($fileInfo["publication_datetime"], DATE_W3C);
-//     $DESCRIPTION = $fileInfo["description"];
-//     $PAGE_IMG = get_img($FILEPATH);
-// } else {
-//     // Error 404
-//     $ACTION = 404;
-// }
-
-// if ($ACTION == 404) {
-//     $ACTION = 2; // esto es muy poco elegante
-//     $FILEPATH = COMMON_FOLDER . E404_PAGE;
-//     $fileInfo = get_page_info($FILEPATH);
-//     $TITLE = $fileInfo["title"];
-//     http_response_code(404);
-// }
-
+// --- Lógica de rutas (Ingress) ---
 // route the request internally
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 if ('/' === $uri) {
@@ -815,7 +654,7 @@ if ('/' === $uri) {
 } elseif ('/cookie' === $uri) {
     $page = new ContentPage(COMMON_FOLDER . "cookie.html", get_full_uri());
 } else {
-    // Error 404
+    // Error 404 (Page not found)
     $ACTION = 404;
 }
 
@@ -1013,7 +852,7 @@ if ($ACTION == 404) {
         <header id="header" aria-label="Cabecera" tabindex="-1">
             <!-- Barra de accesibilidad -->
             <nav aria-label="Enlaces de control de la web" style="text-align: left;">
-                <a href="#main">ir al artículo</a> / 
+                <a href="#main">ir al contenido</a> / 
                 <a href="#footer">ir al pié</a>
             </nav>
             <!-- Título del HEADER -->
@@ -1085,7 +924,7 @@ if ($ACTION == 404) {
             </nav>
             <nav aria-label="Moverse por esta página">
                 <p>
-                    <a href="#header">ir arriba</a> / <a href="#main">ir al artículo</a>
+                    <a href="#header">ir arriba</a> / <a href="#main">ir al contenido</a>
                 </p>
             </nav>
             <nav id="contacto" aria-label="Enlaces de contacto">
