@@ -48,8 +48,6 @@ define("COMMON_FOLDER", "pages/common/"); // carpeta donde se guardan las págin
 define("POST_FILENAMES", get_filenames(POST_FOLDER)); // obtenemos todas las páginas de la carpeta POST_FOLDER
 
 define("DEF_TITLE_SUFFIX", " - record.rat.la"); // sufijo por defecto del título de la página
-define("DEF_TITLE", "Publicaciones recientes"); // título por defecto de la página
-define("DEF_DESCRIPTION", "Bienvenido a record.rat.la, donde un servidor, junto a las ratas del cementerio de Salem, registran sus desvaríos mentales. "); // descripción por defecto de la página
 define("DEF_PAGE_IMG", "img/article_default_img_peach.jpg"); // imagen por defecto del artículo
 define("DEF_AUTHOR_USER_NAME", "anon"); // datos de autor por defecto
 define("DEF_DATETIME_FORMAT", "Y/m/d \· H:i"); // formato de fecha a mostrar una página (https://www.php.net/manual/es/function.date.php)
@@ -247,8 +245,8 @@ abstract class GeneratedPage implements HtmlInteractor {
 class HomePage extends GeneratedPage {
 
     public function __construct() {
-        $this->title = DEF_TITLE;
-        $this->description = DEF_DESCRIPTION;
+        $this->title = "Publicaciones recientes";
+        $this->description = "Bienvenido a record.rat.la, donde un servidor, junto a las ratas del cementerio de Salem, registran sus desvaríos mentales.";
     }
 
     function get_generated_content() : string {
