@@ -191,7 +191,9 @@ class Author {
 
 }
 
+
 interface HtmlInteractor {
+
     public function get_title() : string;
     public function get_html_title() : string;
     public function get_description() : string;
@@ -200,7 +202,9 @@ interface HtmlInteractor {
     public function get_cover_img_url() : string;
     public function get_cover_img_mime_type() : string;
     public function get_content_to_print() : string;
+
 }
+
 
 abstract class GeneratedPage implements HtmlInteractor {
 
@@ -242,7 +246,9 @@ abstract class GeneratedPage implements HtmlInteractor {
     public function get_content_to_print() : string {
         return $this->get_generated_content();
     }
+
 }
+
 
 class HomePage extends GeneratedPage {
 
@@ -285,6 +291,55 @@ class HomePage extends GeneratedPage {
     }
 
 }
+
+
+class ArchivePage extends GeneratedPage {
+
+    public function __construct() {
+        $this->title = "Historias de una rata";
+        $this->description = "Registro cronológico de todas las publicaciones de la web.";
+    }
+
+    function get_generated_content() : string {
+        $post_arr = get_sorted_post_arr();
+        $content = "";
+
+        $current_year = "";
+        $current_month = "";
+
+        $content .= "<h1>Historias de una rata</h1>\n";
+        $content .= "<p>Registro cronológico de todas las publicaciones de la web.</p>\n";
+    
+        foreach($post_arr as $post) {
+            $year = date_format($post->get_publication_datetime(), "Y");
+            $month = date_format($post->get_publication_datetime(), "n"); // n: 1..12 / m: 01..12
+            $day_hour = date_format($post->get_publication_datetime(), "d \· H:i");
+    
+            if ($current_year != $year) {
+                $current_year = $year;
+                $content .= sprintf("<h2>– Año %s –</h2>\n", $year);
+            }
+    
+            if ($current_month != $month) {
+                $current_month = $month;
+                $content .= sprintf("<h3>%s</h3>\n", MONTHS[intval($month) - 1]);
+            }
+    
+            $content .= sprintf(
+                '<blockquote>%s · <a href="show?filename=%s">%s</a><br>%s</blockquote>' . "\n",
+                $day_hour,
+                $post->get_file_name(),
+                $post->get_title(),
+                $post->get_description()
+            );
+        }
+    
+        $content .= sprintf("<p>Hay un total de %d páginas en la web.</p>\n", count(POST_FILENAMES));
+        return $content;
+    }
+
+}
+
 
 class ContentPage implements HtmlInteractor {
 
@@ -560,45 +615,9 @@ class ContentPage implements HtmlInteractor {
 }
 
 
-
 // --- Impresión de contenidos ---
 
-/**
- * home_action, imprime la portada (las N páginas más recientes)
- */
-// function home_action() : void {
-//     $pageInfoArr = get_sorted_page_info();
 
-//     echo "<h1>Publicaciones recientes</h1>\n";
-//     echo "
-//         <p>
-//             Bienvenido a <em>record.rat.la</em>, donde 
-//             <a href=\"author?username=inoro\" aria-label=\"Página del autor Inoro.\">un servidor</a>, 
-//             junto a las ratas del cementerio de Salem, registran sus desvaríos 
-//             mentales. Estas son las publicaciones más recientes, si quieres 
-//             leer más puedes ir al <a href=\"archive\">archivo</a>. Y si estás 
-//             confuso y no entiendes de que vá todo esto puedes leer las 
-//             <a href=\"faq\">preguntas frecuentes</a>.
-//         </p>\n
-//     ";
-
-//     $number = 1;
-//     foreach($pageInfoArr as $pageInfo) {
-//         echo "<article>\n";
-//         $content = convert_title_to_link(
-//             $pageInfo["filename"],
-//             $pageInfo["title"],
-//             get_page_content($pageInfo["filepath"])
-//         );
-//         $content = reduce_h1($content);
-//         print_page($content, $pageInfo);
-//         echo "</article>\n";
-//         if ($number >= PAGES_TO_SHOW) {
-//             break;
-//         }
-//         $number++;
-//     }
-// }
 
 /**
  * archive_action, imprime la página 'archivo', donde se listan las
@@ -640,31 +659,6 @@ class ContentPage implements HtmlInteractor {
 //     printf("<p>Hay un total de %d páginas en la web.</p>\n", count(POST_FILENAMES));
 // }
 
-/**
- * print_page, imprime la página de un artículo cuyo nombre de archivo
- * se pasa como parámetro
- * 
- * @param array{
- *  filename: string,
- *  filepath: string,
- *  author_real_name: string,
- *  author_page: string,
- *  author_username: string,
- *  title: string,
- *  description: string,
- *  publication_datetime: DateTime
- * } $pageInfo
- */
-// function print_page(string $pageContent, array $pageInfo) : void {
-//     echo $pageContent . "\n";
-//     printf(
-//         '<p style="text-align:right;"><small>Publicado por <a href="author?username=%s" aria-label="Página del autor %s.">%s</a> el %s</small></p>' . "\n",
-//         $pageInfo["author_username"],
-//         $pageInfo["author_real_name"],
-//         $pageInfo["author_real_name"],
-//         date_format($pageInfo["publication_datetime"], DEF_DATETIME_FORMAT)
-//     );
-// }
 
 // --- Variables globales ---
 // $TITLE = DEF_TITLE;
@@ -791,6 +785,8 @@ $page;
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 if ('/' === $uri) {
     $page = new HomePage();
+} elseif ('/archive' === $uri) {
+    $page = new ArchivePage();
 } elseif ('/show' === $uri && isset($_GET['filename'])) {
     if (in_array($_GET['filename'], POST_FILENAMES)) {
         // Post
