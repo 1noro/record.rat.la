@@ -665,6 +665,18 @@ if ($ACTION == 404) {
 
 ?>
 <!DOCTYPE html>
+<!--
+               _     _
+     _ __ __ _| |_  | | __ _
+    | '__/ _` | __| | |/ _` |
+    | | | (_| | |_ _| | (_| |
+    |_|  \__,_|\__(_)_|\__,_|
+
+    record.rat.la by Inoro <https://github.com/1noro>
+
+    "Y el pobre anciano Masson se hundió en la negrura de la muerte, con los 
+    locos chillidos de las ratas taladrándole los oídos" - Henry Kuttner
+-->
 <html lang="es">
     <head>
         <meta charset="utf-8">
