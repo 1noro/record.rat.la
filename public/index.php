@@ -47,21 +47,23 @@ define("PAGES_TO_SHOW", 2); // número de páginas a mostrar en la portada, "rec
 define("POST_FOLDER", "pages/posts/"); // carpeta donde se guardan las páginas
 define("COMMON_FOLDER", "pages/common/"); // carpeta donde se guardan las páginas
 define("POST_FILENAMES", get_filenames(POST_FOLDER)); // obtenemos todas las páginas de la carpeta POST_FOLDER
-define("PAGE_DATETIME_FORMAT", "Y/m/d \· H:i"); // formato de fecha a mostrar una página (https://www.php.net/manual/es/function.date.php)
 
 define("DEF_TITLE_SUFFIX", " - record.rat.la"); // sufijo por defecto del título de la página
 define("DEF_TITLE", "Publicaciones recientes"); // título por defecto de la página
 define("DEF_DESCRIPTION", "Bienvenido a record.rat.la, donde un servidor, junto a las ratas del cementerio de Salem, registran sus desvaríos mentales. "); // descripción por defecto de la página
 define("DEF_PAGE_IMG", "img/article_default_img_peach.jpg"); // imagen por defecto del artículo
-define("DEF_AUTHOR_USERNAME", "anon"); // datos de autor por defecto
+define("DEF_AUTHOR_USER_NAME", "anon"); // datos de autor por defecto
+define("DEF_DATETIME_FORMAT", "Y/m/d \· H:i"); // formato de fecha a mostrar una página (https://www.php.net/manual/es/function.date.php)
+define("DEF_DATETIME_TIMEZONE", "Europe/Madrid"); // zona horaria en la que están escritos los artículos
+// define("DEF_DATETIME_TIMEZONE_VISIBLE", "Europe/Madrid"); // @todo: considerar este comportamiento (zona horaria en la que se muestran las fechas)
+
+define("MONTHS", ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"]);
 
 // autor por defecto: Anon
 define("AUTHORS", [
-    DEF_AUTHOR_USERNAME => ["Anon", "anon.html"],
-    "inoro" => ["Inoro", "inoro.html"]
+    DEF_AUTHOR_USER_NAME => new Author(DEF_AUTHOR_USER_NAME, "Anon", "anon.html"),
+    "inoro" => new Author("inoro", "Inoro", "inoro.html")
 ]);
-
-// $TEXT_SIZES = ["1.05em", "1.2em", "1.35em"];
 
 $COLORS = [
     // Melocotón 2, electric boogaloo
@@ -76,21 +78,6 @@ $COLORS = [
         "code_text" => "#000000"
     ]
 ];
-
-define("MONTHS", [
-    "Enero",
-    "Febrero",
-    "Marzo",
-    "Abril",
-    "Mayo",
-    "Junio",
-    "Julio",
-    "Agosto",
-    "Septiembre",
-    "Octubre",
-    "Noviembre",
-    "Diciembre"
-]);
 
 // --- Utilidades genéricas ---
 
@@ -115,6 +102,271 @@ function convert_title_to_link(string $filename, string $title, string $html) : 
     return preg_replace($search, $substitution, $html);
 }
 
+/**
+ * get_author_by_user_name
+ */
+function get_author_by_user_name(string $user_name) : Author {
+    if (isset(AUTHORS[$user_name])) {
+        return AUTHORS[$user_name];
+    }
+    return AUTHORS[DEF_AUTHOR_USER_NAME];
+}
+
+// --- Clases ---
+
+class Author {
+
+    public string $user_name;
+    public string $real_name;
+    public string $page_file_name;
+    public string $page_file_path;
+
+    public function __construct(string $user_name, string $real_name, string $page_file_name) {
+        $this->user_name = $user_name;
+        $this->real_name = $real_name;
+        $this->page_file_name = $page_file_name;
+        $this->page_file_path = COMMON_FOLDER . $page_file_name;
+    }
+
+}
+
+class Page {
+
+    // File properties
+    private string $file_path;
+    private string $file_name;
+    private string $file_content;
+
+    // Basic properties
+    private string $title;
+    private string $description;
+    private Author $author;
+    private DateTime $publication_datetime;
+
+    // Extended properties
+    // private string $cover_img;
+    // private string $structured_data_json;
+    // private array $update_datetimes; // revision_datetimes?
+
+    public function __construct(string $file_path) {
+        $this->file_path = $file_path;
+        $this->file_name = basename($file_path);
+        $this->file_content = file_get_contents($file_path) ?: "Empty page";
+
+        $this->title = $this->parse_title();
+        $this->description = $this->parse_description();
+        $author_user_name = $this->parse_author_user_name();
+        $this->author = get_author_by_user_name($author_user_name);
+        $this->publication_datetime = $this->parse_publication_datetime();
+    }
+
+    // --- Parsers
+
+    /**
+     * parse_title, obtiene el título (<h1></h1>) de la página en base a su 
+     * contenido. Luego elimina los tags HTML y espacios sobrantes que posea 
+     * en su interior
+     */
+    private function parse_title() : string {
+        preg_match_all("/<h1>(.*)<\/h1>/i", $this->file_content, $matches, PREG_PATTERN_ORDER);
+        /**
+         * quitamos las tags HTML, los espacios sobrantes y luego cambiamos los 
+         * caracteres especiales por sus códigos HTML (incluidas las " y ')
+         */
+        return htmlentities(trim(strip_tags($matches[1][0])), ENT_QUOTES); 
+    }
+
+    /**
+     * parse_description, obtiene el contenido del primer párrafo <p></p> del
+     * contenido, asumiendo que es la descripción. Además ajusta su tamaño 
+     * para que no exceda los 160 caracteres recomendados para el SEO
+     * 
+     * @todo: mejorar la eficiencia de esta función
+     * 
+     */
+    private function parse_description() : string {
+        $content = $this->file_content;
+        $defaultText = "Default description";
+
+        $start = strpos($content, '<p>') ?: 0;
+        $end = strpos($content, '</p>', $start);
+        $paragraph = strip_tags(substr($content, $start, $end - $start + 4));
+        $paragraph = str_replace("\n", "", $paragraph);
+        // quitamos el exceso de espacios en blanco delante, atrás y en el medio
+        $paragraph = preg_replace('/\s+/', ' ', trim($paragraph));
+
+        if ($paragraph == null) {
+            $paragraph = $defaultText;
+        }
+        
+        // si la descripción es mayor a 160 caracteres es malo para el SEO
+        // con el preg replace eliminamos la ultima palabra par que no quede cortado
+        if (strlen($paragraph) > 160) {
+            $paragraph = preg_replace('/\W\w+\s*(\W*)$/', '$1', mb_substr($paragraph, 0, 160 - 3)) . "...";
+        }
+
+        return $paragraph;
+    }
+
+    /**
+     * parse_author_user_name, obtiene el user_name del author a partir del 
+     * contenido
+     */
+    private function parse_author_user_name() : string {
+        $regex = '/<!-- author (.*) -->/';
+        $matches_count = preg_match_all($regex, $this->file_content, $matches, PREG_PATTERN_ORDER);
+        if ($matches_count != 0 && isset(AUTHORS[$matches[1][0]])) {
+            return $matches[1][0];
+        }
+        return DEF_AUTHOR_USER_NAME;
+    }
+
+    /**
+     * parse_publication_datetime, obtiene la fecha de un artículo en base al 
+     * comentario "publication_date"
+     * 
+     * @return DateTime
+     */
+    private function parse_publication_datetime() : DateTime {
+        $regex = '/<!-- publication_datetime (\d{4})(\d{2})(\d{2})T(\d{2})(\d{2}) -->/';
+        $matches_count = preg_match_all($regex, $this->file_content, $matches, PREG_PATTERN_ORDER);
+
+        // default date: 2000/01/01 00:00
+        $year = '2000';
+        $month = '01';
+        $day = '01';
+        $hour = '00';
+        $minute = '00';
+
+        if ($matches_count != 0) {
+            $year = $matches[1][0];
+            $month = $matches[2][0];
+            $day = $matches[3][0];
+            $hour = $matches[4][0];
+            $minute = $matches[5][0];
+        }
+
+        $datetime_str = $year."/".$month."/".$day." ".$hour.":".$minute;
+        $datetime_obj = date_create($datetime_str, new DateTimeZone(DEF_DATETIME_TIMEZONE));
+
+        // si la fecha no es válida, se devuelve una válida
+        if ($datetime_obj == null) {
+            $datetime_obj = new DateTime();
+        }
+
+        return $datetime_obj;
+    }
+
+    // --- Basic properties getters
+
+    function get_file_path() : string { return $this->file_path; }
+    function get_file_name() : string { return $this->file_name; }
+    function get_file_content() : string { return $this->file_content; }
+    function get_title() : string { return $this->title; }
+    function get_description() : string { return $this->description; }
+    function get_author() : Author { return $this->author; }
+    function get_publication_datetime() : DateTime { return $this->publication_datetime; }
+
+    // --- Extended properties getters
+
+    /**
+     * get_cover_img, obtiene la primera imagen mostrada en el contenido, 
+     * si no hay ninguna se utiliza la imagen por defecto
+     */
+    function get_cover_img() : string {
+        preg_match('/<img.+src=[\'"](?P<src>.+?)[\'"].*>/i', $this->file_content, $matches);
+        if (isset($matches["src"])) {
+            return $matches["src"];
+        }
+        return DEF_PAGE_IMG;
+    }
+
+    // @todo: refactor
+    function get_structured_data_json(array $pageInfo, string $canonical_url, string $page_url) : string {
+        return json_encode([
+            "@context" => "https://schema.org/",
+            "@type" => "BlogPosting",
+            "@id" => $canonical_url,
+            // "mainEntityOfPage" => "https://dataliberate.com/2019/05/14/library-metadata-evolution-final-mile/",
+            "headline" => $pageInfo["title"],
+            "name" => $pageInfo["title"],
+            "description" => $pageInfo["description"],
+            "datePublished" => date_format($pageInfo["publication_datetime"], DATE_ISO8601),
+            // "dateModified" => "2019-05-14",
+            "author" => [
+                "@type" => "Person",
+                "@id" => "https://record.rat.la/author?username=" . $pageInfo["author_username"],
+                "name" => $pageInfo["author_real_name"],
+                "url" => "https://record.rat.la/author?username=" . $pageInfo["author_username"],
+                // "image" => [
+                //     "@type" => "ImageObject",
+                //     "@id" => "https://secure.gravatar.com/avatar/bbdd78abba6116d6f5bfa2c992de6592?s=96&d=mm&r=g",
+                //     "url" => "https://secure.gravatar.com/avatar/bbdd78abba6116d6f5bfa2c992de6592?s=96&d=mm&r=g",
+                //     "height" => "96",
+                //     "width" => "96"
+                // ]
+            ],
+            // "publisher" => [
+            //     "@type" => "Organization",
+            //     "@id" => "https://dataliberate.com",
+            //     "name" => "Data Liberate",
+            //     "logo" => [
+            //         "@type" => "ImageObject",
+            //         "@id" => "https://dataliberate.com/wp-content/uploads/2011/12/Data_Liberate_Logo-200.png",
+            //         "url" => "https://dataliberate.com/wp-content/uploads/2011/12/Data_Liberate_Logo-200.png",
+            //         "width" => "600",
+            //         "height" => "60"
+            //     ]
+            // ],
+            "image" => [
+                "@type" => "ImageObject",
+                "@id" => $page_url,
+                "url" => $page_url,
+                // "height" => "362",
+                // "width" => "388"
+            ],
+            "url" => $canonical_url,
+            "isPartOf" => [
+                "@type" => "Blog",
+                "@id" => "https://record.rat.la/",
+                "name" => "record.rat.la",
+                // "publisher" => [
+                //     "@type" => "Organization",
+                //     "@id" => "https://dataliberate.com",
+                //     "name" => "Data Liberate"
+                // ]
+                "author" => [
+                    "@type" => "Person",
+                    "@id" => "https://record.rat.la/author?username=inoro",
+                    "name" => "Inoro",
+                    "url" => "https://record.rat.la/author?username=inoro",
+                    // "image" => [
+                    //     "@type" => "ImageObject",
+                    //     "@id" => "https://secure.gravatar.com/avatar/bbdd78abba6116d6f5bfa2c992de6592?s=96&d=mm&r=g",
+                    //     "url" => "https://secure.gravatar.com/avatar/bbdd78abba6116d6f5bfa2c992de6592?s=96&d=mm&r=g",
+                    //     "height" => "96",
+                    //     "width" => "96"
+                    // ]
+                ]
+            ],
+            // "wordCount" => "488",
+            // "keywords" => [
+            //     "Bibframe2Schema.org",
+            //     "Libraries",
+            //     "Library of Congress"
+            // ],
+            // "aggregateRating" => [
+            //     "@type" => "AggregateRating",
+            //     "@id" => "https://dataliberate.com/2019/05/14/library-metadata-evolution-final-mile/#aggregate",
+            //     "url" => "https://dataliberate.com/2019/05/14/library-metadata-evolution-final-mile/",
+            //     "ratingValue" => "2.5",
+            //     "ratingCount" => "2"
+            // ]
+        ]);
+    }
+
+}
+
 // --- Obtención de datos de las páginas ---
 
 /**
@@ -136,110 +388,6 @@ function get_filenames(string $directory) : array {
 }
 
 /**
- * get_publication_datetime, obtiene la fecha de un artículo en base al 
- * comentario "publication_date"
- * 
- * @return DateTime
- */
-function get_publication_datetime(string $content) : DateTime {
-    $regex = '/<!-- publication_datetime (\d{4})(\d{2})(\d{2})T(\d{2})(\d{2}) -->/';
-    $matches_count = preg_match_all($regex, $content, $matches, PREG_PATTERN_ORDER);
-
-    // default date: 2000/01/01 00:00
-    $year = '2000';
-    $month = '01';
-    $day = '01';
-    $hour = '00';
-    $minute = '00';
-
-    if ($matches_count != 0) {
-        $year = $matches[1][0];
-        $month = $matches[2][0];
-        $day = $matches[3][0];
-        $hour = $matches[4][0];
-        $minute = $matches[5][0];
-    }
-
-    $datetime_str = $year."/".$month."/".$day." ".$hour.":".$minute;
-    $datetime_obj = date_create($datetime_str, new DateTimeZone("Europe/Madrid"));
-
-    // si la fecha no es válida, se devuelve una válida
-    if ($datetime_obj == null) {
-        $datetime_obj = new DateTime();
-    }
-
-    return $datetime_obj;
-}
-
-/**
- * get_author_data, obtiene los datos del autor en base a su
- * alias en el comentario de la primera línea del artículo
- * 
- * @return array{0: string, 1: string, 2: string}
- */
-function get_author_data(string $content) : array {
-    $regex = '/<!-- author (.*) -->/';
-    $matches_count = preg_match_all($regex, $content, $matches, PREG_PATTERN_ORDER);
-
-    $username = DEF_AUTHOR_USERNAME;
-
-    if ($matches_count != 0 && isset(AUTHORS[$matches[1][0]])) {
-        $username = $matches[1][0];
-    }
-
-    return [AUTHORS[$username][0], AUTHORS[$username][1], $username];
-}
-
-/**
- * get_title, obtiene el título del post en base a su contenido
- */
-function get_title(string $content) : string {
-    preg_match_all("/<h1>(.*)<\/h1>/i", $content, $matches, PREG_PATTERN_ORDER);
-    /**
-     * quitamos las tags HTML, los espacios sobrantes y luego cambiamos los 
-     * caracteres especiales por sus códigos HTML (incluidas las " y ')
-     */
-    return htmlentities(trim(strip_tags($matches[1][0])), ENT_QUOTES); 
-}
-
-/**
- * get_description, obtiene el contenido del primer párrafo <p></p> del
- * artículo y lo coloca como description del mismo
- * 
- * @todo: mejorar la eficiencia de esta función
- * 
- */
-function get_description(string $content) : string {
-    $defaultText = "Default description";
-
-    $start = strpos($content, '<p>') ?: 0;
-    $end = strpos($content, '</p>', $start);
-    $paragraph = strip_tags(substr($content, $start, $end - $start + 4));
-    $paragraph = str_replace("\n", "", $paragraph);
-    // quitamos el exceso de espacios en blanco delante, atrás y en el medio
-    $paragraph = preg_replace('/\s+/', ' ', trim($paragraph));
-
-    if ($paragraph == null) {
-        $paragraph = $defaultText;
-    }
-    
-    // si la descripción es mayor a 160 caracteres es malo para el SEO
-    // con el preg replace eliminamos la ultima palabra par que no quede cortado
-    if (strlen($paragraph) > 160) {
-        $paragraph = preg_replace('/\W\w+\s*(\W*)$/', '$1', mb_substr($paragraph, 0, 160 - 3)) . "...";
-    }
-
-    return $paragraph;
-}
-
-/**
- * get_page_content
- */
-function get_page_content(string $filepath) : string {
-    return file_get_contents($filepath) ?: "Empty page";
-}
-
-/**
  * get_page_info, obtiene en formato diccionario el nombre del archivo,
  * fecha, autor y título de un artículo
  * 
@@ -254,34 +402,22 @@ function get_page_content(string $filepath) : string {
  *  publication_datetime: DateTime
  * }
  */
-function get_page_info(string $filepath) : array {
-    $content = get_page_content($filepath);
-    $authorData = get_author_data($content);
-    return [
-        "filename" => basename($filepath),
-        "filepath" => $filepath,
-        "author_real_name" => $authorData[0],
-        "author_page" => $authorData[1],
-        "author_username" => $authorData[2],
-        "title" => get_title($content),
-        "description" => get_description($content),
-        "publication_datetime" => get_publication_datetime($content)
-    ];
-}
+// function get_page_info(string $filepath) : array {
+//     $content = get_page_content($filepath);
+//     $authorData = get_author_data($content);
+//     return [
+//         "filename" => basename($filepath),
+//         "filepath" => $filepath,
+//         "author_real_name" => $authorData[0],
+//         "author_page" => $authorData[1],
+//         "author_username" => $authorData[2],
+//         "title" => get_title($content),
+//         "description" => get_description($content),
+//         "publication_datetime" => get_publication_datetime($content)
+//     ];
+// }
 
-/**
- * get_img, obtiene la primera imagen mostrada en el artículo
- * 
- * @todo optimizar (sacar de lo que se carga en el main)
- */
-function get_img(string $filepath) : string {
-    $html = file_get_contents($filepath) ?: "";
-    preg_match('/<img.+src=[\'"](?P<src>.+?)[\'"].*>/i', $html, $matches);
-    if (isset($matches["src"])) {
-        return $matches["src"];
-    }
-    return DEF_PAGE_IMG;
-}
+
 
 /**
  * get_sorted_page_info
@@ -417,91 +553,8 @@ function print_page(string $pageContent, array $pageInfo) : void {
         $pageInfo["author_username"],
         $pageInfo["author_real_name"],
         $pageInfo["author_real_name"],
-        date_format($pageInfo["publication_datetime"], PAGE_DATETIME_FORMAT)
+        date_format($pageInfo["publication_datetime"], DEF_DATETIME_FORMAT)
     );
-}
-
-function get_article_structured_data(array $pageInfo, string $canonical_url, string $page_url) : string {
-    return json_encode([
-        "@context" => "https://schema.org/",
-        "@type" => "BlogPosting",
-        "@id" => $canonical_url,
-        // "mainEntityOfPage" => "https://dataliberate.com/2019/05/14/library-metadata-evolution-final-mile/",
-        "headline" => $pageInfo["title"],
-        "name" => $pageInfo["title"],
-        "description" => $pageInfo["description"],
-        "datePublished" => date_format($pageInfo["publication_datetime"], DATE_ISO8601),
-        // "dateModified" => "2019-05-14",
-        "author" => [
-            "@type" => "Person",
-            "@id" => "https://record.rat.la/author?username=" . $pageInfo["author_username"],
-            "name" => $pageInfo["author_real_name"],
-            "url" => "https://record.rat.la/author?username=" . $pageInfo["author_username"],
-            // "image" => [
-            //     "@type" => "ImageObject",
-            //     "@id" => "https://secure.gravatar.com/avatar/bbdd78abba6116d6f5bfa2c992de6592?s=96&d=mm&r=g",
-            //     "url" => "https://secure.gravatar.com/avatar/bbdd78abba6116d6f5bfa2c992de6592?s=96&d=mm&r=g",
-            //     "height" => "96",
-            //     "width" => "96"
-            // ]
-        ],
-        // "publisher" => [
-        //     "@type" => "Organization",
-        //     "@id" => "https://dataliberate.com",
-        //     "name" => "Data Liberate",
-        //     "logo" => [
-        //         "@type" => "ImageObject",
-        //         "@id" => "https://dataliberate.com/wp-content/uploads/2011/12/Data_Liberate_Logo-200.png",
-        //         "url" => "https://dataliberate.com/wp-content/uploads/2011/12/Data_Liberate_Logo-200.png",
-        //         "width" => "600",
-        //         "height" => "60"
-        //     ]
-        // ],
-        "image" => [
-            "@type" => "ImageObject",
-            "@id" => $page_url,
-            "url" => $page_url,
-            // "height" => "362",
-            // "width" => "388"
-        ],
-        "url" => $canonical_url,
-        "isPartOf" => [
-            "@type" => "Blog",
-            "@id" => "https://record.rat.la/",
-            "name" => "record.rat.la",
-            // "publisher" => [
-            //     "@type" => "Organization",
-            //     "@id" => "https://dataliberate.com",
-            //     "name" => "Data Liberate"
-            // ]
-            "author" => [
-                "@type" => "Person",
-                "@id" => "https://record.rat.la/author?username=inoro",
-                "name" => "Inoro",
-                "url" => "https://record.rat.la/author?username=inoro",
-                // "image" => [
-                //     "@type" => "ImageObject",
-                //     "@id" => "https://secure.gravatar.com/avatar/bbdd78abba6116d6f5bfa2c992de6592?s=96&d=mm&r=g",
-                //     "url" => "https://secure.gravatar.com/avatar/bbdd78abba6116d6f5bfa2c992de6592?s=96&d=mm&r=g",
-                //     "height" => "96",
-                //     "width" => "96"
-                // ]
-            ]
-        ],
-        // "wordCount" => "488",
-        // "keywords" => [
-        //     "Bibframe2Schema.org",
-        //     "Libraries",
-        //     "Library of Congress"
-        // ],
-        // "aggregateRating" => [
-        //     "@type" => "AggregateRating",
-        //     "@id" => "https://dataliberate.com/2019/05/14/library-metadata-evolution-final-mile/#aggregate",
-        //     "url" => "https://dataliberate.com/2019/05/14/library-metadata-evolution-final-mile/",
-        //     "ratingValue" => "2.5",
-        //     "ratingCount" => "2"
-        // ]
-    ]);
 }
 
 // --- Variables globales ---
