@@ -685,6 +685,9 @@ if ($ACTION == 404) {
         <title><?= $page->get_html_title() ?></title>
 
         <!-- ## LINK ## -->
+        <!-- Aunque a Firefox no le haga falta este tag, a Google si (SEO) -->
+        <link rel="icon" href="favicon.ico">
+
         <!-- Para decirle a google que la URL original es esta, y no la que se está usando -->
         <link rel="canonical" href="<?= $page->get_canonical_url() ?>">
 
