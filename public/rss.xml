@@ -13,6 +13,41 @@
         </image>
 
 <item>
+    <title>La cinta blanca – Das weisse Band</title>
+    <guid>https://record.rat.la/show?filename=la-cinta-blanca-michael-haneke.html</guid>
+    <link>https://record.rat.la/show?filename=la-cinta-blanca-michael-haneke.html</link>
+    <!--<author>Inoro</author>-->
+    <pubDate>Wed, 30 Nov 2022 19:04:00 +0100</pubDate>
+    <description>
+<![CDATA[<h1>La cinta blanca – <em>Das weisse Band</em></h1>
+
+<!-- publication_datetime 20221130T1904 -->
+<!-- author inoro -->
+
+<p>
+    Michael Haneke (2009) <em>austria, primera guerra mundial, puritanismo, religión, b&w, cine de época</em>
+</p>
+
+<p>
+    <img src="https://record.rat.la/img/20221130/la-cinta-blanca-750.jpg" alt="Ikio Sawamura y Toshiro Mifune.">
+</p>
+
+<p>
+    Una puritana aldea austríaca en 1913 y una serie de desgracias de misteriosa autoría. Esta podría ser una buena frase para introducir la sinopsis de una película de terror. Nada mas lejos de la realidad: prácticamente de eso trata esta película de Michael Haneke, la cual, sin dar ningún susto, presenta una reflexión sobre la maldad humana que durante su visionado te arranca más de un escalofrío.
+</p>
+
+<p>
+    Utiliza el blanco y negro para contraponer la blanca e impoluta apariencia que intenta transmitir el pueblo, frente a la oscura, sordida y corrupta atmosfera que está presente en las intimidades familiares de cada personaje. El blanco se satura y se corrompe en una atmósfera fuertemente marcada por la religión, todo es sermón y censura. Los niños son reprimidos por la falta de sus mayores y estos aprenden e imitan esas conductas, convirtiendo a las ovejas que salen del redil en las víctimas del castigo ritual.
+</p>
+
+<p>
+    Puede que no sea un film de fácil visionado para cualquier espectador. Pero si eres fán de Haneke y aún no la has visto, o si solo conoces al director por <em>Funny Games</em> (1997) y la disfrutaste como un renacuajo, creo que no te defraudará.
+</p>
+]]>
+    </description>
+</item>
+
+<item>
     <title>Emocionado por crear un link blog</title>
     <guid>https://record.rat.la/show?filename=emocionado-link-blog.html</guid>
     <link>https://record.rat.la/show?filename=emocionado-link-blog.html</link>
@@ -264,14 +299,16 @@ sudo resize2fs /dev/sdb1
 </item>
 
 <item>
-    <title>Yojimbo (用心棒) – Japón inspira al Western</title>
+    <title>Yojimbo 用心棒 – Japón inspira al Western</title>
     <guid>https://record.rat.la/show?filename=yojimbo-japon-inspira-western.html</guid>
     <link>https://record.rat.la/show?filename=yojimbo-japon-inspira-western.html</link>
     <!--<author>Inoro</author>-->
     <pubDate>Sat, 24 Jul 2021 20:57:00 +0200</pubDate>
     <description>
-<![CDATA[
-<h1>Yojimbo <em>(用心棒)</em> – Japón inspira al <em>Western</em></h1>
+<![CDATA[<h1>Yojimbo 用心棒 – Japón inspira al <em>Western</em></h1>
+
+<!-- publication_datetime 20210724T2057 -->
+<!-- author inoro -->
 
 <p>
     Akira Kurosawa (1961) <em>acción, japón feudal, samuráis, Toshiro Mifune, western</em>
@@ -317,9 +354,6 @@ sudo resize2fs /dev/sdb1
     tiene secuela: <strong>Sanjuro</strong> (1962). Ardo en deseos de verla 
     cuanto antes.
 </p>
-
-<!-- publication_datetime 20210724T2057 -->
-<!-- author inoro -->
 ]]>
     </description>
 </item>
@@ -903,300 +937,6 @@ sudo grub-mkconfig -o /boot/grub/grub.cfg
 </p>
 
 <!-- publication_datetime 20210310T1332 -->
-<!-- author inoro -->
-]]>
-    </description>
-</item>
-
-<item>
-    <title>Gitlab con NGINX reverse proxy</title>
-    <guid>https://record.rat.la/show?filename=gitlab-nginx.html</guid>
-    <link>https://record.rat.la/show?filename=gitlab-nginx.html</link>
-    <!--<author>Inoro</author>-->
-    <pubDate>Sun, 07 Mar 2021 11:07:00 +0100</pubDate>
-    <description>
-<![CDATA[
-<h1>Gitlab con NGINX reverse proxy</h1>
-
-<p>
-    Voy a documentar el proceso de instalación de Gitlab en una máquina virtual
-    detrás de un NGINX reverse proxy.
-</p>
-
-<h2>Escenario</h2>
-
-<p>
-    <img src="https://record.rat.la/img/202103071107/gitlab-nginx.webp" alt="Diagrama.">
-</p>
-
-<h3>Características</h3>
-
-<ul>
-    <li>Certificado SSL con Let's Encrypt y certbot.</li>
-    <li>
-        Escuchar en los puertos 80 (HTTP) y 443 (HTTPs) con una redirección
-        automática desde el 80 al 443.
-    </li>
-    <li>
-        Acceso mediante SSH con clave pública y protegido con fail2ban.
-    </li>
-</ul>
-
-<h2>Configuración del router</h2>
-
-<p>
-    En la sección de redirección de puertos (port forwarding) de nuestro router
-    creamos dos registros nuevos sobre el protocolo TCP.
-</p>
-
-<ul>
-    <li>
-        El puerto 80 del router apuntará al puerto 80 de la máquina de NGINX 
-        (192.168.1.105), para las conexiones HTTP.
-    </li>
-    <li>
-        El puerto 443 del router apuntará al puerto 443 de la máquina de NGINX 
-        (192.168.1.105), para las conexiones HTTPs.
-    </li>
-    <li>
-        El puerto 22 del router apuntará al puerto 22 de la máquina de Gitlab 
-        (192.168.1.108), para las conexiones SSH.
-    </li>
-</ul>
-
-<h2>Configuración de NGINX</h2>
-
-<p>Nos situamos en la máquina que va a ejercer de reverse proxy con NGINX.</p>
-
-<p>
-    Creamos el archivo 
-    <samp>/etc/nginx/sites-available/git.example.com.conf</samp>
-</p>
-
-<pre>
-server {
-    listen 80;
-    listen [::]:80;
-    server_name git.example.com;
-
-    location / {
-        proxy_pass "http://192.168.1.108/";
-        proxy_redirect off;
-        proxy_set_header Host $http_host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_set_header X-Forwarded-Protocol $scheme;
-        proxy_set_header X-Url-Scheme $scheme;
-    }
-}
-</pre>
-
-<p>Habilitamos el sitio.</p>
-
-<pre>
-ln -s /etc/nginx/sites-available/git.example.com.conf /etc/nginx/sites-enabled/
-</pre>
-
-<p>
-    Testeamos la sintaxis de la configuración de NGINX, y si todo va bien,
-    recargamos la configuración.
-</p>
-
-<pre>
-nginx -t
-systemctl reload nginx
-</pre>
-
-<p>
-    Con el Virtual Host correctamente configurado en NGINX, ejecutamos el 
-    certbot.
-</p>
-
-<pre>
-certbot --nginx -d git.example.com
-</pre>
-
-<blockquote>
-    Durante el proceso de creación del certificado indicamos que queremos
-    redireccionar el tráfico HTTP al HTTPs.
-</blockquote>
-
-<p>
-    Archivo <samp>/etc/nginx/sites-available/git.example.com.conf</samp>
-    después de ejecutar el certbot.
-</p>
-
-<pre>
-server {
-    server_name git.example.com;
-
-    location / {
-        proxy_pass "http://192.168.1.108/";
-        proxy_redirect off;
-        proxy_set_header Host $http_host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_set_header X-Forwarded-Protocol $scheme;
-        proxy_set_header X-Url-Scheme $scheme;
-    }
-
-    listen [::]:443 ssl; # managed by Certbot
-    listen 443 ssl; # managed by Certbot
-    ssl_certificate /etc/letsencrypt/live/git.example.com/fullchain.pem; # managed by Certbot
-    ssl_certificate_key /etc/letsencrypt/live/git.example.com/privkey.pem; # managed by Certbot
-    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
-    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
-}
-
-server {
-    if ($host = git.example.com) {
-        return 301 https://$host$request_uri;
-    } # managed by Certbot
-
-    listen 80;
-    listen [::]:80;
-
-    server_name git.example.com;
-    return 404; # managed by Certbot
-}
-</pre>
-
-<h2>Configuración SSH</h2>
-
-<p><a href="https://docs.github.com/es/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent">Generamos en nuestro equipo una clave SSH.</a></p>
-
-<p>Copiamos la clave a la máquina del Gitlab (192.168.1.108).</p>
-
-<pre>
-ssh-copy-id -i ~/.ssh/id_rsa.pub user@192.168.1.108
-</pre>
-
-<p>Nos situamos en la máquina que va a ejecutar Gitlab (192.168.1.108).</p>
-
-<p>
-    Editamos el archivo <samp>/etc/ssh/sshd_config</samp> y nos aseguramos de
-    que las siguientes lineas tengan los valores mostrados.
-</p>
-
-<pre>
-UsePAM yes
-PasswordAuthentication no
-</pre>
-
-<p>Y agregamos la siguiente línea al final.</p>
-
-<pre>
-PermitRootLogin no
-</pre>
-
-<p>Guardamos y reiniciamos el servicio.</p>
-
-<pre>
-sudo systemctl restart sshd
-</pre>
-
-<h3>Fail2ban</h3>
-
-<p>Instalamos el programa.</p>
-
-<pre>
-sudo apt update
-sudo apt install fail2ban
-</pre>
-
-<p>
-    Creamos el archivo <samp>/etc/fail2ban/jail.local</samp> y agregamos las 
-    siguientes lineas.
-</p>
-
-<pre>
-[DEFAULT]
-ignoreip = 127.0.0.1/8 192.168.1.0/24
-bantime = 10m
-maxretry = 5
-findtime = 1d
-
-[sshd]
-enabled = true
-</pre>
-
-<p>Guardamos y reiniciamos el servicio.</p>
-
-<pre>
-sudo systemctl restart fail2ban
-</pre>
-
-<h2>Instalación y configuración de Gitlab</h2>
-
-<p>Nos situamos en la máquina que va a ejecutar Gitlab (192.168.1.108).</p>
-
-<p>Instalamos los paquetes necesarios y agregamos el repositorio de Gitlab.</p>
-
-<pre>
-sudo apt update
-sudo apt install curl openssh-server ca-certificates tzdata perl postfix
-</pre>
-
-<pre>
-curl -sS https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh | sudo bash
-</pre>
-
-<pre>
-sudo EXTERNAL_URL="http://git.example.com" apt-get install gitlab-ce
-</pre>
-
-<blockquote>
-    Nótese que el parámetro <samp>EXTERNAL_URL</samp> se define con 
-    <samp>http</samp> y no con <samp>https</samp>.
-</blockquote>
-
-<p>
-    Editamos el archivo <samp>/etc/gitlab/gitlab.rb</samp> y agregamos las 
-    siguientes lineas al final.
-</p>
-
-<pre>
-nginx['listen_port'] = 80
-nginx['listen_https'] = false
-
-nginx['proxy_set_headers'] = {
-    "X-Forwarded-Proto" => "http"
-}
-
-nginx['real_ip_trusted_addresses'] = [ '192.168.1.0/24' ]
-nginx['real_ip_header'] = 'X-Forwarded-For'
-nginx['real_ip_recursive'] = 'on'
-</pre>
-
-<p>
-    Re-configuramos Gitlab.
-</p>
-
-<pre>
-sudo gitlab-ctl reconfigure
-</pre>
-
-<blockquote>
-    Hay que espera un rato a que se reconfigure, incluso después de que el
-    comando haya finalizado.
-</blockquote>
-
-<p>
-    Una vez acabado este proceso ya podremos acceder a nuestro Gitlab a través
-    de HTTPs para definir la contraseña del usuario <samp>root</samp>.
-</p>
-
-<h2>Bibliografía</h2>
-
-<ul>
-    <li><a href="https://linuxize.com/post/install-configure-fail2ban-on-ubuntu-20-04/">How to Install and Configure Fail2ban on Ubuntu 20.04</a></li>
-    <li><a href="https://about.gitlab.com/install/#ubuntu">Gitlab Official Linux package (recommended installation)</a></li>
-    <li><a href="https://docs.gitlab.com/omnibus/settings/nginx.html">Gitlab NGINX settings</a></li>
-</ul>
-
-<!-- publication_datetime 20210307T1107 -->
 <!-- author inoro -->
 ]]>
     </description>
