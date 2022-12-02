@@ -852,7 +852,8 @@ if ($ACTION == 404) {
 
             fieldset#cookie_compliance_notice nav {
                 display: flex;
-                justify-content:space-around
+                justify-content: space-around;
+                margin-bottom: 16px;
             }
 
             /* --- contenedor MAIN --- */
@@ -940,19 +941,17 @@ if ($ACTION == 404) {
                     &dagger; Esta web utiliza cookies propias para la personalización, y otras de terceros para obtener datos estadísticos de la navegación de los usuarios. Puedes <!--cambiar la configuración u--> obtener <a href="cookie" aria-label="¡Infórmate sobre las cookies!">más información aquí</a>.
                 </p>
                 <nav aria-label="Botones de consentimiento de cookies">
-                    <p>
-                        <form action="<?= $page->get_canonical_url() ?>" method="post">
-                            <input type="hidden" name="COOKIE_COMPLIANCE_ACTION" value="1">
-                            <button type="submit">Acepto</button>
-                        </form>
-                        <form action="<?= $page->get_canonical_url() ?>" method="post">
-                            <input type="hidden" name="COOKIE_COMPLIANCE_ACTION" value="0">
-                            <button type="submit">No acepto</button>
-                        </form>
-                        <div>
-                            <button onclick="document.getElementById('cookie_compliance_notice').style.display = 'none';">Ocultar</button>
-                        </div>
-                    </p>
+                    <form action="<?= $page->get_canonical_url() ?>" method="post">
+                        <input type="hidden" name="COOKIE_COMPLIANCE_ACTION" value="1">
+                        <button type="submit">Acepto</button>
+                    </form>
+                    <form action="<?= $page->get_canonical_url() ?>" method="post">
+                        <input type="hidden" name="COOKIE_COMPLIANCE_ACTION" value="0">
+                        <button type="submit">No acepto</button>
+                    </form>
+                    <span>
+                        <button onclick="document.getElementById('cookie_compliance_notice').style.display = 'none';">Ocultar</button>
+                    </span>
                 </nav>
             </fieldset>
 <?php } ?>
