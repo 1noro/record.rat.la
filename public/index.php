@@ -18,29 +18,43 @@
  * Opciones por defecto para el almacenamiento de cookies
  * (86400 segundos = 1 día)
  */
-// define("COOKIE_OPTIONS", [
-//     "expires" => time() + (86400 * 30),
-//     "path" => "/",
-//     "domain" => $_SERVER['SERVER_NAME'],
-//     "secure" => false,
-//     "httponly" => true,
-//     "samesite" => "Strict"
-// ]);
-
-$COLOR_ID = 0;
+define("COOKIE_OPTIONS", [
+    "expires" => time() + (86400 * 30 * 6), // 6 meses (lo recomendado para el consentimiento de las cookies)
+    "path" => "/",
+    "domain" => $_SERVER['SERVER_NAME'],
+    "secure" => false,
+    "httponly" => true,
+    "samesite" => "Strict"
+]);
 
 /**
- * Si se entra por primera vez a la web se guarda un cookie de TEXT_SIZE_ID
- * con el valor por defecto
+ * Comprobamos si existe la cookie COOKIE_COMPLIANCE_ACCEPT y, en caso de 
+ * existir, si tiene un valor válido. Después en función de eso redefinimos 
+ * la variable COOKIE_COMPLIANCE_ACCEPT con el valor que tiene la cookie, que 
+ * definirá si el usuario aceptó o no la política de cookies.
  */
-// $TEXT_SIZE_ID = 2;
-// if (isset($_COOKIE["TEXT_SIZE_ID"])) {
-//     $TEXT_SIZE_ID = intval($_COOKIE["TEXT_SIZE_ID"]);
-// } else {
-//     setcookie("TEXT_SIZE_ID", strval($TEXT_SIZE_ID), COOKIE_OPTIONS);
-// }
+$COOKIE_COMPLIANCE_ACCEPT = -1;
+if (isset($_COOKIE["COOKIE_COMPLIANCE_ACCEPT"]) && intval($_COOKIE["COOKIE_COMPLIANCE_ACCEPT"]) == 0) {
+    $COOKIE_COMPLIANCE_ACCEPT = 0;
+} elseif (isset($_COOKIE["COOKIE_COMPLIANCE_ACCEPT"]) && intval($_COOKIE["COOKIE_COMPLIANCE_ACCEPT"]) == 1) {
+    $COOKIE_COMPLIANCE_ACCEPT = 1;
+}
+
+/**
+ * En el caso de que se haya aceptado o declinado el uso de cookies se guarda 
+ * la cookie que registra el consentimiento del usuario: "COOKIE_COMPLIANCE_ACCEPT".
+ */
+if (isset($_POST["COOKIE_COMPLIANCE_ACTION"]) && intval($_POST["COOKIE_COMPLIANCE_ACTION"]) == 0) {
+    setcookie("COOKIE_COMPLIANCE_ACCEPT", "0", COOKIE_OPTIONS);
+    $COOKIE_COMPLIANCE_ACCEPT = 0;
+} elseif (isset($_POST["COOKIE_COMPLIANCE_ACTION"]) && intval($_POST["COOKIE_COMPLIANCE_ACTION"]) == 1) {
+    setcookie("COOKIE_COMPLIANCE_ACCEPT", "1", COOKIE_OPTIONS);
+    $COOKIE_COMPLIANCE_ACCEPT = 1;
+}
 
 // --- Constantes ---
+$COLOR_ID = 0;
+
 define("E404_PAGE", "404.html");
 define("PAGES_TO_SHOW", 2); // número de páginas a mostrar en la portada, "reciente"
 define("POST_FOLDER", "pages/posts/"); // carpeta donde se guardan las páginas
@@ -695,8 +709,10 @@ if ($ACTION == 404) {
         <link rel="alternate" type="application/rss+xml" href="rss.xml" title="RSS de record.rat.la">
 
         <!-- Avisamos al navegador de que se prepare para hacer una petición a los siguientes dominios -->
-        <!-- <link rel="preconnect" href="https://www.googletagmanager.com/gtag/js?id=G-W3KC9CP7ZQ">
-        <link rel="dns-prefetch" href="https://www.googletagmanager.com/gtag/js?id=G-W3KC9CP7ZQ"> -->
+<?php if ($COOKIE_COMPLIANCE_ACCEPT == 1) { ?>
+        <link rel="preconnect" href="https://www.googletagmanager.com/gtag/js?id=G-W3KC9CP7ZQ">
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com/gtag/js?id=G-W3KC9CP7ZQ">
+<?php } ?>
         <link rel="preload" href="res/eb-garamond/EBGaramond-Regular.ttf" as="font" type="font/ttf" crossorigin>
         <link rel="preload" href="res/eb-garamond/EBGaramond-Italic.ttf" as="font" type="font/ttf" crossorigin>
         <link rel="preload" href="res/eb-garamond/EBGaramond-Bold.ttf" as="font" type="font/ttf" crossorigin>
@@ -742,16 +758,6 @@ if ($ACTION == 404) {
         <meta name="robots" content="index, follow">
         <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
         <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
-        
-        <!-- Cosas de la NSA (en modo prueba) -->
-        <!-- Google Analytics -->
-        <!-- La carga del script externo se hace después de los estilos para mejorar la performance -->
-        <!-- <script>
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-W3KC9CP7ZQ');
-        </script> -->
 
         <style>
             @font-face {
@@ -875,11 +881,18 @@ if ($ACTION == 404) {
 <?php if ($page instanceof ContentPage) { ?>
         <script type="application/ld+json"><?= $page->get_structured_data_json() ?></script>
 <?php } ?>
-
+<?php if ($COOKIE_COMPLIANCE_ACCEPT == 1) { ?>
         <!-- Cosas de la NSA (en modo prueba) -->
         <!-- Google Analytics -->
         <!-- La sitúo aquí para mejorar la carga de la web -->
-        <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-W3KC9CP7ZQ"></script> -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-W3KC9CP7ZQ"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-W3KC9CP7ZQ');
+        </script>
+<?php } ?>
     </head>
 
     <body>
@@ -923,30 +936,24 @@ if ($ACTION == 404) {
                     </em> – Henry Kuttner
                 </small>
             </p>
+<?php if ($COOKIE_COMPLIANCE_ACCEPT != 0 && $COOKIE_COMPLIANCE_ACCEPT != 1) { ?>
             <!-- Alerta sobre las cookies -->
-            <!-- Debería dar la opción a desactivar la cookies de google -->
-            <!-- <p>
-                <small>
-                    Esta página guarda dos <a href="cookie" aria-label="¡Infórmate sobre las cookies!">cookies</a> funcionales para el estilo y <strong>tres</strong> analíticas para google
-                </small>
-            </p> -->
-
             <fieldset id="cookie_compliance_notice">
                 <p>
                     &dagger; Esta web utiliza cookies propias para funcionalidades básicas, y otras de terceros para obtener datos estadísticos de la navegación de los usuarios. Puedes <!--cambiar la configuración u--> obtener <a href="cookie" aria-label="¡Infórmate sobre las cookies!">más información aquí</a>.
                 </p>
                 <nav>
                     <form action="<?= $page->get_canonical_url() ?>" method="post">
-                        <input type="hidden" name="cookie_compliance" value="1">
+                        <input type="hidden" name="COOKIE_COMPLIANCE_ACTION" value="1">
                         <input type="submit" value="Acepto">
                     </form>
                     <form action="<?= $page->get_canonical_url() ?>" method="post">
-                        <input type="hidden" name="cookie_compliance" value="0">
+                        <input type="hidden" name="COOKIE_COMPLIANCE_ACTION" value="0">
                         <input type="submit" value="No acepto, ocultar para siempre">
                     </form>
                 </nav>
             </fieldset>
-
+<?php } ?>
         </header>
 
         <main id="main" aria-label="Contenido principal" tabindex="-1">
