@@ -832,6 +832,26 @@ if ($ACTION == 404) {
                 margin: 0 auto;
             }
 
+            fieldset#cookie_compliance_notice {
+                max-width: 400px;
+                position: fixed;
+                bottom: 0px;
+                right: 0px;
+                margin: 10px 10px;
+                background-color: <?= $COLORS[$COLOR_ID]["code_background"] ?>;
+                font-size: medium;
+                text-align: left;
+            }
+
+            fieldset#cookie_compliance_notice nav {
+                display: flex;
+                justify-content: center;
+            }
+
+            fieldset#cookie_compliance_notice nav form {
+                margin: auto 6px;
+            }
+
             /* --- contenedor MAIN --- */
             main {
                 max-width: 800px;
@@ -910,6 +930,23 @@ if ($ACTION == 404) {
                     Esta página guarda dos <a href="cookie" aria-label="¡Infórmate sobre las cookies!">cookies</a> funcionales para el estilo y <strong>tres</strong> analíticas para google
                 </small>
             </p> -->
+
+            <fieldset id="cookie_compliance_notice">
+                <p>
+                    &dagger; Esta web utiliza cookies propias para funcionalidades básicas, y otras de terceros para obtener datos estadísticos de la navegación de los usuarios. Puedes <!--cambiar la configuración u--> obtener <a href="cookie" aria-label="¡Infórmate sobre las cookies!">más información aquí</a>.
+                </p>
+                <nav>
+                    <form action="<?= $page->get_canonical_url() ?>" method="post">
+                        <input type="hidden" name="cookie_compliance" value="1">
+                        <input type="submit" value="Acepto">
+                    </form>
+                    <form action="<?= $page->get_canonical_url() ?>" method="post">
+                        <input type="hidden" name="cookie_compliance" value="0">
+                        <input type="submit" value="No acepto, ocultar para siempre">
+                    </form>
+                </nav>
+            </fieldset>
+
         </header>
 
         <main id="main" aria-label="Contenido principal" tabindex="-1">
