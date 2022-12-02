@@ -847,15 +847,12 @@ if ($ACTION == 404) {
                 background-color: <?= $COLORS[$COLOR_ID]["code_background"] ?>;
                 font-size: medium;
                 text-align: left;
+                padding: 10px 25px;
             }
 
             fieldset#cookie_compliance_notice nav {
                 display: flex;
-                justify-content: center;
-            }
-
-            fieldset#cookie_compliance_notice nav form {
-                margin: auto 6px;
+                justify-content:space-around
             }
 
             /* --- contenedor MAIN --- */
@@ -940,17 +937,22 @@ if ($ACTION == 404) {
             <!-- Alerta sobre las cookies -->
             <fieldset id="cookie_compliance_notice">
                 <p>
-                    &dagger; Esta web utiliza cookies propias para funcionalidades básicas, y otras de terceros para obtener datos estadísticos de la navegación de los usuarios. Puedes <!--cambiar la configuración u--> obtener <a href="cookie" aria-label="¡Infórmate sobre las cookies!">más información aquí</a>.
+                    &dagger; Esta web utiliza cookies propias para la personalización, y otras de terceros para obtener datos estadísticos de la navegación de los usuarios. Puedes <!--cambiar la configuración u--> obtener <a href="cookie" aria-label="¡Infórmate sobre las cookies!">más información aquí</a>.
                 </p>
-                <nav>
-                    <form action="<?= $page->get_canonical_url() ?>" method="post">
-                        <input type="hidden" name="COOKIE_COMPLIANCE_ACTION" value="1">
-                        <input type="submit" value="Acepto">
-                    </form>
-                    <form action="<?= $page->get_canonical_url() ?>" method="post">
-                        <input type="hidden" name="COOKIE_COMPLIANCE_ACTION" value="0">
-                        <input type="submit" value="No acepto, ocultar para siempre">
-                    </form>
+                <nav aria-label="Botones de consentimiento de cookies">
+                    <p>
+                        <form action="<?= $page->get_canonical_url() ?>" method="post">
+                            <input type="hidden" name="COOKIE_COMPLIANCE_ACTION" value="1">
+                            <button type="submit">Acepto</button>
+                        </form>
+                        <form action="<?= $page->get_canonical_url() ?>" method="post">
+                            <input type="hidden" name="COOKIE_COMPLIANCE_ACTION" value="0">
+                            <button type="submit">No acepto</button>
+                        </form>
+                        <div>
+                            <button onclick="document.getElementById('cookie_compliance_notice').style.display = 'none';">Ocultar</button>
+                        </div>
+                    </p>
                 </nav>
             </fieldset>
 <?php } ?>
