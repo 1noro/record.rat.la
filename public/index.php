@@ -12,11 +12,6 @@
     locos chillidos de las ratas taladrándole los oídos" - Henry Kuttner
 */
 
-echo "<pre>";
-print_r($_SERVER);
-echo "</pre>";
-die();
-
 // --- Gestión de cookies ---
 
 /**
