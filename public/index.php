@@ -12,6 +12,11 @@
     locos chillidos de las ratas taladrándole los oídos" - Henry Kuttner
 */
 
+echo "<pre>";
+print_r($_SERVER);
+echo "</pre>";
+die();
+
 // --- Gestión de cookies ---
 
 /**
@@ -128,7 +133,16 @@ function get_author_by_user_name(string $user_name) : Author {
  */
 function get_base_uri() : string {
     $protocol = "http";
+    // Detectar HTTPS de forma directa
     if(isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] === 'on') {
+        $protocol = "https";
+    }
+    // Detectar HTTPS a través del header X-Forwarded-Proto (proxy_pass)
+    if(isset($_SERVER["HTTP_X_FORWARDED_PROTO"]) && $_SERVER["HTTP_X_FORWARDED_PROTO"] === 'https') {
+        $protocol = "https";
+    }
+    // Detectar HTTPS a través del header X-Url-Scheme (proxy_pass)
+    if(isset($_SERVER["HTTP_X_URL_SCHEME"]) && $_SERVER["HTTP_X_URL_SCHEME"] === 'https') {
         $protocol = "https";
     }
     return $protocol . "://" . $_SERVER["HTTP_HOST"];
