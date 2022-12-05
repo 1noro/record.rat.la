@@ -13,6 +13,45 @@
         </image>
 
 <item>
+    <title>La cumbre de los dioses – Le Sommet des Dieux</title>
+    <guid>https://record.rat.la/show?filename=le-sommet-des-dieux.html</guid>
+    <link>https://record.rat.la/show?filename=le-sommet-des-dieux.html</link>
+    <!--<author>Inoro</author>-->
+    <pubDate>Mon, 05 Dec 2022 20:20:00 +0100</pubDate>
+    <description>
+<![CDATA[<h1>La cumbre de los dioses – <em>Le Sommet des Dieux</em></h1>
+
+<!-- publication_datetime 20221205T2020 -->
+<!-- author inoro -->
+
+<p>
+    Francia, Patrick Imbert (2021) <em>animación, alpinismo, manga, himalaya, everest, fotografía</em>
+</p>
+
+<p>
+    <img src="https://record.rat.la/img/20221205/le-sommet-des-dieux-2-750.jpg" alt="Fotograma de la película donde se puede apreciar el mimo que se le dedicó a los planos generales de los paisajes montañosos.">
+</p>
+
+<p>
+    Adaptación francesa del manga homónimo escrito por Jiro Taniguchi que narra la historia de Makoto Fukamachi, un aventurero y fotógrafo japones que sigue el rastro de un misterioso alpinista debido a la sospecha de que este podría tener bajo su custodia una cámara perteneciente a <a href="https://es.wikipedia.org/wiki/George_Leigh_Mallory">George Mallory</a>. El revelado de ese carrete podría desvelar el misterio de si Mallory efectivamente llegó a la cima del Everest en 1924 antes de desaparecer para siempre, 29 años antes del primer ascenso oficial.
+</p>
+
+<p>
+    Nos encontramos ante un precioso film que, a través de sus imponentes y preciosos planos generales de los paisajes montañosos, intenta ahodar en ese sentimiento que poseen los alpinistas, el cual les empuja siempre hacia nuevas y mas difíciles metas, llegando incluso a al extremo de poner estas metas por encima de sus propias vidas.
+</p>
+
+<p>
+    A mi siempre me ha gustado el mundo del alpinismo, desde pequeño que veía los documentales de <a href="https://es.wikipedia.org/wiki/Al_filo_de_lo_imposible"><em>Al filo de lo imposible</em></a> me ha atraído esa cultura. Aunque no he tenido la oportunidad hasta el momento, siempre he querido subir una montaña (espero resolver esta deuda que tengo conmigo mismo, lo antes posible). Debido a todo esto, esta película me ha tocado la fibra sensible y me ha dejado con ganas de más historias de este tipo. Creo que es una película fácil de ver y recomendable para todo el que quiera pasar un buen rato disfrutando de una emocionante aventura.
+</p>
+
+<blockquote>
+    –Ya era hora de romper la racha de películas difíciles de digerir 😅–.
+</blockquote>
+]]>
+    </description>
+</item>
+
+<item>
     <title>La cinta blanca – Das weisse Band</title>
     <guid>https://record.rat.la/show?filename=la-cinta-blanca-michael-haneke.html</guid>
     <link>https://record.rat.la/show?filename=la-cinta-blanca-michael-haneke.html</link>
@@ -25,15 +64,15 @@
 <!-- author inoro -->
 
 <p>
-    Michael Haneke (2009) <em>austria, primera guerra mundial, puritanismo, religión, b&w, cine de época</em>
+    Alemania, Michael Haneke (2009) <em>primera guerra mundial, puritanismo, religión, b&w, cine de época</em>
 </p>
 
 <p>
-    <img src="https://record.rat.la/img/20221130/la-cinta-blanca-750.jpg" alt="Ikio Sawamura y Toshiro Mifune.">
+    <img src="https://record.rat.la/img/20221130/la-cinta-blanca-750.jpg" alt="Sebastian Hülk venga la muerte de su madre rompiendo unos repollos.">
 </p>
 
 <p>
-    Una puritana aldea austríaca en 1913 y una serie de desgracias de misteriosa autoría. Esta podría ser una buena frase para introducir la sinopsis de una película de terror. Nada mas lejos de la realidad: prácticamente de eso trata esta película de Michael Haneke, la cual, sin dar ningún susto, presenta una reflexión sobre la maldad humana que durante su visionado te arranca más de un escalofrío.
+    Una puritana aldea alemana en 1913 y una serie de desgracias de misteriosa autoría. Esta podría ser una buena frase para introducir la sinopsis de una película de terror. Nada mas lejos de la realidad: prácticamente de eso trata esta película de Michael Haneke, la cual, sin dar ningún susto, presenta una reflexión sobre la maldad humana que durante su visionado te arranca más de un escalofrío.
 </p>
 
 <p>
@@ -261,7 +300,7 @@ sudo resize2fs /dev/sdb1
 <h1>Häxan: La brujería a través de los tiempos</h1>
 
 <p>
-    Benjamin Christensen (1922) <em>documental, cine mudo, años 20, brujería, esoterismo, religión</em>
+    Suecia, Benjamin Christensen (1922) <em>documental, cine mudo, años 20, brujería, esoterismo, religión</em>
 </p>
 
 <p>
@@ -311,7 +350,7 @@ sudo resize2fs /dev/sdb1
 <!-- author inoro -->
 
 <p>
-    Akira Kurosawa (1961) <em>acción, japón feudal, samuráis, Toshiro Mifune, western</em>
+    Japón, Akira Kurosawa (1961) <em>acción, japón feudal, samuráis, Toshiro Mifune, western</em>
 </p>
 
 <p>
@@ -787,156 +826,6 @@ sudo grub-mkconfig -o /boot/grub/grub.cfg
 </p>
 
 <!-- publication_datetime 20210329T2256 -->
-<!-- author inoro -->
-]]>
-    </description>
-</item>
-
-<item>
-    <title>Software que utilizo habitualmente</title>
-    <guid>https://record.rat.la/show?filename=mi-software.html</guid>
-    <link>https://record.rat.la/show?filename=mi-software.html</link>
-    <!--<author>Inoro</author>-->
-    <pubDate>Wed, 10 Mar 2021 13:32:00 +0100</pubDate>
-    <description>
-<![CDATA[
-<h1>Software que utilizo habitualmente</h1>
-
-<p>
-    Escribo esto a modo de reflexión sobre que programas realmente utilizo,
-    cuales me hacen ser más productivo en mi día a día, y si debería obviar
-    alguno en futuras instalaciones.
-</p>
-
-<h2>Básico</h2>
-
-<h3>Sistemas Operativos</h3>
-
-<ul>
-    <li>
-        <a href="https://archlinux.org/download/"><strong>Arch Linux</strong></a> es mi
-        distribución principal actualmente en mi PC y portátil.
-    </li>
-    <li>
-        <a href="https://www.debian.org/index.es.html"><strong>Debian</strong></a> lo
-        utilizo en mis servidores, en mi opinión es la mejor opción para un
-        servidor.
-    </li>
-    <li>
-        <a href="https://ubuntu.com/download/server"><strong>Ubuntu Server LTS</strong></a>
-        lo utilizo también en mis servidores cuando considero que Debian se
-        queda un poco anticuado, o si voy a probar una aplicación que está más
-        orientada a esta distribución. No suelo tener muchas instalaciones con
-        este SO, porque muchas veces solo tengo que esperar a la siguiente
-        versión de Debian.
-    </li>
-</ul>
-
-<h3>Window Manager/Desktop Environment</h3>
-
-<p>
-    <strong>gnome-shell</strong> es el entorno de escritorio que más me gusta
-    y estoy muy acostumbrado a su <em>workflow</em> (sobre todo en la versión
-    40). De todas formas estoy muy interesado en probar un <em>tiling window
-    manager</em> estilo <strong>dwm</strong> o <strong>i3</strong> en el que
-    sea capaz de recordar todos sus comandos.
-</p>
-
-<h3>Terminal</h3>
-
-<p>
-    <strong>gnome-terminal</strong>, la uso porque es la que viene por defecto
-    con <strong>gnome-shell</strong> pero puede que cambie en algún momento.
-    Busco algo más simple, como <strong>st</strong> (simple terminal) de
-    <a href="https://st.suckless.org/">suckless.org</a>, pero aún debería
-    probarla por algún tiempo más para decidirme.
-</p>
-
-<h3>Shell</h3>
-
-<p>
-    <strong>bash</strong>, soy una persona a la que le gusta el default, por
-    lo que aún no veo necesario mudarme a <strong>zsh</strong>, a pesar de
-    que promete mucha más flexibilidad.
-</p>
-
-<h3>Editores de texto y entornos de programación</h3>
-
-<p>
-    Esta sección no solo es confusa, sinó que en realidad yo me encuentro muy
-    confuso al respecto. Sigo buscando el editor de texto definitivo, he
-    probado muchos, pero no dejo de cambiar. Me gustaría proba
-    <strong>vim</strong> pero creo que aún no estoy preparado.
-</p>
-
-<ul>
-    <li>
-        <strong>Vim</strong>, resulta que actualmente estoy intentando
-        utilizarlo como único editor de texto para todo mi <em>workflow</em>,
-        que últimamente se traduce en <em>Markdown</em>, <em>BASH</em>,
-        <em>Docker</em>, <em>YAML</em> y algún que otro texto plano.
-    </li>
-    <li>
-        <strong>Visual Studio Code</strong> era, hasta hace poco tiempo, mi
-        entorno de desarrollo por defecto. Es rápido y muy extensible gracias
-        a todos los plugins que se le pueden instalar. Empecé usando
-        <strong>atom</strong> pero acabé cansándome de lo mal que funciona su
-        cliente de <strong>git</strong>. A pesar de todo, hoy en día utilizo
-        más <strong>git</strong> desde la terminal que desde <em>GUI</em>.
-    </li>
-</ul>
-
-<h3>Navegador web</h3>
-
-<p>
-    Esto es un tema complicado. Como persona que programa páginas web de vez
-    en cuando, normalmente tengo <strong>Chromium</strong> y
-    <strong>Firefox</strong> instalados, para poder ver las dos caras de la
-    moneda.
-</p>
-
-<p>
-    Creo que la mejor opción actualmente es <strong>Firefox</strong> en
-    conjunto con las extensiones
-    <a href="https://github.com/gorhill/uBlock">uBlock Origin</a>,
-    <a href="https://www.eff.org/es/https-everywhere">HTTPS Everywhere</a> y
-    <a href="https://addons.mozilla.org/es/firefox/addon/strict-pop-up-blocker/">Strict Pop-up Blocker</a>.
-    Es cierto que en estos días parece que no es tan rápido como
-    <strong>Chrome</strong> y derivados, pero ya sabemos que dichas estadísticas
-    suelen variar mucho en cada versión nueva que sale. Además usar
-    <strong>Firefox</strong>, en mi caso, es más una elección que yo hago
-    poniendo la privacidad por delante de la velocidad de navegación.
-</p>
-
-<p>
-    A pesar de todo, he de confesar que, a raíz del dilema privacidad vs
-    velocidad de navegación, he empezado a probar el navegador
-    <a href="https://brave.com/es/">Brave</a> (sin ninguna extensión) como
-    navegador principal, en mi movil primero, puesto que
-    <strong>Firefox</strong> (a pesar de tener un diseño excelente) es cada
-    día más lento, y posteriormente en mi PC, donde más tiempo paso todos los
-    días. Aún no puedo sacar ninguna conclusión definitiva de esta experiencia,
-    y sigo estando a favor de <strong>Firefox</strong>. Sin embargo, si consigo
-    pasar un par de meses utilizando <strong>Brave</strong> y no encuentro
-    ningún impedimento puede que termine mudándome. En tal caso supongo que lo
-    anunciaré en un futuro artículo.
-</p>
-
-<h2>Smartphone (Android)</h2>
-
-<h3>Mensajería instantánea</h3>
-
-<p>
-    <strong>Telegram</strong> y <strong>Signal</strong>, se que
-    <strong>Telegram</strong> no es tan seguro como <strong>Signal</strong> y
-    que tiene un montón de carencias a nivel de seguridad. Pero ya me ha
-    costado demasiado mover a todo mi círculo desde <strong>WhatsApp</strong>
-    hasta <strong>Telegram</strong> como para ahora decirles que tienen que
-    usar Signal para hablar conmigo. De todas formas, actualmente, ya lo
-    lo estoy intentando a paulatinamente.
-</p>
-
-<!-- publication_datetime 20210310T1332 -->
 <!-- author inoro -->
 ]]>
     </description>
