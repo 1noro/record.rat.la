@@ -216,6 +216,8 @@ interface HtmlInteractor {
     public function get_og_type() : string;
     public function get_cover_img_url() : string;
     public function get_cover_img_mime_type() : string;
+    public function get_cover_img_width() : string;
+    public function get_cover_img_height() : string;
     public function get_content_to_print() : string;
 
 }
@@ -254,8 +256,17 @@ abstract class GeneratedPage implements HtmlInteractor {
     }
 
     public function get_cover_img_mime_type() : string {
-        // @todo: list($width, $height, $type, $attr) = getimagesize(DEF_PAGE_IMG);
         return mime_content_type(DEF_PAGE_IMG);
+    }
+
+    public function get_cover_img_width() : string {
+        // recordatorio: list($width, $height, $type, $attr) = getimagesize(DEF_PAGE_IMG);
+        return getimagesize(DEF_PAGE_IMG)[0];
+    }
+
+    public function get_cover_img_height() : string {
+        // recordatorio: list($width, $height, $type, $attr) = getimagesize(DEF_PAGE_IMG);
+        return getimagesize(DEF_PAGE_IMG)[1];
     }
 
     public function get_content_to_print() : string {
@@ -523,8 +534,17 @@ class ContentPage implements HtmlInteractor {
     }
 
     function get_cover_img_mime_type() : string {
-        // @todo: list($width, $height, $type, $attr) = getimagesize($this->get_cover_img_relative_path());
         return mime_content_type($this->get_cover_img_relative_path());
+    }
+
+    public function get_cover_img_width() : string {
+        // recordatorio: list($width, $height, $type, $attr) = getimagesize($this->get_cover_img_relative_path());
+        return getimagesize($this->get_cover_img_relative_path())[0];
+    }
+
+    public function get_cover_img_height() : string {
+        // recordatorio: list($width, $height, $type, $attr) = getimagesize($this->get_cover_img_relative_path());
+        return getimagesize($this->get_cover_img_relative_path())[1];
     }
 
     /**
@@ -749,9 +769,8 @@ if ($ACTION == 404) {
         <meta property="og:image" content="<?= $page->get_cover_img_url() ?>">
         <meta property="og:image:alt" content="Imagen de portada.">
         <meta property="og:image:type" content="<?= $page->get_cover_img_mime_type() ?>">
-        <!-- @todo -->
-        <!-- <meta property="og:image:width" content="1200"> -->
-        <!-- <meta property="og:image:height" content="1200"> -->
+        <meta property="og:image:width" content="<?= $page->get_cover_img_width() ?>">
+        <meta property="og:image:height" content="<?= $page->get_cover_img_height() ?>">
 
         <!-- Twitter -->
         <meta name="twitter:card" content="summary_large_image">
