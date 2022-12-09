@@ -670,6 +670,17 @@ if ('/' === $uri) {
         // Error 404 (Post not found)
         $ACTION = 404;
     }
+} elseif (preg_match("/^\/show\/(.+)/", $uri, $matches) == 1) {
+    print_r($matches);
+    echo "-----";
+    // preg_match("/^\/show\/(.*)/", $uri, $matches);
+    if (in_array($matches[1], POST_FILENAMES)) {
+        // Post
+        $page = new ContentPage(POST_FOLDER . $matches[1], get_full_uri());
+    } else {
+        // Error 404 (Post not found)
+        $ACTION = 404;
+    }
 } elseif ('/author' === $uri && isset($_GET['username'])) {
     if (isset(AUTHORS[$_GET['username']])) {
         // Author page
