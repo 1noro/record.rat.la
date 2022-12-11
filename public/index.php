@@ -383,6 +383,7 @@ class ContentPage implements HtmlInteractor {
     private string $description;
     private Author $author;
     private DateTime $publication_datetime;
+    private DateTime $modification_datetime;
     private string $og_type = "article";
 
     // Extended properties
@@ -402,6 +403,7 @@ class ContentPage implements HtmlInteractor {
         $author_user_name = $this->parse_author_user_name();
         $this->author = get_author_by_user_name($author_user_name);
         $this->publication_datetime = $this->parse_publication_datetime();
+        $this->modification_datetime = $this->parse_modification_datetime();
     }
 
     // --- Parsers
@@ -466,13 +468,45 @@ class ContentPage implements HtmlInteractor {
     }
 
     /**
-     * parse_publication_datetime, obtiene la fecha de un artículo en base al 
-     * comentario "publication_date"
-     * 
-     * @return DateTime
+     * parse_publication_datetime, obtiene la fecha de publicación del 
+     * artículo en base al comentario "publication_datetime"
      */
     private function parse_publication_datetime() : DateTime {
         $regex = '/<!-- publication_datetime (\d{4})(\d{2})(\d{2})T(\d{2})(\d{2}) -->/';
+        $matches_count = preg_match_all($regex, $this->file_content, $matches, PREG_PATTERN_ORDER);
+
+        // default date: 2000/01/01 00:00
+        $year = '2000';
+        $month = '01';
+        $day = '01';
+        $hour = '00';
+        $minute = '00';
+
+        if ($matches_count != 0) {
+            $year = $matches[1][0];
+            $month = $matches[2][0];
+            $day = $matches[3][0];
+            $hour = $matches[4][0];
+            $minute = $matches[5][0];
+        }
+
+        $datetime_str = $year."/".$month."/".$day." ".$hour.":".$minute;
+        $datetime_obj = date_create($datetime_str, new DateTimeZone(DEF_DATETIME_TIMEZONE));
+
+        // si la fecha no es válida, se devuelve una válida
+        if ($datetime_obj == null) {
+            $datetime_obj = new DateTime();
+        }
+
+        return $datetime_obj;
+    }
+
+    /**
+     * parse_modification_datetime, obtiene la fecha de modificación del 
+     * artículo en base al comentario "modification_datetime"
+     */
+    private function parse_modification_datetime() : DateTime {
+        $regex = '/<!-- modification_datetime (\d{4})(\d{2})(\d{2})T(\d{2})(\d{2}) -->/';
         $matches_count = preg_match_all($regex, $this->file_content, $matches, PREG_PATTERN_ORDER);
 
         // default date: 2000/01/01 00:00
@@ -516,6 +550,7 @@ class ContentPage implements HtmlInteractor {
     function get_publication_datetime() : DateTime { return $this->publication_datetime; }
     function get_publication_datetime_w3c() : string { return date_format($this->publication_datetime, DATE_W3C); }
     function get_publication_datetime_iso8601() : string { return date_format($this->publication_datetime, DATE_ISO8601); }
+    function get_modification_datetime() : DateTime { return $this->modification_datetime; }
     function get_og_type() : string { return $this->og_type; }
 
     // --- Extended properties getters
