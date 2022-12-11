@@ -22,9 +22,9 @@ define("COOKIE_OPTIONS", [
     "expires" => time() + (86400 * 30 * 6), // 6 meses (lo recomendado para el consentimiento de las cookies)
     "path" => "/",
     "domain" => $_SERVER['SERVER_NAME'],
-    "secure" => false,
+    "secure" => true,
     "httponly" => true,
-    "samesite" => "Strict"
+    "samesite" => "none"
 ]);
 
 /**
