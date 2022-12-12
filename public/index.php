@@ -127,6 +127,19 @@ function get_author_by_user_name(string $user_name) : Author {
 }
 
 /**
+ * format_pretty_datetime
+ */
+function format_pretty_datetime(DateTime $datetime) : string {
+    return sprintf(
+        '%s de %s de %s a las %s horas',
+        date_format($datetime, 'j'),
+        strtolower(MONTHS[intval(date_format($datetime, 'm')) - 1]),
+        date_format($datetime, 'Y'),
+        date_format($datetime, 'H:i')
+    );
+}
+
+/**
  * get_base_uri
  */
 function get_base_uri() : string {
@@ -383,13 +396,12 @@ class ContentPage implements HtmlInteractor {
     private string $description;
     private Author $author;
     private DateTime $publication_datetime;
-    private DateTime $modification_datetime;
     private string $og_type = "article";
 
     // Extended properties
     // private string $cover_img;
     // private string $structured_data_json;
-    // private array $update_datetimes; // revision_datetimes?
+    private mixed $modification_datetime;
 
     public function __construct(string $file_path, string $url) {
         $this->file_path = $file_path;
@@ -490,7 +502,7 @@ class ContentPage implements HtmlInteractor {
             $minute = $matches[5][0];
         }
 
-        $datetime_str = $year."/".$month."/".$day." ".$hour.":".$minute;
+        $datetime_str = $year . "/" . $month . "/" . $day . " " . $hour . ":" . $minute;
         $datetime_obj = date_create($datetime_str, new DateTimeZone(DEF_DATETIME_TIMEZONE));
 
         // si la fecha no es válida, se devuelve una válida
@@ -505,16 +517,9 @@ class ContentPage implements HtmlInteractor {
      * parse_modification_datetime, obtiene la fecha de modificación del 
      * artículo en base al comentario "modification_datetime"
      */
-    private function parse_modification_datetime() : DateTime {
+    private function parse_modification_datetime() : DateTime | null {
         $regex = '/<!-- modification_datetime (\d{4})(\d{2})(\d{2})T(\d{2})(\d{2}) -->/';
         $matches_count = preg_match_all($regex, $this->file_content, $matches, PREG_PATTERN_ORDER);
-
-        // default date: 2000/01/01 00:00
-        $year = '2000';
-        $month = '01';
-        $day = '01';
-        $hour = '00';
-        $minute = '00';
 
         if ($matches_count != 0) {
             $year = $matches[1][0];
@@ -522,17 +527,13 @@ class ContentPage implements HtmlInteractor {
             $day = $matches[3][0];
             $hour = $matches[4][0];
             $minute = $matches[5][0];
+
+            $datetime_str = $year . "/" . $month . "/" . $day . " " . $hour . ":" . $minute;
+            $datetime_obj = date_create($datetime_str, new DateTimeZone(DEF_DATETIME_TIMEZONE));
+    
+            return $datetime_obj;
         }
-
-        $datetime_str = $year."/".$month."/".$day." ".$hour.":".$minute;
-        $datetime_obj = date_create($datetime_str, new DateTimeZone(DEF_DATETIME_TIMEZONE));
-
-        // si la fecha no es válida, se devuelve una válida
-        if ($datetime_obj == null) {
-            $datetime_obj = new DateTime();
-        }
-
-        return $datetime_obj;
+        return null;
     }
 
     // --- Basic properties getters
@@ -591,12 +592,19 @@ class ContentPage implements HtmlInteractor {
     function get_content_to_print() : string {
         $content = $this->file_content;
         $content .= sprintf(
-                "\n" . '<p style="text-align:right;"><small>Publicado por <a href="author?username=%s" aria-label="Página del autor %s.">%s</a> el %s</small></p>' . "\n",
+                "\n" . '<p style="text-align:left;"><small>† Publicado por <a href="author?username=%s" aria-label="Página del autor %s.">%s</a> el %s',
                 $this->get_author()->user_name,
                 $this->get_author()->real_name,
                 $this->get_author()->real_name,
-                date_format($this->get_publication_datetime(), DEF_DATETIME_FORMAT)
+                format_pretty_datetime($this->get_publication_datetime())
         );
+        if ($this->has_modification_datetime()) {
+            $content .= sprintf(
+                ' y se ha revisado por última vez el %s',
+                format_pretty_datetime($this->get_modification_datetime())
+            );
+        }
+        $content .= "</small></p>\n";
         return $content;
     }
 
@@ -684,6 +692,10 @@ class ContentPage implements HtmlInteractor {
             //     "ratingCount" => "2"
             // ]
         ]);
+    }
+
+    function has_modification_datetime() : bool {
+        return $this->modification_datetime != null;
     }
 
 }
