@@ -126,16 +126,28 @@ function get_author_by_user_name(string $user_name) : Author {
     return AUTHORS[DEF_AUTHOR_USER_NAME];
 }
 
+// /**
+//  * format_pretty_datetime
+//  */
+// function format_pretty_datetime(DateTime $datetime) : string {
+//     return sprintf(
+//         '%s de %s de %s a las %s horas',
+//         date_format($datetime, 'j'),
+//         strtolower(MONTHS[intval(date_format($datetime, 'm')) - 1]),
+//         date_format($datetime, 'Y'),
+//         date_format($datetime, 'H:i')
+//     );
+// }
+
 /**
- * format_pretty_datetime
+ * format_pretty_date
  */
-function format_pretty_datetime(DateTime $datetime) : string {
+function format_pretty_date(DateTime $datetime) : string {
     return sprintf(
-        '%s de %s de %s a las %s horas',
+        '%s de %s de %s',
         date_format($datetime, 'j'),
         strtolower(MONTHS[intval(date_format($datetime, 'm')) - 1]),
-        date_format($datetime, 'Y'),
-        date_format($datetime, 'H:i')
+        date_format($datetime, 'Y')
     );
 }
 
@@ -338,7 +350,8 @@ class HomePage extends GeneratedPage {
 class ArchivePage extends GeneratedPage {
 
     public function __construct() {
-        $this->title = "Historias de una rata";
+        // $this->title = "Historias de una rata";
+        $this->title = "Pensamientos vomitados en forma de texto";
         $this->description = "Registro cronológico de todas las publicaciones de la web.";
     }
 
@@ -349,29 +362,37 @@ class ArchivePage extends GeneratedPage {
         $current_year = "";
         $current_month = "";
 
-        $content .= "<h1>Historias de una rata</h1>\n";
+        $content .= "<h1>" . $this->get_title() . "</h1>\n";
         $content .= "<p>Registro cronológico de todas las publicaciones de la web.</p>\n";
     
         foreach($post_arr as $post) {
             $year = date_format($post->get_publication_datetime(), "Y");
-            $month = date_format($post->get_publication_datetime(), "n"); // n: 1..12 / m: 01..12
-            $day_hour = date_format($post->get_publication_datetime(), "d \· H:i");
+            // $month = date_format($post->get_publication_datetime(), "n"); // n: 1..12 / m: 01..12
+            // $day_hour = date_format($post->get_publication_datetime(), "d \· H:i");
+            $pretty_date = format_pretty_date($post->get_publication_datetime());
     
             if ($current_year != $year) {
                 $current_year = $year;
                 $content .= sprintf("<h2>– Año %s –</h2>\n", $year);
             }
     
-            if ($current_month != $month) {
-                $current_month = $month;
-                $content .= sprintf("<h3>%s</h3>\n", MONTHS[intval($month) - 1]);
-            }
+            // if ($current_month != $month) {
+            //     $current_month = $month;
+            //     $content .= sprintf("<h3>%s</h3>\n", MONTHS[intval($month) - 1]);
+            // }
     
+            // $content .= sprintf(
+            //     '<blockquote>%s · <strong><a href="show?filename=%s">%s</a></strong><br>%s</blockquote>' . "\n",
+            //     $day_hour,
+            //     $post->get_file_name(),
+            //     $post->get_title(),
+            //     $post->get_description()
+            // );
             $content .= sprintf(
-                '<blockquote>%s · <strong><a href="show?filename=%s">%s</a></strong><br>%s</blockquote>' . "\n",
-                $day_hour,
+                '<p><strong><a href="show?filename=%s">%s</a></strong><br>%s - %s</p>' . "\n",
                 $post->get_file_name(),
                 $post->get_title(),
+                $pretty_date,
                 $post->get_description()
             );
         }
@@ -596,12 +617,12 @@ class ContentPage implements HtmlInteractor {
                 $this->get_author()->user_name,
                 $this->get_author()->real_name,
                 $this->get_author()->real_name,
-                format_pretty_datetime($this->get_publication_datetime())
+                format_pretty_date($this->get_publication_datetime())
         );
         if ($this->has_modification_datetime()) {
             $content .= sprintf(
                 ' y se ha revisado por última vez el %s',
-                format_pretty_datetime($this->get_modification_datetime())
+                format_pretty_date($this->get_modification_datetime())
             );
         }
         $content .= "</small></p>\n";
@@ -939,8 +960,11 @@ if ($ACTION == 404) {
             main {
                 max-width: 800px;
                 margin: 0 auto;
-                /* text-align: justify;
-                text-justify: inter-word; */
+            }
+
+            main p, blockquote {
+                text-align: justify;
+                text-justify: inter-word;
             }
 
             h1, h2, h3, h4, h5, h6 {color: <?= $COLORS[$COLOR_ID]["title"] ?>;}

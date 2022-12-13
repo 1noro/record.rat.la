@@ -1,9 +1,9 @@
 
-<h1>Gitlab con NGINX reverse proxy</h1>
+<h1>Gitlab con Nginx reverse proxy</h1>
 
 <p>
     Voy a documentar el proceso de instalación de Gitlab en una máquina virtual
-    detrás de un NGINX reverse proxy.
+    detrás de un Nginx reverse proxy.
 </p>
 
 <h2>Escenario</h2>
@@ -34,11 +34,11 @@
 
 <ul>
     <li>
-        El puerto 80 del router apuntará al puerto 80 de la máquina de NGINX 
+        El puerto 80 del router apuntará al puerto 80 de la máquina de Nginx 
         (192.168.1.105), para las conexiones HTTP.
     </li>
     <li>
-        El puerto 443 del router apuntará al puerto 443 de la máquina de NGINX 
+        El puerto 443 del router apuntará al puerto 443 de la máquina de Nginx 
         (192.168.1.105), para las conexiones HTTPs.
     </li>
     <li>
@@ -47,9 +47,9 @@
     </li>
 </ul>
 
-<h2>Configuración de NGINX</h2>
+<h2>Configuración de Nginx</h2>
 
-<p>Nos situamos en la máquina que va a ejercer de reverse proxy con NGINX.</p>
+<p>Nos situamos en la máquina que va a ejercer de reverse proxy con Nginx.</p>
 
 <p>
     Creamos el archivo 
@@ -82,7 +82,7 @@ ln -s /etc/nginx/sites-available/git.example.com.conf /etc/nginx/sites-enabled/
 </pre>
 
 <p>
-    Testeamos la sintaxis de la configuración de NGINX, y si todo va bien,
+    Testeamos la sintaxis de la configuración de Nginx, y si todo va bien,
     recargamos la configuración.
 </p>
 
@@ -92,7 +92,7 @@ systemctl reload nginx
 </pre>
 
 <p>
-    Con el Virtual Host correctamente configurado en NGINX, ejecutamos el 
+    Con el Virtual Host correctamente configurado en Nginx, ejecutamos el 
     certbot.
 </p>
 
@@ -276,7 +276,7 @@ sudo gitlab-ctl reconfigure
 <ul>
     <li><a href="https://linuxize.com/post/install-configure-fail2ban-on-ubuntu-20-04/">How to Install and Configure Fail2ban on Ubuntu 20.04</a></li>
     <li><a href="https://about.gitlab.com/install/#ubuntu">Gitlab Official Linux package (recommended installation)</a></li>
-    <li><a href="https://docs.gitlab.com/omnibus/settings/nginx.html">Gitlab NGINX settings</a></li>
+    <li><a href="https://docs.gitlab.com/omnibus/settings/nginx.html">Gitlab Nginx settings</a></li>
 </ul>
 
 <!-- publication_datetime 20210307T1107 -->
