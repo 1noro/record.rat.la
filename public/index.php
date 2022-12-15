@@ -324,7 +324,8 @@ class HomePage extends GeneratedPage {
                 mentales. Estas son las publicaciones más recientes, si quieres 
                 leer más puedes ir al <a href=\"archive\">archivo</a>. Y si estás 
                 confuso y no entiendes de que vá todo esto puedes leer las 
-                <a href=\"faq\">preguntas frecuentes</a>.
+                <a href=\"faq\">preguntas frecuentes</a>. Toma asiento y disfruta
+                de la lectura.
             </p>\n
         ";
 
@@ -350,8 +351,7 @@ class HomePage extends GeneratedPage {
 class ArchivePage extends GeneratedPage {
 
     public function __construct() {
-        // $this->title = "Historias de una rata";
-        $this->title = "Pensamientos vomitados en forma de texto";
+        $this->title = "Archivo de publicaciones";
         $this->description = "Registro cronológico de todas las publicaciones de la web.";
     }
 
@@ -397,7 +397,7 @@ class ArchivePage extends GeneratedPage {
             );
         }
     
-        $content .= sprintf("<p>Hay un total de %d páginas en la web.</p>\n", count(POST_FILENAMES));
+        $content .= sprintf("<p><small>* Hay un total de %d páginas en la web.</small></p>\n", count(POST_FILENAMES));
         return $content;
     }
 
@@ -613,7 +613,7 @@ class ContentPage implements HtmlInteractor {
     function get_content_to_print() : string {
         $content = $this->file_content;
         $content .= sprintf(
-                "\n" . '<p style="text-align:left;"><small>† Publicado por <a href="author?username=%s" aria-label="Página del autor %s.">%s</a> el %s',
+                "\n" . '<p style="text-align:left;"><small>* Publicado por <a href="author?username=%s" aria-label="Página del autor %s.">%s</a> el %s',
                 $this->get_author()->user_name,
                 $this->get_author()->real_name,
                 $this->get_author()->real_name,
