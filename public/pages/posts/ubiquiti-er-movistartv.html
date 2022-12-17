@@ -15,41 +15,41 @@
 
 <h2>Escenario</h2>
 
-<p><img src="img/202009200144/mapa.webp" alt="Diagrama del escenario"></p>
+<figure><img src="img/202009200144/mapa.webp" alt="Diagrama del escenario"></figure>
 
 <h2>1 - Asignar a la interfaz WAN física del ER una IP fija o por DHCP dentro de la red del HGU</h2>
 
-<p><img src="img/202009200144/1-1.webp" alt="imagen 1-1" class="half"></p>
+<figure><img src="img/202009200144/1-1.webp" alt="imagen 1-1" class="half"></figure>
 
 <h2>2 - Enmascarar todo el tráfico hacia la red del HGU con dicha interfaz</h2>
 
-<p><img src="img/202009200144/2-1.webp" alt="imagen 2-1"></p>
+<figure><img src="img/202009200144/2-1.webp" alt="imagen 2-1"></figure>
 
 <h2>3 - Añadir un par de rutas al ER para las peticiones IGMP/Multicast</h2>
 
 <p>Rutas estáticas de <strong>tipo Gateway</strong>.</p>
 
-<p><img src="img/202009200144/3-1.webp" alt="imagen 3-1"></p>
+<figure><img src="img/202009200144/3-1.webp" alt="imagen 3-1"></figure>
 
 <p>No estoy seguro de que sean necesarias todas, pero son las que había en la tabla del router HGU, como se puede ver a continuación:</p>
 
-<p><img src="img/202009200144/3-2.webp" alt="imagen 3-2"></p>
+<figure><img src="img/202009200144/3-2.webp" alt="imagen 3-2"></figure>
 
 <h2>4 - Configurar el Firewall del ER</h2>
 
 <p>Me baso en las dos Rulesets definidas por la configuración básica del ER a través del Wizard, WAN_IN y WAN_LOCAL.</p>
 
-<p><img src="img/202009200144/4-1.webp" alt="imagen 4-1"></p>
+<figure><img src="img/202009200144/4-1.webp" alt="imagen 4-1"></figure>
 
 <h2>Reglas de WAN_IN:</h2>
 
 <p>Es importante que se <strong>mantengan en el orden</strong> definido.</p>
 
-<p><img src="img/202009200144/4-2.webp" alt="imagen 4-2"></p>
+<figure><img src="img/202009200144/4-2.webp" alt="imagen 4-2"></figure>
 
-<p><img src="img/202009200144/4-3.webp" alt="imagen 4-3" class="half"></p>
+<figure><img src="img/202009200144/4-3.webp" alt="imagen 4-3" class="half"></figure>
 
-<p><img src="img/202009200144/4-4.webp" alt="imagen 4-4" class="half"></p>
+<figure><img src="img/202009200144/4-4.webp" alt="imagen 4-4" class="half"></figure>
 
 <h2>Reglas de WAN_LOCAL:</h2>
 
@@ -98,7 +98,7 @@ show ip multicast interfaces
     <li>Pulsamos el botón superior con forma de persona en el mando de la TV de Movistar repetidas veces durante el arranque, hasta entrar en el <strong>menú de configuración de red</strong>.</li>
 </ul>
 
-<p><img src="img/202009200144/6-1.webp" alt="imagen 6-1" class="half"></p>
+<figure><img src="img/202009200144/6-1.webp" alt="imagen 6-1" class="half"></figure>
 
 <ul>
     <li>Editamos la configuración en modo estático:

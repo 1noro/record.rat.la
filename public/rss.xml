@@ -13,26 +13,26 @@
         </image>
 
 <item>
-    <title>La cumbre de los dioses – Le Sommet des Dieux</title>
+    <title>La cumbre de los dioses, la película que reafirma mi ansia de subir una montaña</title>
     <guid>https://record.rat.la/show?filename=le-sommet-des-dieux.html</guid>
     <link>https://record.rat.la/show?filename=le-sommet-des-dieux.html</link>
     <!--<author>Inoro</author>-->
     <pubDate>Mon, 05 Dec 2022 20:20:00 +0100</pubDate>
     <description>
-<![CDATA[<h1>La cumbre de los dioses – <em>Le Sommet des Dieux</em></h1>
+<![CDATA[<h1>La cumbre de los dioses, la película que reafirma mi ansia de subir una montaña</h1>
 
 <!-- publication_datetime 20221205T2020 -->
 <!-- author inoro -->
 
 <p>
-    Francia, Patrick Imbert (2021) <em>animación, alpinismo, manga, himalaya, everest, fotografía</em>
+    <em>Le Sommet des Dieux</em> - Francia, Patrick Imbert (2021) <em>animación, alpinismo, manga, himalaya, everest, fotografía</em>
 </p>
 
-<p>
+<figure>
     <img src="https://record.rat.la/img/20221205/le-sommet-des-dieux-2-750.jpg" alt="Fotograma de la película donde se puede apreciar el mimo que se le dedicó a los planos generales de los paisajes montañosos.">
-</p>
+</figure>
 
-<p>
+<p class="description">
     Adaptación francesa del manga homónimo escrito por Jiro Taniguchi que narra la historia de Makoto Fukamachi, un aventurero y fotógrafo japonés que sigue el rastro de un misterioso alpinista debido a la sospecha de que este podría tener bajo su custodia una cámara perteneciente a <a href="https://es.wikipedia.org/wiki/George_Leigh_Mallory">George Mallory</a>. El revelado de ese carrete podría desvelar el misterio de si Mallory efectivamente llegó a la cima del Everest en 1924 antes de desaparecer para siempre, 29 años antes del primer ascenso oficial.
 </p>
 
@@ -52,31 +52,31 @@
 </item>
 
 <item>
-    <title>La cinta blanca – Das weisse Band</title>
+    <title>La cinta blanca, un film de época por Michael Haneke</title>
     <guid>https://record.rat.la/show?filename=la-cinta-blanca-michael-haneke.html</guid>
     <link>https://record.rat.la/show?filename=la-cinta-blanca-michael-haneke.html</link>
     <!--<author>Inoro</author>-->
     <pubDate>Wed, 30 Nov 2022 19:04:00 +0100</pubDate>
     <description>
-<![CDATA[<h1>La cinta blanca – <em>Das weisse Band</em></h1>
+<![CDATA[<h1>La cinta blanca, un film de época por Michael Haneke</h1>
 
 <!-- publication_datetime 20221130T1904 -->
 <!-- author inoro -->
 
 <p>
-    Alemania, Michael Haneke (2009) <em>primera guerra mundial, puritanismo, religión, b&w, cine de época</em>
+    <em>Das weisse Band</em> - Alemania, Michael Haneke (2009) <em>primera guerra mundial, puritanismo, religión, b&w, cine de época</em>
 </p>
 
-<p>
+<figure>
     <img src="https://record.rat.la/img/20221130/la-cinta-blanca-750.jpg" alt="Sebastian Hülk venga la muerte de su madre rompiendo unos repollos.">
+</figure>
+
+<p class="description">
+    Una puritana aldea alemana en 1913 y una serie de desgracias de misteriosa autoría. Esta podría ser una buena frase para introducir la sinopsis de un metraje de terror. Nada más lejos de la realidad: prácticamente de eso trata esta película de Michael Haneke, la cual, sin dar ningún susto, presenta una reflexión sobre la maldad humana que durante su visionado te arranca más de un escalofrío.
 </p>
 
 <p>
-    Una puritana aldea alemana en 1913 y una serie de desgracias de misteriosa autoría. Esta podría ser una buena frase para introducir la sinopsis de una película de terror. Nada más lejos de la realidad: prácticamente de eso trata esta película de Michael Haneke, la cual, sin dar ningún susto, presenta una reflexión sobre la maldad humana que durante su visionado te arranca más de un escalofrío.
-</p>
-
-<p>
-    Utiliza el blanco y negro para contraponer la blanca e impoluta apariencia que intenta transmitir el pueblo, frente a la oscura, sordida y corrupta atmosfera que está presente en las intimidades familiares de cada personaje. El blanco se satura y se corrompe en una atmósfera fuertemente marcada por la religión, todo es sermón y censura. Los niños son reprimidos por la falta de sus mayores y estos aprenden e imitan esas conductas, convirtiendo a las ovejas que salen del redil en víctimas del castigo ritual.
+    Utiliza el blanco y negro para contraponer la blanca e impoluta apariencia que intenta transmitir el pueblo, frente a la oscura, sórdida y corrupta atmósfera que está presente en las intimidades familiares de cada personaje. El blanco se satura y se corrompe en una atmósfera fuertemente marcada por la religión, todo es sermón y censura. Los niños son reprimidos por la falta de sus mayores y estos aprenden e imitan esas conductas, convirtiendo a las ovejas que salen del redil en víctimas del castigo ritual.
 </p>
 
 <p>
@@ -145,7 +145,7 @@
 <h1>CD fuzzy finder</h1>
 
 <p>
-    Presento aquí mi solución personal al problema de moverse rápido por la Shell de GNU/Linux.
+    Presento aquí mi solución personal al problema de moverse rápido entre directorios por la Shell de GNU/Linux.
 </p>
 
 <h2>El problema</h2>
@@ -290,24 +290,24 @@ sudo resize2fs /dev/sdb1
 </item>
 
 <item>
-    <title>Häxan: La brujería a través de los tiempos</title>
+    <title>Häxan. La brujería a través de los tiempos</title>
     <guid>https://record.rat.la/show?filename=haxan-brujeria-a-traves-del-tiempo.html</guid>
     <link>https://record.rat.la/show?filename=haxan-brujeria-a-traves-del-tiempo.html</link>
     <!--<author>Inoro</author>-->
     <pubDate>Tue, 27 Jul 2021 19:02:00 +0200</pubDate>
     <description>
 <![CDATA[
-<h1>Häxan: La brujería a través de los tiempos</h1>
+<h1>Häxan. La brujería a través de los tiempos</h1>
 
 <p>
-    Suecia, Benjamin Christensen (1922) <em>documental, cine mudo, años 20, brujería, esoterismo, religión</em>
+    <em>Häxan</em> - Suecia, Benjamin Christensen (1922) <em>documental, cine mudo, años 20, brujería, esoterismo, religión</em>
 </p>
 
-<p>
+<figure>
     <img src="https://record.rat.la/img/20210727/haxan-750.jpg" alt="Recreación de una ensoñación en un pasaje del film.">
-</p>
+</figure>
 
-<p>
+<p class="description">
     Benjamin Christensen, de forma muy rudimentaria pero efectiva, nos expone 
     una serie de escenas independientes donde intenta explicar el contexto y 
     las consecuencias que sufrían las mujeres acusadas de brujería en 
@@ -338,26 +338,26 @@ sudo resize2fs /dev/sdb1
 </item>
 
 <item>
-    <title>Yojimbo 用心棒 – Japón inspira al Western</title>
+    <title>Yojimbo, japón inspira al western</title>
     <guid>https://record.rat.la/show?filename=yojimbo-japon-inspira-western.html</guid>
     <link>https://record.rat.la/show?filename=yojimbo-japon-inspira-western.html</link>
     <!--<author>Inoro</author>-->
     <pubDate>Sat, 24 Jul 2021 20:57:00 +0200</pubDate>
     <description>
-<![CDATA[<h1>Yojimbo 用心棒 – Japón inspira al <em>Western</em></h1>
+<![CDATA[<h1>Yojimbo, japón inspira al <em>western</em></h1>
 
 <!-- publication_datetime 20210724T2057 -->
 <!-- author inoro -->
 
 <p>
-    Japón, Akira Kurosawa (1961) <em>acción, japón feudal, samuráis, Toshiro Mifune, western</em>
+    用心棒 - Japón, Akira Kurosawa (1961) <em>acción, japón feudal, samuráis, Toshiro Mifune, western</em>
 </p>
 
-<p>
+<figure>
     <img src="https://record.rat.la/img/20210724/yojimbo-750.jpg" alt="Ikio Sawamura y Toshiro Mifune.">
-</p>
+</figure>
 
-<p>
+<p class="description">
     Un samurái llega a un pueblo desolado bajo el conflicto contínuo entre dos 
     familias, observando el panorama se percata de que gracias a sus 
     habilidades con la espada puede sacar provecho de la situación a pesar de 
@@ -398,20 +398,17 @@ sudo resize2fs /dev/sdb1
 </item>
 
 <item>
-    <title>Arañas antiguas – Un sueño esotérico</title>
+    <title>Arañas antiguas, la transcripción de un sueño esotérico</title>
     <guid>https://record.rat.la/show?filename=aranas-antiguas-sueno-esoterico.html</guid>
     <link>https://record.rat.la/show?filename=aranas-antiguas-sueno-esoterico.html</link>
     <!--<author>Inoro</author>-->
     <pubDate>Thu, 22 Jul 2021 00:46:00 +0200</pubDate>
     <description>
 <![CDATA[
-<h1>Arañas antiguas – Un sueño esotérico</h1>
+<h1>Arañas antiguas, la transcripción de un sueño esotérico</h1>
 
 <p>
-    Esta es la transcripción de un sueño de la noche del 22 de Octubre de 2018.
-</p>
-
-<p>
+    Voy a transcribir un sueño que tuve la noche del 22 de octubre de 2018.
     Me gusta escribir los pocos sueños que recuerdo en una especie de diario,
     y como este me resultó especialmente teatral me parece lo
     suficientemente interesante como para presentarlo aquí.

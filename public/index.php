@@ -126,6 +126,33 @@ function get_author_by_user_name(string $user_name) : Author {
     return AUTHORS[DEF_AUTHOR_USER_NAME];
 }
 
+// /**
+//  * format_pretty_datetime
+//  */
+// function format_pretty_datetime(DateTime $datetime) : string {
+//     return sprintf(
+//         '<time datetime="%s">%s de %s de %s a las %s horas</time>',
+//         date_format($datetime, DATE_ISO8601),
+//         date_format($datetime, 'j'),
+//         strtolower(MONTHS[intval(date_format($datetime, 'm')) - 1]),
+//         date_format($datetime, 'Y'),
+//         date_format($datetime, 'H:i')
+//     );
+// }
+
+/**
+ * format_pretty_date
+ */
+function format_pretty_date(DateTime $datetime) : string {
+    return sprintf(
+        '<time datetime="%s">%s de %s de %s</time>',
+        date_format($datetime, DATE_ISO8601),
+        date_format($datetime, 'j'),
+        strtolower(MONTHS[intval(date_format($datetime, 'm')) - 1]),
+        date_format($datetime, 'Y')
+    );
+}
+
 /**
  * get_base_uri
  */
@@ -299,7 +326,8 @@ class HomePage extends GeneratedPage {
                 mentales. Estas son las publicaciones más recientes, si quieres 
                 leer más puedes ir al <a href=\"archive\">archivo</a>. Y si estás 
                 confuso y no entiendes de que vá todo esto puedes leer las 
-                <a href=\"faq\">preguntas frecuentes</a>.
+                <a href=\"faq\">preguntas frecuentes</a>. Toma asiento y disfruta
+                de la lectura.
             </p>\n
         ";
 
@@ -325,8 +353,8 @@ class HomePage extends GeneratedPage {
 class ArchivePage extends GeneratedPage {
 
     public function __construct() {
-        $this->title = "Historias de una rata";
-        $this->description = "Registro cronológico de todas las publicaciones de la web.";
+        $this->title = "Archivo de publicaciones";
+        $this->description = "A continuación se muestra el registro cronológico de todas las publicaciones de la web ordenadas por por fecha, comenzando por la más reciente.";
     }
 
     function get_generated_content() : string {
@@ -336,34 +364,43 @@ class ArchivePage extends GeneratedPage {
         $current_year = "";
         $current_month = "";
 
-        $content .= "<h1>Historias de una rata</h1>\n";
-        $content .= "<p>Registro cronológico de todas las publicaciones de la web.</p>\n";
+        $content .= "<h1>" . $this->get_title() . "</h1>\n";
+        $content .= "<p>" . $this->get_description() . "</p>\n";
     
         foreach($post_arr as $post) {
             $year = date_format($post->get_publication_datetime(), "Y");
-            $month = date_format($post->get_publication_datetime(), "n"); // n: 1..12 / m: 01..12
-            $day_hour = date_format($post->get_publication_datetime(), "d \· H:i");
+            // $month = date_format($post->get_publication_datetime(), "n"); // n: 1..12 / m: 01..12
+            // $day_hour = date_format($post->get_publication_datetime(), "d \· H:i");
+            $pretty_date = format_pretty_date($post->get_publication_datetime());
     
             if ($current_year != $year) {
                 $current_year = $year;
-                $content .= sprintf("<h2>– Año %s –</h2>\n", $year);
+                // $content .= sprintf("<h2>– Año %s –</h2>\n", $year);
+                $content .= sprintf("<h2>Año %s</h2>\n", $year);
             }
     
-            if ($current_month != $month) {
-                $current_month = $month;
-                $content .= sprintf("<h3>%s</h3>\n", MONTHS[intval($month) - 1]);
-            }
+            // if ($current_month != $month) {
+            //     $current_month = $month;
+            //     $content .= sprintf("<h3>%s</h3>\n", MONTHS[intval($month) - 1]);
+            // }
     
+            // $content .= sprintf(
+            //     '<blockquote>%s · <strong><a href="show?filename=%s">%s</a></strong><br>%s</blockquote>' . "\n",
+            //     $day_hour,
+            //     $post->get_file_name(),
+            //     $post->get_title(),
+            //     $post->get_description()
+            // );
             $content .= sprintf(
-                '<blockquote>%s · <strong><a href="show?filename=%s">%s</a></strong><br>%s</blockquote>' . "\n",
-                $day_hour,
+                '<p><strong><a href="show?filename=%s">%s</a></strong><br>%s - %s</p>' . "\n",
                 $post->get_file_name(),
                 $post->get_title(),
+                $pretty_date,
                 $post->get_description()
             );
         }
     
-        $content .= sprintf("<p>Hay un total de %d páginas en la web.</p>\n", count(POST_FILENAMES));
+        $content .= sprintf("<p><small>Hay un total de %d páginas en la web.</small></p>\n", count(POST_FILENAMES));
         return $content;
     }
 
@@ -388,7 +425,7 @@ class ContentPage implements HtmlInteractor {
     // Extended properties
     // private string $cover_img;
     // private string $structured_data_json;
-    // private array $update_datetimes; // revision_datetimes?
+    private mixed $modification_datetime;
 
     public function __construct(string $file_path, string $url) {
         $this->file_path = $file_path;
@@ -402,6 +439,7 @@ class ContentPage implements HtmlInteractor {
         $author_user_name = $this->parse_author_user_name();
         $this->author = get_author_by_user_name($author_user_name);
         $this->publication_datetime = $this->parse_publication_datetime();
+        $this->modification_datetime = $this->parse_modification_datetime();
     }
 
     // --- Parsers
@@ -432,7 +470,7 @@ class ContentPage implements HtmlInteractor {
         $content = $this->file_content;
         $defaultText = "Default description";
 
-        $start = strpos($content, '<p>') ?: 0;
+        $start = strpos($content, '<p class="description">') ?: strpos($content, '<p>');
         $end = strpos($content, '</p>', $start);
         $paragraph = strip_tags(substr($content, $start, $end - $start + 4));
         $paragraph = str_replace("\n", "", $paragraph);
@@ -466,10 +504,8 @@ class ContentPage implements HtmlInteractor {
     }
 
     /**
-     * parse_publication_datetime, obtiene la fecha de un artículo en base al 
-     * comentario "publication_date"
-     * 
-     * @return DateTime
+     * parse_publication_datetime, obtiene la fecha de publicación del 
+     * artículo en base al comentario "publication_datetime"
      */
     private function parse_publication_datetime() : DateTime {
         $regex = '/<!-- publication_datetime (\d{4})(\d{2})(\d{2})T(\d{2})(\d{2}) -->/';
@@ -490,7 +526,7 @@ class ContentPage implements HtmlInteractor {
             $minute = $matches[5][0];
         }
 
-        $datetime_str = $year."/".$month."/".$day." ".$hour.":".$minute;
+        $datetime_str = $year . "/" . $month . "/" . $day . " " . $hour . ":" . $minute;
         $datetime_obj = date_create($datetime_str, new DateTimeZone(DEF_DATETIME_TIMEZONE));
 
         // si la fecha no es válida, se devuelve una válida
@@ -499,6 +535,29 @@ class ContentPage implements HtmlInteractor {
         }
 
         return $datetime_obj;
+    }
+
+    /**
+     * parse_modification_datetime, obtiene la fecha de modificación del 
+     * artículo en base al comentario "modification_datetime"
+     */
+    private function parse_modification_datetime() : DateTime | null {
+        $regex = '/<!-- modification_datetime (\d{4})(\d{2})(\d{2})T(\d{2})(\d{2}) -->/';
+        $matches_count = preg_match_all($regex, $this->file_content, $matches, PREG_PATTERN_ORDER);
+
+        if ($matches_count != 0) {
+            $year = $matches[1][0];
+            $month = $matches[2][0];
+            $day = $matches[3][0];
+            $hour = $matches[4][0];
+            $minute = $matches[5][0];
+
+            $datetime_str = $year . "/" . $month . "/" . $day . " " . $hour . ":" . $minute;
+            $datetime_obj = date_create($datetime_str, new DateTimeZone(DEF_DATETIME_TIMEZONE));
+    
+            return $datetime_obj;
+        }
+        return null;
     }
 
     // --- Basic properties getters
@@ -516,6 +575,7 @@ class ContentPage implements HtmlInteractor {
     function get_publication_datetime() : DateTime { return $this->publication_datetime; }
     function get_publication_datetime_w3c() : string { return date_format($this->publication_datetime, DATE_W3C); }
     function get_publication_datetime_iso8601() : string { return date_format($this->publication_datetime, DATE_ISO8601); }
+    function get_modification_datetime() : DateTime { return $this->modification_datetime; }
     function get_og_type() : string { return $this->og_type; }
 
     // --- Extended properties getters
@@ -556,12 +616,19 @@ class ContentPage implements HtmlInteractor {
     function get_content_to_print() : string {
         $content = $this->file_content;
         $content .= sprintf(
-                "\n" . '<p style="text-align:right;"><small>Publicado por <a href="author?username=%s" aria-label="Página del autor %s.">%s</a> el %s</small></p>' . "\n",
+                "\n" . '<p style="text-align:left;"><small>Publicado por <a href="author?username=%s" aria-label="Página del autor %s.">%s</a> el %s',
                 $this->get_author()->user_name,
                 $this->get_author()->real_name,
                 $this->get_author()->real_name,
-                date_format($this->get_publication_datetime(), DEF_DATETIME_FORMAT)
+                format_pretty_date($this->get_publication_datetime())
         );
+        if ($this->has_modification_datetime()) {
+            $content .= sprintf(
+                ' y se ha revisado por última vez el %s',
+                format_pretty_date($this->get_modification_datetime())
+            );
+        }
+        $content .= ".</small></p>\n";
         return $content;
     }
 
@@ -649,6 +716,10 @@ class ContentPage implements HtmlInteractor {
             //     "ratingCount" => "2"
             // ]
         ]);
+    }
+
+    function has_modification_datetime() : bool {
+        return $this->modification_datetime != null;
     }
 
 }
@@ -865,7 +936,7 @@ if ($ACTION == 404) {
 
             /* este valor multiplica al valor definido en el body */
             header p#web_nav {font-size: 1.4em;}
-            header p#header_quote {
+            header p#header_quote, footer p#license_text {
                 max-width: 550px;
                 margin: 0 auto;
             }
@@ -892,13 +963,17 @@ if ($ACTION == 404) {
             main {
                 max-width: 800px;
                 margin: 0 auto;
-                /* text-align: justify;
-                text-justify: inter-word; */
+            }
+
+            main p, blockquote {
+                text-align: justify;
+                text-justify: inter-word;
             }
 
             h1, h2, h3, h4, h5, h6 {color: <?= $COLORS[$COLOR_ID]["title"] ?>;}
-            img {width: 100%;} /* todas las imágenes menos la del header */
-            img.half {width: 50%; display: block; margin: 0 auto;}
+            figure {margin: auto 0px; text-align: center;}
+            img {width: 100%;}
+            img.half {width: 50%;}
             pre {padding: 10px; overflow: auto;}
             code {padding: 1px;}
 
@@ -988,31 +1063,23 @@ if ($ACTION == 404) {
         </main>
 
         <footer id="footer" aria-label="Licencias, contactos y más enlaces" tabindex="-1">
-            <nav aria-label="Enlace al archivo de publicaciones">
-                <p>
-                    <a href="archive">&laquo;más publicaciones&raquo;</a>
-                </p>
-            </nav>
-            <nav aria-label="Moverse por esta página">
-                <p>
-                    <a href="#header">ir a la cabecera</a>&nbsp;&nbsp;&nbsp;<a href="#main">ir al contenido</a>
-                </p>
-            </nav>
+            <p>*&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;*</p>
             <nav id="contacto" aria-label="Enlaces de contacto">
                 <p>
-                    <a href="https://github.com/1noro" aria-label="Enlace a mi perfil de GitHub">github</a> / 
-                    <a href="https://gitlab.com/1noro" aria-label="Enlace a mi perfil de GitLab">gitlab</a> / 
-                    <a href="https://tilde.zone/@1noro" aria-label="Enlace a mi perfil de Mastodon">mastodon</a> / 
+                    <a href="https://github.com/1noro" aria-label="Enlace a mi perfil de GitHub">github</a> &middot; 
+                    <a href="https://gitlab.com/1noro" aria-label="Enlace a mi perfil de GitLab">gitlab</a> &middot; 
+                    <a href="https://tilde.zone/@1noro" aria-label="Enlace a mi perfil de Mastodon">mastodon</a> &middot; 
                     mail (<a href="res/publickey.ppuubblliicc@protonmail.com.asc" aria-label="¡Mándame un correo cifrado con gpg!">gpg</a>)
                 </p>
             </nav>
-            <nav aria-label="Puedes contribuir a mis proyectos donando en estos enlaces">
-                <a href="donations">donaciones &middot; págame un café</a>
+            <nav aria-label="Enlaces útiles para moverse por la página">
+                <p>
+                    <a href="#header">ir a la cabecera</a>&nbsp;&nbsp;&nbsp;<a href="#main">ir al contenido</a>&nbsp;&nbsp;&nbsp;<a href="archive">leer más publicaciones</a>&nbsp;&nbsp;&nbsp;<a href="donations">apoya mi trabajo</a>
+                </p>
             </nav>
-            <p>
+            <p id="license_text">
                 <small>
-                    Software creado por <a href="https://github.com/1noro/record.rat.la">Inoro</a> bajo la licencia <a rel="license" href="LICENSE.GPL-3.0.txt" aria-label="Todo el código que sustenta la web está bajo la licencia GPLv3.">GPLv3</a><br>
-                    Multimedia bajo la licencia <a rel="license" href="LICENSE.CC-BY-SA-4.0.txt" aria-label="Texto de la licencia Creative Commons BY-SA-4.0.">Creative Commons BY-SA-4.0</a>
+                    Software creado por <a href="https://github.com/1noro/record.rat.la">Inoro</a> bajo la licencia <a rel="license" href="LICENSE.GPL-3.0.txt" aria-label="Todo el código que sustenta la web está bajo la licencia GPLv3.">GPLv3</a>. Multimedia original bajo la licencia <a rel="license" href="LICENSE.CC-BY-SA-4.0.txt" aria-label="Texto de la licencia Creative Commons BY-SA-4.0.">Creative Commons BY-SA-4.0</a>
                 </small>
             </p>
         </footer>
