@@ -470,7 +470,7 @@ class ContentPage implements HtmlInteractor {
         $content = $this->file_content;
         $defaultText = "Default description";
 
-        $start = strpos($content, '<p>') ?: 0;
+        $start = strpos($content, '<p class="description">') ?: strpos($content, '<p>');
         $end = strpos($content, '</p>', $start);
         $paragraph = strip_tags(substr($content, $start, $end - $start + 4));
         $paragraph = str_replace("\n", "", $paragraph);
