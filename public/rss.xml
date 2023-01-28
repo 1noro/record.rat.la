@@ -29,7 +29,22 @@
 </p>
 
 <figure>
-    <img src="https://record.rat.la/img/20221205/le-sommet-des-dieux-2-750.jpg" alt="Fotograma de la película donde se puede apreciar el mimo que se le dedicó a los planos generales de los paisajes montañosos.">
+    <img class="float" src="https://record.rat.la/img/20221205/le-sommet-des-dieux-375.jpg" alt="Imagen generada por Stable Diffusion 2.1 de unos alpinistas ascendiendo al Everest.">
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org/",
+            "@type": "ImageObject",
+            "contentUrl": "https://record.rat.la/img/20221205/le-sommet-des-dieux-375.jpg",
+            "license": "https://creativecommons.org/licenses/by-sa/4.0/",
+            "acquireLicensePage": "https://record.rat.la/faq#acquireLicense",
+            "creditText": "record.rat.la",
+            "creator": {
+                "@type": "Person",
+                "name": "Inoro"
+            },
+            "copyrightNotice": "Inoro"
+        }
+    </script>
 </figure>
 
 <p class="description">
@@ -68,7 +83,22 @@
 </p>
 
 <figure>
-    <img src="https://record.rat.la/img/20221130/la-cinta-blanca-750.jpg" alt="Sebastian Hülk venga la muerte de su madre rompiendo unos repollos.">
+    <img class="float" src="https://record.rat.la/img/20221130/la-cinta-blanca-375.jpg" alt="Representación artística de la cinta blanca.">
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org/",
+            "@type": "ImageObject",
+            "contentUrl": "https://record.rat.la/img/20221130/la-cinta-blanca-375.jpg",
+            "license": "https://creativecommons.org/licenses/by-sa/4.0/",
+            "acquireLicensePage": "https://record.rat.la/faq#acquireLicense",
+            "creditText": "record.rat.la",
+            "creator": {
+                "@type": "Person",
+                "name": "Inoro"
+            },
+            "copyrightNotice": "Inoro"
+        }
+    </script>
 </figure>
 
 <p class="description">
@@ -354,7 +384,22 @@ sudo resize2fs /dev/sdb1
 </p>
 
 <figure>
-    <img src="https://record.rat.la/img/20210724/yojimbo-750.jpg" alt="Ikio Sawamura y Toshiro Mifune.">
+    <img class="float" src="https://record.rat.la/img/20210724/yojimbo-375.jpg" alt="Representación de Stable Diffusion 2.1 de Eijirō Tōno como Gonji, el tabernero del pueblo.">
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org/",
+            "@type": "ImageObject",
+            "contentUrl": "https://record.rat.la/img/20210724/yojimbo-375.jpg",
+            "license": "https://creativecommons.org/licenses/by-sa/4.0/",
+            "acquireLicensePage": "https://record.rat.la/faq#acquireLicense",
+            "creditText": "record.rat.la",
+            "creator": {
+                "@type": "Person",
+                "name": "Inoro"
+            },
+            "copyrightNotice": "Inoro"
+        }
+    </script>
 </figure>
 
 <p class="description">
