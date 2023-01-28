@@ -973,7 +973,20 @@ if ($ACTION == 404) {
             h1, h2, h3, h4, h5, h6 {color: <?= $COLORS[$COLOR_ID]["title"] ?>;}
             figure {margin: auto 0px; text-align: center;}
             img {width: 100%;}
-            img.half {width: 50%;}
+            img.half {
+                width: 40%;
+                min-width: 300px;
+            }
+            img.float {
+                width: 40%;
+                min-width: 300px;
+            }
+            @media only screen and (min-width: 600px) {
+                img.float {
+                    float: right;
+                    margin: 0px 0px 20px 20px;
+                }
+            }
             pre {padding: 10px; overflow: auto;}
             code {padding: 1px;}
 
@@ -1073,7 +1086,8 @@ if ($ACTION == 404) {
                 </p>
             </nav>
             <nav aria-label="Enlaces útiles para moverse por la página">
-                <p>
+                <!-- este estilo es para que sea fácilmente clickable en dispositivos táctiles -->
+                <p style="line-height: 48px;">
                     <a href="#header">ir a la cabecera</a>&nbsp;&nbsp;&nbsp;<a href="#main">ir al contenido</a>&nbsp;&nbsp;&nbsp;<a href="archive">leer más publicaciones</a>&nbsp;&nbsp;&nbsp;<a href="donations">apoya mi trabajo</a>
                 </p>
             </nav>
