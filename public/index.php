@@ -236,7 +236,7 @@ class Author {
 
 }
 
-
+// @todo: rename to HTMLStrategy
 interface HtmlInteractor {
 
     public function get_title() : string;
@@ -248,6 +248,8 @@ interface HtmlInteractor {
     public function get_cover_img_mime_type() : string;
     public function get_cover_img_width() : string;
     public function get_cover_img_height() : string;
+
+    // @todo: rename to get_printable_content
     public function get_content_to_print() : string;
 
 }
@@ -739,7 +741,8 @@ if ('/' === $uri) {
 } elseif ('/show' === $uri && isset($_GET['filename'])) {
     if (in_array($_GET['filename'], POST_FILENAMES)) {
         // Post
-        $page = new ContentPage(POST_FOLDER . $_GET['filename'], get_full_uri());
+        $path = POST_FOLDER . $_GET['filename'];
+        $page = new ContentPage($path, get_full_uri());
     } else {
         // Error 404 (Post not found)
         $ACTION = 404;
@@ -747,10 +750,8 @@ if ('/' === $uri) {
 } elseif ('/author' === $uri && isset($_GET['username'])) {
     if (isset(AUTHORS[$_GET['username']])) {
         // Author page
-        $page = new ContentPage(
-            COMMON_FOLDER . get_author_by_user_name($_GET['username'])->page_file_name,
-            get_full_uri()
-        );
+        $path = COMMON_FOLDER . get_author_by_user_name($_GET['username'])->page_file_name;
+        $page = new ContentPage($path, get_full_uri());
     } else {
         // Error 404 (Username not found)
         $ACTION = 404;
@@ -775,6 +776,7 @@ if ('/' === $uri) {
     $ACTION = 404;
 }
 
+// Lógica de errores
 if ($ACTION == 404) {
     $page = new ContentPage(COMMON_FOLDER . E404_PAGE, get_full_uri());
     http_response_code(404);
@@ -993,6 +995,12 @@ if ($ACTION == 404) {
             pre, code {
                 background-color: <?= $COLORS[$COLOR_ID]["code_background"] ?>;
                 color: <?= $COLORS[$COLOR_ID]["code_text"] ?>;
+            }
+
+            iframe.embeddedVideo {
+                width: 100%;
+                height: auto;
+                aspect-ratio: 16/9;
             }
         </style>
 
