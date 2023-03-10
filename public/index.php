@@ -78,7 +78,6 @@ define("AUTHORS", [
 $COLOR_ID = 0;
 
 // foreground colors: 1D1313 000000 212228
-
 $COLORS = [
     // Melocotón 2, electric boogaloo
     [
