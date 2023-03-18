@@ -13,6 +13,45 @@
         </image>
 
 <item>
+    <title>Fallen Angels, neo noir en Hong Kong</title>
+    <guid>https://record.rat.la/show?filename=fallen-angels-wong-kar-wai.html</guid>
+    <link>https://record.rat.la/show?filename=fallen-angels-wong-kar-wai.html</link>
+    <!--<author>Inoro</author>-->
+    <pubDate>Sat, 18 Mar 2023 01:09:00 +0100</pubDate>
+    <description>
+<![CDATA[<h1>Fallen Angels, neo noir en Hong Kong</h1>
+
+<!-- publication_datetime 20230318T0109 -->
+<!-- author inoro -->
+
+<p>
+    No se porqué llevaba esquivando esta película desde hace varios años, ronda mis listas de "películas que quiero ver" desde que vi Deseando Amar (2000). Más tarde un par de personas me la recomendaron muy efusivamente, asegurando que me encantaría, y yo, siguiendo mi costumbre de solo ver lo que me apetece en cada momento, no les hice ni caso. Hasta hoy, día en que después de un largo recorrido por FilmAffinity buscando qué ver esta noche, mi hermana me propuso esta película. Sin duda todos tenían razón, la película me ha encantado, me gusta tanto que me ha quitado el sueño y me ha dado fuerzas para escribir este post. ¿Por dónde empezaré?
+</p>
+
+<figure>
+    <img src="https://record.rat.la/img/20230318/fallen-angels-750.jpg" alt="Michelle Reis en el metro de Hong Kong.">
+</figure>
+
+<p>
+    En primer lugar, creo que la dirección de Wong Kar-Wai es impresionante. El uso de la cámara es innovador y arriesgado, con muchos planos que capturan el ambiente de las calles de Hong Kong de manera brillante. Además, la música y el sonido son excelentes y ayudan a crear la perfecta atmósfera decadente (mi atmósfera favorita) para la película.
+</p>
+
+<p>
+    En segundo lugar, me parece fascinante el estilo noir moderno que transmite. Las tramas de la pareja de asesinos y del chico mudo tienen elementos clásicos del género, como el crimen y la violencia, pero Wong Kar-Wai los presenta de una manera desenfadada y hasta cómica en algunos casos. La película es oscura, pero también tiene momentos de belleza y poesía. Hay planos que son tan extraños que hasta me hicieron salir de la película preguntándome cosas como: ¿en qué posición están puestos los personajes? ¿dónde diablos está la cámara? ¿cómo se ha hecho ese movimiento?
+</p>
+
+<p>
+    Me gustaría recalcar la actuación de los actores principales. Leon Lai y Michelle Reis, que interpretan a la pareja de asesinos, hacen un muy buen trabajo al dar vida a sus personajes complejos y ambiguos. Su relación es misteriosa y fascinante, y el hecho de que nunca se vean cara a cara da una dimensión más interesante a la trama. Por otro lado, Takeshi Kaneshiro, que interpreta al chico mudo, hace un trabajo conmovedor al mostrar las dificultades que enfrenta su personaje para adaptarse al mundo que lo rodea.
+</p>
+
+<p>
+    Para concluir, Fallen Angels (1995) es una película fascinante y emocionante que combina elementos de cine noir con un enfoque innovador y experimental. La película es una experiencia visual y emocional única que te dejará con la mirada clavada en la pantalla. Si eres fanático del cine asiático de autor, no hagas como yo y lo dejes para el último momento, la película no te decepcionará. Yo ahora mismo tengo ganas de ver toda la filmografía de este director.
+</p>
+]]>
+    </description>
+</item>
+
+<item>
     <title>Estoy leyendo sobre el Estoicismo</title>
     <guid>https://record.rat.la/show?filename=estoy-leyendo-sobre-estoicismo.html</guid>
     <link>https://record.rat.la/show?filename=estoy-leyendo-sobre-estoicismo.html</link>
@@ -551,158 +590,6 @@ sudo resize2fs /dev/sdb1
     Buenas noches, y tened dulces sueños.
 </p>
 <!-- publication_datetime 20210722T0046 -->
-<!-- author inoro -->
-]]>
-    </description>
-</item>
-
-<item>
-    <title>Git quick reference</title>
-    <guid>https://record.rat.la/show?filename=comandos-utiles-git.html</guid>
-    <link>https://record.rat.la/show?filename=comandos-utiles-git.html</link>
-    <!--<author>Inoro</author>-->
-    <pubDate>Tue, 13 Apr 2021 21:59:00 +0200</pubDate>
-    <description>
-<![CDATA[
-<h1><em>Git quick reference</em></h1>
-
-<p>Listado de los comandos más recurrentes en el día a día con <em>git</em>.</p>
-
-<h2>Elementos a tener en cuenta antes de leer los comandos</h2>
-
-<ul>
-    <li>Siempre que puedas poner un único archivo (<code>&lt;file&gt;</code>) en un comando, puedes poner un <code>.</code> para referirte a todos de forma recursiva.</li>
-</ul>
-
-<h2>Obtener un repositorio — <em>clone</em></h2>
-
-<p>Para descargar un repositorio remoto a tu máquina local.</p>
-
-<pre>
-git clone &lt;https_or_ssh_link&gt;
-</pre>
-
-<h2>Antes de hacer un <em>commit</em></h2>
-
-<p>
-    Comprobar el estado del repositorio.
-</p>
-
-<pre>
-git status
-</pre>
-
-<p>
-    Ver los cambios realizados sobre un archivo desde el último commit.
-</p>
-
-<pre>
-git diff &lt;file&gt;
-</pre>
-
-<p>
-    Restaurar todos los cambios de un archivo al punto del último commit.
-</p>
-
-<pre>
-git restore &lt;file&gt;
-</pre>
-
-<h3>Comandos sobre el <a href="https://youtu.be/mVjHJFscwsk"><em>staging area</em></a></h3>
-
-<p>
-    Agregar un archivo al <em>staging area</em>.
-</p>
-
-<pre>
-git add &lt;file&gt;
-</pre>
-
-<p>
-    Quitar un archivo del <em>staging area</em>.
-</p>
-
-<pre>
-git restore --staged &lt;file&gt;
-</pre>
-
-<h2>Confirmar los cambios — <em>commit</em></h2>
-
-<p>Una vez agregados los archivos al <em>staging area</em> realizar un <em>commit</em>.</p>
-
-<pre>
-git commit -m "&lt;commit_message&gt;"
-</pre>
-
-<h2>Actualizar el repositorio remoto — <em>push</em></h2>
-
-<p>Una vez realizados uno o más <em>commits</em> se pueden subir los cambios a un repositorio remoto.</p>
-
-<pre>
-git push
-</pre>
-
-<p>Equivalente más detallada del comando anterior.</p>
-
-<pre>
-git push origin &lt;branch&gt;
-</pre>
-
-<blockquote>
-    Encuentre una referencia que coincida con <code>&lt;branch&gt;</code> 
-    en el repositorio de <em>origin</em> (lo más probable es que encuentre 
-    <em>refs / heads / master / main</em>) y actualice la misma referencia (por 
-    ejemplo, <em>refs / heads / master / main</em>) en el repositorio de 
-    <em>origin</em> con él. Si el <code>&lt;branch&gt;</code> no 
-    existiera de forma remota, se crearía. - <em>Modificación sobre la definición del manual <code>man git push</code></em>.
-</blockquote>
-
-<h2>Trabajar con ramas — <em>branches</em></h2>
-
-<p>
-    Listar ramas <strong>locales</strong>.
-</p>
-
-<pre>
-git branch
-</pre>
-
-<blockquote>
-    Agregando la opción <code>--all</code> se pueden ver también las <strong>ramas remotas</strong>.
-</blockquote>
-
-<p>
-    Crear una rama nueva y moverte a ella.
-</p>
-
-<pre>
-git checkout -b &lt;branch_name&gt;
-</pre>
-
-<p>
-    Cambiar de rama.
-</p>
-
-<pre>
-git checkout &lt;branch_name&gt;
-</pre>
-
-<p>
-    Borrar una rama local.
-</p>
-
-<pre>
-git branch -d &lt;branch_name&gt;
-</pre>
-
-<p>
-    Borrar una rama remota.
-</p>
-
-<pre>
-git push origin --delete &lt;branch_name&gt;
-</pre>
-<!-- publication_datetime 20210413T2159 -->
 <!-- author inoro -->
 ]]>
     </description>
