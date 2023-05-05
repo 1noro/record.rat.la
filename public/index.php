@@ -138,6 +138,6 @@ echo 'Redirigiendo a <a href="' . $locationURL . '">' . $locationURL . '</a>...'
 
 // header("HTTP/1.1 301 Moved Permanently");
 
-// http_response_code(301);
-// header("Location: $locationURL");
+http_response_code(301);
+header("Location: $locationURL");
 exit();
